@@ -29,6 +29,14 @@ impl Chess {
 
         Chess { board }
     }
+
+    pub fn print_squares(&self) {
+        self.board.iter().for_each(|row| {
+            row.iter().for_each(|square| {
+                print!("{} ", square.get_name());
+            });
+        })
+    }
 }
 
 #[cfg(test)]

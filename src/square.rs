@@ -35,4 +35,16 @@ impl Square {
             name: String::from(file_string + &row_string),
         }
     }
+
+    fn _get_file(&self) -> u8 {
+        self.file
+    }
+
+    fn _get_row(&self) -> u8 {
+        self.row
+    }
+
+    pub fn get_name(&self) -> String {
+        self.name.clone()
+    }
 }
