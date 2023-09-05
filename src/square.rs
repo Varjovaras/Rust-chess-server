@@ -32,7 +32,7 @@ impl Square {
         Square {
             file,
             row,
-            name: String::from(file_string + &row_string),
+            name: file_string + &row_string,
         }
     }
 

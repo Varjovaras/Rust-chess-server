@@ -26,7 +26,6 @@ impl Chess {
                 panic!("Invalid board");
             }
         }
-
         Chess { board }
     }
 
@@ -36,6 +35,12 @@ impl Chess {
                 print!("{} ", square.get_name());
             });
         })
+    }
+}
+
+impl Default for Chess {
+    fn default() -> Self {
+        Self::new()
     }
 }
 

@@ -1,4 +1,5 @@
 mod chess;
+mod piece;
 mod square;
 
 use chess::Chess;
