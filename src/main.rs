@@ -1,14 +1,13 @@
-mod board;
 mod chess;
-mod file;
+mod chessboard;
 mod piece;
-mod rank;
-mod square;
 
 use chess::Chess;
 
 fn main() {
     let chess: Chess = Chess::new();
-    let _chess_board = chess.board;
-    // chess_board.print_squares();
+    let chess_board = chess.board;
+    // chess_board.print_board_white();
+    println!("{:?}", chess_board.get_board());
+    chess_board.print_board_black();
 }

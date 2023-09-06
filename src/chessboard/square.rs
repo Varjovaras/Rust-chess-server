@@ -1,4 +1,4 @@
-use crate::{file::File, rank::Rank};
+use super::{file::File, rank::Rank};
 
 #[derive(Copy, Clone, Debug, Default)]
 pub struct Square {
