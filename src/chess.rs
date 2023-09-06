@@ -21,6 +21,6 @@ mod tests {
     use super::*;
     #[test]
     fn chess_initialization_works() {
-        let chess: Chess = Chess::new();
+        let _chess: Chess = Chess::new();
     }
 }

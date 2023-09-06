@@ -1,10 +1,10 @@
 use crate::piece::Piece;
 
-pub struct empty_piece {}
+pub struct EmptyPiece {}
 
-impl Piece for empty_piece {
+impl Piece for EmptyPiece {
     fn new() -> Self {
-        empty_piece {}
+        EmptyPiece {}
     }
 
     fn move_piece(&self) -> bool {
