@@ -1,3 +1,15 @@
-pub struct Pawn {}
+use crate::piece::Piece;
 
-impl Piece for Pawn {}
+pub struct Pawn {
+    // pub square: String,
+}
+
+impl Piece for Pawn {
+    fn new() -> Self {
+        Pawn {}
+    }
+
+    fn move_piece(&self) -> bool {
+        true
+    }
+}

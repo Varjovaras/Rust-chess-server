@@ -35,8 +35,6 @@ impl Board {
         &self.board
     }
 
-    fn reverse_rows(&self) {}
-
     // pub fn get_square(&self, file: u8, rank: u8) -> &Square {
     //     // let square = self.board[];
     //     square
@@ -58,7 +56,6 @@ impl Board {
         for square_vec in &mut clone_board {
             square_vec.reverse();
         }
-
         clone_board.iter().for_each(|row| {
             row.iter().for_each(|square| {
                 print!("{} ", square.square_name());
