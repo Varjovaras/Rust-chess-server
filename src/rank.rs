@@ -1,5 +1,3 @@
-use std::default;
-
 #[derive(Copy, Clone, Debug, PartialEq, Default)]
 
 pub enum Rank {

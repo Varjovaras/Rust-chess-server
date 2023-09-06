@@ -12,4 +12,8 @@ impl Square {
         let rank = Rank::from(rank);
         Square { file, rank }
     }
+
+    pub fn square_name(&self) -> String {
+        self.file.as_str().to_owned() + self.rank.as_str()
+    }
 }
