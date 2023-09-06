@@ -2,38 +2,35 @@ use crate::square::Square;
 
 #[derive(Debug)]
 pub struct Board {
-    pub board: Vec<Vec<Square>>,
+    //Inner vector is rank, outer vector file
+    pub board: [[Square; 8]; 8],
 }
 
 impl Board {
     pub fn new() -> Board {
-        let mut board: Vec<Vec<Square>> = Vec::new();
-
+        let mut board: [[Square; 8]; 8] = [[Square::default(); 8]; 8];
         for i in 0..8 {
-            let mut row: Vec<Square> = Vec::new();
+            let mut row: [Square; 8] = [Square::default(); 8];
             for j in 0..8 {
                 let sq = Square::new(i, j);
-                row.push(sq);
+                row[j as usize] = sq;
             }
-            board.push(row);
-        }
-
-        if board.len() != 8 {
-            panic!("Invalid board");
-        }
-        for board_row in board.iter() {
-            if board_row.len() != 8 {
-                panic!("Invalid board");
-            }
+            board[i as usize] = row;
         }
         Board { board }
     }
 
-    pub fn print_squares(&self) {
-        self.board.iter().for_each(|row| {
-            row.iter().for_each(|square| {
-                print!("{} ", square.get_name());
-            });
-        })
-    }
+    // pub fn get_square(&self, file: u8, rank: u8) -> &Square {
+    //     // let square = self.board[];
+    //     square
+    // }
+
+    // pub fn print_squares(&self) {
+    //     self.board.iter().for_each(|row| {
+    //         row.iter().for_each(|square| {
+    //             print!("{} ", square.get_name());
+    //         });
+    //     });
+    //     println!("");
+    // }
 }
