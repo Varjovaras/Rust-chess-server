@@ -1,40 +1,18 @@
-use crate::square::Square;
+use crate::board::Board;
 
 #[derive(Debug)]
 pub struct Chess {
-    pub board: Vec<Vec<Square>>,
+    pub board: Board,
 }
 
 impl Chess {
     pub fn new() -> Chess {
-        let mut board: Vec<Vec<Square>> = Vec::new();
-
-        for i in 0..8 {
-            let mut row: Vec<Square> = Vec::new();
-            for j in 0..8 {
-                let sq = Square::new(i, j);
-                row.push(sq);
-            }
-            board.push(row);
+        Chess {
+            board: Board::new(),
         }
-
-        if board.len() != 8 {
-            panic!("Invalid board");
-        }
-        for board_row in board.iter() {
-            if board_row.len() != 8 {
-                panic!("Invalid board");
-            }
-        }
-        Chess { board }
     }
-
-    pub fn print_squares(&self) {
-        self.board.iter().for_each(|row| {
-            row.iter().for_each(|square| {
-                print!("{} ", square.get_name());
-            });
-        })
+    pub fn _board(&self) -> &Board {
+        &self.board
     }
 }
 
@@ -49,7 +27,8 @@ mod tests {
     use super::*;
     #[test]
     fn chess_board_is_proper() {
-        let chess_board: Chess = Chess::new();
+        let chess: Chess = Chess::new();
+        let chess_board = chess.board;
         assert_eq!(chess_board.board[0][0].name, "A1");
         assert_eq!(chess_board.board[0][7].name, "A8");
         assert_eq!(chess_board.board[1][1].name, "B2");
