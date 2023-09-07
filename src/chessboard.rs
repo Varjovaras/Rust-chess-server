@@ -41,7 +41,7 @@ impl Board {
     // }
 
     pub fn print_board_white(&self) {
-        let mut clone_board = self.get_board().clone();
+        let mut clone_board = *self.get_board();
         clone_board.reverse();
         clone_board.iter().for_each(|row| {
             row.iter().for_each(|square| {
@@ -52,7 +52,7 @@ impl Board {
     }
 
     pub fn print_board_black(&self) {
-        let mut clone_board = self.get_board().clone();
+        let mut clone_board = *self.get_board();
         for square_vec in &mut clone_board {
             square_vec.reverse();
         }
