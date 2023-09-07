@@ -1,4 +1,4 @@
-use self::square::Square;
+use self::square::{Square, SquareColor};
 
 pub mod file;
 pub mod rank;
@@ -18,17 +18,26 @@ pub struct Board {
 impl Board {
     pub fn new() -> Board {
         let mut board: [[Square; 8]; 8] = [[Square::default(); 8]; 8];
-
+        let mut color = SquareColor::Black;
         for rank in 0..8 {
             let mut row: [Square; 8] = [Square::default(); 8];
 
             for file in 0..8 {
-                let sq = Square::new(file, rank);
+                let sq = Square::new(file, rank, color);
                 row[file as usize] = sq;
+                color = Self::color_changer(color);
             }
             board[rank as usize] = row;
+            color = Self::color_changer(color);
         }
         Board { board }
+    }
+
+    fn color_changer(color: SquareColor) -> SquareColor {
+        match color {
+            SquareColor::White => SquareColor::Black,
+            SquareColor::Black => SquareColor::White,
+        }
     }
 
     pub fn get_board(&self) -> &[[Square; 8]; 8] {
@@ -66,8 +75,10 @@ impl Board {
 }
 
 mod tests {
+
     #[test]
     fn chess_board_is_proper() {
+        use crate::chessboard::square::SquareColor;
         use crate::Chess;
         let chess: Chess = Chess::new();
         let chess_board = chess.board;
@@ -75,6 +86,7 @@ mod tests {
             chess_board.get_board()[0][0].square_name(),
             String::from("A1")
         );
+
         assert_eq!(
             chess_board.get_board()[0][7].square_name(),
             String::from("H1")
@@ -83,6 +95,7 @@ mod tests {
             chess_board.get_board()[1][1].square_name(),
             String::from("B2")
         );
+
         assert_eq!(
             chess_board.get_board()[2][2].square_name(),
             String::from("C3")
@@ -131,6 +144,26 @@ mod tests {
         assert_eq!(
             chess_board.get_board()[0][1].square_name(),
             String::from("B1")
+        );
+        assert_eq!(
+            chess_board.get_board()[0][0].square_color(),
+            SquareColor::Black
+        );
+        assert_eq!(
+            chess_board.get_board()[1][1].square_color(),
+            SquareColor::Black
+        );
+        assert_eq!(
+            chess_board.get_board()[2][1].square_color(),
+            SquareColor::White
+        );
+        assert_eq!(
+            chess_board.get_board()[7][6].square_color(),
+            SquareColor::White
+        );
+        assert_eq!(
+            chess_board.get_board()[0][7].square_color(),
+            SquareColor::White
         );
     }
 }
