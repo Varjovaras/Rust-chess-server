@@ -77,12 +77,12 @@ impl Board {
     }
 }
 
+#[cfg(test)]
 mod tests {
+    use crate::Chess;
 
     #[test]
     fn chess_board_is_proper() {
-        use crate::chessboard::square::SquareColor;
-        use crate::Chess;
         let chess: Chess = Chess::new();
         let chess_board = chess.board;
         assert_eq!(
@@ -142,12 +142,19 @@ mod tests {
         );
         assert_eq!(
             chess_board.get_board()[1][0].square_name(),
-            String::from("A2")
+            String::from("B1")
         );
         assert_eq!(
             chess_board.get_board()[0][1].square_name(),
-            String::from("B1")
+            String::from("A2")
         );
+    }
+
+    #[test]
+    fn squares_are_right_colors() {
+        use crate::chessboard::square::SquareColor;
+        let chess: Chess = Chess::new();
+        let chess_board = chess.board;
         assert_eq!(
             chess_board.get_board()[0][0]._square_color(),
             SquareColor::Black
