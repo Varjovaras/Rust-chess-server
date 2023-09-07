@@ -18,19 +18,19 @@ impl Board {
         let mut board: [[Square; 8]; 8] = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
         let mut color = SquareColor::Black; //starting color of the bottom left corner
 
+        //initialize empty row
         let default_row = [Square::default(); 8];
 
         for file in 0..8 {
-            //initialize empty row
-            let mut row = default_row.clone();
+            let mut row = default_row;
             //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
             for rank in 0..8 {
                 let sq = Square::new(file, rank, color);
                 row[rank as usize] = sq;
-                // println!("{:?}", row);
-                color = Self::color_changer(color);
+                color = Self::color_changer(color); //every other square is black or white
             }
             board[file as usize] = row;
+            //when row changes, do additional color change
             color = Self::color_changer(color);
         }
         Board { board }
@@ -92,7 +92,7 @@ mod tests {
 
         assert_eq!(
             chess_board.get_board()[0][7].square_name(),
-            String::from("H1")
+            String::from("A8")
         );
         assert_eq!(
             chess_board.get_board()[1][1].square_name(),
@@ -125,20 +125,20 @@ mod tests {
         );
         assert_eq!(
             chess_board.get_board()[4][2].square_name(),
-            String::from("C5")
+            String::from("E3")
         );
         assert_eq!(
             chess_board.get_board()[7][0].square_name(),
-            String::from("A8")
+            String::from("H1")
         );
 
         assert_eq!(
             chess_board.get_board()[7][1].square_name(),
-            String::from("B8")
+            String::from("H2")
         );
         assert_eq!(
             chess_board.get_board()[6][1].square_name(),
-            String::from("B7")
+            String::from("G2")
         );
         assert_eq!(
             chess_board.get_board()[1][0].square_name(),
