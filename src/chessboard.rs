@@ -63,7 +63,7 @@ impl Board {
         });
     }
 
-    pub fn print_board_black(&self) {
+    pub fn _print_board_black(&self) {
         let mut clone_board = *self.get_board();
         for square_vec in &mut clone_board {
             square_vec.reverse();
@@ -149,23 +149,23 @@ mod tests {
             String::from("B1")
         );
         assert_eq!(
-            chess_board.get_board()[0][0].square_color(),
+            chess_board.get_board()[0][0]._square_color(),
             SquareColor::Black
         );
         assert_eq!(
-            chess_board.get_board()[1][1].square_color(),
+            chess_board.get_board()[1][1]._square_color(),
             SquareColor::Black
         );
         assert_eq!(
-            chess_board.get_board()[2][1].square_color(),
+            chess_board.get_board()[2][1]._square_color(),
             SquareColor::White
         );
         assert_eq!(
-            chess_board.get_board()[7][6].square_color(),
+            chess_board.get_board()[7][6]._square_color(),
             SquareColor::White
         );
         assert_eq!(
-            chess_board.get_board()[0][7].square_color(),
+            chess_board.get_board()[0][7]._square_color(),
             SquareColor::White
         );
     }

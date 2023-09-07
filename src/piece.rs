@@ -1,6 +1,6 @@
 pub enum PieceColor {
-    White,
-    Black,
+    _White,
+    _Black,
     NoPiece,
 }
 

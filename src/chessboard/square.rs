@@ -7,7 +7,7 @@ pub enum SquareColor {
     White,
 }
 impl SquareColor {
-    fn as_str(&self) -> &str {
+    fn _as_str(&self) -> &str {
         match self {
             SquareColor::Black => "black",
             SquareColor::White => "white",
@@ -33,7 +33,7 @@ impl Square {
         self.file.as_str().to_owned() + self.rank.as_str()
     }
 
-    pub fn square_color(&self) -> SquareColor {
+    pub fn _square_color(&self) -> SquareColor {
         self.color
     }
 }
