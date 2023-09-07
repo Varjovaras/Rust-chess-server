@@ -1,4 +1,7 @@
-use crate::piece::{Piece, PieceColor};
+use crate::{
+    chessboard::square::Square,
+    piece::{Piece, PieceColor},
+};
 
 pub struct NoPiece {}
 
@@ -7,7 +10,7 @@ impl Piece for NoPiece {
         NoPiece {}
     }
 
-    fn move_piece(&self) -> bool {
+    fn move_piece(&self, _board: &[[Square; 8]; 8]) -> bool {
         false
     }
 

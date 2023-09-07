@@ -1,7 +1,5 @@
 mod chess;
 mod chessboard;
-mod empty_piece;
-mod pawn;
 mod piece;
 
 use chess::Chess;
