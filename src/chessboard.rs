@@ -5,29 +5,32 @@ pub mod rank;
 pub mod square;
 
 #[derive(Debug)]
-/// board[i][j]
-/// i stands for the rank and
-/// j stands for the file.
-/// for example board[0][1] is B1
-/// board[1][0] is A2
-/// and board[4][2] is E3
+/// 8*8 chessboard.
+/// i stands for the file and
+/// j stands for the rank.
+/// file is the column (top to bottom) and rank is the row (left to right)
 pub struct Board {
     board: [[Square; 8]; 8],
 }
 
 impl Board {
     pub fn new() -> Board {
-        let mut board: [[Square; 8]; 8] = [[Square::default(); 8]; 8];
-        let mut color = SquareColor::Black;
-        for rank in 0..8 {
-            let mut row: [Square; 8] = [Square::default(); 8];
+        let mut board: [[Square; 8]; 8] = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
+        let mut color = SquareColor::Black; //starting color of the bottom left corner
 
-            for file in 0..8 {
+        let default_row = [Square::default(); 8];
+
+        for file in 0..8 {
+            //initialize empty row
+            let mut row = default_row.clone();
+            //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
+            for rank in 0..8 {
                 let sq = Square::new(file, rank, color);
-                row[file as usize] = sq;
+                row[rank as usize] = sq;
+                // println!("{:?}", row);
                 color = Self::color_changer(color);
             }
-            board[rank as usize] = row;
+            board[file as usize] = row;
             color = Self::color_changer(color);
         }
         Board { board }
