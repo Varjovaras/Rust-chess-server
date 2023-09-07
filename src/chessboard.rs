@@ -5,13 +5,13 @@ pub mod rank;
 pub mod square;
 
 #[derive(Debug)]
+/// board[i][j]
+/// i stands for the rank and
+/// j stands for the file.
+/// for example board[0][1] is B1
+/// board[1][0] is A2
+/// and board[4][2] is E3
 pub struct Board {
-    /**
-     * board[i][j]
-     * i stands for the rank
-     * j stands for the file
-     * for example board[0][1] is B1 and board[1][0] is A2 and board[4][2] is E3
-     */
     board: [[Square; 8]; 8],
 }
 
