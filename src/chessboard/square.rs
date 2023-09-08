@@ -1,3 +1,5 @@
+use crate::piece::Pieces;
+
 use super::{file::File, rank::Rank};
 
 #[derive(Copy, Clone, Debug, Default, PartialEq)]
@@ -20,13 +22,19 @@ pub struct Square {
     pub file: File,
     pub rank: Rank,
     pub color: SquareColor,
+    pub piece: Pieces,
 }
 
 impl Square {
-    pub fn new(file: u8, rank: u8, color: SquareColor) -> Square {
+    pub fn new(file: u8, rank: u8, color: SquareColor, piece: Pieces) -> Square {
         let file = File::from(file);
         let rank = Rank::from(rank);
-        Square { file, rank, color }
+        Square {
+            file,
+            rank,
+            color,
+            piece,
+        }
     }
 
     pub fn square_name(&self) -> String {

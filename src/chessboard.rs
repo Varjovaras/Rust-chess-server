@@ -1,3 +1,5 @@
+use crate::piece::Pieces;
+
 use self::square::{Square, SquareColor};
 
 pub mod file;
@@ -25,7 +27,7 @@ impl Board {
             let mut row = default_row;
             //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
             for rank in 0..8 {
-                let sq = Square::new(file, rank, color);
+                let sq = Square::new(file, rank, color, Pieces::default());
                 row[rank as usize] = sq;
                 color = Self::color_changer(color); //every other square is black or white
             }
@@ -84,7 +86,7 @@ mod tests {
     #[test]
     fn chess_board_is_proper() {
         let chess: Chess = Chess::new();
-        let chess_board = chess.board;
+        let chess_board = chess._board();
         assert_eq!(
             chess_board.get_board()[0][0].square_name(),
             String::from("A1")
@@ -154,7 +156,7 @@ mod tests {
     fn squares_are_right_colors() {
         use crate::chessboard::square::SquareColor;
         let chess: Chess = Chess::new();
-        let chess_board = chess.board;
+        let chess_board = chess._board();
         assert_eq!(
             chess_board.get_board()[0][0]._square_color(),
             SquareColor::Black
