@@ -7,61 +7,62 @@ mod pawn;
 mod queen;
 mod rook;
 
-pub fn _pawn(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+pub fn pawn(
+    color: &PieceColor,
+    start_sq: &Square,
+    end_sq: &Square,
+    board: &[[Square; 8]; 8],
 ) -> bool {
-    pawn::_move_white_pawn(_color, _start_sq, _end_sq, _board);
-    true
+    match *color == PieceColor::White {
+        true => pawn::move_white_pawn(color, start_sq, end_sq, board),
+        false => pawn::move_black_pawn(color, start_sq, end_sq, board),
+    }
 }
 
 pub fn _knight(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+    color: &PieceColor,
+    start_sq: &Square,
+    end_sq: &Square,
+    board: &[[Square; 8]; 8],
 ) -> bool {
-    // pawn::move_pawn();
-    true
+    knight::_move_knight(color, start_sq, end_sq, board)
 }
 
 pub fn _bishop(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+    color: &PieceColor,
+    start_sq: &Square,
+    end_sq: &Square,
+    board: &[[Square; 8]; 8],
 ) -> bool {
     // pawn::move_pawn();
     true
 }
 
 pub fn _rook(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+    color: &PieceColor,
+    start_sq: &Square,
+    end_sq: &Square,
+    board: &[[Square; 8]; 8],
 ) -> bool {
     // pawn::move_pawn();
     true
 }
 
 pub fn _queen(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+    color: &PieceColor,
+    start_sq: &Square,
+    end_sq: &Square,
+    board: &[[Square; 8]; 8],
 ) -> bool {
     // pawn::move_pawn();
     true
 }
 
 pub fn _king(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+    color: &PieceColor,
+    start_sq: &Square,
+    end_sq: &Square,
+    board: &[[Square; 8]; 8],
 ) -> bool {
     // pawn::move_pawn();
     true

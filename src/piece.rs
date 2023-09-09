@@ -1,6 +1,6 @@
 use crate::{chessboard::square::Square, moves};
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PieceColor {
     White,
     _Black,
@@ -18,10 +18,10 @@ pub enum Pieces {
 }
 
 impl Pieces {
-    fn r#_move(&self, start_sq: &Square, end_sq: &Square, board: &[[Square; 8]; 8]) -> bool {
+    pub fn r#_move(&self, start_sq: &Square, end_sq: &Square, board: &[[Square; 8]; 8]) -> bool {
         match self {
             Pieces::NoPiece(_) => false,
-            Pieces::_Pawn(color) => moves::_pawn(color, start_sq, end_sq, board),
+            Pieces::_Pawn(color) => moves::pawn(color, start_sq, end_sq, board),
             Pieces::_Knight(color) => moves::_knight(color, start_sq, end_sq, board),
             Pieces::_Bishop(color) => moves::_bishop(color, start_sq, end_sq, board),
             Pieces::_Rook(color) => moves::_rook(color, start_sq, end_sq, board),
