@@ -1,4 +1,13 @@
-use crate::piece::Pieces;
+use crate::piece::{
+    PieceColor::Black,
+    PieceColor::White,
+    Pieces::Bishop,
+    Pieces::King,
+    Pieces::Pawn,
+    Pieces::Queen,
+    Pieces::Rook,
+    Pieces::{self, Knight},
+};
 
 use self::square::{Square, SquareColor};
 
@@ -45,6 +54,44 @@ impl Board {
         }
     }
 
+    pub fn starting_position(&mut self) {
+        let white_pieces = [
+            Rook(White),
+            Knight(White),
+            Bishop(White),
+            Queen(White),
+            King(White),
+            Bishop(White),
+            Knight(White),
+            Rook(White),
+        ];
+        let black_pieces = [
+            Rook(Black),
+            Knight(Black),
+            Bishop(Black),
+            Queen(Black),
+            King(Black),
+            Bishop(Black),
+            Knight(Black),
+            Rook(Black),
+        ];
+        let white_pawns = [Pawn(White); 8];
+        let black_pawns = [Pawn(Black); 8];
+
+        for i in 0..8 {
+            self.board[0][i].piece = white_pieces[i];
+        }
+        for i in 0..8 {
+            self.board[1][i].piece = white_pawns[i];
+        }
+        for i in 0..8 {
+            self.board[7][i].piece = black_pieces[i];
+        }
+        for i in 0..8 {
+            self.board[6][i].piece = black_pawns[i];
+        }
+    }
+
     pub fn get_board(&self) -> &[[Square; 8]; 8] {
         &self.board
     }
@@ -81,7 +128,10 @@ impl Board {
 
 #[cfg(test)]
 mod tests {
-    use crate::Chess;
+    use crate::{
+        chess::Chess,
+        piece::{PieceColor, Pieces},
+    };
 
     #[test]
     fn chess_board_is_proper() {
@@ -177,5 +227,15 @@ mod tests {
             chess_board.get_board()[0][7]._square_color(),
             SquareColor::White
         );
+    }
+
+    #[test]
+    fn starting_position_works() {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
+        assert_eq!(
+            chess.board.get_board()[0][0].piece,
+            Pieces::Rook(PieceColor::White)
+        )
     }
 }
