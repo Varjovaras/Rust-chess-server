@@ -86,7 +86,7 @@ mod tests {
     #[test]
     fn chess_board_is_proper() {
         let chess: Chess = Chess::new();
-        let chess_board = chess._board();
+        let chess_board = chess.board;
         assert_eq!(
             chess_board.get_board()[0][0].square_name(),
             String::from("A1")
@@ -156,7 +156,7 @@ mod tests {
     fn squares_are_right_colors() {
         use crate::chessboard::square::SquareColor;
         let chess: Chess = Chess::new();
-        let chess_board = chess._board();
+        let chess_board = chess.board;
         assert_eq!(
             chess_board.get_board()[0][0]._square_color(),
             SquareColor::Black

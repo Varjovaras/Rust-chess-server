@@ -2,7 +2,7 @@ use crate::chessboard::{square::Square, Board};
 
 #[derive(Debug)]
 pub struct Chess {
-    board: Board,
+    pub board: Board,
 }
 
 impl Chess {
@@ -10,9 +10,6 @@ impl Chess {
         Chess {
             board: Board::new(),
         }
-    }
-    pub fn _board(&self) -> &Board {
-        &self.board
     }
 
     pub fn _make_move(&self, _start_sq: &Square, _end_sq: &Square) {
