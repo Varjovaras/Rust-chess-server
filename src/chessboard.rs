@@ -15,18 +15,20 @@ pub mod file;
 pub mod rank;
 pub mod square;
 
+pub type ChessBoard = [[Square; 8]; 8];
+
 #[derive(Debug)]
 /// 8*8 chessboard.
 /// i stands for the file and
 /// j stands for the rank.
 /// file is the column (top to bottom) and rank is the row (left to right)
 pub struct Board {
-    board: [[Square; 8]; 8],
+    board: ChessBoard,
 }
 
 impl Board {
     pub fn new() -> Board {
-        let mut board: [[Square; 8]; 8] = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
+        let mut board: ChessBoard = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
         let mut color = SquareColor::Black; //starting color of the bottom left corner
 
         //initialize empty row
@@ -92,7 +94,7 @@ impl Board {
         }
     }
 
-    pub fn get_board(&self) -> &[[Square; 8]; 8] {
+    pub fn get_board(&self) -> &ChessBoard {
         &self.board
     }
 

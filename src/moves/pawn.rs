@@ -1,5 +1,5 @@
 use crate::{
-    chessboard::{rank::Rank, square::Square},
+    chessboard::{rank::Rank, square::Square, ChessBoard},
     piece::PieceColor,
 };
 
@@ -7,7 +7,7 @@ pub fn move_white_pawn(
     color: &PieceColor,
     start_sq: &Square,
     end_sq: &Square,
-    board: &[[Square; 8]; 8],
+    board: &ChessBoard,
 ) -> bool {
     if start_sq.rank == Rank::Second {
         return white_starting_sq_move(color, start_sq, end_sq, board);

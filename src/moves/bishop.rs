@@ -1,10 +1,13 @@
-use crate::{chessboard::square::Square, piece::PieceColor};
+use crate::{
+    chessboard::{square::Square, ChessBoard},
+    piece::PieceColor,
+};
 
 pub fn _move_bishob(
     _color: &PieceColor,
     _start_sq: &Square,
     _end_sq: &Square,
-    _board: &[[Square; 8]; 8],
+    _board: &ChessBoard,
 ) -> bool {
     true
 }

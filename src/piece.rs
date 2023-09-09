@@ -1,4 +1,7 @@
-use crate::{chessboard::square::Square, moves};
+use crate::{
+    chessboard::{square::Square, ChessBoard},
+    moves,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PieceColor {
@@ -18,7 +21,7 @@ pub enum Pieces {
 }
 
 impl Pieces {
-    pub fn r#_move(&self, start_sq: &Square, end_sq: &Square, board: &[[Square; 8]; 8]) -> bool {
+    pub fn r#_move(&self, start_sq: &Square, end_sq: &Square, board: &ChessBoard) -> bool {
         match self {
             Pieces::NoPiece(_) => false,
             Pieces::Pawn(color) => moves::pawn(color, start_sq, end_sq, board),
