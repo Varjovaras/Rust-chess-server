@@ -2,7 +2,7 @@ use crate::{chessboard::square::Square, moves};
 
 #[derive(Debug, Clone, Copy)]
 pub enum PieceColor {
-    _White,
+    White,
     _Black,
 }
 
@@ -33,7 +33,7 @@ impl Pieces {
 
 impl Default for Pieces {
     fn default() -> Pieces {
-        Pieces::NoPiece(PieceColor::_White)
+        Pieces::NoPiece(PieceColor::White)
     }
 }
 
