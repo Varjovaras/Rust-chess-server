@@ -18,15 +18,15 @@ pub enum Pieces {
 }
 
 impl Pieces {
-    fn r#_move(&self, board: &[[Square; 8]; 8]) -> bool {
+    fn r#_move(&self, start_sq: &Square, board: &[[Square; 8]; 8]) -> bool {
         match self {
             Pieces::NoPiece(_) => false,
-            Pieces::_Pawn(color) => moves::_pawn(color, board),
-            Pieces::_Knight(color) => moves::_knight(color, board),
-            Pieces::_Bishop(color) => moves::_bishop(color, board),
-            Pieces::_Rook(color) => moves::_rook(color, board),
-            Pieces::_Queen(color) => moves::_queen(color, board),
-            Pieces::_King(color) => moves::_king(color, board),
+            Pieces::_Pawn(color) => moves::_pawn(color, start_sq, board),
+            Pieces::_Knight(color) => moves::_knight(color, start_sq, board),
+            Pieces::_Bishop(color) => moves::_bishop(color, start_sq, board),
+            Pieces::_Rook(color) => moves::_rook(color, start_sq, board),
+            Pieces::_Queen(color) => moves::_queen(color, start_sq, board),
+            Pieces::_King(color) => moves::_king(color, start_sq, board),
         }
     }
 }
