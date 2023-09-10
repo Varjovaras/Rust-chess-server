@@ -1,7 +1,4 @@
-use crate::{
-    chessboard::{square::Square, ChessBoard},
-    piece::PieceColor,
-};
+use crate::{board::square::Square, chess::ChessBoard, piece::PieceColor};
 
 pub fn _move_queen(
     _color: &PieceColor,

@@ -1,8 +1,8 @@
-use crate::chessboard::{square::Square, Board};
+use crate::board::{self, square::Square};
 
 #[derive(Debug)]
 pub struct Chess {
-    pub board: Board,
+    pub board: ChessBoard,
     pub turn_number: i32,
 }
 
@@ -18,15 +18,13 @@ pub type ChessBoard = [[Square; 8]; 8];
 impl Chess {
     pub fn new() -> Chess {
         Chess {
-            board: Board::new(),
+            board: board::new(),
             turn_number: 0,
         }
     }
 
     pub fn make_move(&self, _start_sq: &Square, _end_sq: &Square) {
-        let move_legal = _start_sq
-            .piece
-            ._move(_start_sq, _end_sq, &self.board.get_board());
+        let move_legal = _start_sq.piece._move(_start_sq, _end_sq, &self.board);
 
         if !move_legal {
             return;
@@ -34,7 +32,7 @@ impl Chess {
     }
 
     pub fn starting_position(&mut self) {
-        self.board.starting_position();
+        self.board = board::starting_position(&mut self.board);
     }
 }
 

@@ -1,5 +1,5 @@
+mod board;
 mod chess;
-mod chessboard;
 mod moves;
 mod piece;
 
@@ -8,9 +8,9 @@ use chess::Chess;
 fn main() {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
-    chess.board.print_board_white();
+    board::print_board_white(&chess.board);
     // chess_board.print_board_black();
-    println!("{:?}", chess.board.get_board()[0]);
+    println!("{:?}", chess.board[0]);
     let mut i = 0;
     loop {
         let chess: Chess = Chess::new();
@@ -21,7 +21,7 @@ fn main() {
 
         if i % 10000 == 0 {
             println!("{}", i);
-            chess_board.print_board_white();
+            board::print_board_white(&chess_board);
         }
         i += 1;
     }
