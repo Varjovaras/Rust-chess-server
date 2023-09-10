@@ -1,18 +1,17 @@
-use crate::{
-    chess::ChessBoard,
-    piece::{
-        PieceColor::Black,
-        PieceColor::White,
-        Pieces::Bishop,
-        Pieces::King,
-        Pieces::Pawn,
-        Pieces::Queen,
-        Pieces::Rook,
-        Pieces::{self, Knight},
-    },
+use crate::piece::{
+    PieceColor::Black,
+    PieceColor::White,
+    Pieces::Bishop,
+    Pieces::King,
+    Pieces::Pawn,
+    Pieces::Queen,
+    Pieces::Rook,
+    Pieces::{self, Knight},
 };
 
 use self::square::{Square, SquareColor};
+
+pub type ChessBoard = [[Square; 8]; 8];
 
 pub mod file;
 pub mod rank;
@@ -142,7 +141,6 @@ mod tests {
     fn squares_are_right_colors() {
         use crate::board::square::SquareColor;
         let chess: Chess = Chess::new();
-        let chess_board = chess.board;
         assert_eq!(chess.board[0][0]._square_color(), SquareColor::Black);
         assert_eq!(chess.board[1][1]._square_color(), SquareColor::Black);
         assert_eq!(chess.board[2][1]._square_color(), SquareColor::White);

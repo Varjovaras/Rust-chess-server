@@ -1,4 +1,7 @@
-use crate::{board::square::Square, chess::ChessBoard, piece::PieceColor};
+use crate::{
+    board::{square::Square, ChessBoard},
+    piece::PieceColor,
+};
 
 pub fn _move_king(
     _color: &PieceColor,

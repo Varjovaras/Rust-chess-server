@@ -1,4 +1,7 @@
-use crate::{board::square::Square, chess::ChessBoard, moves};
+use crate::{
+    board::{square::Square, ChessBoard},
+    moves,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PieceColor {

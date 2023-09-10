@@ -1,4 +1,4 @@
-use crate::board::{self, square::Square};
+use crate::board::{self, square::Square, ChessBoard};
 
 #[derive(Debug)]
 pub struct Chess {
@@ -6,15 +6,6 @@ pub struct Chess {
     pub turn_number: i32,
 }
 
-pub type ChessBoard = [[Square; 8]; 8];
-
-/**
-*
-*
-*tee chessboardista chess structin osa pasalusta
-
-
-*/
 impl Chess {
     pub fn new() -> Chess {
         Chess {

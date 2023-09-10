@@ -1,6 +1,5 @@
 use crate::{
-    board::{rank::Rank, square::Square},
-    chess::ChessBoard,
+    board::{rank::Rank, square::Square, ChessBoard},
     piece::PieceColor,
 };
 
