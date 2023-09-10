@@ -1,4 +1,4 @@
-use crate::board::{self, square::Square, ChessBoard};
+use crate::chessboard::{self, square::Square, ChessBoard};
 
 #[derive(Debug)]
 pub struct Chess {
@@ -9,7 +9,7 @@ pub struct Chess {
 impl Chess {
     pub fn new() -> Chess {
         Chess {
-            board: board::new(),
+            board: chessboard::new(),
             turn_number: 0,
         }
     }
@@ -23,7 +23,7 @@ impl Chess {
     }
 
     pub fn starting_position(&mut self) {
-        self.board = board::starting_position(&mut self.board);
+        self.board = chessboard::starting_position(&mut self.board);
         self.turn_number = 0;
     }
 }

@@ -1,4 +1,4 @@
-use crate::{board::square::Square, chess::Chess, piece::PieceColor};
+use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 
 pub fn _move_bishob(
     _color: &PieceColor,

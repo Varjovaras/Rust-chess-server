@@ -1,3 +1,7 @@
+pub mod file;
+pub mod rank;
+pub mod square;
+
 use crate::piece::{
     PieceColor::Black,
     PieceColor::White,
@@ -12,10 +16,6 @@ use crate::piece::{
 use self::square::{Square, SquareColor};
 
 pub type ChessBoard = [[Square; 8]; 8];
-
-pub mod file;
-pub mod rank;
-pub mod square;
 
 pub fn new() -> ChessBoard {
     let mut board: ChessBoard = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
@@ -139,7 +139,7 @@ mod tests {
 
     #[test]
     fn squares_are_right_colors() {
-        use crate::board::square::SquareColor;
+        use crate::chessboard::square::SquareColor;
         let chess: Chess = Chess::new();
         assert_eq!(chess.board[0][0]._square_color(), SquareColor::Black);
         assert_eq!(chess.board[1][1]._square_color(), SquareColor::Black);

@@ -1,4 +1,4 @@
-use crate::{board::square::Square, chess::Chess, piece::PieceColor};
+use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 
 mod bishop;
 mod king;
