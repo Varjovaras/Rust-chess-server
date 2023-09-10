@@ -1,13 +1,10 @@
-use crate::{
-    board::{square::Square, ChessBoard},
-    piece::PieceColor,
-};
+use crate::{board::square::Square, chess::Chess, piece::PieceColor};
 
 pub fn _move_king(
     _color: &PieceColor,
     _start_sq: &Square,
     _end_sq: &Square,
-    _board: &ChessBoard,
+    _chess: &Chess,
 ) -> bool {
     true
 }

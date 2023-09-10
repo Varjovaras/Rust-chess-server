@@ -15,15 +15,16 @@ impl Chess {
     }
 
     pub fn make_move(&self, _start_sq: &Square, _end_sq: &Square) {
-        let move_legal = _start_sq.piece._move(_start_sq, _end_sq, &self.board);
+        let move_legal = _start_sq.piece._move(_start_sq, _end_sq, self);
 
         if !move_legal {
-            return;
+            ()
         };
     }
 
     pub fn starting_position(&mut self) {
         self.board = board::starting_position(&mut self.board);
+        self.turn_number = 0;
     }
 }
 

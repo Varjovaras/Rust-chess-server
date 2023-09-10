@@ -17,7 +17,7 @@ impl SquareColor {
     }
 }
 
-#[derive(Copy, Clone, Debug, Default)]
+#[derive(Copy, Clone, Debug, Default, PartialEq)]
 pub struct Square {
     pub file: File,
     pub rank: Rank,

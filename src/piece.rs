@@ -1,7 +1,4 @@
-use crate::{
-    board::{square::Square, ChessBoard},
-    moves,
-};
+use crate::{board::square::Square, chess::Chess, moves};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PieceColor {
@@ -21,15 +18,15 @@ pub enum Pieces {
 }
 
 impl Pieces {
-    pub fn r#_move(&self, start_sq: &Square, end_sq: &Square, board: &ChessBoard) -> bool {
+    pub fn r#_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             Pieces::NoPiece(_) => false,
-            Pieces::Pawn(color) => moves::pawn(color, start_sq, end_sq, board),
-            Pieces::Knight(color) => moves::_knight(color, start_sq, end_sq, board),
-            Pieces::Bishop(color) => moves::_bishop(color, start_sq, end_sq, board),
-            Pieces::Rook(color) => moves::_rook(color, start_sq, end_sq, board),
-            Pieces::Queen(color) => moves::_queen(color, start_sq, end_sq, board),
-            Pieces::King(color) => moves::_king(color, start_sq, end_sq, board),
+            Pieces::Pawn(color) => moves::pawn(color, start_sq, end_sq, chess),
+            Pieces::Knight(color) => moves::_knight(color, start_sq, end_sq, chess),
+            Pieces::Bishop(color) => moves::_bishop(color, start_sq, end_sq, chess),
+            Pieces::Rook(color) => moves::_rook(color, start_sq, end_sq, chess),
+            Pieces::Queen(color) => moves::_queen(color, start_sq, end_sq, chess),
+            Pieces::King(color) => moves::_king(color, start_sq, end_sq, chess),
         }
     }
 }
