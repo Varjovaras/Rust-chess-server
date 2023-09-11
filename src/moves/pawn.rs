@@ -13,7 +13,7 @@ pub fn move_white_pawn(
     if start_sq.rank == Rank::Second {
         white_starting_sq_move(color, start_sq, end_sq, chess)
     } else {
-        one_square_forward()
+        normal_move()
     }
 }
 
@@ -45,7 +45,7 @@ fn en_passant() -> bool {
     true
 }
 
-fn one_square_forward() -> bool {
+fn normal_move() -> bool {
     true
 }
 

@@ -1,9 +1,13 @@
-use crate::chessboard::{self, square::Square, ChessBoard};
+use crate::{
+    chessboard::{self, square::Square, ChessBoard},
+    piece::PieceColor,
+};
 
 #[derive(Debug)]
 pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
+    pub latest_move: Option<(Square, Square, PieceColor)>,
 }
 
 impl Chess {
