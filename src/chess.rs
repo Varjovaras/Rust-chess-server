@@ -15,6 +15,7 @@ impl Chess {
         Chess {
             board: chessboard::new(),
             turn_number: 0,
+            latest_move: None,
         }
     }
 

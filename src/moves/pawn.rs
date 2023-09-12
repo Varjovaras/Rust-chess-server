@@ -5,35 +5,24 @@ use crate::{
 };
 
 pub fn move_white_pawn(
-    color: &PieceColor,
     start_sq: &Square,
     end_sq: &Square,
     chess: &Chess,
 ) -> bool {
     if start_sq.rank == Rank::Second {
-        white_starting_sq_move(color, start_sq, end_sq, chess)
+        white_starting_sq_move( start_sq, end_sq, chess)
     } else {
         normal_move()
     }
 }
 
-pub fn move_black_pawn(
-    color: &PieceColor,
-    start_sq: &Square,
-    end_sq: &Square,
-    chess: &Chess,
-) -> bool {
-    true
-}
-
 fn white_starting_sq_move(
-    color: &PieceColor,
     start_sq: &Square,
     end_sq: &Square,
     chess: &Chess,
 ) -> bool {
     if start_sq.file != end_sq.file {
-        return en_passant();
+        return white_capture();
     }
     let rank = end_sq.rank;
     // if
@@ -49,8 +38,23 @@ fn normal_move() -> bool {
     true
 }
 
+fn white_capture(  
+    start_sq: &Square,
+    end_sq: &Square,
+    chess: &Chess,) -> bool {
+    if Some(chess.latest_move) &&  {}
+    true
+}
+
+pub fn move_black_pawn(
+    start_sq: &Square,
+    end_sq: &Square,
+    chess: &Chess,
+) -> bool {
+    true
+}
+
 fn _black_starting_sq_move(
-    color: &PieceColor,
     start_sq: &Square,
     end_sq: &Square,
     chess: &Chess,
