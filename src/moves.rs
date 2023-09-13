@@ -3,6 +3,7 @@ use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 mod bishop;
 mod king;
 mod knight;
+mod move_helpers;
 mod pawn;
 mod queen;
 mod rook;

@@ -1,4 +1,4 @@
-use crate::piece::Pieces;
+use crate::piece::{PieceColor, Pieces};
 
 use super::{file::File, rank::Rank};
 
@@ -34,6 +34,17 @@ impl Square {
             rank,
             color,
             piece,
+        }
+    }
+
+    pub fn new_without_piece(file: u8, rank: u8) -> Square {
+        let file = File::from(file);
+        let rank = Rank::from(rank);
+        Square {
+            file,
+            rank,
+            color: SquareColor::default(),
+            piece: Pieces::default(),
         }
     }
 
