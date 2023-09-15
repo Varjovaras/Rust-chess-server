@@ -25,6 +25,33 @@ impl Rank {
             Rank::Eighth => "8",
         }
     }
+
+    pub fn to_usize(&self) -> usize {
+        match self {
+            Rank::First => 0,
+            Rank::Second => 1,
+            Rank::Third => 2,
+            Rank::Fourth => 3,
+            Rank::Fifth => 4,
+            Rank::Sixth => 5,
+            Rank::Seventh => 6,
+            Rank::Eighth => 7,
+        }
+    }
+
+    pub fn from_str(s: &str) -> Rank {
+        match s {
+            "1" => Rank::First,
+            "2" => Rank::Second,
+            "3" => Rank::Third,
+            "4" => Rank::Fourth,
+            "5" => Rank::Fifth,
+            "6" => Rank::Sixth,
+            "7" => Rank::Seventh,
+            "8" => Rank::Eighth,
+            _ => panic!("Invalid rank_str"),
+        }
+    }
 }
 
 impl From<u8> for Rank {

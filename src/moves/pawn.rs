@@ -12,6 +12,8 @@ pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
         white_starting_sq_move(start_sq, end_sq, chess)
     } else if diagonally_one_square_apart(start_sq, end_sq) {
         return white_capture(start_sq, end_sq, chess);
+    } else if start_sq.file != end_sq.file || square_column_diff(start_sq, end_sq) > 1 {
+        return false;
     } else {
         one_square_forward(end_sq)
     }
@@ -20,6 +22,8 @@ pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
 fn white_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if diagonally_one_square_apart(start_sq, end_sq) {
         white_capture(start_sq, end_sq, chess)
+    } else if start_sq.file != end_sq.file {
+        return false;
     } else {
         let column_diff = square_column_diff(start_sq, end_sq);
         match column_diff {
@@ -31,7 +35,7 @@ fn white_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> 
 }
 
 fn one_square_forward(end_sq: &Square) -> bool {
-    if end_sq.piece != Pieces::NoPiece() {
+    if end_sq.has_piece() {
         false
     } else {
         true
@@ -111,14 +115,17 @@ fn _black_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) ->
 
 #[cfg(test)]
 mod tests {
-    use crate::piece::PieceColor;
+    use crate::chessboard::print_board_white;
 
     use super::*;
     #[test]
     fn pawn_moves_from_starting_square() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
+
+        //Bishop on B2
         chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
+
         assert_eq!(
             move_white_pawn(
                 chess.get_square(File::E, Rank::Second),
@@ -130,7 +137,15 @@ mod tests {
         assert_eq!(
             move_white_pawn(
                 chess.get_square(File::E, Rank::Second),
-                chess.get_square(File::B, Rank::Third),
+                chess.get_square(File::E, Rank::Fourth),
+                &chess
+            ),
+            true
+        );
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::E, Rank::Second),
+                chess.get_square(File::A, Rank::Third),
                 &chess
             ),
             false
@@ -143,10 +158,45 @@ mod tests {
             ),
             false
         );
+        println!(
+            "{:?}",
+            move_white_pawn(
+                chess.get_square(File::A, Rank::Second),
+                chess.get_square(File::A, Rank::Fourth),
+                &chess
+            )
+        );
         assert_eq!(
             move_white_pawn(
                 chess.get_square(File::A, Rank::Second),
-                chess.get_square(File::A, Rank::Fifth),
+                chess.get_square(File::A, Rank::Fourth),
+                &chess
+            ),
+            true
+        );
+    }
+    #[test]
+    fn normal_pawn_moves() {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
+
+        //Bishop on B2
+        chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
+        chess.board[3][2].piece = Pieces::Pawn(PieceColor::White);
+
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::D, Rank::Third),
+                chess.get_square(File::D, Rank::Fourth),
+                &chess
+            ),
+            true
+        );
+
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::D, Rank::Third),
+                chess.get_square(File::E, Rank::Third),
                 &chess
             ),
             false

@@ -18,7 +18,7 @@ pub enum Pieces {
 }
 
 impl Pieces {
-    pub fn r#_move(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+    pub fn move_piece(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
         match self {
             Pieces::NoPiece() => false,
             Pieces::Pawn(color) => moves::pawn(color, start_sq, end_sq, chess),

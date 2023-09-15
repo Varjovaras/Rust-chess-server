@@ -19,10 +19,10 @@ impl Chess {
         }
     }
 
-    pub fn make_move(&mut self, _start_sq: &Square, _end_sq: &Square) {
+    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square) {
         //only en passant affects chess_board removing the en passanted piece
         //rest of the effects on board happen elsewhere
-        let move_legal = _start_sq.piece._move(_start_sq, _end_sq, self);
+        let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
 
         if !move_legal {
             ()
@@ -36,6 +36,12 @@ impl Chess {
 
     pub fn get_square(&self, file: File, rank: Rank) -> &Square {
         &self.board[file as usize][rank as usize]
+    }
+
+    pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
+        let file = File::from_str(file_str).to_usize();
+        let rank = Rank::from_str(rank_str).to_usize();
+        &self.board[file][rank]
     }
 }
 

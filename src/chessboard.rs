@@ -77,16 +77,16 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
     let black_pawns = [Pawn(Black); 8];
 
     for (i, white_piece) in white_pieces.iter().enumerate() {
-        clone_board[0][i].piece = *white_piece;
+        clone_board[i][0].piece = *white_piece;
     }
     for (i, white_pawn) in white_pawns.iter().enumerate() {
-        clone_board[1][i].piece = *white_pawn;
+        clone_board[i][1].piece = *white_pawn;
     }
     for (i, black_pawn) in black_pawns.iter().enumerate() {
-        clone_board[6][i].piece = *black_pawn;
+        clone_board[i][6].piece = *black_pawn;
     }
     for (i, black_piece) in black_pieces.iter().enumerate() {
-        clone_board[7][i].piece = *black_piece;
+        clone_board[i][7].piece = *black_piece;
     }
     clone_board
 }
@@ -96,7 +96,7 @@ pub fn print_board_white(board: &ChessBoard) {
     clone_board.reverse();
     clone_board.iter().for_each(|row| {
         row.iter().for_each(|square| {
-            print!("{} ", square.square_name());
+            print!("{} ", square.has_piece());
         });
         println!();
     });
