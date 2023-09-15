@@ -13,7 +13,11 @@ use crate::piece::{
     Pieces::{self, Knight},
 };
 
-use self::square::{Square, SquareColor};
+use self::{
+    file::File,
+    rank::Rank,
+    square::{Square, SquareColor},
+};
 
 pub type ChessBoard = [[Square; 8]; 8];
 
@@ -40,6 +44,7 @@ pub fn new() -> ChessBoard {
 }
 
 fn color_changer(color: SquareColor) -> SquareColor {
+    //for initializing board
     match color {
         SquareColor::White => SquareColor::Black,
         SquareColor::Black => SquareColor::White,
@@ -77,11 +82,11 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
     for (i, white_pawn) in white_pawns.iter().enumerate() {
         clone_board[1][i].piece = *white_pawn;
     }
-    for (i, black_piece) in black_pieces.iter().enumerate() {
-        clone_board[7][i].piece = *black_piece;
-    }
     for (i, black_pawn) in black_pawns.iter().enumerate() {
         clone_board[6][i].piece = *black_pawn;
+    }
+    for (i, black_piece) in black_pieces.iter().enumerate() {
+        clone_board[7][i].piece = *black_piece;
     }
     clone_board
 }

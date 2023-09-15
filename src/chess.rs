@@ -1,5 +1,5 @@
 use crate::{
-    chessboard::{self, square::Square, ChessBoard},
+    chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
     piece::PieceColor,
 };
 
@@ -30,6 +30,10 @@ impl Chess {
     pub fn starting_position(&mut self) {
         self.board = chessboard::starting_position(&mut self.board);
         self.turn_number = 0;
+    }
+
+    pub fn get_square(&self, file: File, rank: Rank) -> &Square {
+        &self.board[file as usize][rank as usize]
     }
 }
 

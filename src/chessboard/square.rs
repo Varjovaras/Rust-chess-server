@@ -1,4 +1,4 @@
-use crate::piece::{PieceColor, Pieces};
+use crate::piece::Pieces;
 
 use super::{file::File, rank::Rank};
 
@@ -54,5 +54,21 @@ impl Square {
 
     pub fn _square_color(&self) -> SquareColor {
         self.color
+    }
+
+    pub fn is_empty(&self) -> bool {
+        if self.piece == Pieces::default() {
+            true
+        } else {
+            false
+        }
+    }
+
+    pub fn has_piece(&self) -> bool {
+        if self.piece != Pieces::default() {
+            true
+        } else {
+            false
+        }
     }
 }
