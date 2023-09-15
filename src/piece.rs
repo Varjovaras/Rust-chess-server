@@ -29,6 +29,18 @@ impl Pieces {
             Pieces::King(color) => moves::_king(color, start_sq, end_sq, chess),
         }
     }
+
+    pub fn color(&self) -> &PieceColor {
+        match self {
+            Pieces::NoPiece() => todo!(),
+            Pieces::Pawn(color) => color,
+            Pieces::Knight(color) => color,
+            Pieces::Bishop(color) => color,
+            Pieces::Rook(color) => color,
+            Pieces::Queen(color) => color,
+            Pieces::King(color) => color,
+        }
+    }
 }
 
 impl Default for Pieces {

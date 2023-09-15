@@ -1,13 +1,13 @@
 use crate::{
     chess::Chess,
     chessboard::{file::File, rank::Rank, square::Square},
-    piece::Pieces,
+    piece::{PieceColor, Pieces},
 };
 
 use super::move_helpers::{diagonally_one_square_apart, square_column_diff};
 
 //only en passant affects board, thats why chess is mutable reference
-pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::Second {
         white_starting_sq_move(start_sq, end_sq, chess)
     } else if diagonally_one_square_apart(start_sq, end_sq) {
@@ -17,7 +17,7 @@ pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &mut Chess) ->
     }
 }
 
-fn white_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+fn white_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if diagonally_one_square_apart(start_sq, end_sq) {
         white_capture(start_sq, end_sq, chess)
     } else {
@@ -50,7 +50,7 @@ fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
     }
 }
 
-fn white_capture(start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+fn white_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::Fifth
         && end_sq.rank == Rank::Sixth
         && latest_move_enables_white_en_passant(chess)
@@ -64,12 +64,12 @@ fn white_capture(start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool 
     }
 }
 
-fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let mut last_move_sq = *chess.get_square(
         File::from(end_sq.file as u8),
         Rank::from(start_sq.rank as u8),
     );
-    if last_move_sq.is_empty() {
+    if last_move_sq.is_empty() || last_move_sq.piece.color() == &PieceColor::White {
         return false;
     }
     if end_sq.has_piece() {
@@ -107,4 +107,49 @@ pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
 
 fn _black_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::piece::PieceColor;
+
+    use super::*;
+    #[test]
+    fn pawn_moves_from_starting_square() {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
+        chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::E, Rank::Second),
+                chess.get_square(File::E, Rank::Third),
+                &chess
+            ),
+            true
+        );
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::E, Rank::Second),
+                chess.get_square(File::B, Rank::Third),
+                &chess
+            ),
+            false
+        );
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::E, Rank::Second),
+                chess.get_square(File::E, Rank::Fifth),
+                &chess
+            ),
+            false
+        );
+        assert_eq!(
+            move_white_pawn(
+                chess.get_square(File::A, Rank::Second),
+                chess.get_square(File::A, Rank::Fifth),
+                &chess
+            ),
+            false
+        );
+    }
 }
