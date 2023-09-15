@@ -8,11 +8,11 @@ use chess::Chess;
 fn main() {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
-    chessboard::print_board_white(&chess.board);
     // chess_board.print_board_black();
-    println!("{:?}", chess.board[0]);
-    println!("{:?}", chess.board[0][1]);
+    // println!("{:?}", chess.board[0]);
+    // println!("{:?}", chess.board[0][1]);
 
+    chessboard::print_board_white(&chess.board);
     let sq1 = *chess.get_square_from_str("e", "2");
     let sq2 = *chess.get_square_from_str("e", "4");
 

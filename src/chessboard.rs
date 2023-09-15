@@ -13,11 +13,7 @@ use crate::piece::{
     Pieces::{self, Knight},
 };
 
-use self::{
-    file::File,
-    rank::Rank,
-    square::{Square, SquareColor},
-};
+use self::square::{Square, SquareColor};
 
 pub type ChessBoard = [[Square; 8]; 8];
 
@@ -94,12 +90,21 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
 pub fn print_board_white(board: &ChessBoard) {
     let mut clone_board = board.clone();
     clone_board.reverse();
-    clone_board.iter().for_each(|row| {
-        row.iter().for_each(|square| {
-            print!("{} ", square.has_piece());
-        });
-        println!();
-    });
+
+    for i in (0..8).rev() {
+        for j in (0..8).rev() {
+            print!("{} ", clone_board[j][i].square_name());
+        }
+        print!(" \n");
+    }
+
+    // clone_board.iter().for_each(|row| {
+    //     println!("{:?}", row);
+    //     row.iter().for_each(|square| {
+    //         print!("{} ", square.square_name());
+    //     });
+    //     println!();
+    // });
 }
 
 pub fn _print_board_black(board: &ChessBoard) {
