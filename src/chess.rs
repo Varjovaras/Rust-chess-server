@@ -19,7 +19,9 @@ impl Chess {
         }
     }
 
-    pub fn make_move(&self, _start_sq: &Square, _end_sq: &Square) {
+    pub fn make_move(&mut self, _start_sq: &Square, _end_sq: &Square) {
+        //only en passant affects chess_board removing the en passanted piece
+        //rest of the effects on board happen elsewhere
         let move_legal = _start_sq.piece._move(_start_sq, _end_sq, self);
 
         if !move_legal {

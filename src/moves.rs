@@ -8,7 +8,7 @@ mod pawn;
 mod queen;
 mod rook;
 
-pub fn pawn(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+pub fn pawn(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
     match *color {
         PieceColor::White => pawn::move_white_pawn(start_sq, end_sq, chess),
         PieceColor::Black => pawn::move_black_pawn(start_sq, end_sq, chess),
