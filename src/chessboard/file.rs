@@ -41,7 +41,7 @@ impl File {
         }
     }
 
-    pub fn from_str(s: &str) -> File {
+    pub fn from_str_slice(s: &str) -> File {
         let str = s.to_uppercase();
         let file = &str[..];
         match file {

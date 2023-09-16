@@ -52,7 +52,7 @@ impl Square {
         self.file.as_str().to_owned() + self.rank.as_str()
     }
 
-    pub fn _square_color(&self) -> SquareColor {
+    pub fn square_color(&self) -> SquareColor {
         self.color
     }
 

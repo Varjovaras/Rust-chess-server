@@ -39,7 +39,7 @@ impl Chess {
     }
 
     pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
-        let file = File::from_str(file_str).to_usize();
+        let file = File::from_str_slice(file_str).to_usize();
         let rank = Rank::from_str(rank_str).to_usize();
         &self.board[file][rank]
     }

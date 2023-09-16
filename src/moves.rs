@@ -20,21 +20,17 @@ pub fn _knight(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &C
 }
 
 pub fn _bishop(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    // pawn::move_pawn();
     true
 }
 
 pub fn _rook(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    // pawn::move_pawn();
     true
 }
 
 pub fn _queen(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    // pawn::move_pawn();
     true
 }
 
 pub fn _king(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    // pawn::move_pawn();
     true
 }
