@@ -19,18 +19,18 @@ pub fn _knight(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &C
     knight::_move_knight(color, start_sq, end_sq, chess)
 }
 
-pub fn _bishop(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+pub fn _bishop(_color: &PieceColor, _start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
     true
 }
 
-pub fn _rook(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+pub fn _rook(_color: &PieceColor, _start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
     true
 }
 
-pub fn _queen(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+pub fn _queen(_color: &PieceColor, _start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
     true
 }
 
-pub fn _king(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+pub fn _king(_color: &PieceColor, _start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
     true
 }

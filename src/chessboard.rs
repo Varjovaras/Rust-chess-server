@@ -151,11 +151,11 @@ mod tests {
     fn squares_are_right_colors() {
         use crate::chessboard::square::SquareColor;
         let chess: Chess = Chess::new();
-        assert_eq!(chess.board[0][0].square_color(), SquareColor::Black);
-        assert_eq!(chess.board[1][1].square_color(), SquareColor::Black);
-        assert_eq!(chess.board[2][1].square_color(), SquareColor::White);
-        assert_eq!(chess.board[7][6].square_color(), SquareColor::White);
-        assert_eq!(chess.board[0][7].square_color(), SquareColor::White);
+        assert_eq!(chess.board[0][0]._square_color(), SquareColor::Black);
+        assert_eq!(chess.board[1][1]._square_color(), SquareColor::Black);
+        assert_eq!(chess.board[2][1]._square_color(), SquareColor::White);
+        assert_eq!(chess.board[7][6]._square_color(), SquareColor::White);
+        assert_eq!(chess.board[0][7]._square_color(), SquareColor::White);
     }
 
     #[test]

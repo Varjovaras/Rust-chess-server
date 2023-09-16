@@ -37,7 +37,7 @@ impl Square {
         }
     }
 
-    pub fn new_without_piece(file: u8, rank: u8) -> Square {
+    pub fn _new_without_piece(file: u8, rank: u8) -> Square {
         let file = File::from(file);
         let rank = Rank::from(rank);
         Square {
@@ -52,7 +52,7 @@ impl Square {
         self.file.as_str().to_owned() + self.rank.as_str()
     }
 
-    pub fn square_color(&self) -> SquareColor {
+    pub fn _square_color(&self) -> SquareColor {
         self.color
     }
 
