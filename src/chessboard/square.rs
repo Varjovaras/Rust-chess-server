@@ -57,18 +57,10 @@ impl Square {
     }
 
     pub fn is_empty(&self) -> bool {
-        if self.piece == Pieces::default() {
-            true
-        } else {
-            false
-        }
+        self.piece == Pieces::default()
     }
 
     pub fn has_piece(&self) -> bool {
-        if self.piece != Pieces::default() {
-            true
-        } else {
-            false
-        }
+        self.piece != Pieces::default()
     }
 }

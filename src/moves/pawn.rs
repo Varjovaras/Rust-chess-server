@@ -38,11 +38,7 @@ fn white_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> 
 }
 
 fn one_square_forward(end_sq: &Square) -> bool {
-    if end_sq.has_piece() {
-        false
-    } else {
-        true
-    }
+    !end_sq.has_piece()
 }
 
 fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
@@ -50,11 +46,7 @@ fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
         File::from(start_sq.file as u8),
         Rank::from(start_sq.rank as u8 + 1),
     );
-    if end_sq.has_piece() || in_between_sq.has_piece() {
-        false
-    } else {
-        true
-    }
+    !(end_sq.has_piece() || in_between_sq.has_piece())
 }
 
 fn white_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
@@ -64,11 +56,7 @@ fn white_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     {
         return white_en_passant(start_sq, end_sq, chess);
     }
-    if end_sq.is_empty() {
-        false
-    } else {
-        true
-    }
+    !end_sq.is_empty()
 }
 
 fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
@@ -95,15 +83,15 @@ fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
                 && latest_move.0.piece == Pieces::Pawn(latest_move.2)
             {
                 println!("Move is en passant");
-                return true;
+                true
             } else {
                 println!("Move is not en passant");
-                return false;
+                false
             }
         }
         None => {
             println!("Move is not en passant");
-            return false;
+            false
         }
     }
 }

@@ -48,7 +48,7 @@ fn color_changer(color: SquareColor) -> SquareColor {
 }
 
 pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
-    let mut clone_board = board.clone();
+    let mut clone_board = *board;
     let white_pieces = [
         Rook(White),
         Knight(White),
@@ -88,14 +88,14 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
 }
 
 pub fn print_board_white(board: &ChessBoard) {
-    let mut clone_board = board.clone();
+    let mut clone_board = *board;
     clone_board.reverse();
 
     for i in (0..8).rev() {
         for j in (0..8).rev() {
             print!("{} ", clone_board[j][i].square_name());
         }
-        print!(" \n");
+        println!(" ");
     }
 
     // clone_board.iter().for_each(|row| {
@@ -108,7 +108,7 @@ pub fn print_board_white(board: &ChessBoard) {
 }
 
 pub fn _print_board_black(board: &ChessBoard) {
-    let mut clone_board = board.clone();
+    let mut clone_board = *board;
     for square_vec in &mut clone_board {
         square_vec.reverse();
     }

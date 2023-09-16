@@ -25,7 +25,7 @@ impl Chess {
         let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
 
         if !move_legal {
-            ()
+            
         };
     }
 
