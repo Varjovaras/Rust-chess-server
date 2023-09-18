@@ -1,10 +1,9 @@
 use crate::{
     chess::Chess,
     chessboard::{file::File, rank::Rank, square::Square},
+    moves::move_helpers::{diagonally_one_square_apart, square_column_diff},
     piece::{PieceColor, Pieces},
 };
-
-use super::move_helpers::{diagonally_one_square_apart, square_column_diff};
 
 //only en passant affects board, thats why chess is mutable reference
 pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
