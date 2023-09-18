@@ -96,14 +96,6 @@ fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
     }
 }
 
-pub fn move_black_pawn(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
-    true
-}
-
-fn _black_starting_sq_move(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
-    true
-}
-
 #[cfg(test)]
 mod tests {
     use crate::chessboard::square::SquareColor;

@@ -1,17 +1,18 @@
 use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 
 mod bishop;
+mod black_pawn;
 mod king;
 mod knight;
 mod move_helpers;
-mod pawn;
 mod queen;
 mod rook;
+mod white_pawn;
 
 pub fn pawn(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     match *color {
-        PieceColor::White => pawn::move_white_pawn(start_sq, end_sq, chess),
-        PieceColor::Black => pawn::move_black_pawn(start_sq, end_sq, chess),
+        PieceColor::White => white_pawn::move_white_pawn(start_sq, end_sq, chess),
+        PieceColor::Black => black_pawn::move_black_pawn(start_sq, end_sq, chess),
     }
 }
 

@@ -24,9 +24,7 @@ impl Chess {
         //rest of the effects on board happen elsewhere
         let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
 
-        if !move_legal {
-            
-        };
+        if !move_legal {};
     }
 
     pub fn starting_position(&mut self) {
