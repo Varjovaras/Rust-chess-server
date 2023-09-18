@@ -7,6 +7,9 @@ use crate::{
 
 //only en passant affects board, thats why chess is mutable reference
 pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if start_sq.rank as u8 > end_sq.rank as u8 {
+        panic!("White pawn is moving backwards");
+    }
     if start_sq.is_empty() {
         return false;
     }
@@ -101,7 +104,7 @@ mod tests {
 
     use super::*;
     #[test]
-    fn pawn_moves_from_starting_square() {
+    fn white_pawn_moves_from_starting_square() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
 
@@ -140,14 +143,14 @@ mod tests {
             ),
             false
         );
-        println!(
-            "{:?}",
-            move_white_pawn(
-                chess.get_square(File::A, Rank::Second),
-                chess.get_square(File::A, Rank::Fourth),
-                &chess
-            )
-        );
+        // println!(
+        //     "{:?}",
+        //     move_white_pawn(
+        //         chess.get_square(File::A, Rank::Second),
+        //         chess.get_square(File::A, Rank::Fourth),
+        //         &chess
+        //     )
+        // );
         assert_eq!(
             move_white_pawn(
                 chess.get_square(File::A, Rank::Second),
@@ -158,7 +161,7 @@ mod tests {
         );
     }
     #[test]
-    fn normal_pawn_moves() {
+    fn white_normal_pawn_moves() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
 

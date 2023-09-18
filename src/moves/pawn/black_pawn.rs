@@ -7,10 +7,13 @@ use crate::{
 
 //only en passant affects board, thats why chess is mutable reference
 pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if end_sq.rank as u8 > start_sq.rank as u8 {
+        panic!("Black pawn is moving backwards");
+    }
     if start_sq.is_empty() {
         return false;
     }
-    if start_sq.rank == Rank::Second {
+    if start_sq.rank == Rank::Seventh {
         black_starting_sq_move(start_sq, end_sq, chess)
     } else if diagonally_one_square_apart(start_sq, end_sq) {
         return black_capture(start_sq, end_sq, chess);
@@ -64,7 +67,7 @@ fn black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         File::from(end_sq.file as u8),
         Rank::from(start_sq.rank as u8),
     );
-    if last_move_sq.is_empty() || last_move_sq.piece.color() == &PieceColor::White {
+    if last_move_sq.is_empty() || last_move_sq.piece.color() == &PieceColor::Black {
         return false;
     }
     if end_sq.has_piece() {
@@ -96,159 +99,161 @@ fn latest_move_enables_black_en_passant(chess: &Chess) -> bool {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use crate::chessboard::square::SquareColor;
+#[cfg(test)]
+mod tests {
+    use crate::chessboard::square::SquareColor;
 
-//     use super::*;
-//     #[test]
-//     fn pawn_moves_from_starting_square() {
-//         let mut chess: Chess = Chess::new();
-//         chess.starting_position();
+    use super::*;
+    #[test]
+    fn black_pawn_moves_from_starting_square() {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
 
-//         //Bishop on B2
-//         chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
+        //Bishop on B7
+        chess.board[1][6].piece = Pieces::Bishop(PieceColor::Black);
 
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::E, Rank::Second),
-//                 chess.get_square(File::E, Rank::Third),
-//                 &chess
-//             ),
-//             true
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::E, Rank::Second),
-//                 chess.get_square(File::E, Rank::Fourth),
-//                 &chess
-//             ),
-//             true
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::E, Rank::Second),
-//                 chess.get_square(File::A, Rank::Third),
-//                 &chess
-//             ),
-//             false
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::E, Rank::Second),
-//                 chess.get_square(File::E, Rank::Fifth),
-//                 &chess
-//             ),
-//             false
-//         );
-//         println!(
-//             "{:?}",
-//             move_white_pawn(
-//                 chess.get_square(File::A, Rank::Second),
-//                 chess.get_square(File::A, Rank::Fourth),
-//                 &chess
-//             )
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::A, Rank::Second),
-//                 chess.get_square(File::A, Rank::Fourth),
-//                 &chess
-//             ),
-//             true
-//         );
-//     }
-//     #[test]
-//     fn normal_pawn_moves() {
-//         let mut chess: Chess = Chess::new();
-//         chess.starting_position();
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::E, Rank::Seventh),
+                chess.get_square(File::E, Rank::Sixth),
+                &chess
+            ),
+            true
+        );
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::E, Rank::Seventh),
+                chess.get_square(File::E, Rank::Fifth),
+                &chess
+            ),
+            true
+        );
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::E, Rank::Seventh),
+                chess.get_square(File::A, Rank::Sixth),
+                &chess
+            ),
+            false
+        );
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::E, Rank::Seventh),
+                chess.get_square(File::E, Rank::Fourth),
+                &chess
+            ),
+            false
+        );
+        //     println!(
+        //         "{:?}",
+        //         move_white_pawn(
+        //             chess.get_square(File::A, Rank::Second),
+        //             chess.get_square(File::A, Rank::Fourth),
+        //             &chess
+        //         )
+        //     );
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::A, Rank::Seventh),
+                chess.get_square(File::A, Rank::Fifth),
+                &chess
+            ),
+            true
+        );
+    }
+    #[test]
+    fn normal_pawn_moves() {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
 
-//         //Bishop on B2
-//         chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
-//         chess.board[3][2].piece = Pieces::Pawn(PieceColor::White);
+        //Bishop on B2, black pawn on D6
+        chess.board[1][6].piece = Pieces::Bishop(PieceColor::White);
+        chess.board[3][5].piece = Pieces::Pawn(PieceColor::Black);
 
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::D, Rank::Third),
-//                 chess.get_square(File::D, Rank::Fourth),
-//                 &chess
-//             ),
-//             true
-//         );
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::D, Rank::Sixth),
+                chess.get_square(File::D, Rank::Fifth),
+                &chess
+            ),
+            true
+        );
 
-//         assert_eq!(
-//             move_white_pawn(
-//                 chess.get_square(File::D, Rank::Third),
-//                 chess.get_square(File::E, Rank::Third),
-//                 &chess
-//             ),
-//             false
-//         );
-//     }
+        assert_eq!(
+            move_black_pawn(
+                chess.get_square(File::D, Rank::Sixth),
+                chess.get_square(File::E, Rank::Sixth),
+                &chess
+            ),
+            false
+        );
+    }
 
-//     #[test]
-//     fn white_en_passant_works() {
-//         let mut chess: Chess = Chess::new();
-//         chess.starting_position();
-//         chess.latest_move = Some((
-//             Square::new(
-//                 5,
-//                 6,
-//                 SquareColor::default(),
-//                 Pieces::Pawn(PieceColor::Black),
-//             ),
-//             Square::new(
-//                 5,
-//                 4,
-//                 SquareColor::default(),
-//                 Pieces::Pawn(PieceColor::Black),
-//             ),
-//             PieceColor::Black,
-//         ));
+    #[test]
+    fn black_en_passant_works() {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
+        chess.latest_move = Some((
+            Square::new(
+                5,
+                1,
+                SquareColor::default(),
+                Pieces::Pawn(PieceColor::White),
+            ),
+            Square::new(
+                5,
+                3,
+                SquareColor::default(),
+                Pieces::Pawn(PieceColor::White),
+            ),
+            PieceColor::White,
+        ));
 
-//         chess.board[4][4].piece = Pieces::Pawn(PieceColor::White);
-//         chess.board[5][4].piece = Pieces::Pawn(PieceColor::Black);
+        //black pawn on e4
+        //white pawn on f4
+        chess.board[4][3].piece = Pieces::Pawn(PieceColor::Black);
+        chess.board[5][3].piece = Pieces::Pawn(PieceColor::White);
 
-//         assert_eq!(
-//             move_white_pawn(
-//                 &chess.get_square_from_str("e", "5").clone(),
-//                 &chess.get_square_from_str("f", "6").clone(),
-//                 &chess
-//             ),
-//             true
-//         );
+        assert_eq!(
+            move_black_pawn(
+                &chess.get_square_from_str("e", "4").clone(),
+                &chess.get_square_from_str("f", "3").clone(),
+                &chess
+            ),
+            true
+        );
 
-//         assert_eq!(
-//             move_white_pawn(
-//                 &chess.get_square_from_str("d", "5").clone(),
-//                 &chess.get_square_from_str("f", "6").clone(),
-//                 &chess
-//             ),
-//             false
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 &chess.get_square_from_str("e", "5").clone(),
-//                 &chess.get_square_from_str("f", "5").clone(),
-//                 &chess
-//             ),
-//             false
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 &chess.get_square_from_str("e", "5").clone(),
-//                 &chess.get_square_from_str("f", "7").clone(),
-//                 &chess
-//             ),
-//             false
-//         );
-//         assert_eq!(
-//             move_white_pawn(
-//                 &chess.get_square_from_str("g", "5").clone(),
-//                 &chess.get_square_from_str("f", "6").clone(),
-//                 &chess
-//             ),
-//             false
-//         );
-//     }
-// }
+        assert_eq!(
+            move_black_pawn(
+                &chess.get_square_from_str("d", "4").clone(),
+                &chess.get_square_from_str("f", "3").clone(),
+                &chess
+            ),
+            false
+        );
+        assert_eq!(
+            move_black_pawn(
+                &chess.get_square_from_str("e", "4").clone(),
+                &chess.get_square_from_str("f", "4").clone(),
+                &chess
+            ),
+            false
+        );
+        assert_eq!(
+            move_black_pawn(
+                &chess.get_square_from_str("e", "4").clone(),
+                &chess.get_square_from_str("f", "2").clone(),
+                &chess
+            ),
+            false
+        );
+        assert_eq!(
+            move_black_pawn(
+                &chess.get_square_from_str("g", "4").clone(),
+                &chess.get_square_from_str("f", "3").clone(),
+                &chess
+            ),
+            false
+        );
+    }
+}
