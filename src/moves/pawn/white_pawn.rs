@@ -7,7 +7,7 @@ use crate::{
 
 //only en passant affects board, thats why chess is mutable reference
 pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if start_sq.rank as u8 > end_sq.rank as u8 {
+    if start_sq.rank > end_sq.rank {
         panic!("White pawn is moving backwards");
     }
     if start_sq.is_empty() {
@@ -45,7 +45,7 @@ fn one_square_forward(end_sq: &Square) -> bool {
 
 fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let in_between_sq = chess.get_square(
-        File::from(start_sq.file as u8),
+        File::from(start_sq.file),
         Rank::from(start_sq.rank as u8 + 1),
     );
     !(end_sq.has_piece() || in_between_sq.has_piece())
@@ -62,10 +62,7 @@ fn white_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 }
 
 fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    let mut last_move_sq = *chess.get_square(
-        File::from(end_sq.file as u8),
-        Rank::from(start_sq.rank as u8),
-    );
+    let mut last_move_sq = *chess.get_square(File::from(end_sq.file), Rank::from(start_sq.rank));
     if last_move_sq.is_empty() || last_move_sq.piece.color() == &PieceColor::White {
         return false;
     }

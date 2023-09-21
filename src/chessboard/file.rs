@@ -1,6 +1,6 @@
 use core::panic;
 
-#[derive(Copy, Clone, Debug, PartialEq, Default)]
+#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd)]
 
 pub enum File {
     #[default]

@@ -27,6 +27,11 @@ pub fn square_column_diff(first_sq: &Square, second_sq: &Square) -> u8 {
     first_sq_rank.abs_diff(second_sq_rank)
 }
 
+pub fn is_diagonal(first_sq: &Square, second_sq: &Square) -> bool {
+    (first_sq.rank as u8).abs_diff(second_sq.rank as u8)
+        == (first_sq.file as u8).abs_diff(second_sq.file as u8)
+}
+
 #[cfg(test)]
 mod tests {
 
@@ -119,5 +124,27 @@ mod tests {
         assert_eq!(square_column_diff(&sq_1, &sq_2), 6);
         let sq_2 = Square::_new_without_piece(5, 7);
         assert_eq!(square_column_diff(&sq_1, &sq_2), 7);
+    }
+
+    #[test]
+    fn is_diagonal_works() {
+        let sq_1 = Square::_new_without_piece(0, 0);
+        let sq_2 = Square::_new_without_piece(0, 1);
+        assert_eq!(is_diagonal(&sq_1, &sq_2), false);
+        let sq_1 = Square::_new_without_piece(0, 0);
+        let sq_2 = Square::_new_without_piece(1, 1);
+        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        let sq_1 = Square::_new_without_piece(0, 0);
+        let sq_2 = Square::_new_without_piece(3, 3);
+        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        let sq_1 = Square::_new_without_piece(1, 0);
+        let sq_2 = Square::_new_without_piece(4, 3);
+        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        let sq_1 = Square::_new_without_piece(0, 1);
+        let sq_2 = Square::_new_without_piece(4, 3);
+        assert_eq!(is_diagonal(&sq_1, &sq_2), false);
+        let sq_1 = Square::_new_without_piece(0, 7);
+        let sq_2 = Square::_new_without_piece(7, 0);
+        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
     }
 }
