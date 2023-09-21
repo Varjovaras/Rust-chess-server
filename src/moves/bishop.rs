@@ -17,11 +17,24 @@ pub fn move_bishob(color: &PieceColor, start_sq: &Square, end_sq: &Square, chess
 
 fn pieces_on_the_way(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let chess_board = &chess.board;
-    let file_direction = start_sq.file as i8 - end_sq.file as i8;
-    let rank_direction = start_sq.rank as i8 - end_sq.file as i8;
+    let file_direction: isize;
+    let rank_direction: isize;
+    if start_sq.file > end_sq.file {
+        file_direction = -1;
+    } else {
+        file_direction = 1;
+    }
+    if start_sq.rank > end_sq.rank {
+        rank_direction = -1;
+    } else {
+        rank_direction = 1;
+    }
 
-    for i in 0..file_direction {
-        todo!("")
+    loop {
+        let i = start_sq.file as usize;
+        let j = start_sq.rank as usize;
+        chess_board[i - file_direction as usize][j - rank_direction as usize];
+        break;
     }
 
     true
