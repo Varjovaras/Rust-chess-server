@@ -1,6 +1,6 @@
 use crate::{
     chess::Chess,
-    chessboard::{file::File, rank::Rank, square::Square},
+    chessboard::{rank::Rank, square::Square},
     moves::move_helpers::{diagonally_one_square_apart, square_column_diff},
     piece::{PieceColor, Pieces},
 };
@@ -44,10 +44,7 @@ fn one_square_forward(end_sq: &Square) -> bool {
 }
 
 fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    let in_between_sq = chess.get_square(
-        File::from(start_sq.file),
-        Rank::from(start_sq.rank as u8 + 1),
-    );
+    let in_between_sq = chess.get_square(start_sq.file, Rank::from(start_sq.rank as u8 + 1));
     !(end_sq.has_piece() || in_between_sq.has_piece())
 }
 
@@ -62,7 +59,7 @@ fn white_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 }
 
 fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    let mut last_move_sq = *chess.get_square(File::from(end_sq.file), Rank::from(start_sq.rank));
+    let mut last_move_sq = *chess.get_square(end_sq.file, start_sq.rank);
     if last_move_sq.is_empty() || last_move_sq.piece.color() == &PieceColor::White {
         return false;
     }
@@ -97,7 +94,7 @@ fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::chessboard::square::SquareColor;
+    use crate::chessboard::{file::File, square::SquareColor};
 
     use super::*;
     #[test]

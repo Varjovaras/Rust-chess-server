@@ -32,19 +32,19 @@ pub fn _is_diagonal(first_sq: &Square, second_sq: &Square) -> bool {
         == (first_sq.file as u8).abs_diff(second_sq.file as u8)
 }
 
-pub fn move_is_up_and_left(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn _move_is_up_and_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank < end_sq.rank
 }
 
-pub fn move_is_up_and_right(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn _move_is_up_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank < end_sq.rank
 }
 
-pub fn move_is_down_and_left(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn _move_is_down_and_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank > end_sq.rank
 }
 
-pub fn move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn _move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank > end_sq.rank
 }
 

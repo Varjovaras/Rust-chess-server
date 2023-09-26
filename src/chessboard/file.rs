@@ -15,7 +15,7 @@ pub enum File {
 }
 
 impl File {
-    pub fn to_usize(&self) -> usize {
+    pub fn as_usize(&self) -> usize {
         match self {
             File::A => 0,
             File::B => 1,

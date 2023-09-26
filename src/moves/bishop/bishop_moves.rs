@@ -2,7 +2,8 @@ use crate::{
     chess::Chess,
     chessboard::square::Square,
     moves::move_helpers::{
-        move_is_down_and_left, move_is_down_and_right, move_is_up_and_left, move_is_up_and_right,
+        _move_is_down_and_left, _move_is_down_and_right, _move_is_up_and_left,
+        _move_is_up_and_right,
     },
 };
 
@@ -15,13 +16,13 @@ pub enum _BishopMoveDirection {
 
 impl _BishopMoveDirection {
     pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_BishopMoveDirection> {
-        if move_is_up_and_left(start_sq, end_sq) {
-            return Some(Self::UpLeft);
-        } else if move_is_up_and_right(start_sq, end_sq) {
+        if _move_is_up_and_left(start_sq, end_sq) {
+            Some(Self::UpLeft)
+        } else if _move_is_up_and_right(start_sq, end_sq) {
             return Some(Self::UpRight);
-        } else if move_is_down_and_left(start_sq, end_sq) {
+        } else if _move_is_down_and_left(start_sq, end_sq) {
             return Some(Self::DownLeft);
-        } else if move_is_down_and_right(start_sq, end_sq) {
+        } else if _move_is_down_and_right(start_sq, end_sq) {
             return Some(Self::DownRight);
         } else {
             None
