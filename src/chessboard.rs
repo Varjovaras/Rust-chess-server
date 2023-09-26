@@ -87,13 +87,13 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
     clone_board
 }
 
-pub fn print_board_white(board: &ChessBoard) {
+pub fn _print_board_white(board: &ChessBoard) {
     let mut clone_board = *board;
     clone_board.reverse();
 
     for i in (0..8).rev() {
         for j in (0..8).rev() {
-            print!("{} ", clone_board[j][i].square_name());
+            print!("{} ", clone_board[j][i]._square_name());
         }
         println!(" ");
     }
@@ -114,7 +114,7 @@ pub fn _print_board_black(board: &ChessBoard) {
     }
     clone_board.iter().for_each(|row| {
         row.iter().for_each(|square| {
-            print!("{} ", square.square_name());
+            print!("{} ", square._square_name());
         });
         println!();
     });
@@ -130,21 +130,21 @@ mod tests {
     #[test]
     fn chess_board_is_proper() {
         let chess: Chess = Chess::new();
-        assert_eq!(chess.board[0][0].square_name(), String::from("A1"));
-        assert_eq!(chess.board[0][7].square_name(), String::from("A8"));
-        assert_eq!(chess.board[1][1].square_name(), String::from("B2"));
-        assert_eq!(chess.board[2][2].square_name(), String::from("C3"));
-        assert_eq!(chess.board[3][3].square_name(), String::from("D4"));
-        assert_eq!(chess.board[4][4].square_name(), String::from("E5"));
-        assert_eq!(chess.board[5][5].square_name(), String::from("F6"));
-        assert_eq!(chess.board[6][6].square_name(), String::from("G7"));
-        assert_eq!(chess.board[7][7].square_name(), String::from("H8"));
-        assert_eq!(chess.board[4][2].square_name(), String::from("E3"));
-        assert_eq!(chess.board[7][0].square_name(), String::from("H1"));
-        assert_eq!(chess.board[7][1].square_name(), String::from("H2"));
-        assert_eq!(chess.board[6][1].square_name(), String::from("G2"));
-        assert_eq!(chess.board[1][0].square_name(), String::from("B1"));
-        assert_eq!(chess.board[0][1].square_name(), String::from("A2"));
+        assert_eq!(chess.board[0][0]._square_name(), String::from("A1"));
+        assert_eq!(chess.board[0][7]._square_name(), String::from("A8"));
+        assert_eq!(chess.board[1][1]._square_name(), String::from("B2"));
+        assert_eq!(chess.board[2][2]._square_name(), String::from("C3"));
+        assert_eq!(chess.board[3][3]._square_name(), String::from("D4"));
+        assert_eq!(chess.board[4][4]._square_name(), String::from("E5"));
+        assert_eq!(chess.board[5][5]._square_name(), String::from("F6"));
+        assert_eq!(chess.board[6][6]._square_name(), String::from("G7"));
+        assert_eq!(chess.board[7][7]._square_name(), String::from("H8"));
+        assert_eq!(chess.board[4][2]._square_name(), String::from("E3"));
+        assert_eq!(chess.board[7][0]._square_name(), String::from("H1"));
+        assert_eq!(chess.board[7][1]._square_name(), String::from("H2"));
+        assert_eq!(chess.board[6][1]._square_name(), String::from("G2"));
+        assert_eq!(chess.board[1][0]._square_name(), String::from("B1"));
+        assert_eq!(chess.board[0][1]._square_name(), String::from("A2"));
     }
 
     #[test]

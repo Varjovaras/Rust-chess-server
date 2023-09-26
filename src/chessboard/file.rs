@@ -28,7 +28,7 @@ impl File {
         }
     }
 
-    pub fn as_str(&self) -> &'static str {
+    pub fn _as_str(&self) -> &'static str {
         match self {
             File::A => "A",
             File::B => "B",

@@ -13,7 +13,7 @@ pub enum Rank {
 }
 
 impl Rank {
-    pub fn as_str(&self) -> &'static str {
+    pub fn _as_str(&self) -> &'static str {
         match self {
             Rank::First => "1",
             Rank::Second => "2",

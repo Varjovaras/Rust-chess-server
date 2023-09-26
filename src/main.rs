@@ -8,16 +8,16 @@ use chess::Chess;
 fn main() {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
-    // chess_board.print_board_black();
-    // println!("{:?}", chess.board[0]);
-    // println!("{:?}", chess.board[0][1]);
+    // // chess_board.print_board_black();
+    // // println!("{:?}", chess.board[0]);
+    // // println!("{:?}", chess.board[0][1]);
 
-    chessboard::print_board_white(&chess.board);
-    let sq1 = *chess.get_square_from_str("e", "2");
-    let sq2 = *chess.get_square_from_str("e", "4");
+    // chessboard::print_board_white(&chess.board);
+    let sq1 = *chess.get_square_from_str("c", "1");
+    let sq2 = *chess.get_square_from_str("f", "4");
 
     chess.make_move(&sq1, &sq2);
-
+    //
     // let mut i = 0;
     // loop {
     //     let mut chess: Chess = Chess::new();
