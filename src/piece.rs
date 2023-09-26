@@ -48,32 +48,3 @@ impl Default for Pieces {
         Pieces::NoPiece()
     }
 }
-
-// pub struct NoPiece {}
-
-// impl PieceTrait for NoPiece {
-//     fn new(_color: PieceColor) -> Self {
-//         NoPiece {}
-//     }
-
-//     fn move_piece(&self, _start_sq: Square, _board: &[[Square; 8]; 8]) -> bool {
-//         false
-//     }
-
-//     fn color(&self) -> &PieceColor {
-//         &PieceColor::NoPiece
-//     }
-// }
-
-// impl PieceTrait for Pieces {
-//     fn new(color: PieceColor) -> Self {
-//         Self::NoPiece
-//     }
-//     fn move_piece(&self, start_sq: Square, board: &[[Square; 8]; 8]) -> bool {
-//         false
-//     }
-
-//     fn color(&self) -> &PieceColor {
-//         &PieceColor::NoPiece
-//     }
-// }

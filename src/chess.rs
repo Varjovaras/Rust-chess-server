@@ -21,10 +21,21 @@ impl Chess {
 
     pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square) {
         //only en passant affects chess_board removing the en passanted piece
-        //rest of the effects on board happen elsewhere
-        let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
+        //rest of the effects on board happen in todo!()
+        //maybe refactor pawn into its own move_piece function?
 
-        if !move_legal {};
+        //cannot capture own piece
+        if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
+            return;
+        }
+
+        let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
+        if !move_legal {
+            return;
+        };
+        //
+        //
+        //make board changes here
     }
 
     pub fn starting_position(&mut self) {
