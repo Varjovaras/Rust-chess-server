@@ -1,7 +1,7 @@
 use crate::{
     chess::Chess,
     chessboard::{rank::Rank, square::Square},
-    moves::move_helpers::move_helpers::{diagonally_one_square_apart, square_column_diff},
+    moves::move_helpers::helpers::{diagonally_one_square_apart, square_column_diff},
     piece::{PieceColor, Pieces},
 };
 

@@ -1,6 +1,6 @@
 use crate::{chess::Chess, chessboard::square::Square};
 
-use super::move_helpers::{
+use super::helpers::{
     _move_is_down_and_left, _move_is_down_and_right, _move_is_up_and_left, _move_is_up_and_right,
 };
 
@@ -86,7 +86,7 @@ mod tests {
 
     use super::*;
     #[test]
-    fn bishop_move_functions_work() {
+    fn diagonal_movement_functions_work() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
         //no piece on D2

@@ -30,9 +30,7 @@ impl Chess {
         }
 
         let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
-        if !move_legal {
-            return;
-        };
+        if !move_legal {};
         //
         //
         //make board changes here
@@ -50,6 +48,9 @@ impl Chess {
     pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
         let file = File::from_str_slice(file_str).as_usize();
         let rank = Rank::from_str(rank_str).as_usize();
+        if file > 7 || rank > 7 {
+            panic!("get_square_from_str failed for inputting too big file or rank")
+        }
         &self.board[file][rank]
     }
 }

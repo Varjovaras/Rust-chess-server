@@ -1,2 +1,2 @@
-pub mod diagonal_moves;
-pub mod move_helpers;
+pub mod diagonal_move_direction;
+pub mod helpers;
