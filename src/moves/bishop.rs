@@ -25,6 +25,7 @@ mod tests {
         chess.board[3][4].piece = Pieces::Bishop(PieceColor::White);
 
         let sq1 = *chess.get_square_from_str("d", "5");
+
         let sq2 = *chess.get_square_from_str("a", "2");
         assert_eq!(_move_bishob(&sq1, &sq2, &chess), true);
         let sq2 = *chess.get_square_from_str("a", "8");
@@ -49,6 +50,13 @@ mod tests {
         let sq2 = *chess.get_square_from_str("g", "7");
         assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("h", "8");
+        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+
+        let sq2 = *chess.get_square_from_str("h", "1");
+        assert_eq!(_move_bishob(&sq1, &sq2, &chess), true);
+        let sq2 = *chess.get_square_from_str("h", "2");
+        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        let sq2 = *chess.get_square_from_str("h", "3");
         assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
     }
 }
