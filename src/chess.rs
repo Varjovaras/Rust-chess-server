@@ -3,11 +3,13 @@ use crate::{
     piece::{PieceColor, Pieces},
 };
 
+type Move = (Square, Square, PieceColor);
+
 #[derive(Debug)]
 pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
-    pub latest_move: Option<(Square, Square, PieceColor)>,
+    pub latest_move: Option<Move>,
 }
 
 impl Chess {
@@ -77,6 +79,19 @@ impl Chess {
             println!(" ");
         }
     }
+
+    pub fn _print_board_black(&self) {
+        let mut clone_board = self.board;
+        for square_vec in &mut clone_board {
+            square_vec.reverse();
+        }
+        clone_board.iter().for_each(|row| {
+            row.iter().for_each(|square| {
+                print!("{} ", square._square_name());
+            });
+            println!();
+        });
+    }
 }
 
 #[cfg(test)]
@@ -89,6 +104,39 @@ mod tests {
 
     #[test]
     fn make_move_works() {
-        let _chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
+        let mut start_sq = *chess.get_square_from_str("e", "2");
+        let mut end_sq = *chess.get_square_from_str("e", "4");
+        chess.make_move(&mut start_sq, &mut end_sq);
+
+        assert_eq!(chess.get_square_from_str("e", "2").piece, Pieces::NoPiece());
+        assert_eq!(
+            chess.get_square_from_str("e", "4").piece,
+            Pieces::Pawn(PieceColor::White)
+        );
+
+        let mut start_sq = *chess.get_square_from_str("e", "4");
+        let mut end_sq = *chess.get_square_from_str("e", "5");
+        chess.make_move(&mut start_sq, &mut end_sq);
+        assert_eq!(
+            chess.get_square_from_str("e", "4").piece,
+            Pieces::Pawn(PieceColor::White)
+        );
+        assert_eq!(chess.get_square_from_str("e", "5").piece, Pieces::NoPiece());
+
+        let mut start_sq = *chess.get_square_from_str("e", "7");
+        let mut end_sq = *chess.get_square_from_str("e", "5");
+        chess.make_move(&mut start_sq, &mut end_sq);
+        assert_eq!(
+            chess.get_square_from_str("e", "5").piece,
+            Pieces::Pawn(PieceColor::Black)
+        );
+        assert_eq!(chess.get_square_from_str("e", "7").piece, Pieces::NoPiece());
+
+        let mut start_sq = *chess.get_square_from_str("e", "4");
+        let mut end_sq = *chess.get_square_from_str("d", "5");
+        chess.make_move(&mut start_sq, &mut end_sq);
+        assert_eq!(chess.get_square_from_str("d", "5").piece, Pieces::NoPiece());
     }
 }

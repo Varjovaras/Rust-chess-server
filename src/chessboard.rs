@@ -87,19 +87,6 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
     clone_board
 }
 
-pub fn _print_board_black(board: &ChessBoard) {
-    let mut clone_board = *board;
-    for square_vec in &mut clone_board {
-        square_vec.reverse();
-    }
-    clone_board.iter().for_each(|row| {
-        row.iter().for_each(|square| {
-            print!("{} ", square._square_name());
-        });
-        println!();
-    });
-}
-
 #[cfg(test)]
 mod tests {
     use crate::{
