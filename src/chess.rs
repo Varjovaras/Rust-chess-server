@@ -1,6 +1,6 @@
 use crate::{
     chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
-    piece::PieceColor,
+    piece::{PieceColor, Pieces},
 };
 
 #[derive(Debug)]
@@ -19,7 +19,7 @@ impl Chess {
         }
     }
 
-    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square) {
+    pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
         //only en passant affects chess_board removing the en passanted piece
         //rest of the effects on board happen in todo!()
         //maybe refactor pawn into its own move_piece function?
@@ -29,13 +29,11 @@ impl Chess {
             return;
         }
 
-        let move_legal = start_sq.piece.move_piece(start_sq, end_sq, self);
-        if !move_legal {
+        if !start_sq.piece.move_piece(start_sq, end_sq, self) {
             return;
         };
-        //
-        //
-        //make board changes here
+
+        self.update_board(*start_sq, *end_sq);
     }
 
     pub fn starting_position(&mut self) {
@@ -51,6 +49,25 @@ impl Chess {
         let file = File::from_str_slice(file_str).as_usize();
         let rank = Rank::from_str(rank_str).as_usize();
         &self.board[file][rank]
+    }
+
+    fn update_board(&mut self, mut start_sq: Square, mut end_sq: Square) {
+        end_sq.piece = start_sq.piece.clone();
+        start_sq.piece = Pieces::NoPiece();
+        self.board[end_sq.file as usize][end_sq.rank as usize] = end_sq;
+        self.board[start_sq.file as usize][start_sq.rank as usize] = start_sq;
+    }
+
+    pub fn _print_board_white(&self) {
+        let mut clone_board = self.board;
+        clone_board.reverse();
+
+        for i in (0..8).rev() {
+            for j in (0..8).rev() {
+                print!("{:?} ", clone_board[j][i].piece);
+            }
+            println!(" ");
+        }
     }
 }
 

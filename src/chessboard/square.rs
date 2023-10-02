@@ -48,6 +48,11 @@ impl Square {
         }
     }
 
+    pub fn update_piece(&mut self, piece: Pieces) -> Square {
+        self.piece = piece;
+        *self
+    }
+
     pub fn _square_name(&self) -> String {
         self.file._as_str().to_owned() + self.rank._as_str()
     }
