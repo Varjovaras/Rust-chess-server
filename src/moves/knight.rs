@@ -6,10 +6,7 @@ pub fn _move_knight(
     _end_sq: &Square,
     _chess: &Chess,
 ) -> bool {
-    if !_is_knight_move(_start_sq, _end_sq) {
-        return false;
-    }
-    true
+    _is_knight_move(_start_sq, _end_sq)
 }
 
 fn _is_knight_move(_start_sq: &Square, _end_sq: &Square) -> bool {
