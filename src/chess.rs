@@ -29,11 +29,19 @@ impl Chess {
             return;
         }
 
-        if !start_sq.piece.move_piece(start_sq, end_sq, self) {
+        if start_sq.piece.color() == &PieceColor::White && self.turn_number % 2 != 0
+            || start_sq.piece.color() == &PieceColor::Black && self.turn_number % 2 != 1
+        {
+            return;
+        }
+
+        if !start_sq.piece.move_is_legal(start_sq, end_sq, self) {
             return;
         };
 
         self.update_board(*start_sq, *end_sq);
+        self.turn_number += 1;
+        self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
     }
 
     pub fn starting_position(&mut self) {
@@ -76,6 +84,11 @@ mod tests {
     use super::*;
     #[test]
     fn chess_initialization_works() {
+        let _chess: Chess = Chess::new();
+    }
+
+    #[test]
+    fn make_move_works() {
         let _chess: Chess = Chess::new();
     }
 }
