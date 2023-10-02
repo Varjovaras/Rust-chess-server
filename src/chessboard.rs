@@ -2,9 +2,11 @@ pub mod file;
 pub mod rank;
 pub mod square;
 
+use std::thread::panicking;
+
 use crate::piece::{
     PieceColor::Black,
-    PieceColor::White,
+    PieceColor::{self, White},
     Pieces::Bishop,
     Pieces::King,
     Pieces::Pawn,
@@ -85,6 +87,17 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
         clone_board[i][7].piece = *black_piece;
     }
     clone_board
+}
+
+pub fn get_white_king(board: &ChessBoard) -> &Square {
+    for i in 0..8 {
+        for j in 0..8 {
+            if board[i][j].piece == Pieces::King(PieceColor::White) {
+                return &board[i][j];
+            }
+        }
+    }
+    panic!("No white king");
 }
 
 #[cfg(test)]
