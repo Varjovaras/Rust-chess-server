@@ -115,6 +115,11 @@ mod tests {
             chess.get_square_from_str("e", "4").piece,
             Pieces::Pawn(PieceColor::White)
         );
+        assert_eq!(chess.turn_number, 1);
+        assert_eq!(
+            chess.latest_move,
+            Some((start_sq, end_sq, PieceColor::White))
+        );
 
         let mut start_sq = *chess.get_square_from_str("e", "4");
         let mut end_sq = *chess.get_square_from_str("e", "5");
@@ -124,6 +129,7 @@ mod tests {
             Pieces::Pawn(PieceColor::White)
         );
         assert_eq!(chess.get_square_from_str("e", "5").piece, Pieces::NoPiece());
+        assert_eq!(chess.turn_number, 1);
 
         let mut start_sq = *chess.get_square_from_str("e", "7");
         let mut end_sq = *chess.get_square_from_str("e", "5");
@@ -133,10 +139,12 @@ mod tests {
             Pieces::Pawn(PieceColor::Black)
         );
         assert_eq!(chess.get_square_from_str("e", "7").piece, Pieces::NoPiece());
+        assert_eq!(chess.turn_number, 2);
 
         let mut start_sq = *chess.get_square_from_str("e", "4");
         let mut end_sq = *chess.get_square_from_str("d", "5");
         chess.make_move(&mut start_sq, &mut end_sq);
         assert_eq!(chess.get_square_from_str("d", "5").piece, Pieces::NoPiece());
+        assert_eq!(chess.turn_number, 2);
     }
 }
