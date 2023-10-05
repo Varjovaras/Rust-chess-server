@@ -46,6 +46,22 @@ impl Chess {
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
     }
 
+    pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
+        let start_sq_chars: Vec<char> = start_sq.chars().collect();
+        let end_sq_chars: Vec<char> = end_sq.chars().collect();
+        let start_sq = *self.get_square_from_str(
+            start_sq_chars[0].to_string().as_str(),
+            start_sq_chars[1].to_string().as_str(),
+        );
+
+        let end_sq = *self.get_square_from_str(
+            end_sq_chars[0].to_string().as_str(),
+            end_sq_chars[1].to_string().as_str(),
+        );
+
+        self.make_move(&start_sq, &end_sq)
+    }
+
     pub fn starting_position(&mut self) {
         self.board = chessboard::starting_position(&mut self.board);
         self.turn_number = 0;
@@ -58,6 +74,9 @@ impl Chess {
     pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
         let file = File::from_str_slice(file_str).as_usize();
         let rank = Rank::from_str(rank_str).as_usize();
+        if file > 7 || rank > 7 {
+            panic!("get_square_from_str failed for inputting too big file or rank")
+        }
         &self.board[file][rank]
     }
 

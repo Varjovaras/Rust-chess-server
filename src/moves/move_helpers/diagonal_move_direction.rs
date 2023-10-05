@@ -1,21 +1,18 @@
-use crate::{
-    chess::Chess,
-    chessboard::square::Square,
-    moves::move_helpers::{
-        _move_is_down_and_left, _move_is_down_and_right, _move_is_up_and_left,
-        _move_is_up_and_right,
-    },
+use crate::{chess::Chess, chessboard::square::Square};
+
+use super::helpers::{
+    _move_is_down_and_left, _move_is_down_and_right, _move_is_up_and_left, _move_is_up_and_right,
 };
 
-pub enum _BishopMoveDirection {
+pub enum _DiagonalMoveDirection {
     UpLeft,
     UpRight,
     DownLeft,
     DownRight,
 }
 
-impl _BishopMoveDirection {
-    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_BishopMoveDirection> {
+impl _DiagonalMoveDirection {
+    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_DiagonalMoveDirection> {
         if _move_is_up_and_left(start_sq, end_sq) {
             Some(Self::UpLeft)
         } else if _move_is_up_and_right(start_sq, end_sq) {
@@ -31,10 +28,10 @@ impl _BishopMoveDirection {
 
     pub fn _make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
-            _BishopMoveDirection::UpLeft => _move_top_left(start_sq, end_sq, chess),
-            _BishopMoveDirection::UpRight => _move_top_right(start_sq, end_sq, chess),
-            _BishopMoveDirection::DownLeft => _move_down_left(start_sq, end_sq, chess),
-            _BishopMoveDirection::DownRight => _move_down_right(start_sq, end_sq, chess),
+            _DiagonalMoveDirection::UpLeft => _move_top_left(start_sq, end_sq, chess),
+            _DiagonalMoveDirection::UpRight => _move_top_right(start_sq, end_sq, chess),
+            _DiagonalMoveDirection::DownLeft => _move_down_left(start_sq, end_sq, chess),
+            _DiagonalMoveDirection::DownRight => _move_down_right(start_sq, end_sq, chess),
         }
     }
 }
@@ -89,7 +86,7 @@ mod tests {
 
     use super::*;
     #[test]
-    fn bishop_move_functions_work() {
+    fn diagonal_movement_functions_work() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
         //no piece on D2
