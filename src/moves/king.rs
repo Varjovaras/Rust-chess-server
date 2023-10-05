@@ -55,34 +55,10 @@ pub mod check {
         let color = PieceColor::Black;
         //top-left
         for i in 1..8 {
-            if white_king_sq_file <= 0
-                || white_king_sq_file - i <= 0
-                || white_king_sq_rank >= 7
-                || white_king_sq_rank + i >= 7
-            {
+            if white_king_sq_file <= 0 || white_king_sq_rank >= 7 {
                 break;
             }
             let sq = chess_board[white_king_sq_file - i][white_king_sq_rank + i];
-
-            if sq.has_piece() {
-                if sq.piece == Pieces::Bishop(color) || sq.piece == Pieces::Queen(color) {
-                    return true;
-                } else {
-                    break;
-                }
-            }
-        }
-        //top-right
-        for j in 1..8 {
-            if white_king_sq_file >= 7
-                || white_king_sq_file + j >= 7
-                || white_king_sq_rank >= 7
-                || white_king_sq_rank + j >= 7
-            {
-                break;
-            }
-
-            let sq = chess_board[white_king_sq_file + j][white_king_sq_rank + j];
             println!("{:?}", sq);
 
             if sq.has_piece() {
@@ -92,18 +68,18 @@ pub mod check {
                     break;
                 }
             }
-        }
-
-        //bottom-right
-        for k in 1..8 {
-            if white_king_sq_file >= 7
-                || white_king_sq_file + k >= 7
-                || white_king_sq_rank <= 0
-                || white_king_sq_rank - k <= 0
-            {
+            if white_king_sq_file - i <= 0 || white_king_sq_rank + i >= 7 {
                 break;
             }
-            let sq = chess_board[white_king_sq_file + k][white_king_sq_rank - k];
+        }
+        //top-right
+        for i in 1..8 {
+            if white_king_sq_file >= 7 || white_king_sq_rank >= 7 {
+                break;
+            }
+
+            let sq = chess_board[white_king_sq_file + i][white_king_sq_rank + i];
+
             if sq.has_piece() {
                 if sq.piece == Pieces::Bishop(color) || sq.piece == Pieces::Queen(color) {
                     return true;
@@ -111,15 +87,34 @@ pub mod check {
                     break;
                 }
             }
+
+            if white_king_sq_file + i >= 7 || white_king_sq_rank + i >= 7 {
+                break;
+            }
+        }
+
+        //bottom-right
+        for i in 1..8 {
+            if white_king_sq_file >= 7 || white_king_sq_rank <= 0 {
+                break;
+            }
+
+            let sq = chess_board[white_king_sq_file + i][white_king_sq_rank - i];
+            if sq.has_piece() {
+                if sq.piece == Pieces::Bishop(color) || sq.piece == Pieces::Queen(color) {
+                    return true;
+                } else {
+                    break;
+                }
+            }
+            if white_king_sq_file + i >= 7 || white_king_sq_rank - i <= 0 {
+                break;
+            }
         }
 
         //bottom-left
         for n in 1..8 {
-            if white_king_sq_file <= 0
-                || white_king_sq_file - n <= 0
-                || white_king_sq_rank <= 0
-                || white_king_sq_rank + n <= 0
-            {
+            if white_king_sq_file <= 0 || white_king_sq_rank <= 0 {
                 break;
             }
             let sq = chess_board[white_king_sq_file - n][white_king_sq_rank - n];
@@ -129,6 +124,9 @@ pub mod check {
                 } else {
                     break;
                 }
+            }
+            if white_king_sq_file - n <= 0 || white_king_sq_rank + n <= 0 {
+                break;
             }
         }
 
@@ -190,6 +188,18 @@ pub mod check {
             assert_eq!(
                 white_king_bishop_test(king_file, king_rank, &chess.board),
                 false
+            );
+
+            let king_file: usize = 7;
+            let king_rank: usize = 0;
+            assert_eq!(
+                white_king_bishop_test(king_file, king_rank, &chess.board),
+                false
+            );
+            chess.board[0][7].piece = Pieces::Bishop(BLACK);
+            assert_eq!(
+                white_king_bishop_test(king_file, king_rank, &chess.board),
+                true
             );
         }
     }
