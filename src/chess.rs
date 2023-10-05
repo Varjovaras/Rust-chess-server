@@ -81,7 +81,7 @@ impl Chess {
     }
 
     fn update_board(&mut self, mut start_sq: Square, mut end_sq: Square) {
-        end_sq.piece = start_sq.piece.clone();
+        end_sq.piece = start_sq.piece;
         start_sq.piece = Pieces::NoPiece();
         self.board[end_sq.file as usize][end_sq.rank as usize] = end_sq;
         self.board[start_sq.file as usize][start_sq.rank as usize] = start_sq;

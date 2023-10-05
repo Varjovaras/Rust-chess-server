@@ -88,14 +88,25 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
 }
 
 pub fn get_white_king(board: &ChessBoard) -> &Square {
-    for i in 0..8 {
-        for j in 0..8 {
-            if board[i][j].piece == Pieces::King(PieceColor::White) {
-                return &board[i][j];
+    for file in board.iter().take(8) {
+        for square in file {
+            if square.piece == Pieces::King(PieceColor::White) {
+                return square;
             }
         }
     }
     panic!("No white king");
+}
+
+pub fn get_black_king(board: &ChessBoard) -> &Square {
+    for file in board.iter().take(8) {
+        for square in file {
+            if square.piece == Pieces::King(PieceColor::Black) {
+                return square;
+            }
+        }
+    }
+    panic!("No black king");
 }
 
 #[cfg(test)]
