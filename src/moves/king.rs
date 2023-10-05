@@ -55,7 +55,7 @@ pub mod check {
         let color = PieceColor::Black;
         //top-left
         for i in 1..8 {
-            if white_king_sq_file <= 0 || white_king_sq_rank >= 7 {
+            if white_king_sq_file == 0 || white_king_sq_rank >= 8 {
                 break;
             }
             let sq = chess_board[white_king_sq_file - i][white_king_sq_rank + i];
@@ -68,7 +68,7 @@ pub mod check {
                     break;
                 }
             }
-            if white_king_sq_file - i <= 0 || white_king_sq_rank + i >= 7 {
+            if white_king_sq_file - i == 0 || white_king_sq_rank + i >= 7 {
                 break;
             }
         }
@@ -95,7 +95,7 @@ pub mod check {
 
         //bottom-right
         for i in 1..8 {
-            if white_king_sq_file >= 7 || white_king_sq_rank <= 0 {
+            if white_king_sq_file >= 7 || white_king_sq_rank == 0 {
                 break;
             }
 
@@ -107,17 +107,17 @@ pub mod check {
                     break;
                 }
             }
-            if white_king_sq_file + i >= 7 || white_king_sq_rank - i <= 0 {
+            if white_king_sq_file + i >= 7 || white_king_sq_rank - i == 0 {
                 break;
             }
         }
 
         //bottom-left
-        for n in 1..8 {
-            if white_king_sq_file <= 0 || white_king_sq_rank <= 0 {
+        for i in 1..8 {
+            if white_king_sq_file == 0 || white_king_sq_rank == 0 {
                 break;
             }
-            let sq = chess_board[white_king_sq_file - n][white_king_sq_rank - n];
+            let sq = chess_board[white_king_sq_file - i][white_king_sq_rank - i];
             if sq.has_piece() {
                 if sq.piece == Pieces::Bishop(color) || sq.piece == Pieces::Queen(color) {
                     return true;
@@ -125,7 +125,7 @@ pub mod check {
                     break;
                 }
             }
-            if white_king_sq_file - n <= 0 || white_king_sq_rank + n <= 0 {
+            if white_king_sq_file - i == 0 || white_king_sq_rank - i == 0 {
                 break;
             }
         }
