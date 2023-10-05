@@ -49,17 +49,17 @@ impl Chess {
     pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();
-        let start_sq = *self.get_square_from_str(
+        let mut start_sq = *self.get_square_from_str(
             start_sq_chars[0].to_string().as_str(),
             start_sq_chars[1].to_string().as_str(),
         );
 
-        let end_sq = *self.get_square_from_str(
+        let mut end_sq = *self.get_square_from_str(
             end_sq_chars[0].to_string().as_str(),
             end_sq_chars[1].to_string().as_str(),
         );
 
-        self.make_move(&start_sq, &end_sq)
+        self.make_move(&mut start_sq, &mut end_sq)
     }
 
     pub fn starting_position(&mut self) {
