@@ -1,2 +1,3 @@
-pub mod diagonal_move_direction;
+pub mod bishop_move_helpers;
 pub mod helpers;
+pub mod rook_move_helpers;

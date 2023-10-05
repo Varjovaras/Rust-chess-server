@@ -4,15 +4,15 @@ use super::helpers::{
     _move_is_down_and_left, _move_is_down_and_right, _move_is_up_and_left, _move_is_up_and_right,
 };
 
-pub enum _DiagonalMoveDirection {
+pub enum _BishopMoveDirection {
     UpLeft,
     UpRight,
     DownLeft,
     DownRight,
 }
 
-impl _DiagonalMoveDirection {
-    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_DiagonalMoveDirection> {
+impl _BishopMoveDirection {
+    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_BishopMoveDirection> {
         if _move_is_up_and_left(start_sq, end_sq) {
             Some(Self::UpLeft)
         } else if _move_is_up_and_right(start_sq, end_sq) {
@@ -28,10 +28,10 @@ impl _DiagonalMoveDirection {
 
     pub fn _make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
-            _DiagonalMoveDirection::UpLeft => _move_top_left(start_sq, end_sq, chess),
-            _DiagonalMoveDirection::UpRight => _move_top_right(start_sq, end_sq, chess),
-            _DiagonalMoveDirection::DownLeft => _move_down_left(start_sq, end_sq, chess),
-            _DiagonalMoveDirection::DownRight => _move_down_right(start_sq, end_sq, chess),
+            _BishopMoveDirection::UpLeft => _move_top_left(start_sq, end_sq, chess),
+            _BishopMoveDirection::UpRight => _move_top_right(start_sq, end_sq, chess),
+            _BishopMoveDirection::DownLeft => _move_down_left(start_sq, end_sq, chess),
+            _BishopMoveDirection::DownRight => _move_down_right(start_sq, end_sq, chess),
         }
     }
 }
