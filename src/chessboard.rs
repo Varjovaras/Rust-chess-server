@@ -2,8 +2,6 @@ pub mod file;
 pub mod rank;
 pub mod square;
 
-use std::thread::panicking;
-
 use crate::piece::{
     PieceColor::Black,
     PieceColor::{self, White},

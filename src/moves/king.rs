@@ -28,13 +28,20 @@ pub mod check {
         white_king_sq_rank: usize,
         chess_board: &ChessBoard,
     ) -> bool {
-        if white_king_sq_rank < 7 {
+        if white_king_sq_rank >= 7 {
+            return false;
+        }
+        if white_king_sq_file == 0 {
+            chess_board[white_king_sq_file + 1][white_king_sq_rank + 1].piece
+                == Pieces::Pawn(PieceColor::Black)
+        } else if white_king_sq_file >= 7 {
+            chess_board[white_king_sq_file - 1][white_king_sq_rank + 1].piece
+                == Pieces::Pawn(PieceColor::Black)
+        } else {
             chess_board[white_king_sq_file + 1][white_king_sq_rank + 1].piece
                 == Pieces::Pawn(PieceColor::Black)
                 || chess_board[white_king_sq_file - 1][white_king_sq_rank + 1].piece
                     == Pieces::Pawn(PieceColor::Black)
-        } else {
-            false
         }
     }
 
@@ -121,5 +128,42 @@ pub mod check {
             }
         }
         true
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use crate::{
+            chess::Chess,
+            moves::king::check::white_king_bishop_test,
+            piece::{PieceColor, Pieces},
+        };
+
+        use super::white_king_pawn_check;
+        const BLACK: PieceColor = PieceColor::Black;
+        const WHITE: PieceColor = PieceColor::White;
+
+        #[test]
+        fn white_king_in_check_by_pawn() {
+            let mut chess = Chess::new();
+            chess.board[7][7].piece = Pieces::Bishop(BLACK);
+            let king_file: usize = 0;
+            let king_rank: usize = 0;
+            let chess_board = &mut chess.board;
+            let ches = chess.clone();
+            ches._print_board_white();
+            assert_eq!(
+                white_king_pawn_check(king_file, king_rank, chess_board),
+                false
+            );
+            assert_eq!(
+                white_king_bishop_test(king_file, king_rank, chess_board),
+                true
+            );
+            chess_board[6][6].piece = Pieces::Knight(WHITE);
+            assert_eq!(
+                white_king_bishop_test(king_file, king_rank, chess_board),
+                false
+            );
+        }
     }
 }

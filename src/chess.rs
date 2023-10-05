@@ -5,7 +5,7 @@ use crate::{
 
 type Move = (Square, Square, PieceColor);
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
