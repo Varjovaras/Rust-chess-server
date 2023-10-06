@@ -3,8 +3,8 @@ use crate::{
     piece::{PieceColor, Pieces},
 };
 
-pub fn _is_king_in_check(chess_board: &ChessBoard, color: PieceColor) -> bool {
-    let king_sq = if color == PieceColor::White {
+pub fn _is_king_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
+    let king_sq = if king_color == PieceColor::White {
         _get_white_king(chess_board)
     } else {
         _get_black_king(chess_board)
@@ -13,8 +13,8 @@ pub fn _is_king_in_check(chess_board: &ChessBoard, color: PieceColor) -> bool {
     let king_file = king_sq.file as usize;
     let king_rank = king_sq.rank as usize;
 
-    let pawn_check = if color == PieceColor::White {
-        _check_by_white_pawn(king_file, king_rank, chess_board)
+    let pawn_check = if king_color == PieceColor::White {
+        _check_by_black_pawn(king_file, king_rank, chess_board)
     } else {
         _check_by_white_pawn(king_file, king_rank, chess_board)
     };
@@ -35,8 +35,6 @@ fn rook_check(
     } else {
         PieceColor::White
     };
-
-    false
 }
 
 fn _check_by_white_pawn(king_file: usize, king_rank: usize, board: &ChessBoard) -> bool {
@@ -87,7 +85,7 @@ fn _bishop_check(
         let mut test_file: isize = king_file as isize + file;
         let mut test_rank: isize = king_rank as isize + rank;
 
-        while test_file >= 0 && test_file <= 7 && test_rank >= 0 && test_rank <= 7 {
+        while (0..=7).contains(&test_file) && (0..=7).contains(&test_rank) {
             let sq = chess_board[test_file as usize][test_rank as usize];
 
             if sq.has_piece() {
@@ -206,7 +204,6 @@ mod tests {
 
         assert_eq!(_check_by_white_pawn(0, 2, &board), false);
         board[1][1].piece = Pieces::Pawn(PieceColor::White);
-
         assert_eq!(_check_by_white_pawn(0, 2, &board), true);
         assert_eq!(_check_by_white_pawn(6, 4, &board), true);
         assert_eq!(_check_by_white_pawn(8, 8, &board), true);
