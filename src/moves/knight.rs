@@ -1,11 +1,6 @@
-use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
+use crate::{chess::Chess, chessboard::square::Square};
 
-pub fn _move_knight(
-    _color: &PieceColor,
-    _start_sq: &Square,
-    _end_sq: &Square,
-    _chess: &Chess,
-) -> bool {
+pub fn _move_knight(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
     _is_knight_move(_start_sq, _end_sq)
 }
 
