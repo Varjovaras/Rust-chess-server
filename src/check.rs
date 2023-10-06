@@ -35,6 +35,30 @@ fn rook_check(
     } else {
         PieceColor::White
     };
+    let rook_moves: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+
+    for (file, rank) in rook_moves.iter() {
+        let mut test_file: isize = king_file as isize + file;
+        let mut test_rank: isize = king_rank as isize + rank;
+
+        while (0..=7).contains(&test_file) && (0..=7).contains(&test_rank) {
+            let sq = chess_board[test_file as usize][test_rank as usize];
+
+            if sq.has_piece() {
+                if sq.piece == Pieces::Rook(opponent_color)
+                    || sq.piece == Pieces::Queen(opponent_color)
+                {
+                    return true;
+                } else {
+                    break;
+                }
+            }
+            test_file += file;
+            test_rank += rank;
+        }
+    }
+
+    false
 }
 
 fn _check_by_white_pawn(king_file: usize, king_rank: usize, board: &ChessBoard) -> bool {
@@ -150,7 +174,7 @@ fn _knight_check(
 #[cfg(test)]
 mod tests {
     use crate::{
-        check::{_bishop_check, _check_by_black_pawn, _check_by_white_pawn},
+        check::{_bishop_check, _check_by_black_pawn, _check_by_white_pawn, rook_check},
         chess::Chess,
         chessboard::ChessBoard,
         piece::{PieceColor, Pieces},
@@ -247,19 +271,21 @@ mod tests {
         );
     }
 
-    // #[test]
-    // fn test_rook_check() {
-    //     let chess = Chess::new();
-    //     let mut board = chess.board;
-    //     board[0][0].piece = Pieces::Rook(PieceColor::White);
-    //     board[0][7].piece = Pieces::Rook(PieceColor::White);
-    //     board[7][0].piece = Pieces::Rook(PieceColor::White);
-    //     board[7][7].piece = Pieces::Rook(PieceColor::White);
+    #[test]
+    fn test_rook_check() {
+        let chess = Chess::new();
+        let mut board = chess.board;
+        board[1][1].piece = Pieces::Rook(PieceColor::White);
 
-    //     assert_eq!(rook_check(0, 4, PieceColor::Black, &board), false);
-    //     assert_eq!(rook_check(0, 0, PieceColor::Black, &board), true);
-    //     assert_eq!(rook_check(0, 7, PieceColor::Black, &board), true);
-    //     assert_eq!(rook_check(7, 0, PieceColor::Black, &board), true);
-    //     assert_eq!(rook_check(7, 7, PieceColor::Black, &board), true);
-    // }
+        assert_eq!(rook_check(1, 4, PieceColor::Black, &board), true);
+        board[1][2].piece = Pieces::Rook(PieceColor::Black);
+        assert_eq!(rook_check(1, 4, PieceColor::Black, &board), false);
+
+        assert_eq!(rook_check(7, 1, PieceColor::Black, &board), true);
+        assert_eq!(rook_check(6, 6, PieceColor::Black, &board), false);
+
+        board[6][1].piece = Pieces::Rook(PieceColor::White);
+
+        assert_eq!(rook_check(6, 6, PieceColor::Black, &board), true);
+    }
 }
