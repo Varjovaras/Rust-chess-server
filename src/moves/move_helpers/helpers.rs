@@ -40,19 +40,19 @@ pub fn _is_horizontal(first_sq: &Square, second_sq: &Square) -> bool {
     first_sq.rank == second_sq.rank && first_sq.file != second_sq.file
 }
 
-pub fn _move_is_up_and_left(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn move_is_up_and_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank < end_sq.rank
 }
 
-pub fn _move_is_up_and_right(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn move_is_up_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank < end_sq.rank
 }
 
-pub fn _move_is_down_and_left(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn move_is_down_and_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank > end_sq.rank
 }
 
-pub fn _move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank > end_sq.rank
 }
 

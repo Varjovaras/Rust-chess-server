@@ -12,6 +12,7 @@ pub fn pawn(start_sq: &Square, end_sq: &Square, chess: &Chess, color: &PieceColo
     match *color {
         PieceColor::White => pawn::white_pawn::move_white_pawn(start_sq, end_sq, chess),
         PieceColor::Black => pawn::black_pawn::move_black_pawn(start_sq, end_sq, chess),
+        PieceColor::None => false,
     }
 }
 

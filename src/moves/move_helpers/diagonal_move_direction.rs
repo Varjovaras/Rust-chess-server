@@ -1,25 +1,25 @@
 use crate::{chess::Chess, chessboard::square::Square};
 
 use super::helpers::{
-    _move_is_down_and_left, _move_is_down_and_right, _move_is_up_and_left, _move_is_up_and_right,
+    move_is_down_and_left, move_is_down_and_right, move_is_up_and_left, move_is_up_and_right,
 };
 
-pub enum _DiagonalMoveDirection {
+pub enum DiagonalMoveDirection {
     UpLeft,
     UpRight,
     DownLeft,
     DownRight,
 }
 
-impl _DiagonalMoveDirection {
-    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_DiagonalMoveDirection> {
-        if _move_is_up_and_left(start_sq, end_sq) {
+impl DiagonalMoveDirection {
+    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<DiagonalMoveDirection> {
+        if move_is_up_and_left(start_sq, end_sq) {
             Some(Self::UpLeft)
-        } else if _move_is_up_and_right(start_sq, end_sq) {
+        } else if move_is_up_and_right(start_sq, end_sq) {
             return Some(Self::UpRight);
-        } else if _move_is_down_and_left(start_sq, end_sq) {
+        } else if move_is_down_and_left(start_sq, end_sq) {
             return Some(Self::DownLeft);
-        } else if _move_is_down_and_right(start_sq, end_sq) {
+        } else if move_is_down_and_right(start_sq, end_sq) {
             return Some(Self::DownRight);
         } else {
             None
@@ -28,15 +28,15 @@ impl _DiagonalMoveDirection {
 
     pub fn _make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
-            _DiagonalMoveDirection::UpLeft => _move_top_left(start_sq, end_sq, chess),
-            _DiagonalMoveDirection::UpRight => _move_top_right(start_sq, end_sq, chess),
-            _DiagonalMoveDirection::DownLeft => _move_down_left(start_sq, end_sq, chess),
-            _DiagonalMoveDirection::DownRight => _move_down_right(start_sq, end_sq, chess),
+            DiagonalMoveDirection::UpLeft => move_top_left(start_sq, end_sq, chess),
+            DiagonalMoveDirection::UpRight => move_top_right(start_sq, end_sq, chess),
+            DiagonalMoveDirection::DownLeft => move_down_left(start_sq, end_sq, chess),
+            DiagonalMoveDirection::DownRight => move_down_right(start_sq, end_sq, chess),
         }
     }
 }
 
-fn _move_top_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+fn move_top_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = start_sq.file as usize - end_sq.file as usize;
     for i in 1..distance {
         if chess.board[start_sq.file as usize - i][start_sq.rank as usize + i].has_piece() {
@@ -46,7 +46,7 @@ fn _move_top_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-fn _move_top_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+fn move_top_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = end_sq.file as usize - start_sq.file as usize;
     for i in 1..distance {
         if chess.board[start_sq.file as usize + i][start_sq.rank as usize + i].has_piece() {
@@ -56,7 +56,7 @@ fn _move_top_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-fn _move_down_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+fn move_down_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = start_sq.file as usize - end_sq.file as usize;
     for i in 1..distance {
         println!(
@@ -70,7 +70,7 @@ fn _move_down_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-fn _move_down_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+fn move_down_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = end_sq.file as usize - start_sq.file as usize;
     for i in 1..distance {
         if chess.board[start_sq.file as usize + i][start_sq.rank as usize - i].has_piece() {
@@ -95,48 +95,48 @@ mod tests {
         let start_sq = *chess.get_square_from_str("c", "1");
         let end_sq = *chess.get_square_from_str("g", "5");
 
-        assert_eq!(_move_top_right(&start_sq, &end_sq, &chess), true);
+        assert_eq!(move_top_right(&start_sq, &end_sq, &chess), true);
 
         //D2 is now blocked
         chess.board[3][1].piece = Pieces::Queen(PieceColor::Black);
-        assert_eq!(_move_top_right(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_top_right(&start_sq, &end_sq, &chess), false);
 
         //b2 is not empty
         let end_sq = *chess.get_square_from_str("a", "3");
-        assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_top_left(&start_sq, &end_sq, &chess), false);
         chess.board[1][1].piece = Pieces::None;
-        assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), true);
+        assert_eq!(move_top_left(&start_sq, &end_sq, &chess), true);
 
         //Bishop on F2
         chess.board[5][1].piece = Pieces::Bishop(PieceColor::Black);
         let start_sq = *chess.get_square_from_str("f", "2");
         let end_sq = *chess.get_square_from_str("a", "7");
-        assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), true);
+        assert_eq!(move_top_left(&start_sq, &end_sq, &chess), true);
 
         chess.board[4][2].piece = Pieces::Bishop(PieceColor::Black);
-        assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_top_left(&start_sq, &end_sq, &chess), false);
         chess.board[4][2].piece = Pieces::None;
         chess.board[1][5].piece = Pieces::Bishop(PieceColor::Black);
-        assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_top_left(&start_sq, &end_sq, &chess), false);
 
         let start_sq = *chess.get_square_from_str("b", "6");
         let end_sq = *chess.get_square_from_str("f", "2");
-        assert_eq!(_move_down_right(&start_sq, &end_sq, &chess), true);
+        assert_eq!(move_down_right(&start_sq, &end_sq, &chess), true);
         let end_sq = *chess.get_square_from_str("g", "1");
-        assert_eq!(_move_down_right(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_down_right(&start_sq, &end_sq, &chess), false);
 
         //Bishop on H8 and pawn on G7 blocks it
         chess.board[7][7].piece = Pieces::Bishop(PieceColor::White);
         let start_sq = *chess.get_square_from_str("h", "8");
         let end_sq = *chess.get_square_from_str("a", "1");
-        assert_eq!(_move_down_left(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_down_left(&start_sq, &end_sq, &chess), false);
         let end_sq = *chess.get_square_from_str("c", "3");
-        assert_eq!(_move_down_left(&start_sq, &end_sq, &chess), false);
+        assert_eq!(move_down_left(&start_sq, &end_sq, &chess), false);
 
         chess.board[6][6].piece = Pieces::None;
 
-        assert_eq!(_move_down_left(&start_sq, &end_sq, &chess), true);
+        assert_eq!(move_down_left(&start_sq, &end_sq, &chess), true);
         let end_sq = *chess.get_square_from_str("a", "1");
-        assert_eq!(_move_down_left(&start_sq, &end_sq, &chess), true);
+        assert_eq!(move_down_left(&start_sq, &end_sq, &chess), true);
     }
 }

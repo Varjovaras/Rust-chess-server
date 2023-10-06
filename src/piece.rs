@@ -4,6 +4,7 @@ use crate::{chess::Chess, chessboard::square::Square, moves};
 pub enum PieceColor {
     White,
     Black,
+    None,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -32,7 +33,7 @@ impl Pieces {
 
     pub fn color(&self) -> &PieceColor {
         match self {
-            Pieces::None => todo!(),
+            Pieces::None => &PieceColor::None,
             Pieces::Pawn(color) => color,
             Pieces::Knight(color) => color,
             Pieces::Bishop(color) => color,

@@ -106,7 +106,8 @@ pub fn _get_black_king(board: &ChessBoard) -> &Square {
             }
         }
     }
-    panic!("No black king");
+    // panic!("No black king");
+    return &board[0][0];
 }
 
 #[cfg(test)]
