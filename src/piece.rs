@@ -22,11 +22,11 @@ impl Pieces {
         match self {
             Pieces::NoPiece() => false,
             Pieces::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
-            Pieces::Knight(color) => moves::_knight(start_sq, end_sq, chess),
-            Pieces::Bishop(color) => moves::_bishop(start_sq, end_sq, chess),
-            Pieces::Rook(color) => moves::_rook(start_sq, end_sq, chess),
-            Pieces::Queen(color) => moves::_queen(start_sq, end_sq, chess),
-            Pieces::King(color) => moves::_king(start_sq, end_sq, chess),
+            Pieces::Knight(_) => moves::_knight(start_sq, end_sq, chess),
+            Pieces::Bishop(_) => moves::_bishop(start_sq, end_sq, chess),
+            Pieces::Rook(_) => moves::_rook(start_sq, end_sq, chess),
+            Pieces::Queen(_) => moves::_queen(start_sq, end_sq, chess),
+            Pieces::King(_) => moves::_king(start_sq, end_sq, chess),
         }
     }
 

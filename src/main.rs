@@ -1,3 +1,4 @@
+mod check;
 mod chess;
 mod chessboard;
 mod moves;
