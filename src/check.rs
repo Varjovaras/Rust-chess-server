@@ -184,7 +184,6 @@ mod tests {
     use crate::{
         check::{_bishop_check, _check_by_black_pawn, _check_by_white_pawn, _rook_check},
         chess::Chess,
-        chessboard::ChessBoard,
         piece::{PieceColor, Pieces},
     };
 

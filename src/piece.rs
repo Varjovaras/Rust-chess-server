@@ -8,7 +8,7 @@ pub enum PieceColor {
 
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Pieces {
-    NoPiece(),
+    None,
     Pawn(PieceColor),
     Knight(PieceColor),
     Bishop(PieceColor),
@@ -20,7 +20,7 @@ pub enum Pieces {
 impl Pieces {
     pub fn move_is_legal(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
         match self {
-            Pieces::NoPiece() => false,
+            Pieces::None => false,
             Pieces::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
             Pieces::Knight(_) => moves::_knight(start_sq, end_sq, chess),
             Pieces::Bishop(_) => moves::_bishop(start_sq, end_sq, chess),
@@ -32,7 +32,7 @@ impl Pieces {
 
     pub fn color(&self) -> &PieceColor {
         match self {
-            Pieces::NoPiece() => todo!(),
+            Pieces::None => todo!(),
             Pieces::Pawn(color) => color,
             Pieces::Knight(color) => color,
             Pieces::Bishop(color) => color,
@@ -45,6 +45,6 @@ impl Pieces {
 
 impl Default for Pieces {
     fn default() -> Pieces {
-        Pieces::NoPiece()
+        Pieces::None
     }
 }

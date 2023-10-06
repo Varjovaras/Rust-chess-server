@@ -11,6 +11,8 @@ pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
     pub latest_move: Option<Move>,
+    pub white_in_check: bool,
+    pub black_in_check: bool,
 }
 
 impl Chess {
@@ -19,19 +21,20 @@ impl Chess {
             board: chessboard::new(),
             turn_number: 0,
             latest_move: None,
+            white_in_check: false,
+            black_in_check: false,
         }
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
-        //only en passant affects chess_board removing the en passanted piece
-        //rest of the effects on board happen in todo!()
-        //maybe refactor pawn into its own move_piece function?
+        let moving_piece_color = start_sq.piece.color();
 
-        let color = start_sq.piece.color();
-
-        if king_is_in_check(&self.board, *color) {
-            return;
+        if moving_piece_color == &PieceColor::White && self.white_in_check
+            || moving_piece_color == &PieceColor::Black && self.black_in_check
+        {
+            todo!("Make it check if the move removes check")
         }
+
         //cannot capture own piece
         if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
             return;
@@ -47,9 +50,20 @@ impl Chess {
             return;
         };
 
+        //remove en-passanted piece
+        if start_sq.piece == Pieces::Pawn(*moving_piece_color) {
+            if start_sq.file != end_sq.file && !end_sq.has_piece() {
+                self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
+            }
+        }
         self.update_board(*start_sq, *end_sq);
         self.turn_number += 1;
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
+        if moving_piece_color == &PieceColor::White {
+            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
+        } else {
+            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
+        }
     }
 
     pub fn _make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
@@ -88,7 +102,7 @@ impl Chess {
 
     fn update_board(&mut self, mut start_sq: Square, mut end_sq: Square) {
         end_sq.piece = start_sq.piece;
-        start_sq.piece = Pieces::NoPiece();
+        start_sq.piece = Pieces::None;
         self.board[end_sq.file as usize][end_sq.rank as usize] = end_sq;
         self.board[start_sq.file as usize][start_sq.rank as usize] = start_sq;
     }
@@ -135,7 +149,7 @@ mod tests {
         let mut end_sq = *chess.get_square_from_str("e", "4");
         chess.make_move(&mut start_sq, &mut end_sq);
 
-        assert_eq!(chess.get_square_from_str("e", "2").piece, Pieces::NoPiece());
+        assert_eq!(chess.get_square_from_str("e", "2").piece, Pieces::None);
         assert_eq!(
             chess.get_square_from_str("e", "4").piece,
             Pieces::Pawn(PieceColor::White)
@@ -153,7 +167,7 @@ mod tests {
             chess.get_square_from_str("e", "4").piece,
             Pieces::Pawn(PieceColor::White)
         );
-        assert_eq!(chess.get_square_from_str("e", "5").piece, Pieces::NoPiece());
+        assert_eq!(chess.get_square_from_str("e", "5").piece, Pieces::None);
         assert_eq!(chess.turn_number, 1);
 
         let mut start_sq = *chess.get_square_from_str("e", "7");
@@ -163,13 +177,13 @@ mod tests {
             chess.get_square_from_str("e", "5").piece,
             Pieces::Pawn(PieceColor::Black)
         );
-        assert_eq!(chess.get_square_from_str("e", "7").piece, Pieces::NoPiece());
+        assert_eq!(chess.get_square_from_str("e", "7").piece, Pieces::None);
         assert_eq!(chess.turn_number, 2);
 
         let mut start_sq = *chess.get_square_from_str("e", "4");
         let mut end_sq = *chess.get_square_from_str("d", "5");
         chess.make_move(&mut start_sq, &mut end_sq);
-        assert_eq!(chess.get_square_from_str("d", "5").piece, Pieces::NoPiece());
+        assert_eq!(chess.get_square_from_str("d", "5").piece, Pieces::None);
         assert_eq!(chess.turn_number, 2);
     }
 }

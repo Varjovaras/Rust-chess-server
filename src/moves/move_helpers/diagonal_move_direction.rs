@@ -90,7 +90,7 @@ mod tests {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
         //no piece on D2
-        chess.board[3][1].piece = Pieces::NoPiece();
+        chess.board[3][1].piece = Pieces::None;
 
         let start_sq = *chess.get_square_from_str("c", "1");
         let end_sq = *chess.get_square_from_str("g", "5");
@@ -104,7 +104,7 @@ mod tests {
         //b2 is not empty
         let end_sq = *chess.get_square_from_str("a", "3");
         assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), false);
-        chess.board[1][1].piece = Pieces::NoPiece();
+        chess.board[1][1].piece = Pieces::None;
         assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), true);
 
         //Bishop on F2
@@ -115,7 +115,7 @@ mod tests {
 
         chess.board[4][2].piece = Pieces::Bishop(PieceColor::Black);
         assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), false);
-        chess.board[4][2].piece = Pieces::NoPiece();
+        chess.board[4][2].piece = Pieces::None;
         chess.board[1][5].piece = Pieces::Bishop(PieceColor::Black);
         assert_eq!(_move_top_left(&start_sq, &end_sq, &chess), false);
 
@@ -133,7 +133,7 @@ mod tests {
         let end_sq = *chess.get_square_from_str("c", "3");
         assert_eq!(_move_down_left(&start_sq, &end_sq, &chess), false);
 
-        chess.board[6][6].piece = Pieces::NoPiece();
+        chess.board[6][6].piece = Pieces::None;
 
         assert_eq!(_move_down_left(&start_sq, &end_sq, &chess), true);
         let end_sq = *chess.get_square_from_str("a", "1");
