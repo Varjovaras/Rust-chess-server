@@ -3,7 +3,7 @@ use crate::{
     piece::{PieceColor, Pieces},
 };
 
-pub fn _is_king_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
+pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
     let king_sq = if king_color == PieceColor::White {
         _get_white_king(chess_board)
     } else {
@@ -18,13 +18,18 @@ pub fn _is_king_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bo
     } else {
         _check_by_white_pawn(king_file, king_rank, chess_board)
     };
+
+    //Queen is tested in bishop and rook checks
     pawn_check
-        || _bishop_check(king_file, king_rank, PieceColor::White, chess_board)
-        || _knight_check(king_file, king_rank, PieceColor::White, chess_board)
-        || rook_check(king_file, king_rank, PieceColor::White, chess_board)
+        || _bishop_check(king_file, king_rank, king_color, chess_board)
+        || _knight_check(king_file, king_rank, king_color, chess_board)
+        || _rook_check(king_file, king_rank, king_color, chess_board)
 }
 
-fn rook_check(
+/**
+ * also tests vertical and horizontal queen movement
+ */
+fn _rook_check(
     king_file: usize,
     king_rank: usize,
     white: PieceColor,
@@ -91,6 +96,9 @@ fn _check_by_black_pawn(king_file: usize, king_rank: usize, chess_board: &ChessB
     }
 }
 
+/**
+ * also tests diagonal queen movement
+ */
 fn _bishop_check(
     king_file: usize,
     king_rank: usize,
@@ -174,7 +182,7 @@ fn _knight_check(
 #[cfg(test)]
 mod tests {
     use crate::{
-        check::{_bishop_check, _check_by_black_pawn, _check_by_white_pawn, rook_check},
+        check::{_bishop_check, _check_by_black_pawn, _check_by_white_pawn, _rook_check},
         chess::Chess,
         chessboard::ChessBoard,
         piece::{PieceColor, Pieces},
@@ -277,15 +285,15 @@ mod tests {
         let mut board = chess.board;
         board[1][1].piece = Pieces::Rook(PieceColor::White);
 
-        assert_eq!(rook_check(1, 4, PieceColor::Black, &board), true);
+        assert_eq!(_rook_check(1, 4, PieceColor::Black, &board), true);
         board[1][2].piece = Pieces::Rook(PieceColor::Black);
-        assert_eq!(rook_check(1, 4, PieceColor::Black, &board), false);
+        assert_eq!(_rook_check(1, 4, PieceColor::Black, &board), false);
 
-        assert_eq!(rook_check(7, 1, PieceColor::Black, &board), true);
-        assert_eq!(rook_check(6, 6, PieceColor::Black, &board), false);
+        assert_eq!(_rook_check(7, 1, PieceColor::Black, &board), true);
+        assert_eq!(_rook_check(6, 6, PieceColor::Black, &board), false);
 
         board[6][1].piece = Pieces::Rook(PieceColor::White);
 
-        assert_eq!(rook_check(6, 6, PieceColor::Black, &board), true);
+        assert_eq!(_rook_check(6, 6, PieceColor::Black, &board), true);
     }
 }

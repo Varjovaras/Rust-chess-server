@@ -1,4 +1,5 @@
 use crate::{
+    check::king_is_in_check,
     chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
     piece::{PieceColor, Pieces},
 };
@@ -26,6 +27,11 @@ impl Chess {
         //rest of the effects on board happen in todo!()
         //maybe refactor pawn into its own move_piece function?
 
+        let color = start_sq.piece.color();
+
+        if king_is_in_check(&self.board, *color) {
+            return;
+        }
         //cannot capture own piece
         if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
             return;
