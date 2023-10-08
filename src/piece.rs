@@ -23,7 +23,7 @@ impl Pieces {
         match self {
             Pieces::None => false,
             Pieces::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
-            Pieces::Knight(_) => moves::knight(start_sq, end_sq, chess),
+            Pieces::Knight(_) => moves::knight(start_sq, end_sq),
             Pieces::Bishop(_) => moves::bishop(start_sq, end_sq, chess),
             Pieces::Rook(_) => moves::rook(start_sq, end_sq, chess),
             Pieces::Queen(_) => moves::queen(start_sq, end_sq, chess),

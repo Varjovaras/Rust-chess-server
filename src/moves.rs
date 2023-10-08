@@ -16,22 +16,22 @@ pub fn pawn(start_sq: &Square, end_sq: &Square, chess: &Chess, color: &PieceColo
     }
 }
 
-pub fn knight(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    knight::_move_knight(start_sq, end_sq, chess)
+pub fn knight(start_sq: &Square, end_sq: &Square) -> bool {
+    knight::move_knight(start_sq, end_sq)
 }
 
 pub fn bishop(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    true
+    bishop::move_bishob(start_sq, end_sq, chess)
 }
 
 pub fn rook(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    true
+    rook::move_rook(start_sq, end_sq, chess)
 }
 
-pub fn queen(start_sq: &Square, end_sq: &Square, _chess: &Chess) -> bool {
-    true
+pub fn queen(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    queen::move_queen(start_sq, end_sq, chess)
 }
 
-pub fn king(start_sq: &Square, end_sq: &Square, _chess: &Chess) -> bool {
-    true
+pub fn king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    king::move_king(start_sq, end_sq, chess)
 }

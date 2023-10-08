@@ -1,13 +1,13 @@
 use crate::{chess::Chess, chessboard::square::Square};
 
-use super::move_helpers::{bishop_move_helpers::DiagonalMoveDirection, helpers::_is_diagonal};
+use super::move_helpers::{bishop_move_helpers::DiagonalMoveDirection, helpers::is_diagonal};
 
-pub fn _move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if !_is_diagonal(start_sq, end_sq) {
+pub fn move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if !is_diagonal(start_sq, end_sq) {
         return false;
     }
 
-    match DiagonalMoveDirection::_new(start_sq, end_sq) {
+    match DiagonalMoveDirection::new(start_sq, end_sq) {
         Some(move_direction) => move_direction._make_move(start_sq, end_sq, chess),
         None => false,
     }
@@ -27,36 +27,36 @@ mod tests {
         let sq1 = *chess.get_square_from_str("d", "5");
 
         let sq2 = *chess.get_square_from_str("a", "2");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), true);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), true);
         let sq2 = *chess.get_square_from_str("a", "8");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), true);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), true);
 
         //non-diagonal moves
         let sq2 = *chess.get_square_from_str("a", "7");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("a", "6");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("a", "5");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("a", "4");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("a", "3");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("a", "1");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
 
         let sq2 = *chess.get_square_from_str("g", "8");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), true);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), true);
         let sq2 = *chess.get_square_from_str("g", "7");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("h", "8");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
 
         let sq2 = *chess.get_square_from_str("h", "1");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), true);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), true);
         let sq2 = *chess.get_square_from_str("h", "2");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
         let sq2 = *chess.get_square_from_str("h", "3");
-        assert_eq!(_move_bishob(&sq1, &sq2, &chess), false);
+        assert_eq!(move_bishob(&sq1, &sq2, &chess), false);
     }
 }

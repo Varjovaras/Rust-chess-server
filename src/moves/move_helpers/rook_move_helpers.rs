@@ -1,53 +1,50 @@
-use crate::{
-    chess::{self, Chess},
-    chessboard::square::Square,
-};
+use crate::{chess::Chess, chessboard::square::Square};
 
-pub enum _RookMoveDirection {
+pub enum RookMoveDirection {
     Up,
     Right,
     Left,
     Down,
 }
 
-impl _RookMoveDirection {
-    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<_RookMoveDirection> {
-        if _move_is_up(start_sq, end_sq) {
+impl RookMoveDirection {
+    pub fn new(start_sq: &Square, end_sq: &Square) -> Option<RookMoveDirection> {
+        if move_is_up(start_sq, end_sq) {
             Some(Self::Up)
-        } else if _move_is_right(start_sq, end_sq) {
+        } else if move_is_right(start_sq, end_sq) {
             return Some(Self::Right);
-        } else if _move_is_left(start_sq, end_sq) {
+        } else if move_is_left(start_sq, end_sq) {
             return Some(Self::Left);
-        } else if _move_is_down(start_sq, end_sq) {
+        } else if move_is_down(start_sq, end_sq) {
             return Some(Self::Down);
         } else {
             None
         }
     }
 
-    pub fn _make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    pub fn make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
-            _RookMoveDirection::Up => move_up(start_sq, end_sq, chess),
-            _RookMoveDirection::Right => move_right(start_sq, end_sq, chess),
-            _RookMoveDirection::Left => move_left(start_sq, end_sq, chess),
-            _RookMoveDirection::Down => move_down(start_sq, end_sq, chess),
+            RookMoveDirection::Up => move_up(start_sq, end_sq, chess),
+            RookMoveDirection::Right => move_right(start_sq, end_sq, chess),
+            RookMoveDirection::Left => move_left(start_sq, end_sq, chess),
+            RookMoveDirection::Down => move_down(start_sq, end_sq, chess),
         }
     }
 }
 
-fn _move_is_up(start_sq: &Square, end_sq: &Square) -> bool {
+fn move_is_up(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file == end_sq.file && start_sq.rank < end_sq.rank
 }
 
-fn _move_is_right(start_sq: &Square, end_sq: &Square) -> bool {
+fn move_is_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank == end_sq.rank
 }
 
-fn _move_is_left(start_sq: &Square, end_sq: &Square) -> bool {
+fn move_is_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank == end_sq.rank
 }
 
-fn _move_is_down(start_sq: &Square, end_sq: &Square) -> bool {
+fn move_is_down(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file == end_sq.file && start_sq.rank > end_sq.rank
 }
 

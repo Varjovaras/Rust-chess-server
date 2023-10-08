@@ -12,7 +12,7 @@ pub enum DiagonalMoveDirection {
 }
 
 impl DiagonalMoveDirection {
-    pub fn _new(start_sq: &Square, end_sq: &Square) -> Option<DiagonalMoveDirection> {
+    pub fn new(start_sq: &Square, end_sq: &Square) -> Option<DiagonalMoveDirection> {
         if move_is_up_and_left(start_sq, end_sq) {
             Some(Self::UpLeft)
         } else if move_is_up_and_right(start_sq, end_sq) {
@@ -59,10 +59,6 @@ fn move_top_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 fn move_down_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = start_sq.file as usize - end_sq.file as usize;
     for i in 1..distance {
-        println!(
-            "{:?}",
-            chess.board[start_sq.file as usize - i][start_sq.rank as usize - i].piece
-        );
         if chess.board[start_sq.file as usize - i][start_sq.rank as usize - i].has_piece() {
             return false;
         }

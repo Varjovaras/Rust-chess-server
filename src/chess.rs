@@ -64,7 +64,20 @@ impl Chess {
         {
             self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
         }
-        self.update_board(*start_sq, *end_sq);
+        self.update_board(start_sq, end_sq);
+    }
+
+    fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
+        self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece.clone();
+        self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
+        self.board[start_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
+        self.turn_number += 1;
+
+        if start_sq.piece.color() == &PieceColor::White {
+            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
+        } else {
+            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
+        }
     }
 
     pub fn move_removes_check(&self, start_sq: &Square, end_sq: &Square) -> bool {
@@ -114,20 +127,6 @@ impl Chess {
             panic!("get_square_from_str failed for inputting too big file or rank")
         }
         &self.board[file][rank]
-    }
-
-    fn update_board(&mut self, mut start_sq: Square, mut end_sq: Square) {
-        end_sq.piece = start_sq.piece;
-        start_sq.piece = Pieces::None;
-        self.board[end_sq.file as usize][end_sq.rank as usize] = end_sq;
-        self.board[start_sq.file as usize][start_sq.rank as usize] = start_sq;
-        self.turn_number += 1;
-        self.latest_move = Some((start_sq, end_sq, *start_sq.piece.color()));
-        if *start_sq.piece.color() == PieceColor::White {
-            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
-        } else {
-            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
-        }
     }
 
     pub fn _print_board_white(&self) {
