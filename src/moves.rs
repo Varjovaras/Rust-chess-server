@@ -3,8 +3,8 @@ use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 mod bishop;
 mod king;
 mod knight;
-mod move_helpers;
-mod pawn;
+pub mod move_helpers;
+pub mod pawn;
 mod queen;
 mod rook;
 
@@ -16,22 +16,22 @@ pub fn pawn(start_sq: &Square, end_sq: &Square, chess: &Chess, color: &PieceColo
     }
 }
 
-pub fn _knight(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+pub fn knight(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     knight::_move_knight(start_sq, end_sq, chess)
 }
 
-pub fn _bishop(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
+pub fn bishop(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-pub fn _rook(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
+pub fn rook(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-pub fn _queen(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
+pub fn queen(start_sq: &Square, end_sq: &Square, _chess: &Chess) -> bool {
     true
 }
 
-pub fn _king(_start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
+pub fn king(start_sq: &Square, end_sq: &Square, _chess: &Chess) -> bool {
     true
 }

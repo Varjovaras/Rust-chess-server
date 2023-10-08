@@ -19,15 +19,15 @@ pub enum Pieces {
 }
 
 impl Pieces {
-    pub fn move_is_legal(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+    pub fn piece_move(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
         match self {
             Pieces::None => false,
             Pieces::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
-            Pieces::Knight(_) => moves::_knight(start_sq, end_sq, chess),
-            Pieces::Bishop(_) => moves::_bishop(start_sq, end_sq, chess),
-            Pieces::Rook(_) => moves::_rook(start_sq, end_sq, chess),
-            Pieces::Queen(_) => moves::_queen(start_sq, end_sq, chess),
-            Pieces::King(_) => moves::_king(start_sq, end_sq, chess),
+            Pieces::Knight(_) => moves::knight(start_sq, end_sq, chess),
+            Pieces::Bishop(_) => moves::bishop(start_sq, end_sq, chess),
+            Pieces::Rook(_) => moves::rook(start_sq, end_sq, chess),
+            Pieces::Queen(_) => moves::queen(start_sq, end_sq, chess),
+            Pieces::King(_) => moves::king(start_sq, end_sq, chess),
         }
     }
 

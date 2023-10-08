@@ -71,7 +71,7 @@ fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
+pub fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
     match chess.latest_move {
         Some(latest_move) => {
             if latest_move.0.rank == Rank::Seventh

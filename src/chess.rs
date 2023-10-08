@@ -1,6 +1,7 @@
 use crate::{
     check::king_is_in_check,
     chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
+    moves::move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
     piece::{PieceColor, Pieces},
 };
 
@@ -13,6 +14,7 @@ pub struct Chess {
     pub latest_move: Option<Move>,
     pub white_in_check: bool,
     pub black_in_check: bool,
+    pub game_over: bool,
 }
 
 impl Chess {
@@ -23,47 +25,61 @@ impl Chess {
             latest_move: None,
             white_in_check: false,
             black_in_check: false,
+            game_over: false,
         }
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
         let moving_piece_color = start_sq.piece.color();
 
-        if moving_piece_color == &PieceColor::White && self.white_in_check
-            || moving_piece_color == &PieceColor::Black && self.black_in_check
-        {
-            todo!("Make it check if the move removes check")
-        }
+        //piece can make the move
+        let move_is_legal = start_sq.piece.piece_move(start_sq, end_sq, self);
 
         //cannot capture own piece
-        if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
+        if end_sq.has_piece() && end_sq.piece.color() == moving_piece_color {
             return;
         }
 
-        if start_sq.piece.color() == &PieceColor::White && self.turn_number % 2 != 0
-            || start_sq.piece.color() == &PieceColor::Black && self.turn_number % 2 != 1
-        {
-            return;
-        }
-
-        if !start_sq.piece.move_is_legal(start_sq, end_sq, self) {
+        if !move_is_legal {
             return;
         };
 
-        //remove en-passanted piece
-        if start_sq.piece == Pieces::Pawn(*moving_piece_color) {
-            if start_sq.file != end_sq.file && !end_sq.has_piece() {
-                self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
-            }
+        //king is in check and the move doesnt remove check
+        if (moving_piece_color == &PieceColor::White && self.white_in_check
+            || moving_piece_color == &PieceColor::Black && self.black_in_check)
+            && !self.move_removes_check(&start_sq, &end_sq)
+        {
+            return;
+        }
+
+        //wrong players turn
+        if start_sq.piece.color() == &PieceColor::White && self.turn_number % 2 == 1
+            || start_sq.piece.color() == &PieceColor::Black && self.turn_number % 2 == 0
+        {
+            return;
+        }
+
+        if move_is_white_en_passant(&start_sq, &end_sq, self)
+            || move_is_black_en_passant(&start_sq, &end_sq, self)
+        {
+            self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
         }
         self.update_board(*start_sq, *end_sq);
-        self.turn_number += 1;
-        self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
-        if moving_piece_color == &PieceColor::White {
-            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
-        } else {
-            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
+    }
+
+    pub fn move_removes_check(&self, start_sq: &Square, end_sq: &Square) -> bool {
+        let mut temp_board = self.board.clone();
+
+        if move_is_white_en_passant(start_sq, end_sq, self)
+            || move_is_black_en_passant(start_sq, end_sq, self)
+        {
+            temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None
         }
+
+        temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece.clone();
+        temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
+
+        !king_is_in_check(&temp_board, *start_sq.piece.color())
     }
 
     pub fn _make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
@@ -105,6 +121,13 @@ impl Chess {
         start_sq.piece = Pieces::None;
         self.board[end_sq.file as usize][end_sq.rank as usize] = end_sq;
         self.board[start_sq.file as usize][start_sq.rank as usize] = start_sq;
+        self.turn_number += 1;
+        self.latest_move = Some((start_sq, end_sq, *start_sq.piece.color()));
+        if *start_sq.piece.color() == PieceColor::White {
+            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
+        } else {
+            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
+        }
     }
 
     pub fn _print_board_white(&self) {
