@@ -7,8 +7,9 @@ pub enum PieceColor {
     None,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Default)]
 pub enum Pieces {
+    #[default]
     None,
     Pawn(PieceColor),
     Knight(PieceColor),
@@ -41,11 +42,5 @@ impl Pieces {
             Pieces::Queen(color) => color,
             Pieces::King(color) => color,
         }
-    }
-}
-
-impl Default for Pieces {
-    fn default() -> Pieces {
-        Pieces::None
     }
 }

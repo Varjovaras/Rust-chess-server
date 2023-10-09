@@ -1,5 +1,3 @@
-use core::panic;
-
 use crate::{
     castling::Castling,
     check::king_is_in_check,
@@ -55,7 +53,7 @@ impl Chess {
         //king is in check and the move doesnt remove check
         if (moving_piece_color == &PieceColor::White && self.white_in_check
             || moving_piece_color == &PieceColor::Black && self.black_in_check)
-            && !self.move_removes_check(&start_sq, &end_sq)
+            && !self.move_removes_check(start_sq, end_sq)
         {
             return;
         }
@@ -67,21 +65,21 @@ impl Chess {
             return;
         }
 
-        if move_is_white_en_passant(&start_sq, &end_sq, self)
-            || move_is_black_en_passant(&start_sq, &end_sq, self)
+        if move_is_white_en_passant(start_sq, end_sq, self)
+            || move_is_black_en_passant(start_sq, end_sq, self)
         {
             self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
         }
 
         if move_is_castling(start_sq, end_sq, &self.castling) {
-            self.handle_castling(&start_sq, &end_sq)
+            self.handle_castling(start_sq, end_sq)
         }
 
         self.update_board(start_sq, end_sq);
     }
 
     fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
-        self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece.clone();
+        self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
         self.turn_number += 1;
@@ -94,7 +92,7 @@ impl Chess {
     }
 
     pub fn move_removes_check(&self, start_sq: &Square, end_sq: &Square) -> bool {
-        let mut temp_board = self.board.clone();
+        let mut temp_board = self.board;
 
         if move_is_white_en_passant(start_sq, end_sq, self)
             || move_is_black_en_passant(start_sq, end_sq, self)
@@ -102,7 +100,7 @@ impl Chess {
             temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None
         }
 
-        temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece.clone();
+        temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
 
         !king_is_in_check(&temp_board, *start_sq.piece.color())

@@ -1,27 +1,27 @@
 #[derive(Debug, Copy, Clone)]
 pub enum Castling {
-    WhiteKingSide(bool),
-    WhiteQueenSide(bool),
-    BlackKingSide(bool),
-    BlackQueenSide(bool),
+    WhiteKing(bool),
+    WhiteQueen(bool),
+    BlackKing(bool),
+    BlackQueen(bool),
 }
 
 impl Castling {
     pub fn new() -> Vec<Castling> {
         vec![
-            Castling::WhiteKingSide(true),
-            Castling::WhiteQueenSide(true),
-            Castling::BlackKingSide(true),
-            Castling::BlackQueenSide(true),
+            Castling::WhiteKing(true),
+            Castling::WhiteQueen(true),
+            Castling::BlackKing(true),
+            Castling::BlackQueen(true),
         ]
     }
 
     pub fn castling_allowed(&self) -> bool {
         match self {
-            Castling::WhiteKingSide(allowed) => *allowed,
-            Castling::WhiteQueenSide(allowed) => *allowed,
-            Castling::BlackKingSide(allowed) => *allowed,
-            Castling::BlackQueenSide(allowed) => *allowed,
+            Castling::WhiteKing(allowed) => *allowed,
+            Castling::WhiteQueen(allowed) => *allowed,
+            Castling::BlackKing(allowed) => *allowed,
+            Castling::BlackQueen(allowed) => *allowed,
         }
     }
 }
