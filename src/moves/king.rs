@@ -45,3 +45,11 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, castling: &[Castling
         _ => false,
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    // use super::*;
+    #[test]
+    fn rook_move_works() {}
+}

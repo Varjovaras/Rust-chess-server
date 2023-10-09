@@ -9,3 +9,10 @@ pub fn move_knight(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq_file.abs_diff(end_sq_file) == 1 && start_sq_rank.abs_diff(end_sq_rank) == 2
         || start_sq_file.abs_diff(end_sq_file) == 2 && start_sq_rank.abs_diff(end_sq_rank) == 1
 }
+
+#[cfg(test)]
+mod tests {
+
+    #[test]
+    fn rook_move_works() {}
+}

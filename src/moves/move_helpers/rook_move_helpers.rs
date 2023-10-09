@@ -52,9 +52,16 @@ fn move_up(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = end_sq.rank as usize - start_sq.rank as usize;
     for i in 1..distance {
         if chess.board[start_sq.file as usize][start_sq.rank as usize + i].has_piece() {
+            println!(
+                "{:?}",
+                chess.board[start_sq.file as usize][start_sq.rank as usize + i]
+            );
             return false;
         }
+
+        // pr
     }
+
     true
 }
 

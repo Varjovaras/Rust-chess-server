@@ -15,3 +15,11 @@ pub fn move_queen(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         false
     }
 }
+
+#[cfg(test)]
+mod tests {
+
+    // use super::*;
+    #[test]
+    fn rook_move_works() {}
+}
