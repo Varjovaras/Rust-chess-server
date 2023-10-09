@@ -95,7 +95,8 @@ pub fn get_white_king(board: &ChessBoard) -> &Square {
             }
         }
     }
-    panic!("No white king");
+    // panic!("No white king");
+    return &board[0][0];
 }
 
 pub fn get_black_king(board: &ChessBoard) -> &Square {

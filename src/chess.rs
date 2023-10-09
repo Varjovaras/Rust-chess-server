@@ -1,4 +1,5 @@
 use crate::{
+    castling::Castling,
     check::king_is_in_check,
     chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
     moves::move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
@@ -7,11 +8,12 @@ use crate::{
 
 type Move = (Square, Square, PieceColor);
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
     pub latest_move: Option<Move>,
+    pub castling: Vec<Castling>,
     pub white_in_check: bool,
     pub black_in_check: bool,
     pub game_over: bool,
@@ -23,6 +25,7 @@ impl Chess {
             board: chessboard::new(),
             turn_number: 0,
             latest_move: None,
+            castling: Castling::new(),
             white_in_check: false,
             black_in_check: false,
             game_over: false,

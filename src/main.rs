@@ -1,3 +1,4 @@
+mod castling;
 mod check;
 mod chess;
 mod chessboard;
