@@ -26,7 +26,7 @@ impl DiagonalMoveDirection {
         }
     }
 
-    pub fn _make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    pub fn make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             DiagonalMoveDirection::UpLeft => move_top_left(start_sq, end_sq, chess),
             DiagonalMoveDirection::UpRight => move_top_right(start_sq, end_sq, chess),

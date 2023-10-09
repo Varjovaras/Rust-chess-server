@@ -18,8 +18,40 @@ pub fn move_queen(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 
 #[cfg(test)]
 mod tests {
+    use crate::{
+        chess::Chess,
+        moves::queen::move_queen,
+        piece::{PieceColor, Pieces},
+    };
 
-    // use super::*;
+    const NONE: Pieces = Pieces::None;
+    const WHITEQUEEN: Pieces = Pieces::Queen(PieceColor::White);
+
     #[test]
-    fn rook_move_works() {}
+    fn queen_move_works() {
+        let mut chess = Chess::new();
+        chess.starting_position();
+        chess.board[4][4].piece = WHITEQUEEN;
+        let sq1 = chess.board[4][4];
+        let sq2 = chess.board[0][0];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), false);
+
+        let sq2 = chess.board[1][1];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+
+        chess.board[1][1].piece = NONE;
+        let sq2 = chess.board[0][0];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+
+        let sq2 = chess.board[6][6];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+
+        let sq2 = chess.board[1][6];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), false);
+        let sq2 = chess.board[2][6];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+
+        let sq2 = chess.board[7][1];
+        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+    }
 }

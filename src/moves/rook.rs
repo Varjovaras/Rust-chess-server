@@ -7,8 +7,6 @@ use super::move_helpers::{
 
 pub fn move_rook(start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
     if !is_vertical(start_sq, _end_sq) && !is_horizontal(start_sq, _end_sq) {
-        println!("blyat");
-
         return false;
     }
 
@@ -32,7 +30,7 @@ mod tests {
         let mut chess = Chess::new();
         chess.starting_position();
         let sq1 = chess.board[0][0];
-        let sq2 = chess.board[0][5];
+        let sq2 = chess.board[0][6];
         assert_eq!(move_rook(&sq1, &sq2, &chess), false);
         chess.board[0][1].piece = NONE;
         assert_eq!(move_rook(&sq1, &sq2, &chess), true);
@@ -50,6 +48,9 @@ mod tests {
         chess.board[1][4].piece = WHITEROOK;
         let sq1 = chess.board[1][4];
         let sq2 = chess.board[4][4];
+        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+
+        let sq2 = chess.board[1][1];
         assert_eq!(move_rook(&sq1, &sq2, &chess), true);
     }
 }
