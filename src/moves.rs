@@ -1,7 +1,7 @@
 use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 
 mod bishop;
-mod king;
+pub mod king;
 mod knight;
 pub mod move_helpers;
 pub mod pawn;

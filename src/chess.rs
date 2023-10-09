@@ -1,8 +1,13 @@
+use core::panic;
+
 use crate::{
     castling::Castling,
     check::king_is_in_check,
     chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
-    moves::move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
+    moves::{
+        king::move_is_castling,
+        move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
+    },
     piece::{PieceColor, Pieces},
 };
 
@@ -67,6 +72,11 @@ impl Chess {
         {
             self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
         }
+
+        if move_is_castling(start_sq, end_sq, &self.castling) {
+            self.handle_castling(&start_sq, &end_sq)
+        }
+
         self.update_board(start_sq, end_sq);
     }
 
@@ -155,6 +165,40 @@ impl Chess {
             });
             println!();
         });
+    }
+
+    fn handle_castling(&mut self, start_sq: &Square, end_sq: &Square) {
+        match (start_sq.rank, end_sq.file) {
+            (Rank::First, File::G) => {
+                self.board[File::H as usize][Rank::First as usize].piece = Pieces::None;
+                self.board[File::F as usize][Rank::First as usize].piece =
+                    Pieces::Rook(PieceColor::White);
+                self.board[File::G as usize][Rank::First as usize].piece =
+                    Pieces::King(PieceColor::White);
+            }
+            (Rank::First, File::C) => {
+                self.board[File::A as usize][Rank::First as usize].piece = Pieces::None;
+                self.board[File::D as usize][Rank::First as usize].piece =
+                    Pieces::Rook(PieceColor::White);
+                self.board[File::C as usize][Rank::First as usize].piece =
+                    Pieces::King(PieceColor::White);
+            }
+            (Rank::Eighth, File::G) => {
+                self.board[File::H as usize][Rank::Eighth as usize].piece = Pieces::None;
+                self.board[File::F as usize][Rank::Eighth as usize].piece =
+                    Pieces::Rook(PieceColor::Black);
+                self.board[File::G as usize][Rank::Eighth as usize].piece =
+                    Pieces::King(PieceColor::Black);
+            }
+            (Rank::Eighth, File::C) => {
+                self.board[File::A as usize][Rank::Eighth as usize].piece = Pieces::None;
+                self.board[File::D as usize][Rank::Eighth as usize].piece =
+                    Pieces::Rook(PieceColor::Black);
+                self.board[File::C as usize][Rank::Eighth as usize].piece =
+                    Pieces::King(PieceColor::Black);
+            }
+            _ => panic!("Trying to castle with wrong start and end square"),
+        }
     }
 }
 
