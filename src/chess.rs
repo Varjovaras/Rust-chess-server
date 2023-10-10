@@ -9,7 +9,7 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-pub type Move = (Square, Square, PieceColor);
+type Move = (Square, Square, PieceColor);
 
 #[derive(Debug, Clone)]
 pub struct Chess {

@@ -111,7 +111,7 @@ pub fn get_black_king(board: &ChessBoard) -> &Square {
     &board[0][0]
 }
 
-pub fn _get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
+pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
     let mut squares_with_pieces: Vec<Square> = Vec::new();
     for file in board.iter().take(8) {
         for square in file {

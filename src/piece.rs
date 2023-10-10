@@ -1,8 +1,4 @@
-use crate::{
-    chess::{Chess, Move},
-    chessboard::square::Square,
-    moves,
-};
+use crate::{checkmate::MoveFromCoordinates, chess::Chess, chessboard::square::Square, moves};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PieceColor {
@@ -53,8 +49,8 @@ impl Piece {
         chessboard: [[Square; 8]; 8],
         file: usize,
         rank: usize,
-    ) -> Vec<Move> {
-        let mut legal_moves: Vec<Move> = Vec::new();
+    ) -> Vec<MoveFromCoordinates> {
+        let mut legal_moves = Vec::new();
         let start_sq = chessboard[file][rank];
         (0..8).for_each(|file| {
             (0..8).for_each(|rank| {
