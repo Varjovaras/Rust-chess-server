@@ -19,11 +19,11 @@ pub fn move_rook(start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::piece::{PieceColor, Pieces};
+    use crate::piece::{Piece, PieceColor};
 
-    const NONE: Pieces = Pieces::None;
-    const WHITEROOK: Pieces = Pieces::Rook(PieceColor::White);
-    const BLACKROOK: Pieces = Pieces::Rook(PieceColor::Black);
+    const NONE: Piece = Piece::None;
+    const WHITEROOK: Piece = Piece::Rook(PieceColor::White);
+    const BLACKROOK: Piece = Piece::Rook(PieceColor::Black);
 
     #[test]
     fn rook_move_works() {

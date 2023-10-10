@@ -6,10 +6,10 @@ use crate::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
     },
-    piece::{PieceColor, Pieces},
+    piece::{Piece, PieceColor},
 };
 
-type Move = (Square, Square, PieceColor);
+pub type Move = (Square, Square, PieceColor);
 
 #[derive(Debug, Clone)]
 pub struct Chess {
@@ -39,16 +39,14 @@ impl Chess {
         let moving_piece_color = start_sq.piece.color();
 
         //piece can make the move
-        let move_is_legal = start_sq.piece.piece_move(start_sq, end_sq, self);
+        if !start_sq.piece.piece_move(start_sq, end_sq, self) {
+            return;
+        };
 
         //cannot capture own piece
         if end_sq.has_piece() && end_sq.piece.color() == moving_piece_color {
             return;
         }
-
-        if !move_is_legal {
-            return;
-        };
 
         //king is in check and the move doesnt remove check
         if (moving_piece_color == &PieceColor::White && self.white_in_check
@@ -65,14 +63,49 @@ impl Chess {
             return;
         }
 
+        //remove en-passanted piece
         if move_is_white_en_passant(start_sq, end_sq, self)
             || move_is_black_en_passant(start_sq, end_sq, self)
         {
-            self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
+            self.board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         }
 
-        if move_is_castling(start_sq, end_sq, &self) {
-            self.handle_castling(start_sq, end_sq)
+        //remove castling if king or rook moves
+        if start_sq.piece == Piece::King(PieceColor::White)
+            || start_sq.piece == Piece::King(PieceColor::Black)
+            || start_sq.piece == Piece::Rook(PieceColor::White)
+            || start_sq.piece == Piece::Rook(PieceColor::Black)
+        {
+            if move_is_castling(start_sq, end_sq, &self) {
+                self.handle_castling(start_sq, end_sq);
+                return;
+            }
+
+            match start_sq.piece {
+                Piece::King(PieceColor::White) => {
+                    self.castling.white_king_side_castling = false;
+                    self.castling.white_queen_side_castling = false;
+                }
+                Piece::King(PieceColor::Black) => {
+                    self.castling.black_king_side_castling = false;
+                    self.castling.black_queen_side_castling = false;
+                }
+                Piece::Rook(PieceColor::White) => {
+                    if start_sq.file == File::A && start_sq.rank == Rank::First {
+                        self.castling.white_queen_side_castling = false;
+                    } else if start_sq.file == File::H && start_sq.rank == Rank::First {
+                        self.castling.white_king_side_castling = false;
+                    }
+                }
+                Piece::Rook(PieceColor::Black) => {
+                    if start_sq.file == File::A && start_sq.rank == Rank::Eighth {
+                        self.castling.black_queen_side_castling = false;
+                    } else if start_sq.file == File::H && start_sq.rank == Rank::Eighth {
+                        self.castling.black_king_side_castling = false;
+                    }
+                }
+                _ => (),
+            }
         }
 
         self.update_board(start_sq, end_sq);
@@ -81,7 +114,7 @@ impl Chess {
     fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
         self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
-        self.board[start_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
+        self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         self.turn_number += 1;
 
         if start_sq.piece.color() == &PieceColor::White {
@@ -97,16 +130,16 @@ impl Chess {
         if move_is_white_en_passant(start_sq, end_sq, self)
             || move_is_black_en_passant(start_sq, end_sq, self)
         {
-            temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None
+            temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None
         }
 
         temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
-        temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
+        temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
 
         !king_is_in_check(&temp_board, *start_sq.piece.color())
     }
 
-    pub fn _make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
+    pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();
         let mut start_sq = *self.get_square_from_str(
@@ -140,7 +173,7 @@ impl Chess {
         &self.board[file][rank]
     }
 
-    pub fn _print_board_white(&self) {
+    pub fn print_board_white(&self) {
         let mut clone_board = self.board;
         clone_board.reverse();
 
@@ -168,32 +201,40 @@ impl Chess {
     fn handle_castling(&mut self, start_sq: &Square, end_sq: &Square) {
         match (start_sq.rank, end_sq.file) {
             (Rank::First, File::G) => {
-                self.board[File::H as usize][Rank::First as usize].piece = Pieces::None;
+                self.board[File::H as usize][Rank::First as usize].piece = Piece::None;
                 self.board[File::F as usize][Rank::First as usize].piece =
-                    Pieces::Rook(PieceColor::White);
+                    Piece::Rook(PieceColor::White);
                 self.board[File::G as usize][Rank::First as usize].piece =
-                    Pieces::King(PieceColor::White);
+                    Piece::King(PieceColor::White);
+                self.castling.white_king_side_castling = false;
+                self.castling.white_queen_side_castling = false;
             }
             (Rank::First, File::C) => {
-                self.board[File::A as usize][Rank::First as usize].piece = Pieces::None;
+                self.board[File::A as usize][Rank::First as usize].piece = Piece::None;
                 self.board[File::D as usize][Rank::First as usize].piece =
-                    Pieces::Rook(PieceColor::White);
+                    Piece::Rook(PieceColor::White);
                 self.board[File::C as usize][Rank::First as usize].piece =
-                    Pieces::King(PieceColor::White);
+                    Piece::King(PieceColor::White);
+                self.castling.white_king_side_castling = false;
+                self.castling.white_queen_side_castling = false;
             }
             (Rank::Eighth, File::G) => {
-                self.board[File::H as usize][Rank::Eighth as usize].piece = Pieces::None;
+                self.board[File::H as usize][Rank::Eighth as usize].piece = Piece::None;
                 self.board[File::F as usize][Rank::Eighth as usize].piece =
-                    Pieces::Rook(PieceColor::Black);
+                    Piece::Rook(PieceColor::Black);
                 self.board[File::G as usize][Rank::Eighth as usize].piece =
-                    Pieces::King(PieceColor::Black);
+                    Piece::King(PieceColor::Black);
+                self.castling.black_king_side_castling = false;
+                self.castling.black_queen_side_castling = false;
             }
             (Rank::Eighth, File::C) => {
-                self.board[File::A as usize][Rank::Eighth as usize].piece = Pieces::None;
+                self.board[File::A as usize][Rank::Eighth as usize].piece = Piece::None;
                 self.board[File::D as usize][Rank::Eighth as usize].piece =
-                    Pieces::Rook(PieceColor::Black);
+                    Piece::Rook(PieceColor::Black);
                 self.board[File::C as usize][Rank::Eighth as usize].piece =
-                    Pieces::King(PieceColor::Black);
+                    Piece::King(PieceColor::Black);
+                self.castling.black_king_side_castling = false;
+                self.castling.black_queen_side_castling = false;
             }
             _ => panic!("Trying to castle with wrong start and end square"),
         }
@@ -216,10 +257,10 @@ mod tests {
         let mut end_sq = *chess.get_square_from_str("e", "4");
         chess.make_move(&mut start_sq, &mut end_sq);
 
-        assert_eq!(chess.get_square_from_str("e", "2").piece, Pieces::None);
+        assert_eq!(chess.get_square_from_str("e", "2").piece, Piece::None);
         assert_eq!(
             chess.get_square_from_str("e", "4").piece,
-            Pieces::Pawn(PieceColor::White)
+            Piece::Pawn(PieceColor::White)
         );
         assert_eq!(chess.turn_number, 1);
         assert_eq!(
@@ -232,9 +273,9 @@ mod tests {
         chess.make_move(&mut start_sq, &mut end_sq);
         assert_eq!(
             chess.get_square_from_str("e", "4").piece,
-            Pieces::Pawn(PieceColor::White)
+            Piece::Pawn(PieceColor::White)
         );
-        assert_eq!(chess.get_square_from_str("e", "5").piece, Pieces::None);
+        assert_eq!(chess.get_square_from_str("e", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 1);
 
         let mut start_sq = *chess.get_square_from_str("e", "7");
@@ -242,15 +283,15 @@ mod tests {
         chess.make_move(&mut start_sq, &mut end_sq);
         assert_eq!(
             chess.get_square_from_str("e", "5").piece,
-            Pieces::Pawn(PieceColor::Black)
+            Piece::Pawn(PieceColor::Black)
         );
-        assert_eq!(chess.get_square_from_str("e", "7").piece, Pieces::None);
+        assert_eq!(chess.get_square_from_str("e", "7").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
 
         let mut start_sq = *chess.get_square_from_str("e", "4");
         let mut end_sq = *chess.get_square_from_str("d", "5");
         chess.make_move(&mut start_sq, &mut end_sq);
-        assert_eq!(chess.get_square_from_str("d", "5").piece, Pieces::None);
+        assert_eq!(chess.get_square_from_str("d", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
     }
 }

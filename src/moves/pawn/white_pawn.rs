@@ -2,7 +2,7 @@ use crate::{
     chess::Chess,
     chessboard::{rank::Rank, square::Square},
     moves::move_helpers::helpers::{diagonally_one_square_apart, square_column_diff},
-    piece::{PieceColor, Pieces},
+    piece::{Piece, PieceColor},
 };
 
 //only en passant affects board, thats why chess is mutable reference
@@ -67,7 +67,7 @@ fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         return false;
     }
 
-    last_move_sq.piece = Pieces::default();
+    last_move_sq.piece = Piece::default();
     true
 }
 
@@ -76,7 +76,7 @@ pub fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
         Some(latest_move) => {
             if latest_move.0.rank == Rank::Seventh
                 && latest_move.1.rank == Rank::Fifth
-                && latest_move.0.piece == Pieces::Pawn(latest_move.2)
+                && latest_move.0.piece == Piece::Pawn(latest_move.2)
             {
                 println!("Move is en passant");
                 true
@@ -103,7 +103,7 @@ mod tests {
         chess.starting_position();
 
         //Bishop on B2
-        chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
+        chess.board[1][1].piece = Piece::Bishop(PieceColor::Black);
 
         assert_eq!(
             move_white_pawn(
@@ -160,8 +160,8 @@ mod tests {
         chess.starting_position();
 
         //Bishop on B2
-        chess.board[1][1].piece = Pieces::Bishop(PieceColor::Black);
-        chess.board[3][2].piece = Pieces::Pawn(PieceColor::White);
+        chess.board[1][1].piece = Piece::Bishop(PieceColor::Black);
+        chess.board[3][2].piece = Piece::Pawn(PieceColor::White);
 
         assert_eq!(
             move_white_pawn(
@@ -187,23 +187,13 @@ mod tests {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
         chess.latest_move = Some((
-            Square::new(
-                5,
-                6,
-                SquareColor::default(),
-                Pieces::Pawn(PieceColor::Black),
-            ),
-            Square::new(
-                5,
-                4,
-                SquareColor::default(),
-                Pieces::Pawn(PieceColor::Black),
-            ),
+            Square::new(5, 6, SquareColor::default(), Piece::Pawn(PieceColor::Black)),
+            Square::new(5, 4, SquareColor::default(), Piece::Pawn(PieceColor::Black)),
             PieceColor::Black,
         ));
 
-        chess.board[4][4].piece = Pieces::Pawn(PieceColor::White);
-        chess.board[5][4].piece = Pieces::Pawn(PieceColor::Black);
+        chess.board[4][4].piece = Piece::Pawn(PieceColor::White);
+        chess.board[5][4].piece = Piece::Pawn(PieceColor::Black);
 
         assert_eq!(
             move_white_pawn(

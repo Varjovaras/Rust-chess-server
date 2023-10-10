@@ -1,6 +1,7 @@
 use crate::{
+    chess::Chess,
     chessboard::{get_black_king, get_white_king, ChessBoard},
-    piece::{PieceColor, Pieces},
+    piece::{Piece, PieceColor},
 };
 
 pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
@@ -50,8 +51,8 @@ fn rook_check(
             let sq = chess_board[test_file as usize][test_rank as usize];
 
             if sq.has_piece() {
-                if sq.piece == Pieces::Rook(opponent_color)
-                    || sq.piece == Pieces::Queen(opponent_color)
+                if sq.piece == Piece::Rook(opponent_color)
+                    || sq.piece == Piece::Queen(opponent_color)
                 {
                     return true;
                 } else {
@@ -72,12 +73,12 @@ fn check_by_white_pawn(king_file: usize, king_rank: usize, board: &ChessBoard) -
     }
 
     if king_file == 0 {
-        board[king_file + 1][king_rank - 1].piece == Pieces::Pawn(PieceColor::White)
+        board[king_file + 1][king_rank - 1].piece == Piece::Pawn(PieceColor::White)
     } else if king_file >= 7 {
-        board[king_file - 1][king_rank - 1].piece == Pieces::Pawn(PieceColor::White)
+        board[king_file - 1][king_rank - 1].piece == Piece::Pawn(PieceColor::White)
     } else {
-        board[king_file + 1][king_rank - 1].piece == Pieces::Pawn(PieceColor::White)
-            || board[king_file - 1][king_rank - 1].piece == Pieces::Pawn(PieceColor::White)
+        board[king_file + 1][king_rank - 1].piece == Piece::Pawn(PieceColor::White)
+            || board[king_file - 1][king_rank - 1].piece == Piece::Pawn(PieceColor::White)
     }
 }
 
@@ -87,12 +88,12 @@ fn check_by_black_pawn(king_file: usize, king_rank: usize, chess_board: &ChessBo
     }
 
     if king_file == 0 {
-        chess_board[king_file + 1][king_rank + 1].piece == Pieces::Pawn(PieceColor::Black)
+        chess_board[king_file + 1][king_rank + 1].piece == Piece::Pawn(PieceColor::Black)
     } else if king_file >= 7 {
-        chess_board[king_file - 1][king_rank + 1].piece == Pieces::Pawn(PieceColor::Black)
+        chess_board[king_file - 1][king_rank + 1].piece == Piece::Pawn(PieceColor::Black)
     } else {
-        chess_board[king_file + 1][king_rank + 1].piece == Pieces::Pawn(PieceColor::Black)
-            || chess_board[king_file - 1][king_rank + 1].piece == Pieces::Pawn(PieceColor::Black)
+        chess_board[king_file + 1][king_rank + 1].piece == Piece::Pawn(PieceColor::Black)
+            || chess_board[king_file - 1][king_rank + 1].piece == Piece::Pawn(PieceColor::Black)
     }
 }
 
@@ -121,8 +122,8 @@ fn bishop_check(
             let sq = chess_board[test_file as usize][test_rank as usize];
 
             if sq.has_piece() {
-                if sq.piece == Pieces::Bishop(opponent_color)
-                    || sq.piece == Pieces::Queen(opponent_color)
+                if sq.piece == Piece::Bishop(opponent_color)
+                    || sq.piece == Piece::Queen(opponent_color)
                 {
                     return true;
                 } else {
@@ -169,7 +170,7 @@ fn knight_check(
         let sq =
             chess_board[(king_file as isize + file) as usize][(king_rank as isize + rank) as usize];
         if sq.has_piece() {
-            if sq.piece == Pieces::Knight(opponent_color) {
+            if sq.piece == Piece::Knight(opponent_color) {
                 return true;
             } else {
                 continue;
@@ -184,7 +185,7 @@ mod tests {
     use crate::{
         check::{bishop_check, check_by_black_pawn, check_by_white_pawn, rook_check},
         chess::Chess,
-        piece::{PieceColor, Pieces},
+        piece::{Piece, PieceColor},
     };
 
     const BLACK: PieceColor = PieceColor::Black;
@@ -199,30 +200,30 @@ mod tests {
             check_by_black_pawn(king_file, king_rank, &chess.board),
             false
         );
-        chess.board[1][0].piece = Pieces::Pawn(BLACK);
+        chess.board[1][0].piece = Piece::Pawn(BLACK);
         assert_eq!(
             check_by_black_pawn(king_file, king_rank, &chess.board),
             false
         );
-        chess.board[0][1].piece = Pieces::Pawn(BLACK);
+        chess.board[0][1].piece = Piece::Pawn(BLACK);
         assert_eq!(
             check_by_black_pawn(king_file, king_rank, &chess.board),
             false
         );
 
-        chess.board[1][1].piece = Pieces::Pawn(BLACK);
+        chess.board[1][1].piece = Piece::Pawn(BLACK);
 
         assert_eq!(
             check_by_black_pawn(king_file, king_rank, &chess.board),
             true
         );
-        chess.board[1][1].piece = Pieces::Pawn(PieceColor::Black);
-        chess.board[1][1].piece = Pieces::Pawn(PieceColor::Black);
-        chess.board[6][1].piece = Pieces::Pawn(PieceColor::Black);
-        chess.board[7][1].piece = Pieces::Pawn(PieceColor::Black);
+        chess.board[1][1].piece = Piece::Pawn(PieceColor::Black);
+        chess.board[1][1].piece = Piece::Pawn(PieceColor::Black);
+        chess.board[6][1].piece = Piece::Pawn(PieceColor::Black);
+        chess.board[7][1].piece = Piece::Pawn(PieceColor::Black);
 
         assert_eq!(check_by_black_pawn(5, 5, &chess.board), false);
-        chess.board[4][6].piece = Pieces::Pawn(PieceColor::Black);
+        chess.board[4][6].piece = Piece::Pawn(PieceColor::Black);
         assert_eq!(check_by_black_pawn(5, 5, &chess.board), true);
     }
 
@@ -230,11 +231,11 @@ mod tests {
     fn test_check_by_white_pawn() {
         let chess = Chess::new();
         let mut board = chess.board;
-        board[5][3].piece = Pieces::Pawn(PieceColor::White);
-        board[7][7].piece = Pieces::Pawn(PieceColor::White);
+        board[5][3].piece = Piece::Pawn(PieceColor::White);
+        board[7][7].piece = Piece::Pawn(PieceColor::White);
 
         assert_eq!(check_by_white_pawn(0, 2, &board), false);
-        board[1][1].piece = Pieces::Pawn(PieceColor::White);
+        board[1][1].piece = Piece::Pawn(PieceColor::White);
         assert_eq!(check_by_white_pawn(0, 2, &board), true);
         assert_eq!(check_by_white_pawn(6, 4, &board), true);
         assert_eq!(check_by_white_pawn(8, 8, &board), true);
@@ -243,7 +244,7 @@ mod tests {
     #[test]
     fn bishop_check_tests() {
         let mut chess = Chess::new();
-        chess.board[6][6].piece = Pieces::Bishop(BLACK);
+        chess.board[6][6].piece = Piece::Bishop(BLACK);
         let king_file: usize = 0;
         let king_rank: usize = 0;
 
@@ -255,7 +256,7 @@ mod tests {
             bishop_check(king_file, king_rank, BLACK, &chess.board),
             false
         );
-        chess.board[5][5].piece = Pieces::Knight(WHITE);
+        chess.board[5][5].piece = Piece::Knight(WHITE);
         assert_eq!(
             bishop_check(king_file, king_rank, WHITE, &chess.board),
             false
@@ -267,7 +268,7 @@ mod tests {
             bishop_check(king_file, king_rank, WHITE, &chess.board),
             false
         );
-        chess.board[0][7].piece = Pieces::Bishop(BLACK);
+        chess.board[0][7].piece = Piece::Bishop(BLACK);
         assert_eq!(
             bishop_check(king_file, king_rank, WHITE, &chess.board),
             true
@@ -282,16 +283,16 @@ mod tests {
     fn test_rook_check() {
         let chess = Chess::new();
         let mut board = chess.board;
-        board[1][1].piece = Pieces::Rook(PieceColor::White);
+        board[1][1].piece = Piece::Rook(PieceColor::White);
 
         assert_eq!(rook_check(1, 4, PieceColor::Black, &board), true);
-        board[1][2].piece = Pieces::Rook(PieceColor::Black);
+        board[1][2].piece = Piece::Rook(PieceColor::Black);
         assert_eq!(rook_check(1, 4, PieceColor::Black, &board), false);
 
         assert_eq!(rook_check(7, 1, PieceColor::Black, &board), true);
         assert_eq!(rook_check(6, 6, PieceColor::Black, &board), false);
 
-        board[6][1].piece = Pieces::Rook(PieceColor::White);
+        board[6][1].piece = Piece::Rook(PieceColor::White);
 
         assert_eq!(rook_check(6, 6, PieceColor::Black, &board), true);
     }

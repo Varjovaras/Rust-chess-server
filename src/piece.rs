@@ -1,4 +1,8 @@
-use crate::{chess::Chess, chessboard::square::Square, moves};
+use crate::{
+    chess::{Chess, Move},
+    chessboard::square::Square,
+    moves,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum PieceColor {
@@ -8,7 +12,7 @@ pub enum PieceColor {
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Default)]
-pub enum Pieces {
+pub enum Piece {
     #[default]
     None,
     Pawn(PieceColor),
@@ -19,28 +23,42 @@ pub enum Pieces {
     King(PieceColor),
 }
 
-impl Pieces {
+impl Piece {
     pub fn piece_move(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
         match self {
-            Pieces::None => false,
-            Pieces::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
-            Pieces::Knight(_) => moves::knight(start_sq, end_sq),
-            Pieces::Bishop(_) => moves::bishop(start_sq, end_sq, chess),
-            Pieces::Rook(_) => moves::rook(start_sq, end_sq, chess),
-            Pieces::Queen(_) => moves::queen(start_sq, end_sq, chess),
-            Pieces::King(_) => moves::king(start_sq, end_sq, chess),
+            Piece::None => false,
+            Piece::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
+            Piece::Knight(_) => moves::knight(start_sq, end_sq),
+            Piece::Bishop(_) => moves::bishop(start_sq, end_sq, chess),
+            Piece::Rook(_) => moves::rook(start_sq, end_sq, chess),
+            Piece::Queen(_) => moves::queen(start_sq, end_sq, chess),
+            Piece::King(_) => moves::king(start_sq, end_sq, chess),
         }
     }
 
     pub fn color(&self) -> &PieceColor {
         match self {
-            Pieces::None => &PieceColor::None,
-            Pieces::Pawn(color) => color,
-            Pieces::Knight(color) => color,
-            Pieces::Bishop(color) => color,
-            Pieces::Rook(color) => color,
-            Pieces::Queen(color) => color,
-            Pieces::King(color) => color,
+            Piece::None => &PieceColor::None,
+            Piece::Pawn(color) => color,
+            Piece::Knight(color) => color,
+            Piece::Bishop(color) => color,
+            Piece::Rook(color) => color,
+            Piece::Queen(color) => color,
+            Piece::King(color) => color,
         }
+    }
+
+    pub fn legal_moves(&self, chessboard: [[Square; 8]; 8], file: usize, rank: usize) -> Vec<Move> {
+        let mut legal_moves: Vec<Move> = Vec::new();
+        let start_sq = chessboard[file][rank];
+        for file in 0..8 {
+            for rank in 0..8 {
+                let end_sq = chessboard[file][rank];
+                if self.piece_move(&start_sq, &end_sq, &mut Chess::new()) {
+                    legal_moves.push((start_sq, end_sq, self.color().clone()));
+                }
+            }
+        }
+        legal_moves
     }
 }

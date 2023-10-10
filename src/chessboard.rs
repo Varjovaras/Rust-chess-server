@@ -2,15 +2,18 @@ pub mod file;
 pub mod rank;
 pub mod square;
 
-use crate::piece::{
-    PieceColor::Black,
-    PieceColor::{self, White},
-    Pieces::Bishop,
-    Pieces::King,
-    Pieces::Pawn,
-    Pieces::Queen,
-    Pieces::Rook,
-    Pieces::{self, Knight},
+use crate::{
+    chess::Chess,
+    piece::{
+        Piece::Bishop,
+        Piece::King,
+        Piece::Pawn,
+        Piece::Queen,
+        Piece::Rook,
+        Piece::{self, Knight},
+        PieceColor::Black,
+        PieceColor::{self, White},
+    },
 };
 
 use self::square::{Square, SquareColor};
@@ -28,7 +31,7 @@ pub fn new() -> ChessBoard {
         let mut row = default_row;
         //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
         for rank in 0..8 {
-            let sq = Square::new(file, rank, color, Pieces::default());
+            let sq = Square::new(file, rank, color, Piece::default());
             row[rank as usize] = sq;
             color = self::color_changer(color); //every other square is black or white
         }
@@ -90,7 +93,7 @@ pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
 pub fn get_white_king(board: &ChessBoard) -> &Square {
     for file in board.iter().take(8) {
         for square in file {
-            if square.piece == Pieces::King(PieceColor::White) {
+            if square.piece == Piece::King(PieceColor::White) {
                 return square;
             }
         }
@@ -102,7 +105,7 @@ pub fn get_white_king(board: &ChessBoard) -> &Square {
 pub fn get_black_king(board: &ChessBoard) -> &Square {
     for file in board.iter().take(8) {
         for square in file {
-            if square.piece == Pieces::King(PieceColor::Black) {
+            if square.piece == Piece::King(PieceColor::Black) {
                 return square;
             }
         }
@@ -111,11 +114,35 @@ pub fn get_black_king(board: &ChessBoard) -> &Square {
     &board[0][0]
 }
 
+pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
+    let mut squares_with_pieces: Vec<Square> = Vec::new();
+    for file in board.iter().take(8) {
+        for square in file {
+            if square.piece.color() == &PieceColor::White {
+                squares_with_pieces.push(*square);
+            }
+        }
+    }
+    squares_with_pieces
+}
+
+pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
+    let mut squares_with_pieces: Vec<Square> = Vec::new();
+    for file in board.iter().take(8) {
+        for square in file {
+            if square.piece.color() == &PieceColor::Black {
+                squares_with_pieces.push(*square);
+            }
+        }
+    }
+    squares_with_pieces
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{
         chess::Chess,
-        piece::{PieceColor, Pieces},
+        piece::{Piece, PieceColor},
     };
 
     #[test]
@@ -153,6 +180,6 @@ mod tests {
     fn starting_position_works() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
-        assert_eq!(chess.board[0][0].piece, Pieces::Rook(PieceColor::White))
+        assert_eq!(chess.board[0][0].piece, Piece::Rook(PieceColor::White))
     }
 }

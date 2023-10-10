@@ -1,4 +1,4 @@
-use crate::piece::Pieces;
+use crate::{moves::pawn, piece::Piece};
 
 use super::{file::File, rank::Rank};
 
@@ -22,11 +22,11 @@ pub struct Square {
     pub file: File,
     pub rank: Rank,
     pub color: SquareColor,
-    pub piece: Pieces,
+    pub piece: Piece,
 }
 
 impl Square {
-    pub fn new(file: u8, rank: u8, color: SquareColor, piece: Pieces) -> Square {
+    pub fn new(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Square {
         let file = File::from(file);
         let rank = Rank::from(rank);
         Square {
@@ -44,7 +44,7 @@ impl Square {
             file,
             rank,
             color: SquareColor::default(),
-            piece: Pieces::default(),
+            piece: Piece::default(),
         }
     }
 
@@ -57,10 +57,22 @@ impl Square {
     }
 
     pub fn is_empty(&self) -> bool {
-        self.piece == Pieces::default()
+        self.piece == Piece::default()
     }
 
     pub fn has_piece(&self) -> bool {
-        self.piece != Pieces::default()
+        self.piece != Piece::default()
+    }
+
+    pub fn move_piece(&mut self) {
+        match self.piece {
+            Piece::None => todo!(),
+            Piece::Pawn(_) => self.piece.piece_move(),
+            Piece::Knight(_) => todo!(),
+            Piece::Bishop(_) => todo!(),
+            Piece::Rook(_) => todo!(),
+            Piece::Queen(_) => todo!(),
+            Piece::King(_) => todo!(),
+        }
     }
 }

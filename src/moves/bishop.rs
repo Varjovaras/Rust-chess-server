@@ -15,14 +15,14 @@ pub fn move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use crate::piece::{PieceColor, Pieces};
+    use crate::piece::{Piece, PieceColor};
 
     use super::*;
     #[test]
     fn move_bishop_works() {
         let mut chess: Chess = Chess::new();
         //Bishop on D5
-        chess.board[3][4].piece = Pieces::Bishop(PieceColor::White);
+        chess.board[3][4].piece = Piece::Bishop(PieceColor::White);
 
         let sq1 = *chess.get_square_from_str("d", "5");
 

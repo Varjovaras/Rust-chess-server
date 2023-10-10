@@ -21,11 +21,11 @@ mod tests {
     use crate::{
         chess::Chess,
         moves::queen::move_queen,
-        piece::{PieceColor, Pieces},
+        piece::{Piece, PieceColor},
     };
 
-    const NONE: Pieces = Pieces::None;
-    const WHITEQUEEN: Pieces = Pieces::Queen(PieceColor::White);
+    const NONE: Piece = Piece::None;
+    const WHITEQUEEN: Piece = Piece::Queen(PieceColor::White);
 
     #[test]
     fn queen_move_works() {

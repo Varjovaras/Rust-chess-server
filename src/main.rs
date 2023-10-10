@@ -1,5 +1,6 @@
 mod castling;
 mod check;
+mod checkmate;
 mod chess;
 mod chessboard;
 mod moves;
@@ -37,7 +38,7 @@ fn main() {
         let random_number4 = rng.gen_range(0..=7);
 
         // chess._print_board_white();
-        chess._make_move_from_str(
+        chess.make_move_from_str(
             format!("{}{}", files[random_number], ranks[random_number2]).as_str(),
             format!("{}{}", files[random_number3], ranks[random_number4]).as_str(),
         );
@@ -48,7 +49,7 @@ fn main() {
 
         if i % 1000000 == 0 {
             println!("{}", i);
-            chess._print_board_white();
+            chess.print_board_white();
         }
         i += 1;
     }

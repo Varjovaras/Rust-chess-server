@@ -1,7 +1,7 @@
 use crate::{
     chess::Chess,
     chessboard::{file::File, rank::Rank, square::Square},
-    piece::{PieceColor, Pieces},
+    piece::{Piece, PieceColor},
 };
 
 use super::move_helpers::helpers::{is_diagonal, is_horizontal, is_vertical};
@@ -22,8 +22,8 @@ pub fn move_king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 }
 
 pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if !(start_sq.piece == Pieces::King(PieceColor::White))
-        && !(start_sq.piece == Pieces::King(PieceColor::Black))
+    if !(start_sq.piece == Piece::King(PieceColor::White))
+        && !(start_sq.piece == Piece::King(PieceColor::Black))
     {
         return false;
     };
@@ -41,25 +41,25 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bo
 
     match (start_sq.rank, end_sq.file) {
         (Rank::First, File::G) => {
-            chess.board[5][0].piece == Pieces::None
-                && chess.board[6][0].piece == Pieces::None
+            chess.board[5][0].piece == Piece::None
+                && chess.board[6][0].piece == Piece::None
                 && castling.white_king_side_castling
         }
         (Rank::First, File::C) => {
-            chess.board[1][0].piece == Pieces::None
-                && chess.board[2][0].piece == Pieces::None
-                && chess.board[3][0].piece == Pieces::None
+            chess.board[1][0].piece == Piece::None
+                && chess.board[2][0].piece == Piece::None
+                && chess.board[3][0].piece == Piece::None
                 && castling.white_queen_side_castling
         }
         (Rank::Eighth, File::G) => {
-            chess.board[5][7].piece == Pieces::None
-                && chess.board[6][7].piece == Pieces::None
+            chess.board[5][7].piece == Piece::None
+                && chess.board[6][7].piece == Piece::None
                 && castling.black_king_side_castling
         }
         (Rank::Eighth, File::C) => {
-            chess.board[1][7].piece == Pieces::None
-                && chess.board[2][7].piece == Pieces::None
-                && chess.board[3][7].piece == Pieces::None
+            chess.board[1][7].piece == Piece::None
+                && chess.board[2][7].piece == Piece::None
+                && chess.board[3][7].piece == Piece::None
                 && castling.black_queen_side_castling
         }
         _ => false,
@@ -71,12 +71,12 @@ mod tests {
     use crate::{
         chess::Chess,
         moves::king::move_king,
-        piece::{PieceColor, Pieces},
+        piece::{Piece, PieceColor},
     };
 
     // use super::*;
-    const BLACKKING: Pieces = Pieces::King(PieceColor::Black);
-    const NONE: Pieces = Pieces::None;
+    const BLACKKING: Piece = Piece::King(PieceColor::Black);
+    const NONE: Piece = Piece::None;
 
     #[test]
     fn king_move_works() {

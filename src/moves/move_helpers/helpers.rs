@@ -5,7 +5,7 @@ use crate::{
         black_pawn::latest_move_enables_black_en_passant,
         white_pawn::latest_move_enables_white_en_passant,
     },
-    piece::{PieceColor, Pieces},
+    piece::{Piece, PieceColor},
 };
 
 pub fn diagonally_one_square_apart(first_sq: &Square, second_sq: &Square) -> bool {
@@ -65,7 +65,7 @@ pub fn move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
 }
 
 pub fn move_is_white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    start_sq.piece == Pieces::Pawn(PieceColor::White)
+    start_sq.piece == Piece::Pawn(PieceColor::White)
         && diagonally_one_square_apart(start_sq, end_sq)
         && start_sq.rank == Rank::Fifth
         && end_sq.rank == Rank::Sixth
@@ -74,7 +74,7 @@ pub fn move_is_white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Ches
 }
 
 pub fn move_is_black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    start_sq.piece == Pieces::Pawn(PieceColor::Black)
+    start_sq.piece == Piece::Pawn(PieceColor::Black)
         && diagonally_one_square_apart(start_sq, end_sq)
         && start_sq.rank == Rank::Fourth
         && end_sq.rank == Rank::Third

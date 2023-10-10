@@ -15,10 +15,10 @@ mod tests {
     use crate::{
         chess::Chess,
         moves::knight::move_knight,
-        piece::{PieceColor, Pieces},
+        piece::{Piece, PieceColor},
     };
 
-    const BLACKHORSE: Pieces = Pieces::Knight(PieceColor::Black);
+    const BLACKHORSE: Piece = Piece::Knight(PieceColor::Black);
     #[test]
     fn knight_move_works() {
         let mut chess = Chess::new();
