@@ -22,8 +22,8 @@ pub fn move_king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 }
 
 pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if start_sq.piece == Pieces::King(PieceColor::White)
-        || start_sq.piece == Pieces::King(PieceColor::Black)
+    if !(start_sq.piece == Pieces::King(PieceColor::White))
+        && !(start_sq.piece == Pieces::King(PieceColor::Black))
     {
         return false;
     };
@@ -117,8 +117,34 @@ mod tests {
         let sq2 = chess.board[6][0];
         assert_eq!(move_king(&sq1, &sq2, &chess), true);
 
-        let sq1 = chess.board[4][0];
         let sq2 = chess.board[7][0];
         assert_eq!(move_king(&sq1, &sq2, &chess), false);
+
+        let sq2 = chess.board[2][0];
+        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        chess.board[1][0].piece = NONE;
+        chess.board[2][0].piece = NONE;
+        chess.board[3][0].piece = NONE;
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+
+        let sq1 = chess.board[4][7];
+        let sq2 = chess.board[6][7];
+        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+
+        chess.board[5][7].piece = NONE;
+        chess.board[6][7].piece = NONE;
+        let sq1 = chess.board[4][7];
+        let sq2 = chess.board[6][7];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+
+        let sq2 = chess.board[7][7];
+        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+
+        let sq2 = chess.board[2][7];
+        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        chess.board[1][7].piece = NONE;
+        chess.board[2][7].piece = NONE;
+        chess.board[3][7].piece = NONE;
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
     }
 }
