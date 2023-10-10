@@ -90,44 +90,44 @@ mod tests {
     fn diagonally_one_square_apart_tests() {
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(1, 1);
-        assert_eq!(diagonally_one_square_apart(&sq_1, &sq_2), true);
+        assert!(diagonally_one_square_apart(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(2, 1);
-        assert_eq!(diagonally_one_square_apart(&sq_1, &sq_2), false);
+        assert!(!diagonally_one_square_apart(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(6, 6);
         let sq_2 = Square::_new_without_piece(5, 5);
-        assert_eq!(diagonally_one_square_apart(&sq_1, &sq_2), true);
+        assert!(diagonally_one_square_apart(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(2, 3);
         let sq_2 = Square::_new_without_piece(3, 3);
-        assert_eq!(diagonally_one_square_apart(&sq_1, &sq_2), false);
+        assert!(!diagonally_one_square_apart(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(5, 5);
         let sq_2 = Square::_new_without_piece(6, 4);
-        assert_eq!(diagonally_one_square_apart(&sq_1, &sq_2), true);
+        assert!(diagonally_one_square_apart(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(5, 5);
         let sq_2 = Square::_new_without_piece(4, 6);
-        assert_eq!(diagonally_one_square_apart(&sq_1, &sq_2), true);
+        assert!(diagonally_one_square_apart(&sq_1, &sq_2));
     }
 
     #[test]
     fn squares_on_same_row_tests() {
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(1, 0);
-        assert_eq!(_squares_on_same_row(&sq_1, &sq_2), true);
+        assert!(_squares_on_same_row(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(1, 1);
-        assert_eq!(_squares_on_same_row(&sq_1, &sq_2), false);
+        assert!(!_squares_on_same_row(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(5, 6);
         let sq_2 = Square::_new_without_piece(5, 5);
-        assert_eq!(_squares_on_same_row(&sq_1, &sq_2), false);
+        assert!(!_squares_on_same_row(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(2, 3);
         let sq_2 = Square::_new_without_piece(3, 3);
-        assert_eq!(_squares_on_same_row(&sq_1, &sq_2), true);
+        assert!(_squares_on_same_row(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(5, 5);
         let sq_2 = Square::_new_without_piece(6, 4);
-        assert_eq!(_squares_on_same_row(&sq_1, &sq_2), false);
+        assert!(!_squares_on_same_row(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(5, 5);
         let sq_2 = Square::_new_without_piece(4, 5);
-        assert_eq!(_squares_on_same_row(&sq_1, &sq_2), true);
+        assert!(_squares_on_same_row(&sq_1, &sq_2));
     }
 
     #[test]
@@ -180,21 +180,21 @@ mod tests {
     fn is_diagonal_works() {
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(0, 1);
-        assert_eq!(is_diagonal(&sq_1, &sq_2), false);
+        assert!(!is_diagonal(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(1, 1);
-        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        assert!(is_diagonal(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(0, 0);
         let sq_2 = Square::_new_without_piece(3, 3);
-        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        assert!(is_diagonal(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(1, 0);
         let sq_2 = Square::_new_without_piece(4, 3);
-        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        assert!(is_diagonal(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(0, 1);
         let sq_2 = Square::_new_without_piece(4, 3);
-        assert_eq!(is_diagonal(&sq_1, &sq_2), false);
+        assert!(!is_diagonal(&sq_1, &sq_2));
         let sq_1 = Square::_new_without_piece(0, 7);
         let sq_2 = Square::_new_without_piece(7, 0);
-        assert_eq!(is_diagonal(&sq_1, &sq_2), true);
+        assert!(is_diagonal(&sq_1, &sq_2));
     }
 }

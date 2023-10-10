@@ -26,27 +26,27 @@ mod tests {
         chess.board[4][4].piece = BLACKHORSE;
         let sq1 = chess.board[4][4];
         let sq2 = chess.board[6][3];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[6][5];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[5][6];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[5][2];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[3][6];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[3][2];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[2][5];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
 
         let sq2 = chess.board[2][3];
-        assert_eq!(move_knight(&sq1, &sq2), true);
+        assert!(move_knight(&sq1, &sq2));
     }
 }

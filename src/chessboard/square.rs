@@ -1,4 +1,4 @@
-use crate::{moves::pawn, piece::Piece};
+use crate::piece::Piece;
 
 use super::{file::File, rank::Rank};
 
@@ -64,15 +64,15 @@ impl Square {
         self.piece != Piece::default()
     }
 
-    pub fn move_piece(&mut self) {
-        match self.piece {
-            Piece::None => todo!(),
-            Piece::Pawn(_) => self.piece.piece_move(),
-            Piece::Knight(_) => todo!(),
-            Piece::Bishop(_) => todo!(),
-            Piece::Rook(_) => todo!(),
-            Piece::Queen(_) => todo!(),
-            Piece::King(_) => todo!(),
-        }
-    }
+    // pub fn move_piece(&mut self) {
+    //     match self.piece {
+    //         Piece::None => todo!(),
+    //         Piece::Pawn(_) => self.piece.piece_move(),
+    //         Piece::Knight(_) => todo!(),
+    //         Piece::Bishop(_) => todo!(),
+    //         Piece::Rook(_) => todo!(),
+    //         Piece::Queen(_) => todo!(),
+    //         Piece::King(_) => todo!(),
+    //     }
+    // }
 }

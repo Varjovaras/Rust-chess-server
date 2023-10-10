@@ -2,18 +2,15 @@ pub mod file;
 pub mod rank;
 pub mod square;
 
-use crate::{
-    chess::Chess,
-    piece::{
-        Piece::Bishop,
-        Piece::King,
-        Piece::Pawn,
-        Piece::Queen,
-        Piece::Rook,
-        Piece::{self, Knight},
-        PieceColor::Black,
-        PieceColor::{self, White},
-    },
+use crate::piece::{
+    Piece::Bishop,
+    Piece::King,
+    Piece::Pawn,
+    Piece::Queen,
+    Piece::Rook,
+    Piece::{self, Knight},
+    PieceColor::Black,
+    PieceColor::{self, White},
 };
 
 use self::square::{Square, SquareColor};
@@ -114,7 +111,7 @@ pub fn get_black_king(board: &ChessBoard) -> &Square {
     &board[0][0]
 }
 
-pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
+pub fn _get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
     let mut squares_with_pieces: Vec<Square> = Vec::new();
     for file in board.iter().take(8) {
         for square in file {
@@ -126,7 +123,7 @@ pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
     squares_with_pieces
 }
 
-pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
+pub fn _get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
     let mut squares_with_pieces: Vec<Square> = Vec::new();
     for file in board.iter().take(8) {
         for square in file {

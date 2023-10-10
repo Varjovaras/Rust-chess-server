@@ -76,7 +76,7 @@ impl Chess {
             || start_sq.piece == Piece::Rook(PieceColor::White)
             || start_sq.piece == Piece::Rook(PieceColor::Black)
         {
-            if move_is_castling(start_sq, end_sq, &self) {
+            if move_is_castling(start_sq, end_sq, self) {
                 self.handle_castling(start_sq, end_sq);
                 return;
             }

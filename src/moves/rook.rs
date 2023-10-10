@@ -31,26 +31,26 @@ mod tests {
         chess.starting_position();
         let sq1 = chess.board[0][0];
         let sq2 = chess.board[0][6];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), false);
+        assert!(!move_rook(&sq1, &sq2, &chess));
         chess.board[0][1].piece = NONE;
-        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+        assert!(move_rook(&sq1, &sq2, &chess));
 
         chess.board[4][4].piece = BLACKROOK;
         let sq1 = chess.board[4][4];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), false);
+        assert!(!move_rook(&sq1, &sq2, &chess));
         let sq2 = chess.board[4][5];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+        assert!(move_rook(&sq1, &sq2, &chess));
         let sq2 = chess.board[7][4];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+        assert!(move_rook(&sq1, &sq2, &chess));
         let sq2 = chess.board[0][4];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+        assert!(move_rook(&sq1, &sq2, &chess));
 
         chess.board[1][4].piece = WHITEROOK;
         let sq1 = chess.board[1][4];
         let sq2 = chess.board[4][4];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+        assert!(move_rook(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[1][1];
-        assert_eq!(move_rook(&sq1, &sq2, &chess), true);
+        assert!(move_rook(&sq1, &sq2, &chess));
     }
 }

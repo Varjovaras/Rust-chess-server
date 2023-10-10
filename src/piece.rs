@@ -48,17 +48,22 @@ impl Piece {
         }
     }
 
-    pub fn legal_moves(&self, chessboard: [[Square; 8]; 8], file: usize, rank: usize) -> Vec<Move> {
+    pub fn _legal_moves(
+        &self,
+        chessboard: [[Square; 8]; 8],
+        file: usize,
+        rank: usize,
+    ) -> Vec<Move> {
         let mut legal_moves: Vec<Move> = Vec::new();
         let start_sq = chessboard[file][rank];
-        for file in 0..8 {
-            for rank in 0..8 {
+        (0..8).for_each(|file| {
+            (0..8).for_each(|rank| {
                 let end_sq = chessboard[file][rank];
                 if self.piece_move(&start_sq, &end_sq, &mut Chess::new()) {
-                    legal_moves.push((start_sq, end_sq, self.color().clone()));
+                    legal_moves.push((start_sq, end_sq, *self.color()));
                 }
-            }
-        }
+            });
+        });
         legal_moves
     }
 }

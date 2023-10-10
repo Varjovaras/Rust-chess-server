@@ -34,24 +34,24 @@ mod tests {
         chess.board[4][4].piece = WHITEQUEEN;
         let sq1 = chess.board[4][4];
         let sq2 = chess.board[0][0];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), false);
+        assert!(!move_queen(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[1][1];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+        assert!(move_queen(&sq1, &sq2, &chess));
 
         chess.board[1][1].piece = NONE;
         let sq2 = chess.board[0][0];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+        assert!(move_queen(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[6][6];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+        assert!(move_queen(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[1][6];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), false);
+        assert!(!move_queen(&sq1, &sq2, &chess));
         let sq2 = chess.board[2][6];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+        assert!(move_queen(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[7][1];
-        assert_eq!(move_queen(&sq1, &sq2, &chess), true);
+        assert!(move_queen(&sq1, &sq2, &chess));
     }
 }

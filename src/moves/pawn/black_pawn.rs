@@ -106,38 +106,26 @@ mod tests {
         //Bishop on B7
         chess.board[1][6].piece = Piece::Bishop(PieceColor::Black);
 
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::E, Rank::Seventh),
-                chess.get_square(File::E, Rank::Sixth),
-                &chess
-            ),
-            true
-        );
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::E, Rank::Seventh),
-                chess.get_square(File::E, Rank::Fifth),
-                &chess
-            ),
-            true
-        );
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::E, Rank::Seventh),
-                chess.get_square(File::A, Rank::Sixth),
-                &chess
-            ),
-            false
-        );
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::E, Rank::Seventh),
-                chess.get_square(File::E, Rank::Fourth),
-                &chess
-            ),
-            false
-        );
+        assert!(move_black_pawn(
+            chess.get_square(File::E, Rank::Seventh),
+            chess.get_square(File::E, Rank::Sixth),
+            &chess
+        ));
+        assert!(move_black_pawn(
+            chess.get_square(File::E, Rank::Seventh),
+            chess.get_square(File::E, Rank::Fifth),
+            &chess
+        ));
+        assert!(!move_black_pawn(
+            chess.get_square(File::E, Rank::Seventh),
+            chess.get_square(File::A, Rank::Sixth),
+            &chess
+        ));
+        assert!(!move_black_pawn(
+            chess.get_square(File::E, Rank::Seventh),
+            chess.get_square(File::E, Rank::Fourth),
+            &chess
+        ));
         //     println!(
         //         "{:?}",
         //         move_white_pawn(
@@ -146,14 +134,11 @@ mod tests {
         //             &chess
         //         )
         //     );
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::A, Rank::Seventh),
-                chess.get_square(File::A, Rank::Fifth),
-                &chess
-            ),
-            true
-        );
+        assert!(move_black_pawn(
+            chess.get_square(File::A, Rank::Seventh),
+            chess.get_square(File::A, Rank::Fifth),
+            &chess
+        ));
     }
     #[test]
     fn normal_pawn_moves() {
@@ -164,23 +149,17 @@ mod tests {
         chess.board[1][6].piece = Piece::Bishop(PieceColor::White);
         chess.board[3][5].piece = Piece::Pawn(PieceColor::Black);
 
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::D, Rank::Sixth),
-                chess.get_square(File::D, Rank::Fifth),
-                &chess
-            ),
-            true
-        );
+        assert!(move_black_pawn(
+            chess.get_square(File::D, Rank::Sixth),
+            chess.get_square(File::D, Rank::Fifth),
+            &chess
+        ));
 
-        assert_eq!(
-            move_black_pawn(
-                chess.get_square(File::D, Rank::Sixth),
-                chess.get_square(File::E, Rank::Sixth),
-                &chess
-            ),
-            false
-        );
+        assert!(!move_black_pawn(
+            chess.get_square(File::D, Rank::Sixth),
+            chess.get_square(File::E, Rank::Sixth),
+            &chess
+        ));
     }
 
     #[test]
@@ -198,46 +177,31 @@ mod tests {
         chess.board[4][3].piece = Piece::Pawn(PieceColor::Black);
         chess.board[5][3].piece = Piece::Pawn(PieceColor::White);
 
-        assert_eq!(
-            move_black_pawn(
-                &chess.get_square_from_str("e", "4").clone(),
-                &chess.get_square_from_str("f", "3").clone(),
-                &chess
-            ),
-            true
-        );
+        assert!(move_black_pawn(
+            &chess.get_square_from_str("e", "4").clone(),
+            &chess.get_square_from_str("f", "3").clone(),
+            &chess
+        ));
 
-        assert_eq!(
-            move_black_pawn(
-                &chess.get_square_from_str("d", "4").clone(),
-                &chess.get_square_from_str("f", "3").clone(),
-                &chess
-            ),
-            false
-        );
-        assert_eq!(
-            move_black_pawn(
-                &chess.get_square_from_str("e", "4").clone(),
-                &chess.get_square_from_str("f", "4").clone(),
-                &chess
-            ),
-            false
-        );
-        assert_eq!(
-            move_black_pawn(
-                &chess.get_square_from_str("e", "4").clone(),
-                &chess.get_square_from_str("f", "2").clone(),
-                &chess
-            ),
-            false
-        );
-        assert_eq!(
-            move_black_pawn(
-                &chess.get_square_from_str("g", "4").clone(),
-                &chess.get_square_from_str("f", "3").clone(),
-                &chess
-            ),
-            false
-        );
+        assert!(!move_black_pawn(
+            &chess.get_square_from_str("d", "4").clone(),
+            &chess.get_square_from_str("f", "3").clone(),
+            &chess
+        ));
+        assert!(!move_black_pawn(
+            &chess.get_square_from_str("e", "4").clone(),
+            &chess.get_square_from_str("f", "4").clone(),
+            &chess
+        ));
+        assert!(!move_black_pawn(
+            &chess.get_square_from_str("e", "4").clone(),
+            &chess.get_square_from_str("f", "2").clone(),
+            &chess
+        ));
+        assert!(!move_black_pawn(
+            &chess.get_square_from_str("g", "4").clone(),
+            &chess.get_square_from_str("f", "3").clone(),
+            &chess
+        ));
     }
 }

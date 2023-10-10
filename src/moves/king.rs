@@ -85,21 +85,21 @@ mod tests {
         chess.board[4][4].piece = BLACKKING;
         let sq1 = chess.board[4][4];
         let sq2 = chess.board[4][5];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[4][3];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[5][5];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[5][3];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[5][4];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[3][3];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[3][4];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
         let sq2 = chess.board[3][5];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
     }
 
     #[test]
@@ -109,42 +109,42 @@ mod tests {
 
         let sq1 = chess.board[4][0];
         let sq2 = chess.board[6][0];
-        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        assert!(!move_king(&sq1, &sq2, &chess));
 
         chess.board[5][0].piece = NONE;
         chess.board[6][0].piece = NONE;
         let sq1 = chess.board[4][0];
         let sq2 = chess.board[6][0];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[7][0];
-        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        assert!(!move_king(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[2][0];
-        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        assert!(!move_king(&sq1, &sq2, &chess));
         chess.board[1][0].piece = NONE;
         chess.board[2][0].piece = NONE;
         chess.board[3][0].piece = NONE;
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
 
         let sq1 = chess.board[4][7];
         let sq2 = chess.board[6][7];
-        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        assert!(!move_king(&sq1, &sq2, &chess));
 
         chess.board[5][7].piece = NONE;
         chess.board[6][7].piece = NONE;
         let sq1 = chess.board[4][7];
         let sq2 = chess.board[6][7];
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[7][7];
-        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        assert!(!move_king(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[2][7];
-        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+        assert!(!move_king(&sq1, &sq2, &chess));
         chess.board[1][7].piece = NONE;
         chess.board[2][7].piece = NONE;
         chess.board[3][7].piece = NONE;
-        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        assert!(move_king(&sq1, &sq2, &chess));
     }
 }
