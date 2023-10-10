@@ -12,7 +12,42 @@ pub fn move_knight(start_sq: &Square, end_sq: &Square) -> bool {
 
 #[cfg(test)]
 mod tests {
+    use crate::{
+        chess::Chess,
+        moves::knight::move_knight,
+        piece::{PieceColor, Pieces},
+    };
 
+    const NONE: Pieces = Pieces::None;
+    const BLACKHORSE: Pieces = Pieces::Queen(PieceColor::Black);
     #[test]
-    fn rook_move_works() {}
+    fn knight_move_works() {
+        let mut chess = Chess::new();
+        chess.starting_position();
+        chess.board[4][4].piece = BLACKHORSE;
+        let sq1 = chess.board[4][4];
+        let sq2 = chess.board[6][3];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[6][5];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[5][6];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[5][2];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[3][6];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[3][2];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[2][5];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+
+        let sq2 = chess.board[2][3];
+        assert_eq!(move_knight(&sq1, &sq2), true);
+    }
 }
