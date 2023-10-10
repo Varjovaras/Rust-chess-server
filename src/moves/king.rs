@@ -1,5 +1,4 @@
 use crate::{
-    castling::Castling,
     chess::Chess,
     chessboard::{file::File, rank::Rank, square::Square},
     piece::{PieceColor, Pieces},
@@ -8,7 +7,7 @@ use crate::{
 use super::move_helpers::helpers::{is_diagonal, is_horizontal, is_vertical};
 
 pub fn move_king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if move_is_castling(start_sq, end_sq, &chess.castling) {
+    if move_is_castling(start_sq, end_sq, chess) {
         true
     } else if is_vertical(start_sq, end_sq) {
         (start_sq.rank as u8).abs_diff(end_sq.rank as u8) == 1
@@ -22,7 +21,7 @@ pub fn move_king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     }
 }
 
-pub fn move_is_castling(start_sq: &Square, end_sq: &Square, castling: &[Castling]) -> bool {
+pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.piece == Pieces::King(PieceColor::White)
         || start_sq.piece == Pieces::King(PieceColor::Black)
     {
@@ -37,19 +36,89 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, castling: &[Castling
     {
         return false;
     }
+
+    let castling = chess.castling;
+
     match (start_sq.rank, end_sq.file) {
-        (Rank::First, File::G) => castling[0].castling_allowed(),
-        (Rank::First, File::C) => castling[1].castling_allowed(),
-        (Rank::Eighth, File::G) => castling[2].castling_allowed(),
-        (Rank::Eighth, File::C) => castling[3].castling_allowed(),
+        (Rank::First, File::G) => {
+            chess.board[5][0].piece == Pieces::None
+                && chess.board[6][0].piece == Pieces::None
+                && castling.white_king_side_castling
+        }
+        (Rank::First, File::C) => {
+            chess.board[1][0].piece == Pieces::None
+                && chess.board[2][0].piece == Pieces::None
+                && chess.board[3][0].piece == Pieces::None
+                && castling.white_queen_side_castling
+        }
+        (Rank::Eighth, File::G) => {
+            chess.board[5][7].piece == Pieces::None
+                && chess.board[6][7].piece == Pieces::None
+                && castling.black_king_side_castling
+        }
+        (Rank::Eighth, File::C) => {
+            chess.board[1][7].piece == Pieces::None
+                && chess.board[2][7].piece == Pieces::None
+                && chess.board[3][7].piece == Pieces::None
+                && castling.black_queen_side_castling
+        }
         _ => false,
     }
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::{
+        chess::Chess,
+        moves::king::move_king,
+        piece::{PieceColor, Pieces},
+    };
 
     // use super::*;
+    const BLACKKING: Pieces = Pieces::King(PieceColor::Black);
+    const NONE: Pieces = Pieces::None;
+
     #[test]
-    fn rook_move_works() {}
+    fn king_move_works() {
+        let mut chess = Chess::new();
+        chess.starting_position();
+        chess.board[4][4].piece = BLACKKING;
+        let sq1 = chess.board[4][4];
+        let sq2 = chess.board[4][5];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[4][3];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[5][5];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[5][3];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[5][4];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[3][3];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[3][4];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+        let sq2 = chess.board[3][5];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+    }
+
+    #[test]
+    fn castling_works() {
+        let mut chess = Chess::new();
+        chess.starting_position();
+
+        let sq1 = chess.board[4][0];
+        let sq2 = chess.board[6][0];
+        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+
+        chess.board[5][0].piece = NONE;
+        chess.board[6][0].piece = NONE;
+        let sq1 = chess.board[4][0];
+        let sq2 = chess.board[6][0];
+        assert_eq!(move_king(&sq1, &sq2, &chess), true);
+
+        let sq1 = chess.board[4][0];
+        let sq2 = chess.board[7][0];
+        assert_eq!(move_king(&sq1, &sq2, &chess), false);
+    }
 }

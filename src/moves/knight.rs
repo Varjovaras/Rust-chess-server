@@ -18,8 +18,7 @@ mod tests {
         piece::{PieceColor, Pieces},
     };
 
-    const NONE: Pieces = Pieces::None;
-    const BLACKHORSE: Pieces = Pieces::Queen(PieceColor::Black);
+    const BLACKHORSE: Pieces = Pieces::Knight(PieceColor::Black);
     #[test]
     fn knight_move_works() {
         let mut chess = Chess::new();

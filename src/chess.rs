@@ -16,7 +16,7 @@ pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
     pub latest_move: Option<Move>,
-    pub castling: Vec<Castling>,
+    pub castling: Castling,
     pub white_in_check: bool,
     pub black_in_check: bool,
     pub game_over: bool,
@@ -71,7 +71,7 @@ impl Chess {
             self.board[end_sq.file as usize][start_sq.rank as usize].piece = Pieces::None;
         }
 
-        if move_is_castling(start_sq, end_sq, &self.castling) {
+        if move_is_castling(start_sq, end_sq, &self) {
             self.handle_castling(start_sq, end_sq)
         }
 
