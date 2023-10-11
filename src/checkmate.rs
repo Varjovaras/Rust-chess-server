@@ -29,15 +29,18 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         return false;
     }
 
-    possible_moves
-        .iter()
-        .for_each(|possible_move: &((usize, usize), (usize, usize))| {
-            let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
-            let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
-            chess.move_removes_check(&start_sq, &end_sq);
-        });
+    println!("Possible moves: {:?}", possible_moves);
 
-    false
+    for possible_move in possible_moves.iter() {
+        let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
+        let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
+        if chess.move_removes_check(&start_sq, &end_sq) {
+            // println!("Move {:?} removes check", possible_move);
+            return false;
+        }
+    }
+
+    true
 }
 
 fn black_possible_moves(chess: &Chess) -> Vec<MoveFromCoordinates> {

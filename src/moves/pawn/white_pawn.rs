@@ -49,12 +49,17 @@ fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
 }
 
 fn white_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if end_sq.piece.color() == &PieceColor::White {
+        return false;
+    }
+
     if start_sq.rank == Rank::Fifth
         && end_sq.rank == Rank::Sixth
         && latest_move_enables_white_en_passant(chess)
     {
         return white_en_passant(start_sq, end_sq, chess);
     }
+
     !end_sq.is_empty()
 }
 

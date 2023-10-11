@@ -98,12 +98,7 @@ impl Chess {
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         self.turn_number += 1;
-
-        if start_sq.piece.color() == &PieceColor::White {
-            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
-        } else {
-            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
-        }
+        self.handle_check_after_move(start_sq);
     }
 
     fn handle_check_after_move(&mut self, start_sq: &Square) {
@@ -120,6 +115,9 @@ impl Chess {
 
     pub fn move_removes_check(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
         let mut temp_board = self.board;
+        if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
+            return false;
+        }
 
         if !start_sq.piece.piece_move(start_sq, end_sq, self) {
             return false;

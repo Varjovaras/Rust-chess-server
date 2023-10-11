@@ -7,17 +7,17 @@ mod moves;
 mod piece;
 
 use chess::Chess;
-use rand::Rng;
+use std::io::{self};
 
-fn main() {
+fn main() -> io::Result<()> {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
     // // chess_board.print_board_black();
     // // println!("{:?}", chess.board[0]);
     // // println!("{:?}", chess.board[0][1]);
 
-    let files = ["a", "b", "c", "d", "e", "f", "g", "h"];
-    let ranks = ["1", "2", "3", "4", "5", "6", "7", "8"];
+    // let files = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    // let ranks = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
     // chessboard::print_board_white(&chess.board);
     let mut sq1 = *chess.get_square_from_str("e", "2");
@@ -28,29 +28,37 @@ fn main() {
     chess.starting_position();
 
     let mut i = 0;
+
     loop {
-        chess = Chess::new();
-        chess.starting_position();
-        let mut rng = rand::thread_rng();
-        let random_number = rng.gen_range(0..=7);
-        let random_number2 = rng.gen_range(0..=7);
-        let random_number3 = rng.gen_range(0..=7);
-        let random_number4 = rng.gen_range(0..=7);
+        // let mut sq1 = String::new();
+        // let mut sq2 = String::new();
+        chess.make_move_from_str("f2", "f3");
+        chess.make_move_from_str("e7", "e5");
+        chess.make_move_from_str("g2", "g4");
+        chess.make_move_from_str("d8", "h4");
 
-        // chess._print_board_white();
-        chess.make_move_from_str(
-            format!("{}{}", files[random_number], ranks[random_number2]).as_str(),
-            format!("{}{}", files[random_number3], ranks[random_number4]).as_str(),
-        );
+        // println!("Enter sq1 :");
+        // println!("Enter sq1 :");
+        // io::stdin().read_line(&mut sq2)?;
 
-        if i == 10000000 {
+        // print!("\x1B[2J\x1B[1;1H");
+        // chess.make_move_from_str(sq1.as_str(), sq2.as_str());
+
+        // chess.print_board_white();
+        i += 1;
+        if i % 10 == 0 {
+            println!("i = {}", i);
+            chess.print_board_white();
+        }
+
+        if i % 100 == 0 {
             break;
         }
 
-        if i % 1000000 == 0 {
-            println!("{}", i);
-            chess.print_board_white();
-        }
-        i += 1;
+        if chess.game_over {}
+
+        // io::stdin().read_line(&mut sq1)?;
     }
+
+    Ok(())
 }
