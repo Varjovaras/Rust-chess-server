@@ -1,12 +1,12 @@
 use crate::{chess::Chess, chessboard::square::Square, piece::PieceColor};
 
-mod bishop;
+pub mod bishop;
 pub mod king;
-mod knight;
+pub mod knight;
 pub mod move_helpers;
 pub mod pawn;
-mod queen;
-mod rook;
+pub mod queen;
+pub mod rook;
 
 pub fn pawn(start_sq: &Square, end_sq: &Square, chess: &Chess, color: &PieceColor) -> bool {
     match *color {

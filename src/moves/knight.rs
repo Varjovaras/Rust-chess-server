@@ -1,5 +1,16 @@
 use crate::chessboard::square::Square;
 
+pub const KNIGHT_MOVES: [(isize, isize); 8] = [
+    (-2, 1),
+    (-2, -1),
+    (-1, 2),
+    (-1, -2),
+    (1, 2),
+    (1, -2),
+    (2, 1),
+    (2, -1),
+];
+
 pub fn move_knight(start_sq: &Square, end_sq: &Square) -> bool {
     let start_sq_file = start_sq.file as u8;
     let start_sq_rank = start_sq.rank as u8;

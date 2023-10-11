@@ -1,7 +1,11 @@
 use crate::{
     chessboard::{get_black_king, get_white_king, ChessBoard},
+    moves::bishop::BISHOP_MOVES,
+    moves::knight::KNIGHT_MOVES,
     piece::{Piece, PieceColor},
 };
+
+pub const ROOK_MOVES: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
 pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
     let king_sq = if king_color == PieceColor::White {
@@ -40,9 +44,8 @@ fn rook_check(
     } else {
         PieceColor::White
     };
-    let rook_moves: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
-    for (file, rank) in rook_moves.iter() {
+    for (file, rank) in ROOK_MOVES.iter() {
         let mut test_file: isize = king_file as isize + file;
         let mut test_rank: isize = king_rank as isize + rank;
 
@@ -111,9 +114,7 @@ fn bishop_check(
         PieceColor::White
     };
 
-    let bishop_moves: [(isize, isize); 4] = [(-1, 1), (1, 1), (1, -1), (-1, -1)];
-
-    for (file, rank) in bishop_moves.iter() {
+    for (file, rank) in BISHOP_MOVES.iter() {
         let mut test_file: isize = king_file as isize + file;
         let mut test_rank: isize = king_rank as isize + rank;
 
@@ -148,17 +149,8 @@ fn knight_check(
     } else {
         PieceColor::White
     };
-    let knight_moves: [(isize, isize); 8] = [
-        (-2, 1),
-        (-2, -1),
-        (-1, 2),
-        (-1, -2),
-        (1, 2),
-        (1, -2),
-        (2, 1),
-        (2, -1),
-    ];
-    for (file, rank) in knight_moves.iter() {
+
+    for (file, rank) in KNIGHT_MOVES.iter() {
         if king_file as isize + file < 0
             || king_file as isize + file > 7
             || king_rank as isize + rank < 0

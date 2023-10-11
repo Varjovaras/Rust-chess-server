@@ -1,6 +1,7 @@
 use crate::{
     castling::Castling,
     check::king_is_in_check,
+    checkmate,
     chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
     moves::{
         king::move_is_castling,
@@ -36,6 +37,11 @@ impl Chess {
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
+        if self.game_over {
+            println!("Game is over");
+            return;
+        }
+
         let moving_piece_color = start_sq.piece.color();
 
         //piece can make the move
@@ -48,7 +54,7 @@ impl Chess {
             return;
         }
 
-        //king is in check and the move doesnt remove check
+        //king is in check and the move doesnt remove check return
         if (moving_piece_color == &PieceColor::White && self.white_in_check
             || moving_piece_color == &PieceColor::Black && self.black_in_check)
             && !self.move_removes_check(start_sq, end_sq)
@@ -78,34 +84,10 @@ impl Chess {
         {
             if move_is_castling(start_sq, end_sq, self) {
                 self.handle_castling(start_sq, end_sq);
+                self.handle_check_after_move(start_sq);
                 return;
             }
-
-            match start_sq.piece {
-                Piece::King(PieceColor::White) => {
-                    self.castling.white_king_side_castling = false;
-                    self.castling.white_queen_side_castling = false;
-                }
-                Piece::King(PieceColor::Black) => {
-                    self.castling.black_king_side_castling = false;
-                    self.castling.black_queen_side_castling = false;
-                }
-                Piece::Rook(PieceColor::White) => {
-                    if start_sq.file == File::A && start_sq.rank == Rank::First {
-                        self.castling.white_queen_side_castling = false;
-                    } else if start_sq.file == File::H && start_sq.rank == Rank::First {
-                        self.castling.white_king_side_castling = false;
-                    }
-                }
-                Piece::Rook(PieceColor::Black) => {
-                    if start_sq.file == File::A && start_sq.rank == Rank::Eighth {
-                        self.castling.black_queen_side_castling = false;
-                    } else if start_sq.file == File::H && start_sq.rank == Rank::Eighth {
-                        self.castling.black_king_side_castling = false;
-                    }
-                }
-                _ => (),
-            }
+            self.remove_castling(start_sq);
         }
 
         self.update_board(start_sq, end_sq);
@@ -124,8 +106,24 @@ impl Chess {
         }
     }
 
-    pub fn move_removes_check(&self, start_sq: &Square, end_sq: &Square) -> bool {
+    fn handle_check_after_move(&mut self, start_sq: &Square) {
+        if start_sq.piece.color() == &PieceColor::White {
+            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
+        } else {
+            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
+        }
+
+        if self.white_in_check || self.black_in_check {
+            self.game_over = checkmate::position_is_checkmate(self);
+        }
+    }
+
+    pub fn move_removes_check(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
         let mut temp_board = self.board;
+
+        if !start_sq.piece.piece_move(start_sq, end_sq, self) {
+            return false;
+        };
 
         if move_is_white_en_passant(start_sq, end_sq, self)
             || move_is_black_en_passant(start_sq, end_sq, self)
@@ -237,6 +235,34 @@ impl Chess {
                 self.castling.black_queen_side_castling = false;
             }
             _ => panic!("Trying to castle with wrong start and end square"),
+        }
+    }
+
+    fn remove_castling(&mut self, start_sq: &Square) {
+        match start_sq.piece {
+            Piece::King(PieceColor::White) => {
+                self.castling.white_king_side_castling = false;
+                self.castling.white_queen_side_castling = false;
+            }
+            Piece::King(PieceColor::Black) => {
+                self.castling.black_king_side_castling = false;
+                self.castling.black_queen_side_castling = false;
+            }
+            Piece::Rook(PieceColor::White) => {
+                if start_sq.file == File::A && start_sq.rank == Rank::First {
+                    self.castling.white_queen_side_castling = false;
+                } else if start_sq.file == File::H && start_sq.rank == Rank::First {
+                    self.castling.white_king_side_castling = false;
+                }
+            }
+            Piece::Rook(PieceColor::Black) => {
+                if start_sq.file == File::A && start_sq.rank == Rank::Eighth {
+                    self.castling.black_queen_side_castling = false;
+                } else if start_sq.file == File::H && start_sq.rank == Rank::Eighth {
+                    self.castling.black_king_side_castling = false;
+                }
+            }
+            _ => (),
         }
     }
 }

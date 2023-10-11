@@ -2,6 +2,8 @@ use crate::{chess::Chess, chessboard::square::Square};
 
 use super::move_helpers::{bishop_move_helpers::DiagonalMoveDirection, helpers::is_diagonal};
 
+pub const BISHOP_MOVES: [(isize, isize); 4] = [(-1, 1), (1, 1), (1, -1), (-1, -1)];
+
 pub fn move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if !is_diagonal(start_sq, end_sq) {
         return false;
