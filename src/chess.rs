@@ -96,13 +96,9 @@ impl Chess {
 
     fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
         self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
-        println!("{:?}, blyat", start_sq.piece);
-        println!("{:?}", self.board[5][6]);
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         self.turn_number += 1;
-        println!("{:?}", self.board[5][6]);
-        println!("rää");
         self.handle_check_after_move(start_sq);
     }
 

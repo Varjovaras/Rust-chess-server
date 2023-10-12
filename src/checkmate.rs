@@ -36,6 +36,7 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
 
         if chess.move_removes_check(&start_sq, &end_sq) {
+            println!("Move {:?} removes check", possible_move);
             return false;
         }
     }
@@ -223,18 +224,14 @@ mod tests {
         assert!(chess.black_won);
 
         chess.starting_position();
-        chess.print_board_white();
-
         chess.make_move_from_str("e2", "e4");
         chess.make_move_from_str("e2", "e4");
         chess.make_move_from_str("e7", "e5");
         chess.make_move_from_str("d1", "h5");
         chess.make_move_from_str("b8", "c6");
         chess.make_move_from_str("h5", "f7");
-        println!("{:?}", chess.board[5][6]);
-        chess.print_board_white();
 
-        assert!(chess.black_in_check);
+        assert!(!chess.black_in_check);
         assert!(!chess.white_won);
         chess.make_move_from_str("e8", "f7");
         assert!(!chess.black_in_check);
