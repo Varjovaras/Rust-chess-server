@@ -229,19 +229,18 @@ mod tests {
         chess.make_move_from_str("e7", "e5");
         chess.make_move_from_str("d1", "h5");
         chess.make_move_from_str("b8", "c6");
-        chess.make_move_from_str("h5", "f7");
-
-        assert!(!chess.black_in_check);
-        assert!(!chess.white_won);
-        chess.make_move_from_str("e8", "f7");
+        chess.make_move_from_str("h5", "e5");
+        assert!(chess.black_in_check);
+        chess.make_move_from_str("c6", "e7");
         assert!(!chess.black_in_check);
 
         chess.make_move_from_str("f1", "c4");
-        assert!(!chess.white_won);
-        chess.make_move_from_str("d7", "d5");
-        chess.make_move_from_str("c4", "d5");
-        assert!(!chess.white_won);
-        // assert!(chess.black_in_check);
+        chess.make_move_from_str("a7", "a6");
+        chess.make_move_from_str("e5", "f4");
+        chess.make_move_from_str("a6", "a5");
+        chess.make_move_from_str("c4", "f7");
+        assert!(chess.black_in_check);
+        assert!(chess.white_won);
     }
 }
 
