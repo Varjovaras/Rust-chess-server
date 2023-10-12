@@ -1,8 +1,8 @@
 use crate::{
     castling::Castling,
     check::king_is_in_check,
-    checkmate,
-    chessboard::{self, file::File, rank::Rank, square::Square, ChessBoard},
+    checkmate::{self},
+    chessboard::{self, file::File, rank::Rank, square::Square, starting_position, ChessBoard},
     moves::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
@@ -20,25 +20,26 @@ pub struct Chess {
     pub castling: Castling,
     pub white_in_check: bool,
     pub black_in_check: bool,
-    pub game_over: bool,
+    pub white_won: bool,
+    pub black_won: bool,
 }
 
 impl Chess {
     pub fn new() -> Chess {
         Chess {
-            board: chessboard::new(),
+            board: chessboard::new_board(),
             turn_number: 0,
             latest_move: None,
             castling: Castling::new(),
             white_in_check: false,
             black_in_check: false,
-            game_over: false,
+            white_won: false,
+            black_won: false,
         }
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
-        if self.game_over {
-            println!("Game is over");
+        if self.white_won || self.black_won {
             return;
         }
 
@@ -95,21 +96,24 @@ impl Chess {
 
     fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
         self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
+        println!("{:?}, blyat", start_sq.piece);
+        println!("{:?}", self.board[5][6]);
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         self.turn_number += 1;
+        println!("{:?}", self.board[5][6]);
+        println!("rää");
         self.handle_check_after_move(start_sq);
     }
 
-    fn handle_check_after_move(&mut self, start_sq: &Square) {
-        if start_sq.piece.color() == &PieceColor::White {
-            self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
-        } else {
-            self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
-        }
+    fn handle_check_after_move(&mut self, _start_sq: &Square) {
+        self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
+        self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
 
-        if self.white_in_check || self.black_in_check {
-            self.game_over = checkmate::position_is_checkmate(self);
+        if self.white_in_check {
+            self.black_won = checkmate::position_is_checkmate(self);
+        } else if self.black_in_check {
+            self.white_won = checkmate::position_is_checkmate(self);
         }
     }
 
@@ -131,7 +135,6 @@ impl Chess {
 
         temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
-
         !king_is_in_check(&temp_board, *start_sq.piece.color())
     }
 
@@ -152,8 +155,13 @@ impl Chess {
     }
 
     pub fn starting_position(&mut self) {
-        self.board = chessboard::starting_position(&mut self.board);
+        self.board = chessboard::new_board();
+        self.board = starting_position();
         self.turn_number = 0;
+        self.white_won = false;
+        self.black_won = false;
+        self.white_in_check = false;
+        self.black_in_check = false;
     }
 
     pub fn get_square(&self, file: File, rank: Rank) -> &Square {
@@ -175,7 +183,7 @@ impl Chess {
 
         for i in (0..8).rev() {
             for j in (0..8).rev() {
-                print!("{:?} ", clone_board[j][i].piece);
+                print!("{} ", clone_board[j][i].piece_name());
             }
             println!(" ");
         }

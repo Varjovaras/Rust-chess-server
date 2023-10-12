@@ -117,6 +117,10 @@ fn bishop_check(
     for (file, rank) in BISHOP_MOVES.iter() {
         let mut test_file: isize = king_file as isize + file;
         let mut test_rank: isize = king_rank as isize + rank;
+        // if (test_file as u8) == 5 && (test_rank as u8) == 6 {
+        //     println!("?!?!?!??!");
+
+        // }
 
         while (0..=7).contains(&test_file) && (0..=7).contains(&test_rank) {
             let sq = chess_board[test_file as usize][test_rank as usize];

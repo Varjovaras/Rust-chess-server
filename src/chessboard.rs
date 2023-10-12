@@ -17,7 +17,7 @@ use self::square::{Square, SquareColor};
 
 pub type ChessBoard = [[Square; 8]; 8];
 
-pub fn new() -> ChessBoard {
+pub fn new_board() -> ChessBoard {
     let mut board: ChessBoard = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
     let mut color = SquareColor::Black; //starting color of the bottom left corner
 
@@ -47,8 +47,8 @@ fn color_changer(color: SquareColor) -> SquareColor {
     }
 }
 
-pub fn starting_position(board: &mut ChessBoard) -> ChessBoard {
-    let mut clone_board = *board;
+pub fn starting_position() -> ChessBoard {
+    let mut clone_board = new_board();
     let white_pieces = [
         Rook(White),
         Knight(White),

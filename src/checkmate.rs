@@ -34,8 +34,8 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
     for possible_move in possible_moves.iter() {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
+
         if chess.move_removes_check(&start_sq, &end_sq) {
-            // println!("Move {:?} removes check", possible_move);
             return false;
         }
     }
@@ -59,7 +59,7 @@ fn black_possible_moves(chess: &Chess) -> Vec<MoveFromCoordinates> {
                 possible_moves.append(&mut bishop_possible_moves(sq));
                 possible_moves.append(&mut rook_possible_moves(sq));
             }
-            Piece::King(_) => todo!(),
+            Piece::King(_) => possible_moves.append(&mut king_possible_moves(sq)),
         }
     }
     possible_moves
@@ -202,3 +202,50 @@ fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
 
     possible_moves
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::{check::king_is_in_check, chess::Chess, chessboard::get_black_king};
+
+    #[test]
+    fn checkmate_works() {
+        let mut chess = Chess::new();
+        chess.starting_position();
+        chess.make_move_from_str("f2", "f3");
+        chess.make_move_from_str("e7", "e5");
+        chess.make_move_from_str("g2", "g4");
+        assert!(!chess.white_won);
+        assert!(!chess.black_in_check);
+        assert!(!chess.white_in_check);
+        chess.make_move_from_str("d8", "h4");
+        assert!(!chess.black_in_check);
+        assert!(chess.white_in_check);
+        assert!(chess.black_won);
+
+        chess.starting_position();
+        chess.print_board_white();
+
+        chess.make_move_from_str("e2", "e4");
+        chess.make_move_from_str("e2", "e4");
+        chess.make_move_from_str("e7", "e5");
+        chess.make_move_from_str("d1", "h5");
+        chess.make_move_from_str("b8", "c6");
+        chess.make_move_from_str("h5", "f7");
+        println!("{:?}", chess.board[5][6]);
+        chess.print_board_white();
+
+        assert!(chess.black_in_check);
+        assert!(!chess.white_won);
+        chess.make_move_from_str("e8", "f7");
+        assert!(!chess.black_in_check);
+
+        chess.make_move_from_str("f1", "c4");
+        assert!(!chess.white_won);
+        chess.make_move_from_str("d7", "d5");
+        chess.make_move_from_str("c4", "d5");
+        assert!(!chess.white_won);
+        // assert!(chess.black_in_check);
+    }
+}
+
+//println!("chess.white_won = {}", chess.white_won);

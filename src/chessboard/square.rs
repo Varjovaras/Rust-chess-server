@@ -1,4 +1,4 @@
-use crate::piece::Piece;
+use crate::piece::{Piece, PieceColor};
 
 use super::{file::File, rank::Rank};
 
@@ -62,6 +62,42 @@ impl Square {
 
     pub fn has_piece(&self) -> bool {
         self.piece != Piece::default()
+    }
+
+    pub fn piece_name(&self) -> &str {
+        match self.piece {
+            Piece::None => " ",
+            Piece::Pawn(_) => match self.piece.color() {
+                PieceColor::White => "p",
+                PieceColor::Black => "P",
+                PieceColor::None => " ",
+            },
+            Piece::Knight(_) => match self.piece.color() {
+                PieceColor::White => "n",
+                PieceColor::Black => "N",
+                PieceColor::None => " ",
+            },
+            Piece::Bishop(_) => match self.piece.color() {
+                PieceColor::White => "B",
+                PieceColor::Black => "b",
+                PieceColor::None => " ",
+            },
+            Piece::Rook(_) => match self.piece.color() {
+                PieceColor::White => "R",
+                PieceColor::Black => "r",
+                PieceColor::None => " ",
+            },
+            Piece::Queen(_) => match self.piece.color() {
+                PieceColor::White => "Q",
+                PieceColor::Black => "q",
+                PieceColor::None => " ",
+            },
+            Piece::King(_) => match self.piece.color() {
+                PieceColor::White => "K",
+                PieceColor::Black => "k",
+                PieceColor::None => " ",
+            },
+        }
     }
 
     // pub fn move_piece(&mut self) {
