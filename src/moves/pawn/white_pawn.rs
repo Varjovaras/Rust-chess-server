@@ -7,12 +7,17 @@ use crate::{
 
 //only en passant affects board, thats why chess is mutable reference
 pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if start_sq.rank == Rank::Eighth {
+        return false;
+    }
     if start_sq.rank > end_sq.rank {
-        panic!("White pawn is moving backwards");
+        println!("White pawn is moving backwards");
+        return false;
     }
     if start_sq.is_empty() {
         return false;
     }
+
     if start_sq.rank == Rank::Second {
         white_starting_sq_move(start_sq, end_sq, chess)
     } else if diagonally_one_square_apart(start_sq, end_sq) {

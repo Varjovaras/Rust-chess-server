@@ -29,14 +29,14 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         return false;
     }
 
-    println!("Possible moves: {:?}", possible_moves);
+    // println!("Possible moves: {:?}", possible_moves);
 
     for possible_move in possible_moves.iter() {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
 
         if chess.move_removes_check(&start_sq, &end_sq) {
-            println!("Move {:?} removes check", possible_move);
+            // println!("Move {:?} removes check", possible_move);
             return false;
         }
     }
@@ -206,7 +206,7 @@ fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
 
 #[cfg(test)]
 mod tests {
-    use crate::{check::king_is_in_check, chess::Chess, chessboard::get_black_king};
+    use crate::chess::Chess;
 
     #[test]
     fn checkmate_works() {

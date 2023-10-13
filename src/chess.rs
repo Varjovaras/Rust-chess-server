@@ -6,6 +6,7 @@ use crate::{
     moves::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
+        pawn::promote,
     },
     piece::{Piece, PieceColor},
 };
@@ -45,15 +46,22 @@ impl Chess {
 
         let moving_piece_color = start_sq.piece.color();
 
-        //piece can make the move
-        if !start_sq.piece.piece_move(start_sq, end_sq, self) {
+        //wrong players turn
+        if start_sq.piece.color() == &PieceColor::White && self.turn_number % 2 == 1
+            || start_sq.piece.color() == &PieceColor::Black && self.turn_number % 2 == 0
+        {
             return;
-        };
+        }
 
         //cannot capture own piece
         if end_sq.has_piece() && end_sq.piece.color() == moving_piece_color {
             return;
         }
+
+        //piece can make the move
+        if !start_sq.piece.piece_move(start_sq, end_sq, self) {
+            return;
+        };
 
         //king is in check and the move doesnt remove check return
         if (moving_piece_color == &PieceColor::White && self.white_in_check
@@ -63,11 +71,21 @@ impl Chess {
             return;
         }
 
-        //wrong players turn
-        if start_sq.piece.color() == &PieceColor::White && self.turn_number % 2 == 1
-            || start_sq.piece.color() == &PieceColor::Black && self.turn_number % 2 == 0
+        if start_sq.piece == Piece::Pawn(PieceColor::White) && end_sq.rank == Rank::Eighth
+            || start_sq.piece == Piece::Pawn(PieceColor::Black) && end_sq.rank == Rank::First
         {
-            return;
+            match promote(start_sq, end_sq, self) {
+                Some(Piece::Pawn(_)) => return,
+                Some(Piece::King(_)) => return,
+                Some(Piece::None) => return,
+                Some(promoted_piece) => {
+                    self.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
+                    self.handle_check_after_move(start_sq);
+
+                    return;
+                }
+                None => return,
+            }
         }
 
         //remove en-passanted piece

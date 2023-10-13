@@ -27,19 +27,21 @@ fn main() -> io::Result<()> {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
 
-    // let mut i = 0;
+    let mut i = 0;
 
     loop {
+        let mut chess: Chess = Chess::new();
+        chess.starting_position();
         // let mut sq1 = String::new();
         // let mut sq2 = String::new();
-        // chess.make_move_from_str("f2", "f3");
-        // chess.make_move_from_str("e7", "e5");
-        // chess.make_move_from_str("g2", "g4");
+        chess.make_move_from_str("f2", "f3");
+        chess.make_move_from_str("e7", "e5");
+        chess.make_move_from_str("g2", "g4");
+        chess.make_move_from_str("d8", "h4");
+        chess.make_move_from_str("f2", "f3");
+        chess.make_move_from_str("e7", "e5");
+        chess.make_move_from_str("g2", "g4");
         // chess.make_move_from_str("d8", "h4");
-        // chess.make_move_from_str("f2", "f3");
-        // chess.make_move_from_str("e7", "e5");
-        // chess.make_move_from_str("g2", "g4");
-        // // chess.make_move_from_str("d8", "h4");
 
         // // println!("Enter sq1 :");
         // // println!("Enter sq1 :");
@@ -49,15 +51,6 @@ fn main() -> io::Result<()> {
         // // chess.make_move_from_str(sq1.as_str(), sq2.as_str());
 
         // // chess.print_board_white();
-        // i += 1;
-        // if i % 10 == 0 {
-        //     println!("i = {}", i);
-        //     chess.print_board_white();
-        // }
-
-        // if i % 1000000 == 0 {
-        //     break;
-        // }
 
         chess.starting_position();
         chess.make_move_from_str("e2", "e4");
@@ -71,7 +64,17 @@ fn main() -> io::Result<()> {
         chess.make_move_from_str("d7", "d5");
         chess.make_move_from_str("c4", "d5");
 
-        if !chess.white_won || !chess.black_won {
+        // if !chess.white_won || !chess.black_won {
+        //     break;
+        // }
+
+        i += 1;
+        if i % 10 == 0 {
+            println!("i = {}", i);
+            // chess.print_board_white();
+        }
+
+        if i % 10 == 0 {
             break;
         }
 

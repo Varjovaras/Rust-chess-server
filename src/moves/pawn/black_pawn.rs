@@ -7,8 +7,12 @@ use crate::{
 
 //only en passant affects board, thats why chess is mutable reference
 pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if start_sq.rank == Rank::First {
+        return false;
+    }
     if end_sq.rank > start_sq.rank {
-        panic!("Black pawn is moving backwards");
+        println!("Black pawn is moving backwards");
+        return false;
     }
     if start_sq.is_empty() {
         return false;
