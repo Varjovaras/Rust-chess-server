@@ -50,7 +50,7 @@ fn random_move_simulator() {
             break;
         }
         if chess.white_won || chess.black_won || chess.tie {
-            println!("i = {}", i);
+            // println!("i = {}", i);
             // println!("White won: {}", chess.white_won);
             // println!("Black won: {}", chess.black_won);
             // println!("Tie: {}", chess.tie);

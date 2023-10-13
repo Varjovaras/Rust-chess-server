@@ -11,12 +11,19 @@ pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> boo
     let king_sq = if king_color == PieceColor::White {
         match get_white_king(chess_board) {
             Some(sq) => sq,
-            None => panic!("White king not found"),
+            None => {
+                println!("{:?}", chess_board);
+                panic!("White king not found")
+            }
         }
     } else {
         match get_black_king(chess_board) {
             Some(sq) => sq,
-            None => panic!("Black king not found"),
+            None => {
+                println!("{:?}", chess_board);
+
+                panic!("Black king not found")
+            }
         }
     };
 
