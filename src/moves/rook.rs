@@ -1,5 +1,7 @@
 use crate::{chess::Chess, chessboard::square::Square};
 
+pub const ROOK_MOVES: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
+
 use super::move_helpers::{
     helpers::{is_horizontal, is_vertical},
     rook_move_helpers::RookMoveDirection,

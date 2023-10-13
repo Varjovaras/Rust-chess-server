@@ -1,10 +1,9 @@
 use crate::{
-    check::ROOK_MOVES,
     chess::Chess,
     chessboard::{
         get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
     },
-    moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES},
+    moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
 

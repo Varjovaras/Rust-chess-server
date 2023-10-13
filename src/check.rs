@@ -1,11 +1,9 @@
 use crate::{
     chessboard::{get_black_king, get_white_king, ChessBoard},
     moves::bishop::BISHOP_MOVES,
-    moves::knight::KNIGHT_MOVES,
+    moves::{knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
-
-pub const ROOK_MOVES: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
 pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
     let king_sq = if king_color == PieceColor::White {
