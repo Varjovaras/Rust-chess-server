@@ -3,6 +3,7 @@ mod check;
 mod checkmate;
 mod chess;
 mod chessboard;
+mod gameover;
 mod moves;
 mod piece;
 
@@ -11,11 +12,13 @@ use chessboard::{file::File, rank::Rank};
 use rand::Rng;
 
 fn main() {
+    random_move_simulator();
+}
+
+fn random_move_simulator() {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
-
     let mut i = 0;
-
     loop {
         let files = File::get_files();
         let ranks = Rank::get_ranks();

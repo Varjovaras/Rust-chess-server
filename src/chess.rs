@@ -1,8 +1,14 @@
+use core::panic;
+
 use crate::{
     castling::Castling,
     check::king_is_in_check,
     checkmate::{self},
-    chessboard::{self, file::File, rank::Rank, square::Square, starting_position, ChessBoard},
+    chessboard::{
+        self, file::File, get_black_king, get_squares_with_black_pieces,
+        get_squares_with_white_pieces, get_white_king, rank::Rank, square::Square,
+        starting_position, ChessBoard,
+    },
     moves::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
@@ -23,6 +29,8 @@ pub struct Chess {
     pub black_in_check: bool,
     pub white_won: bool,
     pub black_won: bool,
+    pub tie: bool,
+    pub fifty_move_rule: u8,
 }
 
 impl Chess {
@@ -36,12 +44,27 @@ impl Chess {
             black_in_check: false,
             white_won: false,
             black_won: false,
+            tie: false,
+            fifty_move_rule: 0,
         }
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
         if self.white_won || self.black_won {
             return;
+        }
+
+        // if self.fifty_move_rule == 50 {
+        //     self.tie = true;
+        //     println!("tie by fifty move rule");
+        //     return;
+        // }
+
+        if self.insufficient_material() {
+            self.tie = true;
+            self.print_board_white();
+            println!("tie by insufficient material");
+            panic!("tie by insufficient material");
         }
 
         let moving_piece_color = start_sq.piece.color();
@@ -85,6 +108,11 @@ impl Chess {
                 Some(Piece::King(_)) => return,
                 Some(Piece::None) => return,
                 Some(promoted_piece) => {
+                    if end_sq.has_piece() {
+                        self.fifty_move_rule = 0;
+                    } else {
+                        self.fifty_move_rule += 1;
+                    }
                     self.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
                     self.handle_check_after_move(start_sq);
                     return;
@@ -109,6 +137,7 @@ impl Chess {
             if move_is_castling(start_sq, end_sq, self) {
                 self.handle_castling(start_sq, end_sq);
                 self.handle_check_after_move(start_sq);
+                self.fifty_move_rule += 1;
                 return;
             }
             self.remove_castling(start_sq);
@@ -118,6 +147,11 @@ impl Chess {
     }
 
     fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
+        if end_sq.has_piece() {
+            self.fifty_move_rule = 0;
+        } else {
+            self.fifty_move_rule += 1;
+        }
         self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
@@ -289,6 +323,77 @@ impl Chess {
             }
             _ => (),
         }
+    }
+
+    pub fn insufficient_material(&self) -> bool {
+        let mut white_knights: u8 = 0;
+        let mut white_bishops: u8 = 0;
+        let mut black_knights: u8 = 0;
+        let mut black_bishops: u8 = 0;
+
+        let white_piece_squares = get_squares_with_white_pieces(&self.board);
+        let black_piece_squares = get_squares_with_black_pieces(&self.board);
+
+        if get_white_king(&self.board).is_none() || get_black_king(&self.board).is_none() {
+            return true;
+        }
+
+        if white_piece_squares.len() == 1 && black_piece_squares.len() == 1 {
+            return true;
+        }
+
+        for square in white_piece_squares {
+            match square.piece {
+                Piece::None => panic!("White piece square has no piece"),
+                Piece::Pawn(_) => return false,
+                Piece::Knight(_) => white_knights += 1,
+                Piece::Bishop(_) => white_bishops += 1,
+                Piece::Rook(_) => return false,
+                Piece::Queen(_) => return false,
+                Piece::King(_) => {}
+            }
+        }
+
+        for square in black_piece_squares {
+            match square.piece {
+                Piece::None => panic!("Black piece square has no piece"),
+                Piece::Pawn(_) => return false,
+                Piece::Knight(_) => black_knights += 1,
+                Piece::Bishop(_) => black_bishops += 1,
+                Piece::Rook(_) => return false,
+                Piece::Queen(_) => return false,
+                Piece::King(_) => {}
+            }
+        }
+
+        if white_knights > 1 || black_knights > 1 || white_bishops > 1 || black_bishops > 1 {
+            return false;
+        }
+
+        if white_knights == 0 && black_knights == 1 && white_bishops == 1 && black_bishops == 0 {
+            return true;
+        }
+
+        if white_knights == 1 && black_knights == 0 && white_bishops == 0 && black_bishops == 1 {
+            return true;
+        }
+
+        if white_knights == 1 && black_knights == 0 && white_bishops == 0 && black_bishops == 0 {
+            return true;
+        }
+
+        if white_knights == 0 && black_knights == 1 && white_bishops == 0 && black_bishops == 0 {
+            return true;
+        }
+
+        if white_knights == 0 && black_knights == 0 && white_bishops == 1 && black_bishops == 0 {
+            return true;
+        }
+        if white_knights == 0 && black_knights == 0 && white_bishops == 0 && black_bishops == 1 {
+            return true;
+        }
+
+        true
     }
 }
 

@@ -9,9 +9,15 @@ pub const ROOK_MOVES: [(isize, isize); 4] = [(-1, 0), (1, 0), (0, -1), (0, 1)];
 
 pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
     let king_sq = if king_color == PieceColor::White {
-        get_white_king(chess_board)
+        match get_white_king(chess_board) {
+            Some(sq) => sq,
+            None => panic!("White king not found"),
+        }
     } else {
-        get_black_king(chess_board)
+        match get_black_king(chess_board) {
+            Some(sq) => sq,
+            None => panic!("Black king not found"),
+        }
     };
 
     let king_file = king_sq.file as usize;

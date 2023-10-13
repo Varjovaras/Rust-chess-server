@@ -87,28 +87,26 @@ pub fn starting_position() -> ChessBoard {
     clone_board
 }
 
-pub fn get_white_king(board: &ChessBoard) -> &Square {
+pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
     for file in board.iter().take(8) {
         for square in file {
             if square.piece == Piece::King(PieceColor::White) {
-                return square;
+                return Some(square);
             }
         }
     }
-    // panic!("No white king");
-    &board[0][0]
+    None
 }
 
-pub fn get_black_king(board: &ChessBoard) -> &Square {
+pub fn get_black_king(board: &ChessBoard) -> Option<&Square> {
     for file in board.iter().take(8) {
         for square in file {
             if square.piece == Piece::King(PieceColor::Black) {
-                return square;
+                return Some(square);
             }
         }
     }
-    // panic!("No black king");
-    &board[0][0]
+    None
 }
 
 pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
