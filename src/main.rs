@@ -13,12 +13,16 @@ use rand::Rng;
 
 fn main() {
     random_move_simulator();
+    Chess::new().print_board_white();
 }
 
 fn random_move_simulator() {
     let mut chess: Chess = Chess::new();
     chess.starting_position();
     let mut i = 0;
+    let mut white_wins = 0;
+    let mut black_wins = 0;
+    let mut ties = 0;
     loop {
         let files = File::get_files();
         let ranks = Rank::get_ranks();
@@ -39,21 +43,31 @@ fn random_move_simulator() {
 
         i += 1;
 
-        if i % 10000 == 0 {
-            println!("i = {}", i);
-        }
-
-        if i % 10000 == 0 {
-            println!("i = {}", i);
-            chess.print_board_white();
-        }
-        if chess.white_won || chess.black_won {
-            println!("i = {}", i);
-            println!("White won: {}", chess.white_won);
-            println!("Black won: {}", chess.black_won);
-            chess.print_board_white();
+        if i % 100000000 == 0 {
+            println!("White wins: {}", white_wins);
+            println!("Black wins: {}", black_wins);
+            println!("Ties: {}", ties);
             break;
         }
-        // chess.print_board_white();
+        if chess.white_won || chess.black_won || chess.tie {
+            println!("i = {}", i);
+            // println!("White won: {}", chess.white_won);
+            // println!("Black won: {}", chess.black_won);
+            // println!("Tie: {}", chess.tie);
+            if chess.white_won {
+                white_wins += 1;
+            } else if chess.black_won {
+                black_wins += 1;
+            } else if chess.tie {
+                ties += 1;
+            }
+            // chess.print_board_white();
+            println!("White wins: {}", white_wins);
+            println!("Black wins: {}", black_wins);
+            println!("Ties: {}", ties);
+            chess = Chess::new();
+            chess.starting_position();
+            // break;
+        }
     }
 }
