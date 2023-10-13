@@ -15,7 +15,7 @@ pub enum File {
 }
 
 impl File {
-    pub fn as_usize(&self) -> usize {
+    pub fn _as_usize(&self) -> usize {
         match self {
             File::A => 0,
             File::B => 1,
@@ -41,7 +41,7 @@ impl File {
         }
     }
 
-    pub fn from_str_slice(s: &str) -> File {
+    pub fn _from_str_slice(s: &str) -> File {
         let str = s.to_uppercase();
         let file = &str[..];
         match file {
@@ -55,6 +55,19 @@ impl File {
             "H" => File::H,
             _ => panic!("Invalid file_str"),
         }
+    }
+
+    pub(crate) fn get_files() -> [File; 8] {
+        [
+            File::A,
+            File::B,
+            File::C,
+            File::D,
+            File::E,
+            File::F,
+            File::G,
+            File::H,
+        ]
     }
 }
 

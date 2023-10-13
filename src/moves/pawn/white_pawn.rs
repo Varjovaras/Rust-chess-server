@@ -11,7 +11,7 @@ pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
         return false;
     }
     if start_sq.rank > end_sq.rank {
-        println!("White pawn is moving backwards");
+        // println!("White pawn is moving backwards");
         return false;
     }
     if start_sq.is_empty() {
@@ -88,15 +88,15 @@ pub fn latest_move_enables_white_en_passant(chess: &Chess) -> bool {
                 && latest_move.1.rank == Rank::Fifth
                 && latest_move.0.piece == Piece::Pawn(latest_move.2)
             {
-                println!("Move is en passant");
+                // println!("Move is en passant");
                 true
             } else {
-                println!("Move is not en passant");
+                // println!("Move is not en passant");
                 false
             }
         }
         None => {
-            println!("Move is not en passant");
+            // println!("Move is not en passant");
             false
         }
     }
@@ -185,29 +185,29 @@ mod tests {
         chess.board[5][4].piece = Piece::Pawn(PieceColor::Black);
 
         assert!(move_white_pawn(
-            &chess.get_square_from_str("e", "5").clone(),
-            &chess.get_square_from_str("f", "6").clone(),
+            &chess._get_square_from_str("e", "5").clone(),
+            &chess._get_square_from_str("f", "6").clone(),
             &chess
         ));
 
         assert!(!move_white_pawn(
-            &chess.get_square_from_str("d", "5").clone(),
-            &chess.get_square_from_str("f", "6").clone(),
+            &chess._get_square_from_str("d", "5").clone(),
+            &chess._get_square_from_str("f", "6").clone(),
             &chess
         ));
         assert!(!move_white_pawn(
-            &chess.get_square_from_str("e", "5").clone(),
-            &chess.get_square_from_str("f", "5").clone(),
+            &chess._get_square_from_str("e", "5").clone(),
+            &chess._get_square_from_str("f", "5").clone(),
             &chess
         ));
         assert!(!move_white_pawn(
-            &chess.get_square_from_str("e", "5").clone(),
-            &chess.get_square_from_str("f", "7").clone(),
+            &chess._get_square_from_str("e", "5").clone(),
+            &chess._get_square_from_str("f", "7").clone(),
             &chess
         ));
         assert!(!move_white_pawn(
-            &chess.get_square_from_str("g", "5").clone(),
-            &chess.get_square_from_str("f", "6").clone(),
+            &chess._get_square_from_str("g", "5").clone(),
+            &chess._get_square_from_str("f", "6").clone(),
             &chess
         ));
     }

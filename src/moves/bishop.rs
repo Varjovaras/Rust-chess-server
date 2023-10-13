@@ -28,39 +28,39 @@ mod tests {
         //Bishop on D5
         chess.board[3][4].piece = Piece::Bishop(PieceColor::White);
 
-        let sq1 = *chess.get_square_from_str("d", "5");
+        let sq1 = *chess._get_square_from_str("d", "5");
 
-        let sq2 = *chess.get_square_from_str("a", "2");
+        let sq2 = *chess._get_square_from_str("a", "2");
         assert!(move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("a", "8");
+        let sq2 = *chess._get_square_from_str("a", "8");
         assert!(move_bishob(&sq1, &sq2, &chess));
 
         //non-diagonal moves
-        let sq2 = *chess.get_square_from_str("a", "7");
+        let sq2 = *chess._get_square_from_str("a", "7");
         assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("a", "6");
+        let sq2 = *chess._get_square_from_str("a", "6");
         assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("a", "5");
+        let sq2 = *chess._get_square_from_str("a", "5");
         assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("a", "4");
+        let sq2 = *chess._get_square_from_str("a", "4");
         assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("a", "3");
+        let sq2 = *chess._get_square_from_str("a", "3");
         assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("a", "1");
-        assert!(!move_bishob(&sq1, &sq2, &chess));
-
-        let sq2 = *chess.get_square_from_str("g", "8");
-        assert!(move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("g", "7");
-        assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("h", "8");
+        let sq2 = *chess._get_square_from_str("a", "1");
         assert!(!move_bishob(&sq1, &sq2, &chess));
 
-        let sq2 = *chess.get_square_from_str("h", "1");
+        let sq2 = *chess._get_square_from_str("g", "8");
         assert!(move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("h", "2");
+        let sq2 = *chess._get_square_from_str("g", "7");
         assert!(!move_bishob(&sq1, &sq2, &chess));
-        let sq2 = *chess.get_square_from_str("h", "3");
+        let sq2 = *chess._get_square_from_str("h", "8");
+        assert!(!move_bishob(&sq1, &sq2, &chess));
+
+        let sq2 = *chess._get_square_from_str("h", "1");
+        assert!(move_bishob(&sq1, &sq2, &chess));
+        let sq2 = *chess._get_square_from_str("h", "2");
+        assert!(!move_bishob(&sq1, &sq2, &chess));
+        let sq2 = *chess._get_square_from_str("h", "3");
         assert!(!move_bishob(&sq1, &sq2, &chess));
     }
 }

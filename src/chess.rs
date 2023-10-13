@@ -53,6 +53,12 @@ impl Chess {
             return;
         }
 
+        if end_sq.piece == Piece::King(PieceColor::White)
+            || end_sq.piece == Piece::King(PieceColor::Black)
+        {
+            return;
+        }
+
         //cannot capture own piece
         if end_sq.has_piece() && end_sq.piece.color() == moving_piece_color {
             return;
@@ -81,7 +87,6 @@ impl Chess {
                 Some(promoted_piece) => {
                     self.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
                     self.handle_check_after_move(start_sq);
-
                     return;
                 }
                 None => return,
@@ -152,15 +157,15 @@ impl Chess {
         !king_is_in_check(&temp_board, *start_sq.piece.color())
     }
 
-    pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
+    pub fn _make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();
-        let mut start_sq = *self.get_square_from_str(
+        let mut start_sq = *self._get_square_from_str(
             start_sq_chars[0].to_string().as_str(),
             start_sq_chars[1].to_string().as_str(),
         );
 
-        let mut end_sq = *self.get_square_from_str(
+        let mut end_sq = *self._get_square_from_str(
             end_sq_chars[0].to_string().as_str(),
             end_sq_chars[1].to_string().as_str(),
         );
@@ -182,9 +187,9 @@ impl Chess {
         &self.board[file as usize][rank as usize]
     }
 
-    pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
-        let file = File::from_str_slice(file_str).as_usize();
-        let rank = Rank::from_str(rank_str).as_usize();
+    pub fn _get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
+        let file = File::_from_str_slice(file_str)._as_usize();
+        let rank = Rank::_from_str(rank_str)._as_usize();
         if file > 7 || rank > 7 {
             panic!("get_square_from_str failed for inputting too big file or rank")
         }
@@ -299,13 +304,13 @@ mod tests {
     fn make_move_works() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
-        let mut start_sq = *chess.get_square_from_str("e", "2");
-        let mut end_sq = *chess.get_square_from_str("e", "4");
+        let mut start_sq = *chess._get_square_from_str("e", "2");
+        let mut end_sq = *chess._get_square_from_str("e", "4");
         chess.make_move(&mut start_sq, &mut end_sq);
 
-        assert_eq!(chess.get_square_from_str("e", "2").piece, Piece::None);
+        assert_eq!(chess._get_square_from_str("e", "2").piece, Piece::None);
         assert_eq!(
-            chess.get_square_from_str("e", "4").piece,
+            chess._get_square_from_str("e", "4").piece,
             Piece::Pawn(PieceColor::White)
         );
         assert_eq!(chess.turn_number, 1);
@@ -314,30 +319,30 @@ mod tests {
             Some((start_sq, end_sq, PieceColor::White))
         );
 
-        let mut start_sq = *chess.get_square_from_str("e", "4");
-        let mut end_sq = *chess.get_square_from_str("e", "5");
+        let mut start_sq = *chess._get_square_from_str("e", "4");
+        let mut end_sq = *chess._get_square_from_str("e", "5");
         chess.make_move(&mut start_sq, &mut end_sq);
         assert_eq!(
-            chess.get_square_from_str("e", "4").piece,
+            chess._get_square_from_str("e", "4").piece,
             Piece::Pawn(PieceColor::White)
         );
-        assert_eq!(chess.get_square_from_str("e", "5").piece, Piece::None);
+        assert_eq!(chess._get_square_from_str("e", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 1);
 
-        let mut start_sq = *chess.get_square_from_str("e", "7");
-        let mut end_sq = *chess.get_square_from_str("e", "5");
+        let mut start_sq = *chess._get_square_from_str("e", "7");
+        let mut end_sq = *chess._get_square_from_str("e", "5");
         chess.make_move(&mut start_sq, &mut end_sq);
         assert_eq!(
-            chess.get_square_from_str("e", "5").piece,
+            chess._get_square_from_str("e", "5").piece,
             Piece::Pawn(PieceColor::Black)
         );
-        assert_eq!(chess.get_square_from_str("e", "7").piece, Piece::None);
+        assert_eq!(chess._get_square_from_str("e", "7").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
 
-        let mut start_sq = *chess.get_square_from_str("e", "4");
-        let mut end_sq = *chess.get_square_from_str("d", "5");
+        let mut start_sq = *chess._get_square_from_str("e", "4");
+        let mut end_sq = *chess._get_square_from_str("d", "5");
         chess.make_move(&mut start_sq, &mut end_sq);
-        assert_eq!(chess.get_square_from_str("d", "5").piece, Piece::None);
+        assert_eq!(chess._get_square_from_str("d", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
     }
 }

@@ -26,7 +26,7 @@ impl Rank {
         }
     }
 
-    pub fn as_usize(&self) -> usize {
+    pub fn _as_usize(&self) -> usize {
         match self {
             Rank::First => 0,
             Rank::Second => 1,
@@ -39,7 +39,7 @@ impl Rank {
         }
     }
 
-    pub fn from_str(s: &str) -> Rank {
+    pub fn _from_str(s: &str) -> Rank {
         match s {
             "1" => Rank::First,
             "2" => Rank::Second,
@@ -51,6 +51,19 @@ impl Rank {
             "8" => Rank::Eighth,
             _ => panic!("Invalid rank_str"),
         }
+    }
+
+    pub(crate) fn get_ranks() -> [Rank; 8] {
+        [
+            Rank::First,
+            Rank::Second,
+            Rank::Third,
+            Rank::Fourth,
+            Rank::Fifth,
+            Rank::Sixth,
+            Rank::Seventh,
+            Rank::Eighth,
+        ]
     }
 }
 
