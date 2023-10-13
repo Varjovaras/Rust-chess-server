@@ -326,11 +326,6 @@ impl Chess {
     }
 
     pub fn insufficient_material(&self) -> bool {
-        let mut white_knights: u8 = 0;
-        let mut white_bishops: u8 = 0;
-        let mut black_knights: u8 = 0;
-        let mut black_bishops: u8 = 0;
-
         let white_piece_squares = get_squares_with_white_pieces(&self.board);
         let black_piece_squares = get_squares_with_black_pieces(&self.board);
 
@@ -341,6 +336,11 @@ impl Chess {
         if white_piece_squares.len() == 1 && black_piece_squares.len() == 1 {
             return true;
         }
+
+        let mut white_knights: u8 = 0;
+        let mut white_bishops: u8 = 0;
+        let mut black_knights: u8 = 0;
+        let mut black_bishops: u8 = 0;
 
         for square in white_piece_squares {
             match square.piece {
@@ -375,6 +375,14 @@ impl Chess {
         }
 
         if white_knights == 1 && black_knights == 0 && white_bishops == 0 && black_bishops == 1 {
+            return true;
+        }
+
+        if white_knights == 2 && black_knights == 0 && white_bishops == 0 && black_bishops == 0 {
+            return true;
+        }
+
+        if white_knights == 0 && black_knights == 2 && white_bishops == 0 && black_bishops == 0 {
             return true;
         }
 
