@@ -15,9 +15,9 @@ pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates);
 
 pub fn position_is_checkmate(chess: &mut Chess) -> bool {
     let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-    if chess.white_in_check {
+    if chess.white_player.in_check() {
         possible_moves.append(&mut white_possible_moves(chess));
-    } else if chess.black_in_check {
+    } else if chess.black_player.in_check() {
         possible_moves.append(&mut black_possible_moves(chess));
     } else {
         println!("Nobody in check");
@@ -214,13 +214,12 @@ mod tests {
         chess._make_move_from_str("f2", "f3");
         chess._make_move_from_str("e7", "e5");
         chess._make_move_from_str("g2", "g4");
-        assert!(!chess.white_won);
-        assert!(!chess.black_in_check);
-        assert!(!chess.white_in_check);
+        assert!(!chess.white_player.in_check);
+        assert!(!chess.black_player.in_check);
         chess._make_move_from_str("d8", "h4");
-        assert!(!chess.black_in_check);
-        assert!(chess.white_in_check);
-        assert!(chess.black_won);
+        assert!(!chess.black_player.in_check);
+        assert!(chess.white_player.in_check);
+        assert!(chess.black_player.won);
 
         chess.starting_position();
         chess._make_move_from_str("e2", "e4");
@@ -229,17 +228,17 @@ mod tests {
         chess._make_move_from_str("d1", "h5");
         chess._make_move_from_str("b8", "c6");
         chess._make_move_from_str("h5", "e5");
-        assert!(chess.black_in_check);
+        assert!(chess.black_player.in_check);
         chess._make_move_from_str("c6", "e7");
-        assert!(!chess.black_in_check);
+        assert!(!chess.black_player.in_check);
 
         chess._make_move_from_str("f1", "c4");
         chess._make_move_from_str("a7", "a6");
         chess._make_move_from_str("e5", "f4");
         chess._make_move_from_str("a6", "a5");
         chess._make_move_from_str("c4", "f7");
-        assert!(chess.black_in_check);
-        assert!(chess.white_won);
+        assert!(chess.black_player.in_check);
+        assert!(chess.white_player.won);
     }
 }
 

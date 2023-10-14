@@ -12,6 +12,7 @@ use crate::{
         pawn::promote,
     },
     piece::{Piece, PieceColor},
+    player::Player,
 };
 
 type Move = (Square, Square, PieceColor);
@@ -22,10 +23,8 @@ pub struct Chess {
     pub turn_number: i32,
     pub latest_move: Option<Move>,
     pub castling: Castling,
-    pub white_in_check: bool,
-    pub black_in_check: bool,
-    pub white_won: bool,
-    pub black_won: bool,
+    pub white_player: Player,
+    pub black_player: Player,
     pub tie: bool,
     pub fifty_move_rule: u8,
 }
@@ -37,17 +36,15 @@ impl Chess {
             turn_number: 0,
             latest_move: None,
             castling: Castling::new(),
-            white_in_check: false,
-            black_in_check: false,
-            white_won: false,
-            black_won: false,
+            white_player: Player::new(PieceColor::White),
+            black_player: Player::new(PieceColor::Black),
             tie: false,
             fifty_move_rule: 0,
         }
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
-        if self.white_won || self.black_won {
+        if self.white_player.won() || self.black_player.won() {
             return;
         }
 
@@ -91,8 +88,8 @@ impl Chess {
         };
 
         //king is in check and the move doesnt remove check return
-        if (moving_piece_color == &PieceColor::White && self.white_in_check
-            || moving_piece_color == &PieceColor::Black && self.black_in_check)
+        if (moving_piece_color == &PieceColor::White && self.white_player.in_check()
+            || moving_piece_color == &PieceColor::Black && self.black_player.in_check())
             && !self.move_removes_check(start_sq, end_sq)
         {
             return;
@@ -158,13 +155,13 @@ impl Chess {
     }
 
     fn handle_check_after_move(&mut self, _start_sq: &Square) {
-        self.white_in_check = king_is_in_check(&self.board, PieceColor::White);
-        self.black_in_check = king_is_in_check(&self.board, PieceColor::Black);
+        self.white_player.in_check = king_is_in_check(&self.board, PieceColor::White);
+        self.black_player.in_check = king_is_in_check(&self.board, PieceColor::Black);
 
-        if self.white_in_check {
-            self.black_won = checkmate::position_is_checkmate(self);
-        } else if self.black_in_check {
-            self.white_won = checkmate::position_is_checkmate(self);
+        if self.white_player.in_check {
+            self.black_player.won = checkmate::position_is_checkmate(self);
+        } else if self.black_player.in_check {
+            self.white_player.won = checkmate::position_is_checkmate(self);
         }
     }
 
@@ -209,10 +206,10 @@ impl Chess {
         self.board = chessboard::new_board();
         self.board = starting_position();
         self.turn_number = 0;
-        self.white_won = false;
-        self.black_won = false;
-        self.white_in_check = false;
-        self.black_in_check = false;
+        self.white_player.won = false;
+        self.black_player.won = false;
+        self.white_player.in_check = false;
+        self.black_player.in_check = false;
     }
 
     pub fn get_square(&self, file: File, rank: Rank) -> &Square {
