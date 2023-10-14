@@ -5,7 +5,7 @@ use crate::{
     check::king_is_in_check,
     checkmate::{self},
     chessboard::{self, file::File, rank::Rank, square::Square, starting_position, ChessBoard},
-    gameover::insufficient_material,
+    gamestate::{insufficient_material, GameState},
     moves::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
@@ -25,7 +25,7 @@ pub struct Chess {
     pub castling: Castling,
     pub white_player: Player,
     pub black_player: Player,
-    pub tie: bool,
+    pub gamestate: GameState,
     pub fifty_move_rule: u8,
 }
 
@@ -38,27 +38,27 @@ impl Chess {
             castling: Castling::new(),
             white_player: Player::new(PieceColor::White),
             black_player: Player::new(PieceColor::Black),
-            tie: false,
+            gamestate: GameState::InProgress,
             fifty_move_rule: 0,
         }
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
+        if self.gamestate != GameState::InProgress {
+            return;
+        }
+
         if self.white_player.won() || self.black_player.won() {
             return;
         }
 
-        // if self.fifty_move_rule == 50 {
-        //     self.tie = true;
-        //     println!("tie by fifty move rule");
-        //     return;
-        // }
+        if self.fifty_move_rule >= 50 {
+            self.gamestate = GameState::Stalemate;
+            return;
+        }
 
         if insufficient_material(self) {
-            self.tie = true;
-            // self.print_board_white();
-            // println!("tie by insufficient material");
-            // panic!("tie by insufficient material");
+            self.gamestate = GameState::Stalemate;
             return;
         }
 
@@ -95,6 +95,12 @@ impl Chess {
             return;
         }
 
+        if start_sq.piece == Piece::Pawn(PieceColor::White)
+            || start_sq.piece == Piece::Pawn(PieceColor::Black)
+        {
+            self.fifty_move_rule = 0;
+        }
+
         if start_sq.piece == Piece::Pawn(PieceColor::White) && end_sq.rank == Rank::Eighth
             || start_sq.piece == Piece::Pawn(PieceColor::Black) && end_sq.rank == Rank::First
         {
@@ -103,11 +109,6 @@ impl Chess {
                 Some(Piece::King(_)) => return,
                 Some(Piece::None) => return,
                 Some(promoted_piece) => {
-                    if end_sq.has_piece() {
-                        self.fifty_move_rule = 0;
-                    } else {
-                        self.fifty_move_rule += 1;
-                    }
                     self.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
                     self.handle_check_after_move(start_sq);
                     return;
@@ -146,6 +147,9 @@ impl Chess {
             self.fifty_move_rule = 0;
         } else {
             self.fifty_move_rule += 1;
+            if self.fifty_move_rule >= 50 {
+                self.gamestate = GameState::Stalemate;
+            }
         }
         self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
@@ -162,6 +166,12 @@ impl Chess {
             self.black_player.won = checkmate::position_is_checkmate(self);
         } else if self.black_player.in_check {
             self.white_player.won = checkmate::position_is_checkmate(self);
+        }
+
+        if self.white_player.won {
+            self.gamestate = GameState::Checkmate(PieceColor::White);
+        } else if self.black_player.won {
+            self.gamestate = GameState::Checkmate(PieceColor::Black);
         }
     }
 
@@ -210,6 +220,7 @@ impl Chess {
         self.black_player.won = false;
         self.white_player.in_check = false;
         self.black_player.in_check = false;
+        self.gamestate = GameState::InProgress;
     }
 
     pub fn get_square(&self, file: File, rank: Rank) -> &Square {

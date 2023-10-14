@@ -3,6 +3,7 @@ use crate::{
     chessboard::{
         get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
     },
+    gamestate::GameState,
     moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
@@ -20,7 +21,6 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
     } else if chess.black_player.in_check() {
         possible_moves.append(&mut black_possible_moves(chess));
     } else {
-        println!("Nobody in check");
         return false;
     };
 
@@ -39,7 +39,13 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
             return false;
         }
     }
-
+    chess.gamestate = if chess.white_player.in_check() {
+        chess.black_player.won = true;
+        GameState::Checkmate(BLACK)
+    } else {
+        chess.white_player.won = true;
+        GameState::Checkmate(WHITE)
+    };
     true
 }
 
@@ -220,6 +226,7 @@ mod tests {
         assert!(!chess.black_player.in_check);
         assert!(chess.white_player.in_check);
         assert!(chess.black_player.won);
+        chess.print_board_white();
 
         chess.starting_position();
         chess._make_move_from_str("e2", "e4");
@@ -228,6 +235,7 @@ mod tests {
         chess._make_move_from_str("d1", "h5");
         chess._make_move_from_str("b8", "c6");
         chess._make_move_from_str("h5", "e5");
+        chess.print_board_white();
         assert!(chess.black_player.in_check);
         chess._make_move_from_str("c6", "e7");
         assert!(!chess.black_player.in_check);

@@ -4,23 +4,20 @@ use crate::{
         get_black_king, get_squares_with_black_pieces, get_squares_with_white_pieces,
         get_white_king,
     },
-    piece::Piece,
+    piece::{Piece, PieceColor},
 };
 
-pub enum _GameOver {
-    Checkmate,
+#[derive(Debug, PartialEq, Clone, Copy)]
+pub enum GameState {
+    Checkmate(PieceColor),
+    _InsufficientMaterial,
     Stalemate,
-    InsufficientMaterial,
-    FiftyMoveRule,
-    ThreefoldRepetition,
-    DrawByAgreement,
-    Resignation,
-    TimeForfeit,
-    Abandoned,
-    RulesInfraction,
-    Other,
+    InProgress,
 }
 
+//
+// needs rework
+//
 pub fn insufficient_material(chess: &Chess) -> bool {
     let white_piece_squares = get_squares_with_white_pieces(&chess.board);
     let black_piece_squares = get_squares_with_black_pieces(&chess.board);

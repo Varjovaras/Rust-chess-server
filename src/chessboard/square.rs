@@ -78,23 +78,23 @@ impl Square {
                 PieceColor::None => " ",
             },
             Piece::Bishop(_) => match self.piece.color() {
-                PieceColor::White => "B",
-                PieceColor::Black => "b",
+                PieceColor::White => "b",
+                PieceColor::Black => "B",
                 PieceColor::None => " ",
             },
             Piece::Rook(_) => match self.piece.color() {
-                PieceColor::White => "R",
-                PieceColor::Black => "r",
+                PieceColor::White => "r",
+                PieceColor::Black => "R",
                 PieceColor::None => " ",
             },
             Piece::Queen(_) => match self.piece.color() {
-                PieceColor::White => "Q",
-                PieceColor::Black => "q",
+                PieceColor::White => "q",
+                PieceColor::Black => "Q",
                 PieceColor::None => " ",
             },
             Piece::King(_) => match self.piece.color() {
-                PieceColor::White => "K",
-                PieceColor::Black => "k",
+                PieceColor::White => "k",
+                PieceColor::Black => "K",
                 PieceColor::None => " ",
             },
         }

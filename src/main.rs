@@ -3,13 +3,14 @@ mod check;
 mod checkmate;
 mod chess;
 mod chessboard;
-mod gameover;
+mod gamestate;
 mod moves;
 mod piece;
 mod player;
 
 use chess::Chess;
 use chessboard::{file::File, rank::Rank};
+use gamestate::GameState;
 use rand::Rng;
 
 // use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
@@ -52,7 +53,7 @@ fn random_move_simulator() {
     let mut i = 0;
     let mut white_wins = 0;
     let mut black_wins = 0;
-    let mut ties = 0;
+    let mut ties: u128 = 0;
     loop {
         let files = File::get_files();
         let ranks = Rank::get_ranks();
@@ -73,13 +74,18 @@ fn random_move_simulator() {
 
         i += 1;
 
-        if i % 100000000 == 0 {
+        if i % 1000000 == 0 {
             println!("White wins: {}", white_wins);
             println!("Black wins: {}", black_wins);
             println!("Ties: {}", ties);
-            break;
+            println!("i = {}", i);
+            chess.print_board_white();
+            // break;
         }
-        if chess.white_player.won || chess.black_player.won || chess.tie {
+        if chess.white_player.won
+            || chess.black_player.won
+            || chess.gamestate == GameState::Stalemate
+        {
             // println!("i = {}", i);
             // println!("White won: {}", chess.white_won);
             // println!("Black won: {}", chess.black_won);
@@ -88,13 +94,13 @@ fn random_move_simulator() {
                 white_wins += 1;
             } else if chess.black_player.won {
                 black_wins += 1;
-            } else if chess.tie {
+            } else if chess.gamestate == GameState::Stalemate {
                 ties += 1;
             }
             // chess.print_board_white();
-            println!("White wins: {}", white_wins);
-            println!("Black wins: {}", black_wins);
-            println!("Ties: {}", ties);
+            // println!("White wins: {}", white_wins);
+            // println!("Black wins: {}", black_wins);
+            // println!("Ties: {}", ties);
             chess = Chess::new();
             chess.starting_position();
             // break;
