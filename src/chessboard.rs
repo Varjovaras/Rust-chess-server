@@ -133,6 +133,38 @@ pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
     squares_with_pieces
 }
 
+pub fn get_adjancent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
+    let mut adjancent_squares: Vec<Square> = Vec::new();
+    let file = sq.file as usize;
+    let rank = sq.rank as usize;
+    if file > 0 {
+        adjancent_squares.push(board[file - 1][rank]);
+    }
+    if file < 7 {
+        adjancent_squares.push(board[file + 1][rank]);
+    }
+    if rank > 0 {
+        adjancent_squares.push(board[file][rank - 1]);
+    }
+    if rank < 7 {
+        adjancent_squares.push(board[file][rank + 1]);
+    }
+    if file > 0 && rank > 0 {
+        adjancent_squares.push(board[file - 1][rank - 1]);
+    }
+    if file > 0 && rank < 7 {
+        adjancent_squares.push(board[file - 1][rank + 1]);
+    }
+    if file < 7 && rank > 0 {
+        adjancent_squares.push(board[file + 1][rank - 1]);
+    }
+    if file < 7 && rank < 7 {
+        adjancent_squares.push(board[file + 1][rank + 1]);
+    }
+
+    adjancent_squares
+}
+
 #[cfg(test)]
 mod tests {
     use crate::{

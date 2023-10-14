@@ -1,12 +1,19 @@
 use crate::{
     chess::Chess,
-    chessboard::{file::File, rank::Rank, square::Square},
+    chessboard::{
+        file::File, get_adjancent_squares, get_black_king, get_white_king, rank::Rank,
+        square::Square, ChessBoard,
+    },
     piece::{Piece, PieceColor},
 };
 
 use super::move_helpers::helpers::{is_diagonal, is_horizontal, is_vertical};
 
 pub fn move_king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    if square_is_bordered_by_other_king(&chess.board, start_sq, end_sq) {
+        return false;
+    }
+
     if move_is_castling(start_sq, end_sq, chess) {
         true
     } else if is_vertical(start_sq, end_sq) {
@@ -64,6 +71,22 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bo
         }
         _ => false,
     }
+}
+
+fn square_is_bordered_by_other_king(
+    chessboard: &ChessBoard,
+    start_sq: &Square,
+    end_sq: &Square,
+) -> bool {
+    let king_color = start_sq.piece.color();
+    let enemy_king_sq = match king_color {
+        PieceColor::White => get_black_king(chessboard).unwrap(),
+        PieceColor::Black => get_white_king(chessboard).unwrap(),
+        _ => panic!("King color is neither white nor black"),
+    };
+
+    let bordered_squares = get_adjancent_squares(end_sq, chessboard);
+    bordered_squares.contains(enemy_king_sq)
 }
 
 #[cfg(test)]

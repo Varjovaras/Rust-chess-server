@@ -349,6 +349,12 @@ impl Chess {
             _ => (),
         }
     }
+
+    pub fn print_moves(self) {
+        self.list_of_moves.into_iter().for_each(|m| {
+            println!("{:?}", m);
+        });
+    }
 }
 
 #[cfg(test)]

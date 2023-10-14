@@ -12,8 +12,8 @@ pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor, chess:
             Some(sq) => sq,
             None => {
                 // println!("{:?}", chess_board);
+                chess.clone().print_moves();
                 println!("{:?}", chess.latest_move);
-                println!("{:?}", chess.list_of_moves);
                 panic!("White king not found")
             }
         }
@@ -22,9 +22,9 @@ pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor, chess:
             Some(sq) => sq,
             None => {
                 // println!("{:?}", chess_board);
+                chess.print_board_white();
+                chess.clone().print_moves();
                 println!("{:?}", chess.latest_move);
-                println!("{:?}", chess.list_of_moves);
-
                 panic!("Black king not found")
             }
         }

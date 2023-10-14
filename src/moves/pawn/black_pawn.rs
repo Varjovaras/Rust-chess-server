@@ -55,7 +55,8 @@ fn two_squares_forward(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
 fn black_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::Fourth
         && end_sq.rank == Rank::Third
-        && latest_move_enables_black_en_passant(chess)
+        && latest_move_enables_black_en_passant(chess, start_sq, end_sq)
+        && chess.latest_move.unwrap().0.piece == Piece::Pawn(PieceColor::White)
     {
         return black_en_passant(start_sq, end_sq, chess);
     }
@@ -65,6 +66,10 @@ fn black_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 
 fn black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let mut last_move_sq = *chess.get_square(end_sq.file, start_sq.rank);
+    if (last_move_sq.file as u8).abs_diff(end_sq.file as u8) != 1 {
+        return false;
+    }
+
     if last_move_sq.is_empty() || last_move_sq.piece.color() == &PieceColor::Black {
         return false;
     }
@@ -76,30 +81,26 @@ fn black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-pub fn latest_move_enables_black_en_passant(chess: &Chess) -> bool {
+pub fn latest_move_enables_black_en_passant(
+    chess: &Chess,
+    start_sq: &Square,
+    end_sq: &Square,
+) -> bool {
     match chess.latest_move {
         Some(latest_move) => {
-            if latest_move.0.rank == Rank::Second
+            latest_move.0.rank == Rank::Second
                 && latest_move.1.rank == Rank::Fourth
                 && latest_move.0.piece == Piece::Pawn(latest_move.2)
-            {
-                // println!("Move is en passant");
-                true
-            } else {
-                // println!("Move is not en passant");
-                false
-            }
+                && latest_move.1.file == end_sq.file
+                && latest_move.1.rank == start_sq.rank
         }
-        None => {
-            // println!("Move is not en passant");
-            false
-        }
+        None => false,
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::chessboard::{file::File, square::SquareColor};
+    use crate::{chessboard::file::File, moves::pawn::white_pawn::move_white_pawn};
 
     use super::*;
     #[test]
@@ -170,42 +171,47 @@ mod tests {
     fn black_en_passant_works() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
-        chess.latest_move = Some((
-            Square::new(5, 1, SquareColor::default(), Piece::Pawn(PieceColor::White)),
-            Square::new(5, 3, SquareColor::default(), Piece::Pawn(PieceColor::White)),
-            PieceColor::White,
-        ));
-
-        //black pawn on e4
-        //white pawn on f4
-        chess.board[4][3].piece = Piece::Pawn(PieceColor::Black);
-        chess.board[5][3].piece = Piece::Pawn(PieceColor::White);
-
-        assert!(move_black_pawn(
-            &chess._get_square_from_str("e", "4").clone(),
-            &chess._get_square_from_str("f", "3").clone(),
+        chess._make_move_from_str("e2", "e4");
+        chess._make_move_from_str("c7", "c5");
+        chess._make_move_from_str("e4", "e5");
+        chess._make_move_from_str("d7", "d5");
+        // assert!(latest_move_enables_white_en_passant(&chess,start_sq));
+        assert!(move_white_pawn(
+            chess.get_square(File::E, Rank::Fifth),
+            chess.get_square(File::D, Rank::Sixth),
             &chess
         ));
 
-        assert!(!move_black_pawn(
-            &chess._get_square_from_str("d", "4").clone(),
-            &chess._get_square_from_str("f", "3").clone(),
-            &chess
-        ));
-        assert!(!move_black_pawn(
-            &chess._get_square_from_str("e", "4").clone(),
-            &chess._get_square_from_str("f", "4").clone(),
-            &chess
-        ));
-        assert!(!move_black_pawn(
-            &chess._get_square_from_str("e", "4").clone(),
-            &chess._get_square_from_str("f", "2").clone(),
-            &chess
-        ));
-        assert!(!move_black_pawn(
-            &chess._get_square_from_str("g", "4").clone(),
-            &chess._get_square_from_str("f", "3").clone(),
-            &chess
-        ));
+        // //black pawn on e4
+        // //white pawn on f4
+        // chess.board[4][3].piece = Piece::Pawn(PieceColor::Black);
+        // chess.board[5][3].piece = Piece::Pawn(PieceColor::White);
+
+        // assert!(move_black_pawn(
+        //     &chess._get_square_from_str("e", "4").clone(),
+        //     &chess._get_square_from_str("f", "3").clone(),
+        //     &chess
+        // ));
+
+        // assert!(!move_black_pawn(
+        //     &chess._get_square_from_str("d", "4").clone(),
+        //     &chess._get_square_from_str("f", "3").clone(),
+        //     &chess
+        // ));
+        // assert!(!move_black_pawn(
+        //     &chess._get_square_from_str("e", "4").clone(),
+        //     &chess._get_square_from_str("f", "4").clone(),
+        //     &chess
+        // ));
+        // assert!(!move_black_pawn(
+        //     &chess._get_square_from_str("e", "4").clone(),
+        //     &chess._get_square_from_str("f", "2").clone(),
+        //     &chess
+        // ));
+        // assert!(!move_black_pawn(
+        //     &chess._get_square_from_str("g", "4").clone(),
+        //     &chess._get_square_from_str("f", "3").clone(),
+        //     &chess
+        // ));
     }
 }

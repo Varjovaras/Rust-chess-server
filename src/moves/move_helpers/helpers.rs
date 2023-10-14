@@ -69,7 +69,7 @@ pub fn move_is_white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Ches
         && diagonally_one_square_apart(start_sq, end_sq)
         && start_sq.rank == Rank::Fifth
         && end_sq.rank == Rank::Sixth
-        && latest_move_enables_white_en_passant(chess)
+        && latest_move_enables_white_en_passant(chess, start_sq, end_sq)
         && !end_sq.has_piece()
 }
 
@@ -78,7 +78,7 @@ pub fn move_is_black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Ches
         && diagonally_one_square_apart(start_sq, end_sq)
         && start_sq.rank == Rank::Fourth
         && end_sq.rank == Rank::Third
-        && latest_move_enables_black_en_passant(chess)
+        && latest_move_enables_black_en_passant(chess, start_sq, end_sq)
         && !end_sq.has_piece()
 }
 
