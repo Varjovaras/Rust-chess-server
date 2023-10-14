@@ -4,14 +4,14 @@ use crate::piece::PieceColor;
 pub struct Player {
     color: PieceColor,
     pub in_check: bool,
-    pub won: bool,
+    pub victory: bool,
 }
 
 impl Player {
     pub fn new(color: PieceColor) -> Player {
         Player {
             color,
-            won: false,
+            victory: false,
             in_check: false,
         }
     }
@@ -24,7 +24,7 @@ impl Player {
         self.in_check
     }
 
-    pub fn won(&self) -> bool {
-        self.won
-    }
+    // pub fn victory(&self) -> bool {
+    //     self.victory
+    // }
 }

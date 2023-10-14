@@ -1,16 +1,19 @@
 use crate::{
+    chess::Chess,
     chessboard::{get_black_king, get_white_king, ChessBoard},
     moves::bishop::BISHOP_MOVES,
     moves::{knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
 
-pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
+pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor, chess: &Chess) -> bool {
     let king_sq = if king_color == PieceColor::White {
         match get_white_king(chess_board) {
             Some(sq) => sq,
             None => {
-                println!("{:?}", chess_board);
+                // println!("{:?}", chess_board);
+                println!("{:?}", chess.latest_move);
+                println!("{:?}", chess.list_of_moves);
                 panic!("White king not found")
             }
         }
@@ -18,7 +21,9 @@ pub fn king_is_in_check(chess_board: &ChessBoard, king_color: PieceColor) -> boo
         match get_black_king(chess_board) {
             Some(sq) => sq,
             None => {
-                println!("{:?}", chess_board);
+                // println!("{:?}", chess_board);
+                println!("{:?}", chess.latest_move);
+                println!("{:?}", chess.list_of_moves);
 
                 panic!("Black king not found")
             }

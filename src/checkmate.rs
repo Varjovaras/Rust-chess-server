@@ -40,10 +40,10 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         }
     }
     chess.gamestate = if chess.white_player.in_check() {
-        chess.black_player.won = true;
+        chess.black_player.victory = true;
         GameState::Checkmate(BLACK)
     } else {
-        chess.white_player.won = true;
+        chess.white_player.victory = true;
         GameState::Checkmate(WHITE)
     };
     true
@@ -225,7 +225,7 @@ mod tests {
         chess._make_move_from_str("d8", "h4");
         assert!(!chess.black_player.in_check);
         assert!(chess.white_player.in_check);
-        assert!(chess.black_player.won);
+        assert!(chess.black_player.victory);
         chess.print_board_white();
 
         chess.starting_position();
@@ -246,7 +246,7 @@ mod tests {
         chess._make_move_from_str("a6", "a5");
         chess._make_move_from_str("c4", "f7");
         assert!(chess.black_player.in_check);
-        assert!(chess.white_player.won);
+        assert!(chess.white_player.victory);
     }
 }
 

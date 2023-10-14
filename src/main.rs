@@ -82,17 +82,17 @@ fn random_move_simulator() {
             chess.print_board_white();
             // break;
         }
-        if chess.white_player.won
-            || chess.black_player.won
+        if chess.white_player.victory
+            || chess.black_player.victory
             || chess.gamestate == GameState::Stalemate
         {
             // println!("i = {}", i);
             // println!("White won: {}", chess.white_won);
             // println!("Black won: {}", chess.black_won);
             // println!("Tie: {}", chess.tie);
-            if chess.white_player.won {
+            if chess.white_player.victory {
                 white_wins += 1;
-            } else if chess.black_player.won {
+            } else if chess.black_player.victory {
                 black_wins += 1;
             } else if chess.gamestate == GameState::Stalemate {
                 ties += 1;

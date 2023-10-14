@@ -1,5 +1,3 @@
-use core::panic;
-
 use crate::{
     castling::Castling,
     check::king_is_in_check,
@@ -46,30 +44,9 @@ impl Chess {
     }
 
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
-        if self.gamestate != GameState::InProgress {
-            return;
-        }
-
-        if self.white_player.won() || self.black_player.won() {
-            return;
-        }
-
-        if self.fifty_move_rule >= 50 {
-            self.gamestate = GameState::Stalemate;
-            return;
-        }
-
-        if insufficient_material(self) {
-            self.gamestate = GameState::Stalemate;
-            return;
-        }
-
         let moving_piece_color = start_sq.piece.color();
 
-        //wrong players turn
-        if start_sq.piece.color() == &PieceColor::White && self.turn_number % 2 == 1
-            || start_sq.piece.color() == &PieceColor::Black && self.turn_number % 2 == 0
-        {
+        if !self.move_is_allowed(moving_piece_color) {
             return;
         }
 
@@ -84,7 +61,7 @@ impl Chess {
             return;
         }
 
-        //piece can make the move
+        //check if piece can make the move
         if !start_sq.piece.piece_move(start_sq, end_sq, self) {
             return;
         };
@@ -126,55 +103,93 @@ impl Chess {
             self.board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         }
 
-        //remove castling if king or rook moves
         if start_sq.piece == Piece::King(PieceColor::White)
             || start_sq.piece == Piece::King(PieceColor::Black)
             || start_sq.piece == Piece::Rook(PieceColor::White)
             || start_sq.piece == Piece::Rook(PieceColor::Black)
         {
-            if move_is_castling(start_sq, end_sq, self) {
-                self.handle_castling(start_sq, end_sq);
-                self.handle_check_after_move(start_sq);
-                self.fifty_move_rule += 1;
-                return;
-            }
-            self.remove_castling(start_sq);
+            self.handle_rook_and_king_move(start_sq, end_sq);
         }
 
         self.update_board(start_sq, end_sq);
     }
 
+    fn handle_rook_and_king_move(&mut self, start_sq: &Square, end_sq: &Square) {
+        //remove castling if king or rook moves
+        if move_is_castling(start_sq, end_sq, self) {
+            self.handle_castling(start_sq, end_sq);
+            self.handle_check_after_move(start_sq);
+            return;
+        }
+        self.remove_castling(start_sq);
+    }
+
+    fn move_is_allowed(&mut self, start_sq_piece_color: &PieceColor) -> bool {
+        if self.gamestate != GameState::InProgress {
+            return false;
+        }
+
+        if self.white_player.victory || self.black_player.victory {
+            return false;
+        }
+
+        if self.fifty_move_rule >= 50 {
+            self.gamestate = GameState::Stalemate;
+            return false;
+        }
+
+        if insufficient_material(self) {
+            self.gamestate = GameState::Stalemate;
+            return false;
+        }
+
+        //wrong players turn
+        if start_sq_piece_color == &PieceColor::White && self.turn_number % 2 == 1
+            || start_sq_piece_color == &PieceColor::Black && self.turn_number % 2 == 0
+        {
+            return false;
+        }
+
+        true
+    }
+
     fn update_board(&mut self, start_sq: &Square, end_sq: &Square) {
-        if end_sq.has_piece() {
+        if end_sq.has_piece()
+            || start_sq.piece == Piece::Pawn(PieceColor::White)
+            || start_sq.piece == Piece::Pawn(PieceColor::Black)
+        {
             self.fifty_move_rule = 0;
         } else {
             self.fifty_move_rule += 1;
-            if self.fifty_move_rule >= 50 {
-                self.gamestate = GameState::Stalemate;
-            }
         }
+
+        if self.fifty_move_rule >= 50 {
+            self.gamestate = GameState::Stalemate;
+        }
+
+        //move start_sq piece to end_sq
         self.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
-        self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
+
+        self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.turn_number += 1;
         self.handle_check_after_move(start_sq);
-        self.list_of_moves
-            .push((*start_sq, *end_sq, *start_sq.piece.color()));
+        self.list_of_moves.push(self.latest_move.unwrap());
     }
 
     fn handle_check_after_move(&mut self, _start_sq: &Square) {
-        self.white_player.in_check = king_is_in_check(&self.board, PieceColor::White);
-        self.black_player.in_check = king_is_in_check(&self.board, PieceColor::Black);
+        self.white_player.in_check = king_is_in_check(&self.board, PieceColor::White, self);
+        self.black_player.in_check = king_is_in_check(&self.board, PieceColor::Black, self);
 
         if self.white_player.in_check {
-            self.black_player.won = checkmate::position_is_checkmate(self);
+            self.black_player.victory = checkmate::position_is_checkmate(self);
         } else if self.black_player.in_check {
-            self.white_player.won = checkmate::position_is_checkmate(self);
+            self.white_player.victory = checkmate::position_is_checkmate(self);
         }
 
-        if self.white_player.won {
+        if self.white_player.victory {
             self.gamestate = GameState::Checkmate(PieceColor::White);
-        } else if self.black_player.won {
+        } else if self.black_player.victory {
             self.gamestate = GameState::Checkmate(PieceColor::Black);
         }
     }
@@ -197,7 +212,7 @@ impl Chess {
 
         temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
-        !king_is_in_check(&temp_board, *start_sq.piece.color())
+        !king_is_in_check(&temp_board, *start_sq.piece.color(), self)
     }
 
     pub fn _make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
@@ -220,8 +235,8 @@ impl Chess {
         self.board = chessboard::new_board();
         self.board = starting_position();
         self.turn_number = 0;
-        self.white_player.won = false;
-        self.black_player.won = false;
+        self.white_player.victory = false;
+        self.black_player.victory = false;
         self.white_player.in_check = false;
         self.black_player.in_check = false;
         self.gamestate = GameState::InProgress;
