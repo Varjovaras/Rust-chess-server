@@ -109,6 +109,7 @@ impl Chess {
             || start_sq.piece == Piece::Rook(PieceColor::Black)
         {
             self.handle_rook_and_king_move(start_sq, end_sq);
+            // return;
         }
 
         self.update_board(start_sq, end_sq);
@@ -286,8 +287,8 @@ impl Chess {
                 self.board[File::H as usize][Rank::First as usize].piece = Piece::None;
                 self.board[File::F as usize][Rank::First as usize].piece =
                     Piece::Rook(PieceColor::White);
-                self.board[File::G as usize][Rank::First as usize].piece =
-                    Piece::King(PieceColor::White);
+                // self.board[File::G as usize][Rank::First as usize].piece =
+                //     Piece::King(PieceColor::White);
                 self.castling.white_king_side_castling = false;
                 self.castling.white_queen_side_castling = false;
             }
@@ -295,8 +296,8 @@ impl Chess {
                 self.board[File::A as usize][Rank::First as usize].piece = Piece::None;
                 self.board[File::D as usize][Rank::First as usize].piece =
                     Piece::Rook(PieceColor::White);
-                self.board[File::C as usize][Rank::First as usize].piece =
-                    Piece::King(PieceColor::White);
+                // self.board[File::C as usize][Rank::First as usize].piece =
+                //     Piece::King(PieceColor::White);
                 self.castling.white_king_side_castling = false;
                 self.castling.white_queen_side_castling = false;
             }
@@ -304,8 +305,8 @@ impl Chess {
                 self.board[File::H as usize][Rank::Eighth as usize].piece = Piece::None;
                 self.board[File::F as usize][Rank::Eighth as usize].piece =
                     Piece::Rook(PieceColor::Black);
-                self.board[File::G as usize][Rank::Eighth as usize].piece =
-                    Piece::King(PieceColor::Black);
+                // self.board[File::G as usize][Rank::Eighth as usize].piece =
+                //     Piece::King(PieceColor::Black);
                 self.castling.black_king_side_castling = false;
                 self.castling.black_queen_side_castling = false;
             }
@@ -313,8 +314,8 @@ impl Chess {
                 self.board[File::A as usize][Rank::Eighth as usize].piece = Piece::None;
                 self.board[File::D as usize][Rank::Eighth as usize].piece =
                     Piece::Rook(PieceColor::Black);
-                self.board[File::C as usize][Rank::Eighth as usize].piece =
-                    Piece::King(PieceColor::Black);
+                // self.board[File::C as usize][Rank::Eighth as usize].piece =
+                //     Piece::King(PieceColor::Black);
                 self.castling.black_king_side_castling = false;
                 self.castling.black_queen_side_castling = false;
             }
