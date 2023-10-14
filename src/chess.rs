@@ -27,6 +27,7 @@ pub struct Chess {
     pub black_player: Player,
     pub gamestate: GameState,
     pub fifty_move_rule: u8,
+    pub list_of_moves: Vec<Move>,
 }
 
 impl Chess {
@@ -40,6 +41,7 @@ impl Chess {
             black_player: Player::new(PieceColor::Black),
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
+            list_of_moves: Vec::new(),
         }
     }
 
@@ -156,6 +158,8 @@ impl Chess {
         self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         self.turn_number += 1;
         self.handle_check_after_move(start_sq);
+        self.list_of_moves
+            .push((*start_sq, *end_sq, *start_sq.piece.color()));
     }
 
     fn handle_check_after_move(&mut self, _start_sq: &Square) {
