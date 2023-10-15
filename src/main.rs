@@ -13,6 +13,8 @@ use chessboard::{file::File, rank::Rank};
 use gamestate::GameState;
 use rand::Rng;
 
+use crate::checkmate::position_is_checkmate_test;
+
 // use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 
 // #[get("/")]
@@ -80,6 +82,7 @@ fn random_move_simulator() {
             println!("Ties: {}", ties);
             println!("i = {}", i);
             chess.print_board_white();
+            position_is_checkmate_test(&mut chess);
             // break;
         }
         if chess.white_player.victory

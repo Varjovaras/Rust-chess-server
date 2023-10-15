@@ -1,7 +1,8 @@
 use crate::{
     chess::Chess,
     chessboard::{
-        get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
+        file::File, get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank,
+        square::Square,
     },
     gamestate::GameState,
     moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
@@ -35,7 +36,43 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
 
         if chess.move_removes_check(&start_sq, &end_sq) {
-            // println!("Move {:?} removes check", possible_move);
+            return false;
+        }
+    }
+    chess.gamestate = if chess.white_player.in_check() {
+        chess.black_player.victory = true;
+        GameState::Checkmate(BLACK)
+    } else {
+        chess.white_player.victory = true;
+        GameState::Checkmate(WHITE)
+    };
+    true
+}
+
+pub fn position_is_checkmate_test(chess: &mut Chess) -> bool {
+    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
+    if chess.white_player.in_check() {
+        possible_moves.append(&mut white_possible_moves(chess));
+    } else if chess.black_player.in_check() {
+        possible_moves.append(&mut black_possible_moves(chess));
+    } else {
+        return false;
+    };
+
+    if possible_moves.is_empty() {
+        return false;
+    }
+
+    // println!("Possible moves: {:?}", possible_moves);
+
+    for possible_move in possible_moves.iter() {
+        let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
+        let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
+
+        if chess.move_removes_check(&start_sq, &end_sq) {
+            println!("Move {:?} removes check", possible_move);
+            println!("start_sq: {:?}", start_sq);
+            println!("end_sq: {:?}", end_sq);
             return false;
         }
     }
