@@ -254,34 +254,34 @@ mod tests {
     fn checkmate_works() {
         let mut chess = Chess::new();
         chess.starting_position();
-        chess.make_move_from_str("f2", "f3");
-        chess.make_move_from_str("e7", "e5");
-        chess.make_move_from_str("g2", "g4");
+        chess._make_move_from_str("f2", "f3");
+        chess._make_move_from_str("e7", "e5");
+        chess._make_move_from_str("g2", "g4");
         assert!(!chess.white_player.in_check);
         assert!(!chess.black_player.in_check);
-        chess.make_move_from_str("d8", "h4");
+        chess._make_move_from_str("d8", "h4");
         assert!(!chess.black_player.in_check);
         assert!(chess.white_player.in_check);
         assert!(chess.black_player.victory);
         chess.print_board_white();
 
         chess.starting_position();
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("e7", "e5");
-        chess.make_move_from_str("d1", "h5");
-        chess.make_move_from_str("b8", "c6");
-        chess.make_move_from_str("h5", "e5");
+        chess._make_move_from_str("e2", "e4");
+        chess._make_move_from_str("e2", "e4");
+        chess._make_move_from_str("e7", "e5");
+        chess._make_move_from_str("d1", "h5");
+        chess._make_move_from_str("b8", "c6");
+        chess._make_move_from_str("h5", "e5");
         chess.print_board_white();
         assert!(chess.black_player.in_check);
-        chess.make_move_from_str("c6", "e7");
+        chess._make_move_from_str("c6", "e7");
         assert!(!chess.black_player.in_check);
 
-        chess.make_move_from_str("f1", "c4");
-        chess.make_move_from_str("a7", "a6");
-        chess.make_move_from_str("e5", "f4");
-        chess.make_move_from_str("a6", "a5");
-        chess.make_move_from_str("c4", "f7");
+        chess._make_move_from_str("f1", "c4");
+        chess._make_move_from_str("a7", "a6");
+        chess._make_move_from_str("e5", "f4");
+        chess._make_move_from_str("a6", "a5");
+        chess._make_move_from_str("c4", "f7");
         assert!(chess.black_player.in_check);
         assert!(chess.white_player.victory);
     }

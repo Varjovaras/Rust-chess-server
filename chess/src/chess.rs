@@ -216,7 +216,7 @@ impl Chess {
         !king_is_in_check(&temp_board, *start_sq.piece.color(), self)
     }
 
-    pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
+    pub fn _make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();
         let mut start_sq = *self._get_square_from_str(

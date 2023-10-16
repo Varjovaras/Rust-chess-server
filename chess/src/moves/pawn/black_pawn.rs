@@ -171,10 +171,10 @@ mod tests {
     fn black_en_passant_works() {
         let mut chess: Chess = Chess::new();
         chess.starting_position();
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("c7", "c5");
-        chess.make_move_from_str("e4", "e5");
-        chess.make_move_from_str("d7", "d5");
+        chess._make_move_from_str("e2", "e4");
+        chess._make_move_from_str("c7", "c5");
+        chess._make_move_from_str("e4", "e5");
+        chess._make_move_from_str("d7", "d5");
         // assert!(latest_move_enables_white_en_passant(&chess,start_sq));
         assert!(move_white_pawn(
             chess.get_square(File::E, Rank::Fifth),

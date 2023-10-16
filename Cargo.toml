@@ -1,15 +1,17 @@
 [package]
-name = "rust-chess-server"
+name = "chessbackend"
 version = "0.1.0"
 edition = "2021"
 
 [profile.dev]
-opt-level = 3
+opt-level = 0
 
 [profile.release]
-opt-level = 3
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+opt-level = 0
 
 [dependencies]
+actix-web = "4.3.1"
+shuttle-actix-web = "0.29.0"
+shuttle-runtime = "0.29.0"
+tokio = "1.26.0"
 rand = "0.8.4"
-actix-web = "4"
