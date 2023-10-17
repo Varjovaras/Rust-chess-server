@@ -13,7 +13,11 @@ use crate::piece::{
     PieceColor::{self, White},
 };
 
-use self::square::{Square, SquareColor};
+use self::{
+    file::File,
+    rank::Rank,
+    square::{Square, SquareColor},
+};
 
 pub type ChessBoard = [[Square; 8]; 8];
 
@@ -23,11 +27,13 @@ pub fn new_board() -> ChessBoard {
 
     //initialize empty row
     let default_row = [Square::default(); 8];
+    let files = File::get_files();
+    let ranks = Rank::get_ranks();
 
-    for file in 0..8 {
+    for file in files {
         let mut row = default_row;
         //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
-        for rank in 0..8 {
+        for rank in ranks {
             let sq = Square::new(file, rank, color, Piece::default());
             row[rank as usize] = sq;
             color = self::color_changer(color); //every other square is black or white

@@ -26,7 +26,16 @@ pub struct Square {
 }
 
 impl Square {
-    pub fn new(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Square {
+    pub fn new(file: File, rank: Rank, color: SquareColor, piece: Piece) -> Square {
+        Square {
+            file,
+            rank,
+            color,
+            piece,
+        }
+    }
+
+    pub fn _new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Square {
         let file = File::from(file);
         let rank = Rank::from(rank);
         Square {

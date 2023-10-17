@@ -57,7 +57,7 @@ impl File {
         }
     }
 
-    pub(crate) fn get_files() -> [File; 8] {
+    pub fn get_files() -> [File; 8] {
         [
             File::A,
             File::B,

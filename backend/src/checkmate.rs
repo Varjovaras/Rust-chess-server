@@ -1,8 +1,7 @@
 use crate::{
     chess::Chess,
     chessboard::{
-        file::File, get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank,
-        square::Square,
+        get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
     },
     gamestate::GameState,
     moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
@@ -49,7 +48,7 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
     true
 }
 
-pub fn position_is_checkmate_test(chess: &mut Chess) -> bool {
+pub fn _position_is_checkmate_test(chess: &mut Chess) -> bool {
     let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
     if chess.white_player.in_check() {
         possible_moves.append(&mut white_possible_moves(chess));
