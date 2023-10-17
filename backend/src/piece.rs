@@ -1,13 +1,15 @@
+use serde::{Deserialize, Serialize};
+
 use crate::{chess::Chess, chessboard::square::Square, moves};
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum PieceColor {
     White,
     Black,
     None,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Default)]
+#[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub enum Piece {
     #[default]
     None,

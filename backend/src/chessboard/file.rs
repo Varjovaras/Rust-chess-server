@@ -1,6 +1,8 @@
 use core::panic;
 
-#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd)]
+use serde::{Deserialize, Serialize};
+
+#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd, Serialize, Deserialize)]
 
 pub enum File {
     #[default]

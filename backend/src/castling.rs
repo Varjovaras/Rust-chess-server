@@ -1,6 +1,8 @@
+use serde::{Deserialize, Serialize};
+
 use crate::chessboard::{file::File, rank::Rank, square::Square};
 
-#[derive(Debug, Copy, Clone)]
+#[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 pub struct Castling {
     pub white_king_side_castling: bool,
     pub white_queen_side_castling: bool,

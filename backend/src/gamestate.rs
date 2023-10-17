@@ -1,3 +1,5 @@
+use serde::{Deserialize, Serialize};
+
 use crate::{
     chess::Chess,
     chessboard::{
@@ -7,7 +9,7 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-#[derive(Debug, PartialEq, Clone, Copy)]
+#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
 pub enum GameState {
     Checkmate(PieceColor),
     _InsufficientMaterial,

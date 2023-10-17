@@ -1,6 +1,8 @@
+use serde::{Deserialize, Serialize};
+
 use crate::piece::PieceColor;
 
-#[derive(Debug, Clone, Copy, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct Player {
     color: PieceColor,
     pub in_check: bool,

@@ -1,8 +1,10 @@
+use serde::{Deserialize, Serialize};
+
 use crate::piece::{Piece, PieceColor};
 
 use super::{file::File, rank::Rank};
 
-#[derive(Copy, Clone, Debug, Default, PartialEq)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub enum SquareColor {
     Black,
     #[default]
@@ -17,7 +19,7 @@ impl SquareColor {
     }
 }
 
-#[derive(Copy, Clone, Debug, Default, PartialEq)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
 pub struct Square {
     pub file: File,
     pub rank: Rank,
