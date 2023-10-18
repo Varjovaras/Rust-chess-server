@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [profile.dev]
-opt-level = 3
+opt-level = 0
 
 [profile.release]
-opt-level = 3
+opt-level = 0
 
 [dependencies]
 actix-web = "4.3.1"
@@ -17,3 +17,4 @@ tokio = "1.26.0"
 rand = "0.8.4"
 serde_json = "1.0.70"
 serde = { version = "1.0.130", features = ["derive"] }
+actix-cors = "0.6.4" 

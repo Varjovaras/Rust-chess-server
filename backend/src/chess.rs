@@ -51,6 +51,26 @@ impl Chess {
         }
     }
 
+    pub fn new_starting_position() -> Chess {
+        let mut chess = Chess {
+            board: chessboard::new_board(),
+            turn_number: 0,
+            latest_move: None,
+            castling: Castling::new(),
+            white_player: Player::new(PieceColor::White),
+            black_player: Player::new(PieceColor::Black),
+            gamestate: GameState::InProgress,
+            fifty_move_rule: 0,
+            list_of_moves: Vec::new(),
+            new_move: (
+                (File::default(), Rank::default()),
+                (File::default(), Rank::default()),
+            ),
+        };
+        chess.starting_position();
+        chess
+    }
+
     pub fn to_json(&self) -> String {
         serde_json::to_string(&self).unwrap()
     }
