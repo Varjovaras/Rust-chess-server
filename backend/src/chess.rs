@@ -71,7 +71,7 @@ impl Chess {
         chess
     }
 
-    pub fn to_json(&self) -> String {
+    pub fn _to_json(&self) -> String {
         serde_json::to_string(&self).unwrap()
     }
 
