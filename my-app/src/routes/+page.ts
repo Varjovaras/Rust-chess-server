@@ -1,73 +1,58 @@
-import { z } from 'zod';
+import * as z from 'zod';
 
-// type Board = {
-// 	board: Square[][];
-// };
+const pieceSchema = z.object({
+	Pawn: z.string().optional(),
+	Knight: z.string().optional(),
+	Bishop: z.string().optional(),
+	Rook: z.string().optional(),
+	Queen: z.string().optional(),
+	King: z.string().optional(),
+	None: z.literal('None').optional()
+});
 
-// type Player = {
-// 	color: string;
-// 	in_check: boolean;
-// 	victory: boolean;
-// };
+const squareSchema = z.object({
+	file: z.string(),
+	rank: z.string(),
+	color: z.string(),
+	piece: z.union([pieceSchema, z.literal('None')])
+});
 
-// type Chess = {
-// 	board: Board;
-// 	turn_number: number;
-// 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// 	latest_move: any;
-// 	castling: {
-// 		white_king_side_castling: boolean;
-// 		white_queen_side_Castling: boolean;
-// 		black_king_side_castling: boolean;
-// 		black_queen_side_castling: boolean;
-// 	};
-// 	white_player: Player;
-// 	black_player: Player;
-// 	gamestate: string;
-// 	fifty_move_rule: number;
-// 	list_of_moves: [];
-// 	new_move: [][];
-// };
+const boardSchema = z.array(z.array(squareSchema));
 
-// type Square = {
-// 	file: string;
-// 	rank: string;
-// 	color: string;
-// 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-// 	piece: any;
-// };
+const castlingSchema = z.object({
+	white_king_side_castling: z.boolean(),
+	white_queen_side_castling: z.boolean(),
+	black_king_side_castling: z.boolean(),
+	black_queen_side_castling: z.boolean()
+});
+
+const playerSchema = z.object({
+	color: z.string(),
+	in_check: z.boolean(),
+	victory: z.boolean()
+});
+
+const gameStateSchema = z.enum(['InProgress', 'WhiteVictory', 'BlackVictory', 'Draw']);
+
+const schema = z.object({
+	board: boardSchema,
+	turn_number: z.number(),
+	latest_move: z.nullable(z.array(z.array(z.string()))),
+	castling: castlingSchema,
+	white_player: playerSchema,
+	black_player: playerSchema,
+	gamestate: gameStateSchema,
+	fifty_move_rule: z.number(),
+	list_of_moves: z.array(z.array(z.string())),
+	new_move: z.array(z.array(z.string()))
+});
+
+export type Chess = z.TypeOf<typeof schema>;
 
 export async function load() {
 	const response = await fetch(`http://127.0.0.1:8000/chess`);
-	// console.log(response);
 	const chess = await response.json();
-	console.log(chess);
-	const ChessSchema = z.object({
-		board: z.array(z.array(z.any())),
-		turn_number: z.number(),
-		latest_move: z.any(),
-		castling: z.object({
-			white_king_side_castling: z.boolean(),
-			white_queen_side_Castling: z.boolean(),
-			black_king_side_castling: z.boolean(),
-			black_queen_side_castling: z.boolean()
-		}),
-		white_player: z.object({
-			color: z.string(),
-			in_check: z.boolean(),
-			victory: z.boolean()
-		}),
-		black_player: z.object({
-			color: z.string(),
-			in_check: z.boolean(),
-			victory: z.boolean()
-		}),
-		gamestate: z.string(),
-		fifty_move_rule: z.number(),
-		list_of_moves: z.array(z.any()),
-		new_move: z.any()
-	});
 
-	console.log(ChessSchema);
-	return { post: chess };
+	const validatedChess = schema.parse(chess);
+	return { post: validatedChess };
 }
