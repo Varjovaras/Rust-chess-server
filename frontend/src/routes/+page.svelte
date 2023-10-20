@@ -5,14 +5,6 @@
 	export let data;
 
 	const board = data.post.board;
-	let chessboard: ChessBoard = [[]];
-	for (let i = 7; i >= 0; i--) {
-		let arr = [];
-		for (let j = 7; j >= 0; j--) {
-			arr.push(board[j][i]);
-		}
-		chessboard.push(arr.reverse());
-	}
 </script>
 
 <h1>Shakking And Sniping :D</h1>

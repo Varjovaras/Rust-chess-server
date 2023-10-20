@@ -19,3 +19,4 @@ const squareSchema = z.object({
 
 const boardSchema = z.array(z.array(squareSchema));
 export type ChessBoard = z.TypeOf<typeof boardSchema>;
+export type Piece = z.TypeOf<typeof pieceSchema>;
