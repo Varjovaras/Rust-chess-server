@@ -13,17 +13,17 @@
 	const pieceSwitch = (piece: Piece) => {
 		switch (true) {
 			case piece.Pawn !== undefined:
-				return 'P';
+				return `P${piece.Pawn}`;
 			case piece.Rook !== undefined:
-				return 'R';
+				return `R${piece.Rook}`;
 			case piece.Knight !== undefined:
-				return 'N';
+				return `N${piece.Knight}`;
 			case piece.Bishop !== undefined:
-				return 'B';
+				return `B${piece.Bishop}`;
 			case piece.Queen !== undefined:
-				return 'Q';
+				return `Q${piece.Queen}`;
 			case piece.King !== undefined:
-				return 'K';
+				return `K${piece.King}`;
 			default:
 				return '';
 		}
@@ -37,6 +37,7 @@
 			{sq.rank}
 			{#if sq.piece !== 'None'}
 				{pieceSwitch(sq.piece)}
+				{'     '}
 				<!-- <img src={`./pieces/${sq.piece}.png`} alt="piece" /> -->
 			{/if}
 		{/each}
