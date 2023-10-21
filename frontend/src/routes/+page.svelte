@@ -1,10 +1,8 @@
 <script lang="ts">
-	import { z } from 'zod';
 	import Chessboard from './chessboard.svelte';
-	import type { ChessBoard } from './types';
 	export let data;
 
-	const board = data.post.board;
+	$: board = data.post.board;
 </script>
 
 <h1>Shakking And Sniping :D</h1>

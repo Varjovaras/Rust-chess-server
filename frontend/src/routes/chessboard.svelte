@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Square from './square.svelte';
 	import type { ChessBoard, Piece } from './types';
 	export let board: ChessBoard;
 	let chessboard: ChessBoard = [[]];
@@ -30,20 +31,28 @@
 	};
 </script>
 
-{#each chessboard as row}
-	<p>
+<div class="grid grid-cols-8">
+	{#each chessboard as row}
+		<!-- <p> -->
 		{#each row as sq}
-			{sq.file}
-			{sq.rank}
-			{#if sq.piece !== 'None'}
-				{pieceSwitch(sq.piece)}
-				{'     '}
-				<!-- <img src={`./pieces/${sq.piece}.png`} alt="piece" /> -->
+			{#if sq.color === 'White'}
+				<button
+					class="lg:h-18 lg:w-18 h-20 w-20 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+				>
+					{sq.file}
+					{sq.rank[0]}
+					<Square {sq} />
+				</button>
+			{:else}
+				<button
+					class="lg:h-18 lg:w-18 h-20 w-20 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+				>
+					{sq.file}
+					{sq.rank[0]}
+					<Square {sq} />
+				</button>
 			{/if}
 		{/each}
-	</p>
-{/each}
-
-<style>
-	/* styles go here */
-</style>
+		<!-- </p> -->
+	{/each}
+</div>
