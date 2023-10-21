@@ -31,28 +31,30 @@
 	};
 </script>
 
-<div class="grid grid-cols-8">
-	{#each chessboard as row}
-		<!-- <p> -->
-		{#each row as sq}
-			{#if sq.color === 'White'}
-				<button
-					class="lg:h-18 lg:w-18 h-20 w-20 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
-				>
-					{sq.file}
-					{sq.rank[0]}
-					<Square {sq} />
-				</button>
-			{:else}
-				<button
-					class="lg:h-18 lg:w-18 h-20 w-20 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
-				>
-					{sq.file}
-					{sq.rank[0]}
-					<Square {sq} />
-				</button>
-			{/if}
+<div class="flex justify-center">
+	<div class="grid grid-cols-8 gap-0">
+		{#each chessboard as row}
+			<!-- <p> -->
+			{#each row as sq}
+				{#if sq.color === 'White'}
+					<button
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+					>
+						{sq.file}
+						{sq.rank[0]}
+						<Square {sq} />
+					</button>
+				{:else}
+					<button
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+					>
+						{sq.file}
+						{sq.rank[0]}
+						<Square {sq} />
+					</button>
+				{/if}
+			{/each}
+			<!-- </p> -->
 		{/each}
-		<!-- </p> -->
-	{/each}
+	</div>
 </div>
