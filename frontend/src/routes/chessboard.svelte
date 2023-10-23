@@ -22,7 +22,7 @@
 
 <div class="flex justify-center items-center">
 	<div class="grid grid-cols-8 gap-0">
-		{#each boardToFront as row}
+		{#each chessboard as row}
 			<!-- <p> -->
 			{#each row as sq}
 				{#if sq.color === 'White'}

@@ -36,6 +36,7 @@ const latestMoveSchema = z.array(z.union([squareSchema, z.string()])).nullable()
 const moveSchema = z.array(z.union([squareSchema, z.string()]));
 
 const listOfMovesSchema = z.array(moveSchema);
+
 export const gameStateSchema = z.enum(['InProgress', 'WhiteVictory', 'BlackVictory', 'Draw']);
 
 export const schema = z.object({
@@ -50,6 +51,7 @@ export const schema = z.object({
 	list_of_moves: listOfMovesSchema
 });
 
+export type Chess = z.TypeOf<typeof schema>;
 export type ChessBoard = z.TypeOf<typeof boardSchema>;
 export type Piece = z.TypeOf<typeof pieceSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;

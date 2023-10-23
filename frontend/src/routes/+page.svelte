@@ -1,36 +1,37 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Chessboard from './chessboard.svelte';
-	import { schema } from './types';
+	import { schema, type Chess } from './types';
 	export let data;
 
-	$: chess = data.post;
-	$: chessboard = data.post.board;
-	$: list_of_moves = data.post.list_of_moves;
-	$: whiteInCheck = data.post.white_player.in_check;
-	$: blackInCheck = data.post.black_player.in_check;
-	$: whiteInCheckmate = data.post.black_player.victory;
-	$: blackInCheckmate = data.post.white_player.victory;
+	let chess = data.post;
+	$: chessboard = chess.board;
+	$: list_of_moves = chess.list_of_moves;
+	$: whiteInCheck = chess.white_player.in_check;
+	$: blackInCheck = chess.black_player.in_check;
+	$: whiteInCheckmate = chess.black_player.victory;
+	$: blackInCheckmate = chess.white_player.victory;
 
-	async function makeMove() {
+	async function makeMove(): Promise<Chess> {
 		const new_move = ['e2', 'e4'];
 		const response = await fetch('http://127.0.0.1:8000/chess', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.stringify({ list_of_moves, new_move })
+			body: JSON.parse({ list_of_moves, new_move })
 		});
 		const data = await response.json();
 		const validatedChess = schema.parse(data.chess);
-
-		chess = validatedChess;
+		return validatedChess;
 	}
 
-	function handleClick() {
-		makeMove();
-
-		console.log('Button clicked!');
+	async function handleClick() {
+		try {
+			const newChess = await makeMove();
+			chess = newChess;
+		} catch (error) {
+			console.error(error);
+		}
 	}
 </script>
 
