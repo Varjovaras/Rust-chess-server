@@ -31,19 +31,23 @@ export const playerSchema = z.object({
 	victory: z.boolean()
 });
 
+const latestMoveSchema = z.array(z.union([squareSchema, z.string()])).nullable();
+
+const moveSchema = z.array(z.union([squareSchema, z.string()]));
+
+const listOfMovesSchema = z.array(moveSchema);
 export const gameStateSchema = z.enum(['InProgress', 'WhiteVictory', 'BlackVictory', 'Draw']);
 
 export const schema = z.object({
 	board: boardSchema,
 	turn_number: z.number(),
-	latest_move: z.nullable(z.array(z.array(z.string()))),
+	latest_move: latestMoveSchema,
 	castling: castlingSchema,
 	white_player: playerSchema,
 	black_player: playerSchema,
 	gamestate: gameStateSchema,
 	fifty_move_rule: z.number(),
-	list_of_moves: z.array(z.array(z.string())),
-	new_move: z.array(z.array(z.string()))
+	list_of_moves: listOfMovesSchema
 });
 
 export type ChessBoard = z.TypeOf<typeof boardSchema>;
