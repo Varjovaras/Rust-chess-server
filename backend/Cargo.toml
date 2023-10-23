@@ -4,10 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [profile.dev]
-opt-level = 0
+opt-level = 3
 
 [profile.release]
-opt-level = 0
+opt-level = 3
 
 [dependencies]
 rand = "0.8.4"
@@ -18,4 +18,4 @@ shuttle-axum = "0.29.0"
 shuttle-runtime = "0.29.0"
 tokio = "1.28.2"
 tower = { version = "0.4", features = ["full"] }
-tower-http = { version = "0.1", features = ["full"] }
+tower-http = { version = "0.4.3", features = ["full"] }

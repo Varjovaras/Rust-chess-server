@@ -15,7 +15,7 @@ use axum::{
 };
 use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
-use tower_http::cors::{any, CorsLayer};
+use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Debug, Deserialize)]
 struct MoveRequest {
@@ -62,7 +62,7 @@ async fn axum() -> ShuttleAxum {
         .allow_methods([Method::GET, Method::POST])
         .allow_headers([CONTENT_TYPE])
         // allow requests from any origin
-        .allow_origin(any());
+        .allow_origin(Any);
     let router = Router::new()
         .route("/chess", get(chess))
         .route("/chess", post(move_chess))
