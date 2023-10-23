@@ -9,36 +9,49 @@ mod piece;
 mod player;
 
 use axum::{
-    http::{Method, StatusCode},
-    response::IntoResponse,
+    http::{header::CONTENT_TYPE, Method, StatusCode},
     routing::{get, post},
-    Router,
+    Json, Router,
 };
+use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
-// use tower::{Service, ServiceBuilder, ServiceExt};
 use tower_http::cors::{any, CorsLayer};
 
-// use actix_web::{get, web::ServiceConfig, HttpResponse, Responder};
+#[derive(Debug, Deserialize)]
+struct MoveRequest {
+    pub list_of_moves: Vec<(String, String)>,
+    pub new_move: (String, String),
+}
+
+#[derive(Debug, Serialize)]
+struct MoveResponse {
+    pub chess: Chess,
+}
 
 use crate::chess::Chess;
 //cargo watch -qcx 'shuttle run'
 
-async fn hello_world() -> &'static str {
-    "Hello, world!"
+async fn move_chess(
+    // this argument tells axum to parse the request body
+    // as JSON into a `CreateUser` type
+    Json(payload): Json<MoveRequest>,
+) -> (StatusCode, Json<MoveResponse>) {
+    let mut chess = Chess::new_starting_position();
+
+    for move_tuple in payload.list_of_moves {
+        chess.make_move_from_str(move_tuple.0.as_str(), move_tuple.1.as_str());
+    }
+
+    chess.make_move_from_str(payload.new_move.0.as_str(), payload.new_move.1.as_str());
+    chess.make_move_from_str("e7", "e5");
+    chess.make_move_from_str("d2", "d4");
+    chess.make_move_from_str("d7", "d5");
+
+    (StatusCode::CREATED, Json(MoveResponse { chess }))
 }
 
 async fn chess() -> String {
     serde_json::to_string(&Chess::new_starting_position()).unwrap()
-}
-
-async fn chess_move() -> impl IntoResponse {
-    let mut chess = Chess::new();
-    chess.starting_position();
-    chess.make_move_from_str("e2", "e4");
-    (
-        StatusCode::OK,
-        serde_json::to_string(&Chess::new_starting_position()).unwrap(),
-    )
 }
 
 #[shuttle_runtime::main]
@@ -46,12 +59,12 @@ async fn axum() -> ShuttleAxum {
     let cors = CorsLayer::new()
         // allow `GET` and `POST` when accessing the resource
         .allow_methods([Method::GET, Method::POST])
+        .allow_headers([CONTENT_TYPE])
         // allow requests from any origin
         .allow_origin(any());
     let router = Router::new()
-        .route("/", get(hello_world))
         .route("/chess", get(chess))
-        .route("/chess", post(chess_move))
+        .route("/chess", post(move_chess))
         .layer(cors);
 
     Ok(router.into())

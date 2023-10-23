@@ -14,9 +14,9 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
-type Move = (Square, Square, PieceColor);
+pub type Move = (Square, Square, PieceColor);
 
-type SquareAsFileRank = (File, Rank);
+// type SquareAsFileRank = (File, Rank);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Chess {
@@ -29,7 +29,6 @@ pub struct Chess {
     pub gamestate: GameState,
     pub fifty_move_rule: u8,
     pub list_of_moves: Vec<Move>,
-    pub new_move: (SquareAsFileRank, SquareAsFileRank),
 }
 
 impl Chess {
@@ -44,10 +43,6 @@ impl Chess {
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
             list_of_moves: Vec::new(),
-            new_move: (
-                (File::default(), Rank::default()),
-                (File::default(), Rank::default()),
-            ),
         }
     }
 
@@ -62,10 +57,6 @@ impl Chess {
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
             list_of_moves: Vec::new(),
-            new_move: (
-                (File::default(), Rank::default()),
-                (File::default(), Rank::default()),
-            ),
         };
         chess.starting_position();
         chess
@@ -75,6 +66,9 @@ impl Chess {
         serde_json::to_string(&self).unwrap()
     }
 
+    pub fn from_json(json_str: &str) -> Result<Self, serde_json::Error> {
+        serde_json::from_str(json_str)
+    }
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
         let moving_piece_color = start_sq.piece.color();
 
