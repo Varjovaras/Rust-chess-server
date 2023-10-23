@@ -3,7 +3,7 @@
 	import { schema, type Chess } from './types';
 	export let data;
 
-	let chess = data.post;
+	$: chess = data.post;
 	$: chessboard = chess.board;
 	$: list_of_moves = chess.list_of_moves;
 	$: whiteInCheck = chess.white_player.in_check;
@@ -18,7 +18,7 @@
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: JSON.parse({ list_of_moves, new_move })
+			body: JSON.stringify({ list_of_moves, new_move })
 		});
 		const data = await response.json();
 		const validatedChess = schema.parse(data.chess);

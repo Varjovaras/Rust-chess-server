@@ -5,9 +5,9 @@
 	export let whiteInCheck: boolean;
 	export let blackInCheck: boolean;
 
-	$: boardToFront = handleBoardToFront();
+	$: boardToFront = handleBoardToFront(chessboard);
 
-	const handleBoardToFront = (): ChessBoard => {
+	const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 		let boardToFront: ChessBoard = [[]];
 		for (let i = 7; i >= 0; i--) {
 			let arr = [];
@@ -22,8 +22,7 @@
 
 <div class="flex justify-center items-center">
 	<div class="grid grid-cols-8 gap-0">
-		{#each chessboard as row}
-			<!-- <p> -->
+		{#each boardToFront as row}
 			{#each row as sq}
 				{#if sq.color === 'White'}
 					<button
