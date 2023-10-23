@@ -251,7 +251,7 @@ mod tests {
 
     #[test]
     fn checkmate_works() {
-        let mut chess = Chess::new();
+        let mut chess = Chess::_new();
         chess.starting_position();
         chess.make_move_from_str("f2", "f3");
         chess.make_move_from_str("e7", "e5");

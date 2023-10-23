@@ -103,7 +103,7 @@ mod tests {
 
     #[test]
     fn king_move_works() {
-        let mut chess = Chess::new();
+        let mut chess = Chess::_new();
         chess.starting_position();
         chess.board[4][4].piece = BLACKKING;
         let sq1 = chess.board[4][4];
@@ -127,7 +127,7 @@ mod tests {
 
     #[test]
     fn castling_works() {
-        let mut chess = Chess::new();
+        let mut chess = Chess::_new();
         chess.starting_position();
 
         let sq1 = chess.board[4][0];

@@ -24,7 +24,7 @@ mod tests {
     use super::*;
     #[test]
     fn move_bishop_works() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         //Bishop on D5
         chess.board[3][4].piece = Piece::Bishop(PieceColor::White);
 

@@ -83,7 +83,7 @@ mod tests {
     use super::*;
     #[test]
     fn diagonal_movement_functions_work() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         chess.starting_position();
         //no piece on D2
         chess.board[3][1].piece = Piece::None;

@@ -180,7 +180,7 @@ mod tests {
 
     #[test]
     fn chess_board_is_proper() {
-        let chess: Chess = Chess::new();
+        let chess: Chess = Chess::_new();
         assert_eq!(chess.board[0][0]._square_name(), String::from("A1"));
         assert_eq!(chess.board[0][7]._square_name(), String::from("A8"));
         assert_eq!(chess.board[1][1]._square_name(), String::from("B2"));
@@ -201,7 +201,7 @@ mod tests {
     #[test]
     fn squares_are_right_colors() {
         use crate::chessboard::square::SquareColor;
-        let chess: Chess = Chess::new();
+        let chess: Chess = Chess::_new();
         assert_eq!(chess.board[0][0]._square_color(), SquareColor::Black);
         assert_eq!(chess.board[1][1]._square_color(), SquareColor::Black);
         assert_eq!(chess.board[2][1]._square_color(), SquareColor::White);
@@ -211,7 +211,7 @@ mod tests {
 
     #[test]
     fn starting_position_works() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         chess.starting_position();
         assert_eq!(chess.board[0][0].piece, Piece::Rook(PieceColor::White))
     }

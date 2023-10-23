@@ -105,7 +105,7 @@ mod tests {
     use super::*;
     #[test]
     fn black_pawn_moves_from_starting_square() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         chess.starting_position();
 
         //Bishop on B7
@@ -147,7 +147,7 @@ mod tests {
     }
     #[test]
     fn normal_pawn_moves() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         chess.starting_position();
 
         //Bishop on B2, black pawn on D6
@@ -169,7 +169,7 @@ mod tests {
 
     #[test]
     fn black_en_passant_works() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         chess.starting_position();
         chess.make_move_from_str("e2", "e4");
         chess.make_move_from_str("c7", "c5");

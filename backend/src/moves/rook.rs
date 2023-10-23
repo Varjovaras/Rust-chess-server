@@ -29,7 +29,7 @@ mod tests {
 
     #[test]
     fn rook_move_works() {
-        let mut chess = Chess::new();
+        let mut chess = Chess::_new();
         chess.starting_position();
         let sq1 = chess.board[0][0];
         let sq2 = chess.board[0][6];

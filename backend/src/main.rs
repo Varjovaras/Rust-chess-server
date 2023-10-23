@@ -36,6 +36,7 @@ async fn move_chess(
     // as JSON into a `CreateUser` type
     Json(payload): Json<MoveRequest>,
 ) -> (StatusCode, Json<MoveResponse>) {
+    println!("{:?}", payload);
     let mut chess = Chess::new_starting_position();
 
     for move_tuple in payload.list_of_moves {

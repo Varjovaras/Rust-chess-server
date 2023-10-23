@@ -32,7 +32,7 @@ pub struct Chess {
 }
 
 impl Chess {
-    pub fn new() -> Chess {
+    pub fn _new() -> Chess {
         Chess {
             board: chessboard::new_board(),
             turn_number: 0,
@@ -66,7 +66,7 @@ impl Chess {
         serde_json::to_string(&self).unwrap()
     }
 
-    pub fn from_json(json_str: &str) -> Result<Self, serde_json::Error> {
+    pub fn _from_json(json_str: &str) -> Result<Self, serde_json::Error> {
         serde_json::from_str(json_str)
     }
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
@@ -389,12 +389,12 @@ mod tests {
     use super::*;
     #[test]
     fn chess_initialization_works() {
-        let _chess: Chess = Chess::new();
+        let _chess: Chess = Chess::_new();
     }
 
     #[test]
     fn make_move_works() {
-        let mut chess: Chess = Chess::new();
+        let mut chess: Chess = Chess::_new();
         chess.starting_position();
         let mut start_sq = *chess._get_square_from_str("e", "2");
         let mut end_sq = *chess._get_square_from_str("e", "4");

@@ -32,7 +32,7 @@ mod tests {
     const BLACKHORSE: Piece = Piece::Knight(PieceColor::Black);
     #[test]
     fn knight_move_works() {
-        let mut chess = Chess::new();
+        let mut chess = Chess::_new();
         chess.starting_position();
         chess.board[4][4].piece = BLACKHORSE;
         let sq1 = chess.board[4][4];
