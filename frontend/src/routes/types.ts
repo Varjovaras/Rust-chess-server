@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 export const pieceSchema = z.object({
 	Pawn: z.string().optional(),
 	Knight: z.string().optional(),
@@ -33,9 +34,10 @@ export const playerSchema = z.object({
 
 const latestMoveSchema = z.array(z.union([squareSchema, z.string()])).nullable();
 
-const moveSchema = z.array(z.union([squareSchema, z.string()]));
-
-const listOfMovesSchema = z.array(moveSchema);
+const fileSchema = z.string().length(1);
+const rankSchema = z.string();
+const moveSchema = z.tuple([z.tuple([fileSchema, rankSchema]), z.tuple([fileSchema, rankSchema])]);
+export const listOfMovesSchema = z.array(moveSchema);
 
 export const gameStateSchema = z.enum(['InProgress', 'WhiteVictory', 'BlackVictory', 'Draw']);
 
@@ -55,3 +57,4 @@ export type Chess = z.TypeOf<typeof schema>;
 export type ChessBoard = z.TypeOf<typeof boardSchema>;
 export type Piece = z.TypeOf<typeof pieceSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;
+export type ListOfMoves = z.TypeOf<typeof listOfMovesSchema>;

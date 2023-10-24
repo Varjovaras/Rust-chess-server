@@ -13,15 +13,14 @@ use axum::{
     routing::{get, post},
     Json, Router,
 };
-use piece::Piece;
 use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
 use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Debug, Deserialize)]
 struct MoveRequest {
-    list_of_moves: Vec<[(String, String, String, Piece); 2]>,
-    pub new_move: (String, String),
+    list_of_moves: Vec<((String, String), (String, String))>,
+    new_move: [String; 2],
 }
 
 #[derive(Debug, Serialize)]
@@ -29,20 +28,29 @@ struct MoveResponse {
     pub chess: Chess,
 }
 
-use crate::chess::Chess;
+use crate::{
+    chess::Chess,
+    chessboard::{file::File, rank::Rank},
+};
 
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
     println!("{:?}", payload);
     let mut chess = Chess::new_starting_position();
 
-    for move_tuple in payload.list_of_moves {
-        chess.make_move_from_str(move_tuple[0].0.as_str(), move_tuple[1].1.as_str());
+    for move_tuple in &payload.list_of_moves {
+        println!("{:?}", move_tuple);
+        let mut from = *chess.get_square(
+            // File::from(move_tuple.0 .0.as_str()),
+            // Rank::from(move_tuple.0 .1.as_str()),
+        );
+        let mut to = *chess.get_square(
+            // File::from(move_tuple.1 .0.as_str()),
+            // Rank::from(move_tuple.1 .1.as_str()),
+        );
+        chess.make_move(&mut from, &mut to);
     }
-
-    chess.make_move_from_str(payload.new_move.0.as_str(), payload.new_move.1.as_str());
-    chess.make_move_from_str("e7", "e5");
-    chess.make_move_from_str("d2", "d4");
-    chess.make_move_from_str("d7", "d5");
+    println!("blyat");
+    chess.make_move_from_str(&payload.new_move[0], &payload.new_move[1]);
 
     let response = MoveResponse { chess };
     (StatusCode::OK, Json(response))

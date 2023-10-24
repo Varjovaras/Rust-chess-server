@@ -88,3 +88,21 @@ impl From<u8> for File {
         }
     }
 }
+
+impl From<&str> for File {
+    fn from(s: &str) -> File {
+        let str = s.to_uppercase();
+        let file = &str[..];
+        match file {
+            "A" => File::A,
+            "B" => File::B,
+            "C" => File::C,
+            "D" => File::D,
+            "E" => File::E,
+            "F" => File::F,
+            "G" => File::G,
+            "H" => File::H,
+            _ => panic!("Invalid file_str"),
+        }
+    }
+}
