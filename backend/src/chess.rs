@@ -222,9 +222,9 @@ impl Chess {
         }
 
         if self.white_player.victory {
-            self.gamestate = GameState::Checkmate(PieceColor::White);
+            self.gamestate = GameState::WhiteVictory;
         } else if self.black_player.victory {
-            self.gamestate = GameState::Checkmate(PieceColor::Black);
+            self.gamestate = GameState::BlackVictory;
         }
     }
 

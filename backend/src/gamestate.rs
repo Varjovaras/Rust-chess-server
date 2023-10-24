@@ -6,13 +6,14 @@ use crate::{
         get_black_king, get_squares_with_black_pieces, get_squares_with_white_pieces,
         get_white_king,
     },
-    piece::{Piece, PieceColor},
+    piece::Piece,
 };
 
 #[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
 pub enum GameState {
-    Checkmate(PieceColor),
-    _InsufficientMaterial,
+    WhiteVictory,
+    BlackVictory,
+    InsufficientMaterial,
     Stalemate,
     InProgress,
 }

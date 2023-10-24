@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Chessboard from './chessboard.svelte';
-	import { schema, type Chess, listOfMovesSchema } from './types';
+	import { schema, type Chess } from './types';
 	export let data;
 
 	$: chess = data.post;
@@ -23,6 +23,7 @@
 			body: JSON.stringify({ list_of_moves, new_move })
 		});
 		const data = await response.json();
+		// console.log(data.chess);
 		const validatedChess = schema.parse(data.chess);
 		return validatedChess;
 	}
@@ -50,7 +51,7 @@
 		Shakking and sniping
 	</h1>
 	<div class="mt-8 bg-red-300">
-		{#if blackInCheck}
+		{#if blackInCheckmate}
 			<p>White won</p>
 		{:else if whiteInCheckmate}
 			<p>Black won</p>
@@ -71,7 +72,7 @@
 			type="submit"
 			class="col-span-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
 		>
-			Submit
+			Move
 		</button>
 	</form>
 </div>

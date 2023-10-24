@@ -58,3 +58,4 @@ export type ChessBoard = z.TypeOf<typeof boardSchema>;
 export type Piece = z.TypeOf<typeof pieceSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;
 export type ListOfMoves = z.TypeOf<typeof listOfMovesSchema>;
+export type GameState = z.TypeOf<typeof gameStateSchema>;

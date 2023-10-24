@@ -40,10 +40,10 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
     }
     chess.gamestate = if chess.white_player.in_check() {
         chess.black_player.victory = true;
-        GameState::Checkmate(BLACK)
+        GameState::BlackVictory
     } else {
         chess.white_player.victory = true;
-        GameState::Checkmate(WHITE)
+        GameState::WhiteVictory
     };
     true
 }
@@ -77,10 +77,10 @@ pub fn _position_is_checkmate_test(chess: &mut Chess) -> bool {
     }
     chess.gamestate = if chess.white_player.in_check() {
         chess.black_player.victory = true;
-        GameState::Checkmate(BLACK)
+        GameState::BlackVictory
     } else {
         chess.white_player.victory = true;
-        GameState::Checkmate(WHITE)
+        GameState::WhiteVictory
     };
     true
 }
