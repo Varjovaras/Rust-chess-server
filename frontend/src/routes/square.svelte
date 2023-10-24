@@ -8,25 +8,28 @@
 		if (piece === 'None') return '';
 		switch (true) {
 			case piece.Pawn && piece.Pawn !== undefined:
-				if (piece.Pawn === 'White') return 'p';
-				else return `P`;
+				if (piece.Pawn === 'White') return '/pieces/white_pawn.svg';
+				else return `/pieces/black_pawn.svg`;
 
 			case piece.Rook !== undefined:
-				if (piece.Rook === 'White') return 'r';
-				else return `R`;
+				if (piece.Rook === 'White') return '/pieces/white_rook.svg';
+				else return `/pieces/black_rook.svg`;
+
 			case piece.Knight !== undefined:
-				if (piece.Knight === 'White') return 'n';
-				else return `N`;
+				if (piece.Knight === 'White') return '/pieces/white_knight.svg';
+				else return `/pieces/black_knight.svg`;
 
 			case piece.Bishop !== undefined:
-				if (piece.Bishop === 'White') return 'b';
-				else return `B`;
+				if (piece.Bishop === 'White') return '/pieces/white_bishop.svg';
+				else return `/pieces/black_bishop.svg`;
+
 			case piece.Queen !== undefined:
-				if (piece.Queen === 'White') return 'q';
-				else return `Q`;
+				if (piece.Queen === 'White') return '/pieces/white_queen.svg';
+				else return `/pieces/black_queen.svg`;
+
 			case piece.King !== undefined:
-				if (piece.King === 'White') return 'k';
-				else return `K`;
+				if (piece.King === 'White') return '/pieces/white_king.svg';
+				else return `/pieces/black_king.svg`;
 			default:
 				return '';
 		}
@@ -37,6 +40,10 @@
 	{#if sq.piece === 'None'}
 		<div />
 	{:else}
-		{@html pieceSwitch(sq.piece)}
+		<img
+			class="flex justify-center items-center w-full h-full"
+			src={pieceSwitch(sq.piece)}
+			alt={''}
+		/>
 	{/if}
 </div>

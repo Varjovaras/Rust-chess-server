@@ -12,12 +12,11 @@ use crate::{
     piece::{Piece, PieceColor},
     player::Player,
 };
+
 use serde::{Deserialize, Serialize};
 
 pub type LatestMove = (Square, Square, PieceColor);
-
 pub type Move = ((File, usize), (File, usize));
-
 pub type ListOfMoves = Vec<Move>;
 
 // type SquareAsFileRank = (File, Rank);

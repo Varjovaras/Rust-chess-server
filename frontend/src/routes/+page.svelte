@@ -23,7 +23,6 @@
 			body: JSON.stringify({ list_of_moves, new_move })
 		});
 		const data = await response.json();
-		// console.log(data.chess);
 		const validatedChess = schema.parse(data.chess);
 		return validatedChess;
 	}
