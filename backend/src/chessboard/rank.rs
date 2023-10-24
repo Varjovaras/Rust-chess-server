@@ -28,7 +28,7 @@ impl Rank {
         }
     }
 
-    pub fn _as_usize(&self) -> usize {
+    pub fn as_usize(&self) -> usize {
         match self {
             Rank::First => 0,
             Rank::Second => 1,

@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 
 pub type LatestMove = (Square, Square, PieceColor);
 
-pub type Move = ((File, Rank), (File, Rank));
+pub type Move = ((File, usize), (File, usize));
 
 pub type ListOfMoves = Vec<Move>;
 
@@ -205,8 +205,10 @@ impl Chess {
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.turn_number += 1;
         self.handle_check_after_move(start_sq);
-        self.list_of_moves
-            .push(((start_sq.file, start_sq.rank), (end_sq.file, end_sq.rank)));
+        self.list_of_moves.push((
+            (start_sq.file, start_sq.rank.as_usize()),
+            (end_sq.file, end_sq.rank.as_usize()),
+        ));
     }
 
     fn handle_check_after_move(&mut self, _start_sq: &Square) {
@@ -280,7 +282,7 @@ impl Chess {
 
     pub fn _get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
         let file = File::_from_str_slice(file_str)._as_usize();
-        let rank = Rank::_from_str(rank_str)._as_usize();
+        let rank = Rank::_from_str(rank_str).as_usize();
         if file > 7 || rank > 7 {
             panic!("get_square_from_str failed for inputting too big file or rank")
         }
