@@ -49,7 +49,6 @@ async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveR
         );
         chess.make_move(&mut start_sq, &mut end_sq);
     }
-    println!("blyat");
     chess.make_move_from_str(&payload.new_move[0], &payload.new_move[1]);
 
     let response = MoveResponse { chess };
