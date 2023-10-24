@@ -19,7 +19,7 @@ use tower_http::cors::{Any, CorsLayer};
 
 #[derive(Debug, Deserialize)]
 struct MoveRequest {
-    list_of_moves: Vec<((String, String), (String, String))>,
+    list_of_moves: Vec<((String, usize), (String, usize))>,
     new_move: [String; 2],
 }
 
@@ -28,7 +28,10 @@ struct MoveResponse {
     pub chess: Chess,
 }
 
-use crate::chess::Chess;
+use crate::{
+    chess::Chess,
+    chessboard::{file::File, rank::Rank},
+};
 
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
     println!("{:?}", payload);
@@ -36,15 +39,15 @@ async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveR
 
     for move_tuple in &payload.list_of_moves {
         println!("{:?}", move_tuple);
-        // let mut from = *chess.get_square(
-        //     // File::from(move_tuple.0 .0.as_str()),
-        //     // Rank::from(move_tuple.0 .1.as_str()),
-        // );
-        // let mut to = *chess.get_square(
-        //     // File::from(move_tuple.1 .0.as_str()),
-        //     // Rank::from(move_tuple.1 .1.as_str()),
-        // );
-        // chess.make_move(&mut from, &mut to);
+        let mut start_sq = *chess.get_square(
+            File::from(move_tuple.0 .0.as_str()),
+            Rank::from(move_tuple.0 .1),
+        );
+        let mut end_sq = *chess.get_square(
+            File::from(move_tuple.1 .0.as_str()),
+            Rank::from(move_tuple.1 .1),
+        );
+        chess.make_move(&mut start_sq, &mut end_sq);
     }
     println!("blyat");
     chess.make_move_from_str(&payload.new_move[0], &payload.new_move[1]);

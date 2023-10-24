@@ -35,7 +35,7 @@ export const playerSchema = z.object({
 const latestMoveSchema = z.array(z.union([squareSchema, z.string()])).nullable();
 
 const fileSchema = z.string().length(1);
-const rankSchema = z.string();
+const rankSchema = z.number();
 const moveSchema = z.tuple([z.tuple([fileSchema, rankSchema]), z.tuple([fileSchema, rankSchema])]);
 export const listOfMovesSchema = z.array(moveSchema);
 
