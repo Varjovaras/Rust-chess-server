@@ -24,8 +24,8 @@ mod tests {
     use crate::piece::{Piece, PieceColor};
 
     const NONE: Piece = Piece::None;
-    const WHITEROOK: Piece = Piece::Rook(PieceColor::White);
-    const BLACKROOK: Piece = Piece::Rook(PieceColor::Black);
+    const WHITE_ROOK: Piece = Piece::Rook(PieceColor::White);
+    const BLACK_ROOK: Piece = Piece::Rook(PieceColor::Black);
 
     #[test]
     fn rook_move_works() {
@@ -37,7 +37,7 @@ mod tests {
         chess.board[0][1].piece = NONE;
         assert!(move_rook(&sq1, &sq2, &chess));
 
-        chess.board[4][4].piece = BLACKROOK;
+        chess.board[4][4].piece = BLACK_ROOK;
         let sq1 = chess.board[4][4];
         assert!(!move_rook(&sq1, &sq2, &chess));
         let sq2 = chess.board[4][5];
@@ -47,7 +47,7 @@ mod tests {
         let sq2 = chess.board[0][4];
         assert!(move_rook(&sq1, &sq2, &chess));
 
-        chess.board[1][4].piece = WHITEROOK;
+        chess.board[1][4].piece = WHITE_ROOK;
         let sq1 = chess.board[1][4];
         let sq2 = chess.board[4][4];
         assert!(move_rook(&sq1, &sq2, &chess));

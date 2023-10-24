@@ -1,7 +1,7 @@
 use crate::{
     chess::Chess,
     chessboard::{
-        file::File, get_adjancent_squares, get_black_king, get_white_king, rank::Rank,
+        file::File, get_adjacent_squares, get_black_king, get_white_king, rank::Rank,
         square::Square, ChessBoard,
     },
     piece::{Piece, PieceColor},
@@ -85,7 +85,7 @@ fn square_is_bordered_by_other_king(
         _ => panic!("King color is neither white nor black"),
     };
 
-    let bordered_squares = get_adjancent_squares(end_sq, chessboard);
+    let bordered_squares = get_adjacent_squares(end_sq, chessboard);
     bordered_squares.contains(enemy_king_sq)
 }
 

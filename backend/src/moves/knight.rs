@@ -29,12 +29,12 @@ mod tests {
         piece::{Piece, PieceColor},
     };
 
-    const BLACKHORSE: Piece = Piece::Knight(PieceColor::Black);
+    const BLACK_HORSE: Piece = Piece::Knight(PieceColor::Black);
     #[test]
     fn knight_move_works() {
         let mut chess = Chess::_new();
         chess.starting_position();
-        chess.board[4][4].piece = BLACKHORSE;
+        chess.board[4][4].piece = BLACK_HORSE;
         let sq1 = chess.board[4][4];
         let sq2 = chess.board[6][3];
         assert!(move_knight(&sq1, &sq2));

@@ -3,7 +3,7 @@ mod check;
 mod checkmate;
 mod chess;
 mod chessboard;
-mod gamestate;
+mod game_state;
 mod moves;
 mod piece;
 mod player;

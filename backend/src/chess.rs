@@ -3,7 +3,7 @@ use crate::{
     check::king_is_in_check,
     checkmate::{self},
     chessboard::{self, file::File, rank::Rank, square::Square, starting_position, ChessBoard},
-    gamestate::{insufficient_material, GameState},
+    game_state::{insufficient_material, GameState},
     moves::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},

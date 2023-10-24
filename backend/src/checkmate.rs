@@ -3,7 +3,7 @@ use crate::{
     chessboard::{
         get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
     },
-    gamestate::GameState,
+    game_state::GameState,
     moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };

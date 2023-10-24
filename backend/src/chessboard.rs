@@ -10,7 +10,7 @@ use crate::piece::{
     Piece::Rook,
     Piece::{self, Knight},
     PieceColor::Black,
-    PieceColor::{self, White},
+    PieceColor::{White},
 };
 
 use self::{
@@ -36,11 +36,11 @@ pub fn new_board() -> ChessBoard {
         for rank in ranks {
             let sq = Square::new(file, rank, color, Piece::default());
             row[rank as usize] = sq;
-            color = self::color_changer(color); //every other square is black or white
+            color = color_changer(color); //every other square is black or white
         }
         board[file as usize] = row;
         //when row changes, do additional color change
-        color = self::color_changer(color);
+        color = color_changer(color);
     }
     board
 }
@@ -96,7 +96,7 @@ pub fn starting_position() -> ChessBoard {
 pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
     for file in board.iter().take(8) {
         for square in file {
-            if square.piece == Piece::King(PieceColor::White) {
+            if square.piece == King(White) {
                 return Some(square);
             }
         }
@@ -107,7 +107,7 @@ pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
 pub fn get_black_king(board: &ChessBoard) -> Option<&Square> {
     for file in board.iter().take(8) {
         for square in file {
-            if square.piece == Piece::King(PieceColor::Black) {
+            if square.piece == King(Black) {
                 return Some(square);
             }
         }
@@ -119,7 +119,7 @@ pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
     let mut squares_with_pieces: Vec<Square> = Vec::new();
     for file in board.iter().take(8) {
         for square in file {
-            if square.piece.color() == &PieceColor::White {
+            if square.piece.color() == &White {
                 squares_with_pieces.push(*square);
             }
         }
@@ -131,7 +131,7 @@ pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
     let mut squares_with_pieces: Vec<Square> = Vec::new();
     for file in board.iter().take(8) {
         for square in file {
-            if square.piece.color() == &PieceColor::Black {
+            if square.piece.color() == &Black {
                 squares_with_pieces.push(*square);
             }
         }
@@ -139,36 +139,36 @@ pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
     squares_with_pieces
 }
 
-pub fn get_adjancent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
-    let mut adjancent_squares: Vec<Square> = Vec::new();
+pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
+    let mut adjacent_squares: Vec<Square> = Vec::new();
     let file = sq.file as usize;
     let rank = sq.rank as usize;
     if file > 0 {
-        adjancent_squares.push(board[file - 1][rank]);
+        adjacent_squares.push(board[file - 1][rank]);
     }
     if file < 7 {
-        adjancent_squares.push(board[file + 1][rank]);
+        adjacent_squares.push(board[file + 1][rank]);
     }
     if rank > 0 {
-        adjancent_squares.push(board[file][rank - 1]);
+        adjacent_squares.push(board[file][rank - 1]);
     }
     if rank < 7 {
-        adjancent_squares.push(board[file][rank + 1]);
+        adjacent_squares.push(board[file][rank + 1]);
     }
     if file > 0 && rank > 0 {
-        adjancent_squares.push(board[file - 1][rank - 1]);
+        adjacent_squares.push(board[file - 1][rank - 1]);
     }
     if file > 0 && rank < 7 {
-        adjancent_squares.push(board[file - 1][rank + 1]);
+        adjacent_squares.push(board[file - 1][rank + 1]);
     }
     if file < 7 && rank > 0 {
-        adjancent_squares.push(board[file + 1][rank - 1]);
+        adjacent_squares.push(board[file + 1][rank - 1]);
     }
     if file < 7 && rank < 7 {
-        adjancent_squares.push(board[file + 1][rank + 1]);
+        adjacent_squares.push(board[file + 1][rank + 1]);
     }
 
-    adjancent_squares
+    adjacent_squares
 }
 
 #[cfg(test)]

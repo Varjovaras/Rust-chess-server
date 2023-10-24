@@ -5,7 +5,7 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-//only en passant affects board, thats why chess is mutable reference
+//only en passant affects board, that's why chess is mutable reference
 pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::First {
         return false;
@@ -35,10 +35,10 @@ fn black_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> 
         return false;
     } else {
         let column_diff = square_column_diff(start_sq, end_sq);
-        match column_diff {
-            1 => return one_square_forward(end_sq),
-            2 => return two_squares_forward(start_sq, end_sq, chess),
-            _ => return false,
+        return match column_diff {
+            1 => one_square_forward(end_sq),
+            2 => two_squares_forward(start_sq, end_sq, chess),
+            _ => false,
         };
     }
 }
