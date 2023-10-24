@@ -10,9 +10,11 @@
 	$: blackInCheck = chess.black_player.in_check;
 	$: whiteInCheckmate = chess.black_player.victory;
 	$: blackInCheckmate = chess.white_player.victory;
+	let fromSquare = '';
+	let toSquare = '';
 
 	async function makeMove(): Promise<Chess> {
-		const new_move = ['e2', 'e4'];
+		const new_move = [fromSquare, toSquare];
 		const response = await fetch('http://127.0.0.1:8000/chess', {
 			method: 'POST',
 			headers: {
@@ -33,6 +35,12 @@
 			console.error(error);
 		}
 	}
+
+	function handleSubmit(event: { preventDefault: () => void }) {
+		event.preventDefault();
+		console.log(`Move from ${fromSquare} to ${toSquare}`);
+		handleClick();
+	}
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-gray-900">
@@ -41,7 +49,7 @@
 	>
 		Shakking and sniping
 	</h1>
-	<div class="mt-8">
+	<div class="mt-8 bg-red-300">
 		{#if blackInCheck}
 			<p>White won</p>
 		{:else if whiteInCheckmate}
@@ -49,8 +57,21 @@
 		{/if}
 	</div>
 	<Chessboard {chessboard} {whiteInCheck} {blackInCheck} />
-	<p class="text-gray-900 dark:text-white">
-		Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
-	</p>
-	<button class="bg-red-600" on:click={handleClick}>Click me!</button>
+
+	<form class="grid grid-cols-2 gap-4 mt-8" on:submit={handleSubmit}>
+		<label class="col-span-1 bg-red-300">
+			<span class="block">Move from:</span>
+			<input type="text" class="block w-full" bind:value={fromSquare} />
+		</label>
+		<label class="col-span-1 bg-red-300">
+			<span class="block">Move to:</span>
+			<input type="text" class="block w-full" bind:value={toSquare} />
+		</label>
+		<button
+			type="submit"
+			class="col-span-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+		>
+			Submit
+		</button>
+	</form>
 </div>
