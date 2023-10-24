@@ -14,7 +14,11 @@ use crate::{
 };
 use serde::{Deserialize, Serialize};
 
-pub type Move = (Square, Square, PieceColor);
+pub type LatestMove = (Square, Square, PieceColor);
+
+pub type Move = ((File, Rank), (File, Rank));
+
+pub type ListOfMoves = Vec<Move>;
 
 // type SquareAsFileRank = (File, Rank);
 
@@ -22,13 +26,13 @@ pub type Move = (Square, Square, PieceColor);
 pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
-    pub latest_move: Option<Move>,
+    pub latest_move: Option<LatestMove>,
     pub castling: Castling,
     pub white_player: Player,
     pub black_player: Player,
     pub gamestate: GameState,
     pub fifty_move_rule: u8,
-    pub list_of_moves: Vec<Move>,
+    pub list_of_moves: ListOfMoves,
 }
 
 impl Chess {
@@ -201,7 +205,8 @@ impl Chess {
         self.latest_move = Some((*start_sq, *end_sq, *start_sq.piece.color()));
         self.turn_number += 1;
         self.handle_check_after_move(start_sq);
-        self.list_of_moves.push(self.latest_move.unwrap());
+        self.list_of_moves
+            .push(((start_sq.file, start_sq.rank), (end_sq.file, end_sq.rank)));
     }
 
     fn handle_check_after_move(&mut self, _start_sq: &Square) {
