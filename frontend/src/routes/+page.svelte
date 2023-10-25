@@ -13,7 +13,7 @@
 
 	let fromSquare = '';
 	let toSquare = '';
-	let fromInput;
+	let fromInput: HTMLInputElement;
 
 	async function makeMove(): Promise<Chess> {
 		const new_move = [fromSquare, toSquare];
