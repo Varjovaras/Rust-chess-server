@@ -10,12 +10,10 @@
 	$: blackInCheck = chess.black_player.in_check;
 	$: whiteInCheckmate = chess.black_player.victory;
 	$: blackInCheckmate = chess.white_player.victory;
-	$: {
-		console.log(chess.white_player.in_check);
-		console.log(chess.black_player.in_check);
-	}
+
 	let fromSquare = '';
 	let toSquare = '';
+	let fromInput;
 
 	async function makeMove(): Promise<Chess> {
 		const new_move = [fromSquare, toSquare];
@@ -44,6 +42,9 @@
 		event.preventDefault();
 		console.log(`Move from ${fromSquare} to ${toSquare}`);
 		handleClick();
+		fromSquare = '';
+		toSquare = '';
+		fromInput.focus();
 	}
 </script>
 
@@ -65,7 +66,7 @@
 	<form class="grid grid-cols-2 gap-4 mt-8" on:submit={handleSubmit}>
 		<label class="col-span-1 bg-red-300">
 			<span class="block">Move from:</span>
-			<input type="text" class="block w-full" bind:value={fromSquare} />
+			<input type="text" class="block w-full" bind:value={fromSquare} bind:this={fromInput} />
 		</label>
 		<label class="col-span-1 bg-red-300">
 			<span class="block">Move to:</span>
