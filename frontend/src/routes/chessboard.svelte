@@ -24,17 +24,29 @@
 	<div class="grid grid-cols-8 gap-0">
 		{#each boardToFront as row}
 			{#each row as sq}
-				{#if sq.color === 'White'}
+				{#if whiteInCheck && sq.color === 'White' && sq.piece !== 'None' && sq.piece.King === 'White'}
+					<button
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+					>
+						<Square {sq} />
+					</button>
+				{:else if blackInCheck && sq.piece !== 'None' && sq.piece.King === 'Black'}
+					<button
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+					>
+						<Square {sq} />
+					</button>
+				{:else if sq.color === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
 					>
-						<Square {sq} {whiteInCheck} {blackInCheck} />
+						<Square {sq} />
 					</button>
 				{:else}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
 					>
-						<Square {sq} {whiteInCheck} {blackInCheck} />
+						<Square {sq} />
 					</button>
 				{/if}
 			{/each}

@@ -1,8 +1,6 @@
 <script lang="ts">
 	import type { Piece, Square } from './types';
 	export let sq: Square;
-	export let whiteInCheck: boolean;
-	export let blackInCheck: boolean;
 
 	const pieceSwitch = (piece: Piece | 'None') => {
 		if (piece === 'None') return '';
