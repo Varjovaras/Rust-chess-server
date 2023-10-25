@@ -72,7 +72,9 @@ impl Chess {
     pub fn _from_json(json_str: &str) -> Result<Self, serde_json::Error> {
         serde_json::from_str(json_str)
     }
+
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
+        /**move puts you into check, !!11 FIX */
         let moving_piece_color = start_sq.piece.color();
 
         if !self.move_is_allowed(moving_piece_color) {
@@ -98,8 +100,13 @@ impl Chess {
         //king is in check and the move doesnt remove check return
         if (moving_piece_color == &PieceColor::White && self.white_player.in_check()
             || moving_piece_color == &PieceColor::Black && self.black_player.in_check())
-            && !self.move_removes_check(start_sq, end_sq)
+            && !self.king_is_in_check_after_move(start_sq, end_sq)
         {
+            return;
+        }
+
+        //check if move puts you into check
+        if !self.king_is_in_check_after_move(&start_sq, &end_sq) {
             return;
         }
 
@@ -118,8 +125,9 @@ impl Chess {
                 Some(Piece::None) => return,
                 Some(promoted_piece) => {
                     self.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
-                    self.handle_check_after_move(start_sq);
-                    return;
+                    self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
+                    // self.handle_check_after_move(start_sq);
+                    // return;
                 }
                 None => return,
             }
@@ -138,7 +146,6 @@ impl Chess {
             || start_sq.piece == Piece::Rook(PieceColor::Black)
         {
             self.handle_rook_and_king_move(start_sq, end_sq);
-            // return;
         }
 
         self.update_board(start_sq, end_sq);
@@ -227,7 +234,7 @@ impl Chess {
         }
     }
 
-    pub fn move_removes_check(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
+    pub fn king_is_in_check_after_move(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
         let mut temp_board = self.board;
         if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
             return false;

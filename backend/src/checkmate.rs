@@ -34,7 +34,7 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
 
-        if chess.move_removes_check(&start_sq, &end_sq) {
+        if chess.king_is_in_check_after_move(&start_sq, &end_sq) {
             return false;
         }
     }
@@ -68,7 +68,7 @@ pub fn _position_is_checkmate_test(chess: &mut Chess) -> bool {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
 
-        if chess.move_removes_check(&start_sq, &end_sq) {
+        if chess.king_is_in_check_after_move(&start_sq, &end_sq) {
             println!("Move {:?} removes check", possible_move);
             println!("start_sq: {:?}", start_sq);
             println!("end_sq: {:?}", end_sq);
