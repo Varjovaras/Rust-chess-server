@@ -10,6 +10,9 @@
 	$: blackInCheck = chess.black_player.in_check;
 	$: whiteInCheckmate = chess.black_player.victory;
 	$: blackInCheckmate = chess.white_player.victory;
+	$: {
+		console.log(chess);
+	}
 
 	let fromSquare = '';
 	let toSquare = '';
