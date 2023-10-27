@@ -67,8 +67,8 @@ async fn axum() -> ShuttleAxum {
         .allow_headers([CONTENT_TYPE])
         .allow_origin(Any);
     let router = Router::new()
-        .route("/chess", get(chess))
-        .route("/chess", post(move_chess))
+        .route("/api/chess", get(chess))
+        .route("/api/chess", post(move_chess))
         .layer(cors);
 
     Ok(router.into())

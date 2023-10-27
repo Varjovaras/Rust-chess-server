@@ -24,7 +24,6 @@ mod tests {
         piece::{Piece, PieceColor},
     };
 
-    const NONE: Piece = Piece::None;
     const WHITE_QUEEN: Piece = Piece::Queen(PieceColor::White);
 
     #[test]
