@@ -3,52 +3,28 @@
 	import { schema, type Chess } from './types';
 	export let data;
 
-	$: chess = data.post;
-	$: chessboard = chess.board;
-	$: list_of_moves = chess.list_of_moves;
+	let chess = data.post;
+	$: listOfMoves = chess.list_of_moves;
 	$: whiteInCheck = chess.white_player.in_check;
 	$: blackInCheck = chess.black_player.in_check;
 	$: whiteInCheckmate = chess.black_player.victory;
 	$: blackInCheckmate = chess.white_player.victory;
-	$: {
-		console.log(chess);
-	}
+	// $: {
+	// 	console.log(chess);
+	// }
 
-	let fromSquare = '';
-	let toSquare = '';
-	let fromInput: HTMLInputElement;
-
-	async function makeMove(): Promise<Chess> {
-		const new_move = [fromSquare, toSquare];
-		const response = await fetch('http://127.0.0.1:8000/chess', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ list_of_moves, new_move })
-		});
-		const data = await response.json();
-		const validatedChess = schema.parse(data.chess);
-		return validatedChess;
-	}
-
-	async function handleClick() {
+	const handleReset = async () => {
 		try {
-			const newChess = await makeMove();
-			chess = newChess;
+			console.log('Resetting board');
+			const response = await fetch(`https://chessbackend.shuttleapp.rs/api/chess`);
+			const newChess = await response.json();
+			// console.log(JSON.stringify(chess));
+			const validatedChess = schema.parse(newChess);
+			chess = validatedChess;
 		} catch (error) {
 			console.error(error);
 		}
-	}
-
-	function handleSubmit(event: { preventDefault: () => void }) {
-		event.preventDefault();
-		console.log(`Move from ${fromSquare} to ${toSquare}`);
-		handleClick();
-		fromSquare = '';
-		toSquare = '';
-		fromInput.focus();
-	}
+	};
 </script>
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-gray-900">
@@ -64,22 +40,12 @@
 			<p>Black won</p>
 		{/if}
 	</div>
-	<Chessboard {chessboard} {whiteInCheck} {blackInCheck} />
+	<Chessboard {chess} />
 
-	<form class="grid grid-cols-2 gap-4 mt-8" on:submit={handleSubmit}>
-		<label class="col-span-1 bg-red-300">
-			<span class="block">Move from:</span>
-			<input type="text" class="block w-full" bind:value={fromSquare} bind:this={fromInput} />
-		</label>
-		<label class="col-span-1 bg-red-300">
-			<span class="block">Move to:</span>
-			<input type="text" class="block w-full" bind:value={toSquare} />
-		</label>
-		<button
-			type="submit"
-			class="col-span-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-		>
-			Move
-		</button>
-	</form>
+	<button
+		on:click={handleReset}
+		class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
+	>
+		Reset board
+	</button>
 </div>
