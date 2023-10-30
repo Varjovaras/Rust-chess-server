@@ -12,7 +12,7 @@ export const pieceSchema = z.object({
 
 export const squareSchema = z.object({
 	file: z.string(),
-	rank: z.string(),
+	rank: z.number(),
 	color: z.string(),
 	piece: z.union([pieceSchema, z.literal('None')])
 });

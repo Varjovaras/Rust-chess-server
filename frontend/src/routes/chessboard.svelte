@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Square from './square.svelte';
-	import { schema, type Chess, type ChessBoard, type ListOfMoves } from './types';
+	import { schema, type Chess, type ChessBoard, type Square as SquareType } from './types';
 	export let chess: Chess;
 
 	let fromSquare = '';
@@ -21,37 +21,49 @@
 		return boardToFront;
 	};
 
-	async function makeMove(): Promise<Chess> {
-		const new_move = [fromSquare, toSquare];
-		const response = await fetch('http://127.0.0.1:8000/chess', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ list_of_moves: chess.list_of_moves, new_move })
-		});
-		const data = await response.json();
-		const validatedChess = schema.parse(data.chess);
-		return validatedChess;
-	}
+	const handleClick = (sq: SquareType) => {
+		if (fromSquare === '') {
+			fromSquare = sq.file.toLowerCase() + (sq.rank + 1);
+			console.log(fromSquare);
+		} else {
+			toSquare = sq.file.toLowerCase() + (sq.rank + 1);
+			console.log(toSquare);
+			handleSubmit();
+		}
+	};
 
-	async function handleClick() {
+	const handleSubmit = () => {
+		// event.preventDefault();
+		console.log(`Move from ${fromSquare} to ${toSquare}`);
+		handleMove();
+		fromSquare = '';
+		toSquare = '';
+		// fromInput.focus();
+	};
+
+	const handleMove = async () => {
 		try {
-			const newChess = await makeMove();
+			const newChess = await fetchMove();
 			chess = newChess;
 		} catch (error) {
 			console.error(error);
 		}
-	}
+	};
 
-	function handleSubmit(event: { preventDefault: () => void }) {
-		event.preventDefault();
-		console.log(`Move from ${fromSquare} to ${toSquare}`);
-		handleClick();
-		fromSquare = '';
-		toSquare = '';
-		fromInput.focus();
-	}
+	const fetchMove = async (): Promise<Chess> => {
+		const newMove = [fromSquare, toSquare];
+		console.log(newMove);
+		const response = await fetch('http://127.0.0.1:8000/api/chess', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ list_of_moves: chess.list_of_moves, new_move: newMove })
+		});
+		const data = await response.json();
+		const validatedChess = schema.parse(data.chess);
+		return validatedChess;
+	};
 </script>
 
 <div class="flex justify-center items-center">
@@ -61,24 +73,28 @@
 				{#if chess.white_player.in_check && sq.color === 'White' && sq.piece !== 'None' && sq.piece.King === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
 				{:else if chess.black_player.in_check && sq.piece !== 'None' && sq.piece.King === 'Black'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
 				{:else if sq.color === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
 				{:else}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>

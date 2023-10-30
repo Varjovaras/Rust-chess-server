@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Chessboard from './chessboard.svelte';
-	import { schema, type Chess } from './types';
+	import { schema } from './types';
 	export let data;
 
 	let chess = data.post;
