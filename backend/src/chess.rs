@@ -19,8 +19,6 @@ pub type LatestMove = (Square, Square, PieceColor);
 pub type Move = ((File, usize), (File, usize));
 pub type ListOfMoves = Vec<Move>;
 
-// type SquareAsFileRank = (File, Rank);
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Chess {
     pub board: ChessBoard,

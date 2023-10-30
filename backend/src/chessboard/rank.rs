@@ -1,7 +1,7 @@
-use serde::{Deserialize, Serialize};
+use serde_repr::{Deserialize_repr, Serialize_repr};
 
-#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd, Serialize, Deserialize)]
-
+#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd, Serialize_repr, Deserialize_repr)]
+#[repr(u8)]
 pub enum Rank {
     #[default]
     First,

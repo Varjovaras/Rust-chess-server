@@ -10,7 +10,7 @@ use crate::piece::{
     Piece::Rook,
     Piece::{self, Knight},
     PieceColor::Black,
-    PieceColor::{White},
+    PieceColor::White,
 };
 
 use self::{
