@@ -1,29 +1,68 @@
 <script lang="ts">
 	import Chessboard from './chessboard.svelte';
-	import { schema } from './types';
+	import { schema, type Chess, type Square } from './types';
 	export let data;
-
+	let fromSquare = '';
+	let toSquare = '';
 	let chess = data.post;
-	$: listOfMoves = chess.list_of_moves;
-	$: whiteInCheck = chess.white_player.in_check;
-	$: blackInCheck = chess.black_player.in_check;
-	$: whiteInCheckmate = chess.black_player.victory;
-	$: blackInCheckmate = chess.white_player.victory;
-	// $: {
-	// 	console.log(chess);
-	// }
+
+	const handleClick = (sq: Square) => {
+		if (fromSquare === '' && sq.piece === 'None') {
+			return;
+		}
+		if (fromSquare === '') {
+			fromSquare = sq.file.toLowerCase() + (sq.rank + 1);
+			console.log(fromSquare);
+		} else {
+			toSquare = sq.file.toLowerCase() + (sq.rank + 1);
+			console.log(toSquare);
+			handleSubmit();
+		}
+	};
+
+	const handleSubmit = () => {
+		// event.preventDefault();
+		console.log(`Move from ${fromSquare} to ${toSquare}`);
+		handleMove();
+		fromSquare = '';
+		toSquare = '';
+		// fromInput.focus();
+	};
 
 	const handleReset = async () => {
 		try {
 			console.log('Resetting board');
-			const response = await fetch(`https://chessbackend.shuttleapp.rs/api/chess`);
+			const response = await fetch(`http://127.0.0.1:8000/api/chess`);
 			const newChess = await response.json();
-			// console.log(JSON.stringify(chess));
 			const validatedChess = schema.parse(newChess);
 			chess = validatedChess;
 		} catch (error) {
 			console.error(error);
 		}
+	};
+
+	const handleMove = async () => {
+		try {
+			const newChess = await fetchMove();
+			chess = newChess;
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
+	const fetchMove = async (): Promise<Chess> => {
+		const newMove = [fromSquare, toSquare];
+		console.log(newMove);
+		const response = await fetch('http://127.0.0.1:8000/api/chess', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ list_of_moves: chess.list_of_moves, new_move: newMove })
+		});
+		const data = await response.json();
+		const validatedChess = schema.parse(data.chess);
+		return validatedChess;
 	};
 </script>
 
@@ -34,13 +73,14 @@
 		Shakking and sniping
 	</h1>
 	<div class="mt-8 bg-red-300">
-		{#if blackInCheckmate}
+		<p>läälää</p>
+		{#if chess.white_player.victory}
 			<p>White won</p>
-		{:else if whiteInCheckmate}
+		{:else if chess.black_player.victory}
 			<p>Black won</p>
 		{/if}
 	</div>
-	<Chessboard {chess} />
+	<Chessboard {chess} {handleClick} />
 
 	<button
 		on:click={handleReset}
@@ -48,4 +88,20 @@
 	>
 		Reset board
 	</button>
+	<form class="grid grid-cols-2 gap-4 mt-8">
+		<label class="col-span-1 bg-red-300">
+			<span class="block">Move from:</span>
+			<input type="text" class="block w-full" bind:value={fromSquare} />
+		</label>
+		<label class="col-span-1 bg-red-300">
+			<span class="block">Move to:</span>
+			<input type="text" class="block w-full" bind:value={toSquare} />
+		</label>
+		<!-- <button
+			type="submit"
+			class="col-span-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
+		>
+			Move
+		</button> -->
+	</form>
 </div>

@@ -1,11 +1,8 @@
 <script lang="ts">
 	import Square from './square.svelte';
-	import { schema, type Chess, type ChessBoard, type Square as SquareType } from './types';
+	import type { Chess, ChessBoard, Square as SquareType } from './types';
 	export let chess: Chess;
-
-	let fromSquare = '';
-	let toSquare = '';
-	let fromInput: HTMLInputElement;
+	export let handleClick: (sq: SquareType) => void;
 
 	$: boardToFront = handleBoardToFront(chess.board);
 
@@ -19,50 +16,6 @@
 			boardToFront.push(arr.reverse());
 		}
 		return boardToFront;
-	};
-
-	const handleClick = (sq: SquareType) => {
-		if (fromSquare === '') {
-			fromSquare = sq.file.toLowerCase() + (sq.rank + 1);
-			console.log(fromSquare);
-		} else {
-			toSquare = sq.file.toLowerCase() + (sq.rank + 1);
-			console.log(toSquare);
-			handleSubmit();
-		}
-	};
-
-	const handleSubmit = () => {
-		// event.preventDefault();
-		console.log(`Move from ${fromSquare} to ${toSquare}`);
-		handleMove();
-		fromSquare = '';
-		toSquare = '';
-		// fromInput.focus();
-	};
-
-	const handleMove = async () => {
-		try {
-			const newChess = await fetchMove();
-			chess = newChess;
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const fetchMove = async (): Promise<Chess> => {
-		const newMove = [fromSquare, toSquare];
-		console.log(newMove);
-		const response = await fetch('http://127.0.0.1:8000/api/chess', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({ list_of_moves: chess.list_of_moves, new_move: newMove })
-		});
-		const data = await response.json();
-		const validatedChess = schema.parse(data.chess);
-		return validatedChess;
 	};
 </script>
 
@@ -100,24 +53,6 @@
 					</button>
 				{/if}
 			{/each}
-			<!-- </p> -->
 		{/each}
 	</div>
 </div>
-
-<form class="grid grid-cols-2 gap-4 mt-8" on:submit={handleSubmit}>
-	<label class="col-span-1 bg-red-300">
-		<span class="block">Move from:</span>
-		<input type="text" class="block w-full" bind:value={fromSquare} bind:this={fromInput} />
-	</label>
-	<label class="col-span-1 bg-red-300">
-		<span class="block">Move to:</span>
-		<input type="text" class="block w-full" bind:value={toSquare} />
-	</label>
-	<button
-		type="submit"
-		class="col-span-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-	>
-		Move
-	</button>
-</form>
