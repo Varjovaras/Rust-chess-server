@@ -5,13 +5,7 @@
 	let fromSquare = '';
 	let toSquare = '';
 	let chess = data.post;
-	let apiUrl: string;
-
-	if (import.meta.env.MODE === 'development') {
-		apiUrl = import.meta.env.DEV_URL;
-	} else {
-		apiUrl = import.meta.env.PROD_URL;
-	}
+	let apiUrl = data.url;
 
 	const handleClick = (sq: Square) => {
 		if (fromSquare === '' && sq.piece === 'None') {
@@ -58,7 +52,7 @@
 	const fetchMove = async (): Promise<Chess> => {
 		const newMove = [fromSquare, toSquare];
 		console.log(newMove);
-		const response = await fetch('http://127.0.0.1:8000/api/chess', {
+		const response = await fetch(`${apiUrl}/api/chess`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
