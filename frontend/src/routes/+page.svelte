@@ -5,6 +5,13 @@
 	let fromSquare = '';
 	let toSquare = '';
 	let chess = data.post;
+	let apiUrl: string;
+
+	if (import.meta.env.MODE === 'development') {
+		apiUrl = import.meta.env.DEV_URL;
+	} else {
+		apiUrl = import.meta.env.PROD_URL;
+	}
 
 	const handleClick = (sq: Square) => {
 		if (fromSquare === '' && sq.piece === 'None') {
@@ -21,18 +28,16 @@
 	};
 
 	const handleSubmit = () => {
-		// event.preventDefault();
 		console.log(`Move from ${fromSquare} to ${toSquare}`);
 		handleMove();
 		fromSquare = '';
 		toSquare = '';
-		// fromInput.focus();
 	};
 
 	const handleReset = async () => {
 		try {
 			console.log('Resetting board');
-			const response = await fetch(`http://127.0.0.1:8000/api/chess`);
+			const response = await fetch(`${apiUrl}/api/chess`);
 			const newChess = await response.json();
 			const validatedChess = schema.parse(newChess);
 			chess = validatedChess;
@@ -73,7 +78,6 @@
 		Shakking and sniping
 	</h1>
 	<div class="mt-8 bg-red-300">
-		<p>läälää</p>
 		{#if chess.white_player.victory}
 			<p>White won</p>
 		{:else if chess.black_player.victory}
