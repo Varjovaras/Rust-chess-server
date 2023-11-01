@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Chessboard from './chessboard.svelte';
 	import { schema, type Chess, type Square } from './types';
+	import { browser, dev, building, version } from '$app/environment';
 	export let data;
 	let fromSquare = '';
 	let toSquare = '';
