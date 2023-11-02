@@ -69,7 +69,7 @@
 	<h1
 		class="underline mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center"
 	>
-		Shakking and sniping
+		Chess app
 	</h1>
 	<div class="mt-8 bg-red-300">
 		{#if chess.white_player.victory}
@@ -95,11 +95,5 @@
 			<span class="block">Move to:</span>
 			<input type="text" class="block w-full" bind:value={toSquare} />
 		</label>
-		<!-- <button
-			type="submit"
-			class="col-span-2 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
-		>
-			Move
-		</button> -->
 	</form>
 </div>

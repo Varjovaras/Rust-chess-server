@@ -33,6 +33,10 @@ use crate::{
     chessboard::{file::File, rank::Rank},
 };
 
+async fn hello_world() -> &'static str {
+    "Hello, world!"
+}
+
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
     //setup new chess and iter and handle moves provided by payload
     let mut chess = Chess::new_starting_position();
@@ -64,6 +68,7 @@ async fn axum() -> ShuttleAxum {
         .allow_headers([CONTENT_TYPE])
         .allow_origin(Any);
     let router = Router::new()
+        .route("/", get(hello_world))
         .route("/api/chess", get(chess))
         .route("/api/chess", post(move_chess))
         .layer(cors);

@@ -16,7 +16,8 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 pub type LatestMove = (Square, Square, PieceColor);
-pub type Move = ((File, usize), (File, usize));
+type SquareCoordinates = (File, usize);
+pub type Move = (SquareCoordinates, SquareCoordinates);
 pub type ListOfMoves = Vec<Move>;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

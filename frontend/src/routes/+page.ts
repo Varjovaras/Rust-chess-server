@@ -2,7 +2,6 @@ import { schema } from './types';
 
 import { env } from '$env/dynamic/public';
 
-/** @type {import('./$types').PageLoad} */
 export const load = async ({ fetch }) => {
 	let apiUrl: string;
 	if (import.meta.env.MODE === 'development') {
