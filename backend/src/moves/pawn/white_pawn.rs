@@ -11,7 +11,6 @@ pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> boo
         return false;
     }
     if start_sq.rank > end_sq.rank {
-        // println!("White pawn is moving backwards");
         return false;
     }
     if start_sq.is_empty() {

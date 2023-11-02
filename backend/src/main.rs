@@ -34,13 +34,10 @@ use crate::{
 };
 
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
-    println!("{:?}", payload);
-
     //setup new chess and iter and handle moves provided by payload
     let mut chess = Chess::new_starting_position();
 
     for move_tuple in &payload.list_of_moves {
-        println!("{:?}", move_tuple);
         let mut start_sq = *chess.get_square(
             File::from(move_tuple.0 .0.as_str()), //file from string
             Rank::from(move_tuple.0 .1),          //rank is usize already

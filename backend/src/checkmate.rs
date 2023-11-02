@@ -28,8 +28,6 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
         return false;
     }
 
-    // println!("Possible moves: {:?}", possible_moves);
-
     for possible_move in possible_moves.iter() {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
@@ -62,16 +60,14 @@ pub fn _position_is_checkmate_test(chess: &mut Chess) -> bool {
         return false;
     }
 
-    // println!("Possible moves: {:?}", possible_moves);
-
     for possible_move in possible_moves.iter() {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
 
         if chess.king_is_in_check_after_move(&start_sq, &end_sq) {
-            println!("Move {:?} removes check", possible_move);
-            println!("start_sq: {:?}", start_sq);
-            println!("end_sq: {:?}", end_sq);
+            // println!("Move {:?} removes check", possible_move);
+            // println!("start_sq: {:?}", start_sq);
+            // println!("end_sq: {:?}", end_sq);
             return false;
         }
     }
@@ -285,5 +281,3 @@ mod tests {
         assert!(chess.white_player.victory);
     }
 }
-
-//println!("chess.white_won = {}", chess.white_won);
