@@ -3,14 +3,10 @@ pub mod rank;
 pub mod square;
 
 use crate::piece::{
-    Piece::Bishop,
     Piece::King,
-    Piece::Pawn,
-    Piece::Queen,
-    Piece::Rook,
-    Piece::{self, Knight},
-    PieceColor::Black,
+    Piece::{self},
     PieceColor::White,
+    PieceColor::{self, Black},
 };
 
 use self::{
@@ -54,43 +50,54 @@ fn color_changer(color: SquareColor) -> SquareColor {
 }
 
 pub fn starting_position() -> ChessBoard {
-    let mut clone_board = new_board();
-    let white_pieces = [
-        Rook(White),
-        Knight(White),
-        Bishop(White),
-        Queen(White),
-        King(White),
-        Bishop(White),
-        Knight(White),
-        Rook(White),
+    let mut board = new_board();
+    let pieces = [
+        Piece::Rook,
+        Piece::Knight,
+        Piece::Bishop,
+        Piece::Queen,
+        Piece::King,
+        Piece::Bishop,
+        Piece::Knight,
+        Piece::Rook,
     ];
-    let black_pieces = [
-        Rook(Black),
-        Knight(Black),
-        Bishop(Black),
-        Queen(Black),
-        King(Black),
-        Bishop(Black),
-        Knight(Black),
-        Rook(Black),
-    ];
-    let white_pawns = [Pawn(White); 8];
-    let black_pawns = [Pawn(Black); 8];
 
-    for (i, white_piece) in white_pieces.iter().enumerate() {
-        clone_board[i][0].piece = *white_piece;
+    set_pieces(
+        &mut board,
+        White,
+        0,
+        &pieces
+            .iter()
+            .map(|piece_fn| piece_fn(White))
+            .collect::<Vec<_>>(),
+    );
+    set_pieces(&mut board, White, 1, &[Piece::Pawn(White); 8]);
+    set_pieces(&mut board, Black, 6, &[Piece::Pawn(Black); 8]);
+    set_pieces(
+        &mut board,
+        Black,
+        7,
+        &pieces
+            .iter()
+            .map(|piece_fn| piece_fn(Black))
+            .collect::<Vec<_>>(),
+    );
+
+    board
+}
+
+fn set_pieces(board: &mut ChessBoard, color: PieceColor, rank: usize, pieces: &[Piece]) {
+    for (file, &piece_type) in pieces.iter().enumerate() {
+        board[file][rank].piece = match piece_type {
+            Piece::Rook(_) => Piece::Rook(color),
+            Piece::Knight(_) => Piece::Knight(color),
+            Piece::Bishop(_) => Piece::Bishop(color),
+            Piece::Queen(_) => Piece::Queen(color),
+            Piece::King(_) => Piece::King(color),
+            Piece::Pawn(_) => Piece::Pawn(color),
+            _ => panic!("Invalid piece type"),
+        };
     }
-    for (i, white_pawn) in white_pawns.iter().enumerate() {
-        clone_board[i][1].piece = *white_pawn;
-    }
-    for (i, black_pawn) in black_pawns.iter().enumerate() {
-        clone_board[i][6].piece = *black_pawn;
-    }
-    for (i, black_piece) in black_pieces.iter().enumerate() {
-        clone_board[i][7].piece = *black_piece;
-    }
-    clone_board
 }
 
 pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
@@ -115,57 +122,44 @@ pub fn get_black_king(board: &ChessBoard) -> Option<&Square> {
     None
 }
 
-pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<Square> {
-    let mut squares_with_pieces: Vec<Square> = Vec::new();
-    for file in board.iter().take(8) {
-        for square in file {
-            if square.piece.color() == &White {
-                squares_with_pieces.push(*square);
-            }
-        }
-    }
-    squares_with_pieces
+pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<&Square> {
+    board
+        .iter()
+        .flatten()
+        .filter(|&square| square.piece.color() == &White)
+        .collect()
 }
 
-pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<Square> {
-    let mut squares_with_pieces: Vec<Square> = Vec::new();
-    for file in board.iter().take(8) {
-        for square in file {
-            if square.piece.color() == &Black {
-                squares_with_pieces.push(*square);
-            }
-        }
-    }
-    squares_with_pieces
+pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<&Square> {
+    board
+        .iter()
+        .flatten()
+        .filter(|&square| square.piece.color() == &Black)
+        .collect()
 }
 
 pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
     let mut adjacent_squares: Vec<Square> = Vec::new();
-    let file = sq.file as usize;
-    let rank = sq.rank as usize;
-    if file > 0 {
-        adjacent_squares.push(board[file - 1][rank]);
-    }
-    if file < 7 {
-        adjacent_squares.push(board[file + 1][rank]);
-    }
-    if rank > 0 {
-        adjacent_squares.push(board[file][rank - 1]);
-    }
-    if rank < 7 {
-        adjacent_squares.push(board[file][rank + 1]);
-    }
-    if file > 0 && rank > 0 {
-        adjacent_squares.push(board[file - 1][rank - 1]);
-    }
-    if file > 0 && rank < 7 {
-        adjacent_squares.push(board[file - 1][rank + 1]);
-    }
-    if file < 7 && rank > 0 {
-        adjacent_squares.push(board[file + 1][rank - 1]);
-    }
-    if file < 7 && rank < 7 {
-        adjacent_squares.push(board[file + 1][rank + 1]);
+    let file = sq.file as isize;
+    let rank = sq.rank as isize;
+
+    let directions = [
+        (-1, -1),
+        (-1, 0),
+        (-1, 1),
+        (0, -1),
+        (0, 1),
+        (1, -1),
+        (1, 0),
+        (1, 1),
+    ];
+
+    for &(file_direction, rank_direction) in &directions {
+        let new_file = file + file_direction;
+        let new_rank = rank + rank_direction;
+        if (0..8).contains(&new_file) && (0..8).contains(&new_rank) {
+            adjacent_squares.push(board[new_file as usize][new_rank as usize]);
+        }
     }
 
     adjacent_squares

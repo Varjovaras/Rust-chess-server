@@ -2,10 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::{
     chess::Chess,
-    chessboard::{
-        get_black_king, get_squares_with_black_pieces, get_squares_with_white_pieces,
-        get_white_king, square::Square,
-    },
+    chessboard::{get_squares_with_black_pieces, get_squares_with_white_pieces, square::Square},
     piece::Piece,
 };
 
@@ -19,12 +16,8 @@ pub enum GameState {
 }
 
 pub fn insufficient_material(chess: &Chess) -> bool {
-    let (white_knights, white_bishops) = count_pieces(&get_squares_with_white_pieces(&chess.board));
-    let (black_knights, black_bishops) = count_pieces(&get_squares_with_black_pieces(&chess.board));
-
-    if get_white_king(&chess.board).is_none() || get_black_king(&chess.board).is_none() {
-        return true;
-    }
+    let (white_knights, white_bishops) = count_pieces(get_squares_with_white_pieces(&chess.board));
+    let (black_knights, black_bishops) = count_pieces(get_squares_with_black_pieces(&chess.board));
 
     if white_knights > 1 || black_knights > 1 || white_bishops > 1 || black_bishops > 1 {
         return false;
@@ -36,7 +29,7 @@ pub fn insufficient_material(chess: &Chess) -> bool {
     )
 }
 
-fn count_pieces(squares: &[Square]) -> (u8, u8) {
+fn count_pieces(squares: Vec<&Square>) -> (u8, u8) {
     let mut knights = 0;
     let mut bishops = 0;
 
