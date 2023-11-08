@@ -15,100 +15,44 @@ type SquareCoordinates = (usize, usize);
 pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates);
 
 pub fn position_is_checkmate(chess: &mut Chess) -> bool {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
+    let mut moves: Vec<MoveFromCoordinates> = Vec::new();
     if chess.white_player.in_check() {
-        possible_moves.append(&mut white_possible_moves(chess));
+        moves = possible_moves(chess, WHITE);
     } else if chess.black_player.in_check() {
-        possible_moves.append(&mut black_possible_moves(chess));
+        moves = possible_moves(chess, BLACK);
     } else {
-        return false;
-    };
-
-    if possible_moves.is_empty() {
         return false;
     }
 
-    for possible_move in possible_moves.iter() {
+    let is_checkmate = moves.iter().all(|possible_move| {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
+        !chess.king_is_not_in_check_after_move(&start_sq, &end_sq)
+    });
 
-        if chess.king_is_in_check_after_move(&start_sq, &end_sq) {
-            return false;
-        }
+    if is_checkmate {
+        chess.gamestate = if chess.white_player.in_check() {
+            chess.black_player.victory = true;
+            GameState::BlackVictory
+        } else {
+            chess.white_player.victory = true;
+            GameState::WhiteVictory
+        };
     }
-    chess.gamestate = if chess.white_player.in_check() {
-        chess.black_player.victory = true;
-        GameState::BlackVictory
-    } else {
-        chess.white_player.victory = true;
-        GameState::WhiteVictory
-    };
-    true
+
+    is_checkmate
 }
 
-pub fn _position_is_checkmate_test(chess: &mut Chess) -> bool {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-    if chess.white_player.in_check() {
-        possible_moves.append(&mut white_possible_moves(chess));
-    } else if chess.black_player.in_check() {
-        possible_moves.append(&mut black_possible_moves(chess));
-    } else {
-        return false;
-    };
-
-    if possible_moves.is_empty() {
-        return false;
-    }
-
-    for possible_move in possible_moves.iter() {
-        let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
-        let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
-
-        if chess.king_is_in_check_after_move(&start_sq, &end_sq) {
-            // println!("Move {:?} removes check", possible_move);
-            // println!("start_sq: {:?}", start_sq);
-            // println!("end_sq: {:?}", end_sq);
-            return false;
-        }
-    }
-    chess.gamestate = if chess.white_player.in_check() {
-        chess.black_player.victory = true;
-        GameState::BlackVictory
-    } else {
-        chess.white_player.victory = true;
-        GameState::WhiteVictory
-    };
-    true
-}
-
-fn black_possible_moves(chess: &Chess) -> Vec<MoveFromCoordinates> {
+pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinates> {
     let chessboard = chess.board;
     let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-    let black_pieces = get_squares_with_black_pieces(&chessboard);
+    let pieces = match color {
+        PieceColor::White => get_squares_with_white_pieces(&chessboard),
+        PieceColor::Black => get_squares_with_black_pieces(&chessboard),
+        _ => panic!("Invalid color"),
+    };
 
-    for sq in black_pieces.iter() {
-        match sq.piece {
-            Piece::None => {}
-            Piece::Pawn(_) => possible_moves.append(&mut pawn_possible_moves(sq)),
-            Piece::Knight(_) => possible_moves.append(&mut knight_possible_moves(sq)),
-            Piece::Bishop(_) => possible_moves.append(&mut bishop_possible_moves(sq)),
-            Piece::Rook(_) => possible_moves.append(&mut rook_possible_moves(sq)),
-            Piece::Queen(_) => {
-                possible_moves.append(&mut bishop_possible_moves(sq));
-                possible_moves.append(&mut rook_possible_moves(sq));
-            }
-            Piece::King(_) => possible_moves.append(&mut king_possible_moves(sq)),
-        }
-    }
-    possible_moves
-}
-
-pub fn white_possible_moves(chess: &Chess) -> Vec<MoveFromCoordinates> {
-    let chessboard = chess.board;
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-    let white_pieces = get_squares_with_white_pieces(&chessboard);
-
-    for sq in white_pieces.iter() {
+    for sq in pieces.iter() {
         match sq.piece {
             Piece::None => {}
             Piece::Pawn(_) => possible_moves.append(&mut pawn_possible_moves(sq)),
@@ -126,96 +70,103 @@ pub fn white_possible_moves(chess: &Chess) -> Vec<MoveFromCoordinates> {
 }
 
 fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
     let file = sq.file as usize;
     let rank = sq.rank as usize;
-    if sq.piece.color() == &WHITE {
-        if rank == 2 {
-            possible_moves.push(((file, rank), (file, Rank::Fourth as usize)));
-            possible_moves.push(((file, rank), (file, Rank::Third as usize)));
-        } else {
-            possible_moves.push(((file, rank), (file, rank + 1)));
-        }
-        if file < 7 {
-            possible_moves.push(((file, rank), (file + 1, rank + 1)));
-        }
-        if file > 0 {
-            possible_moves.push(((file, rank), (file - 1, rank + 1)));
-        }
-    }
+    let mut possible_moves = Vec::new();
 
-    if sq.piece.color() == &BLACK {
-        if rank == 7 {
-            possible_moves.push(((file, rank), (file, Rank::Fifth as usize)));
-            possible_moves.push(((file, rank), (file, Rank::Sixth as usize)));
-        } else {
-            possible_moves.push(((file, rank), (file, rank - 1)));
+    match *sq.piece.color() {
+        PieceColor::White => {
+            if rank == 2 {
+                possible_moves.push(((file, rank), (file, Rank::Fourth as usize)));
+                possible_moves.push(((file, rank), (file, Rank::Third as usize)));
+            } else {
+                possible_moves.push(((file, rank), (file, rank + 1)));
+            }
+            if file < 7 {
+                possible_moves.push(((file, rank), (file + 1, rank + 1)));
+            }
+            if file > 0 {
+                possible_moves.push(((file, rank), (file - 1, rank + 1)));
+            }
         }
-        if file < 7 {
-            possible_moves.push(((file, rank), (file + 1, rank - 1)));
+        PieceColor::Black => {
+            if rank == 7 {
+                possible_moves.push(((file, rank), (file, Rank::Fifth as usize)));
+                possible_moves.push(((file, rank), (file, Rank::Sixth as usize)));
+            } else {
+                possible_moves.push(((file, rank), (file, rank - 1)));
+            }
+            if file < 7 {
+                possible_moves.push(((file, rank), (file + 1, rank - 1)));
+            }
+            if file > 0 {
+                possible_moves.push(((file, rank), (file - 1, rank - 1)));
+            }
         }
-        if file > 0 {
-            possible_moves.push(((file, rank), (file - 1, rank - 1)));
-        }
+        _ => {}
     }
     possible_moves
 }
 
 fn knight_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-
-    let knight_moves = KNIGHT_MOVES;
-
-    for knight_move in knight_moves.iter() {
-        let file = sq.file as isize + knight_move.0;
-        let rank = sq.rank as isize + knight_move.1;
-        if (0..=7).contains(&file) && (0..=7).contains(&rank) {
-            possible_moves.push((
-                (sq.file as usize, sq.rank as usize),
-                (file as usize, rank as usize),
-            ));
-        }
-    }
-
-    possible_moves
+    KNIGHT_MOVES
+        .iter()
+        .filter_map(|knight_move| {
+            let file = sq.file as isize + knight_move.0;
+            let rank = sq.rank as isize + knight_move.1;
+            if (0..=7).contains(&file) && (0..=7).contains(&rank) {
+                Some((
+                    (sq.file as usize, sq.rank as usize),
+                    (file as usize, rank as usize),
+                ))
+            } else {
+                None
+            }
+        })
+        .collect()
 }
 
 fn bishop_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-    for bishop_move in BISHOP_MOVES.iter() {
-        let mut file = sq.file as isize + bishop_move.0;
-        let mut rank = sq.rank as isize + bishop_move.1;
-        while (0..=7).contains(&file) && (0..=7).contains(&rank) {
-            possible_moves.push((
-                (sq.file as usize, sq.rank as usize),
-                (file as usize, rank as usize),
-            ));
-            file += bishop_move.0;
-            rank += bishop_move.1;
-        }
-    }
-    possible_moves
+    BISHOP_MOVES
+        .iter()
+        .flat_map(|bishop_move| {
+            let mut moves = Vec::new();
+            let mut file = sq.file as isize + bishop_move.0;
+            let mut rank = sq.rank as isize + bishop_move.1;
+            while (0..=7).contains(&file) && (0..=7).contains(&rank) {
+                moves.push((
+                    (sq.file as usize, sq.rank as usize),
+                    (file as usize, rank as usize),
+                ));
+                file += bishop_move.0;
+                rank += bishop_move.1;
+            }
+            moves
+        })
+        .collect()
 }
 
 fn rook_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
-    for rook_move in ROOK_MOVES.iter() {
-        let mut file = sq.file as isize + rook_move.0;
-        let mut rank = sq.rank as isize + rook_move.1;
-        while (0..=7).contains(&file) && (0..=7).contains(&rank) {
-            possible_moves.push((
-                (sq.file as usize, sq.rank as usize),
-                (file as usize, rank as usize),
-            ));
-            file += rook_move.0;
-            rank += rook_move.1;
-        }
-    }
-    possible_moves
+    ROOK_MOVES
+        .iter()
+        .flat_map(|rook_move| {
+            let mut moves = Vec::new();
+            let mut file = sq.file as isize + rook_move.0;
+            let mut rank = sq.rank as isize + rook_move.1;
+            while (0..=7).contains(&file) && (0..=7).contains(&rank) {
+                moves.push((
+                    (sq.file as usize, sq.rank as usize),
+                    (file as usize, rank as usize),
+                ));
+                file += rook_move.0;
+                rank += rook_move.1;
+            }
+            moves
+        })
+        .collect()
 }
 
 fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
-    let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
     let king_moves: [(isize, isize); 8] = [
         (1, 1),
         (1, 0),
@@ -227,18 +178,21 @@ fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         (-1, -1),
     ];
 
-    for king_move in king_moves.iter() {
-        let file = sq.file as isize + king_move.0;
-        let rank = sq.rank as isize + king_move.1;
-        if (0..=7).contains(&file) && (0..=7).contains(&rank) {
-            possible_moves.push((
-                (sq.file as usize, sq.rank as usize),
-                (file as usize, rank as usize),
-            ));
-        }
-    }
-
-    possible_moves
+    king_moves
+        .iter()
+        .filter_map(|king_move| {
+            let file = sq.file as isize + king_move.0;
+            let rank = sq.rank as isize + king_move.1;
+            if (0..=7).contains(&file) && (0..=7).contains(&rank) {
+                Some((
+                    (sq.file as usize, sq.rank as usize),
+                    (file as usize, rank as usize),
+                ))
+            } else {
+                None
+            }
+        })
+        .collect()
 }
 
 #[cfg(test)]

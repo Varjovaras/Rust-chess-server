@@ -98,13 +98,13 @@ impl Chess {
         //king is in check and the move doesnt remove check return
         if (moving_piece_color == &PieceColor::White && self.white_player.in_check()
             || moving_piece_color == &PieceColor::Black && self.black_player.in_check())
-            && !self.king_is_in_check_after_move(start_sq, end_sq)
+            && !self.king_is_not_in_check_after_move(start_sq, end_sq)
         {
             return;
         }
 
         //check if move puts you into check
-        if !self.king_is_in_check_after_move(start_sq, end_sq) {
+        if !self.king_is_not_in_check_after_move(start_sq, end_sq) {
             return;
         }
 
@@ -249,7 +249,7 @@ impl Chess {
         }
     }
 
-    pub fn king_is_in_check_after_move(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
+    pub fn king_is_not_in_check_after_move(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
         let mut temp_board = self.board;
         if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
             return false;
