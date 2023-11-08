@@ -11,10 +11,9 @@ pub fn move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         return false;
     }
 
-    match DiagonalMoveDirection::new(start_sq, end_sq) {
-        Some(move_direction) => move_direction.make_move(start_sq, end_sq, chess),
-        None => false,
-    }
+    DiagonalMoveDirection::new(start_sq, end_sq).map_or(false, |move_direction| {
+        move_direction.make_move(start_sq, end_sq, chess)
+    })
 }
 
 #[cfg(test)]

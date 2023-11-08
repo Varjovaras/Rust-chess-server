@@ -7,22 +7,14 @@ use crate::{
 
 //only en passant affects board, that's why insert is mutable reference
 pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if start_sq.rank == Rank::Eighth {
-        return false;
-    }
-    if start_sq.rank > end_sq.rank {
-        return false;
-    }
-    if start_sq.is_empty() {
-        return false;
-    }
-
-    if start_sq.rank == Rank::Second {
+    if start_sq.rank == Rank::Eighth || start_sq.rank > end_sq.rank || start_sq.is_empty() {
+        false
+    } else if start_sq.rank == Rank::Second {
         white_starting_sq_move(start_sq, end_sq, chess)
     } else if diagonally_one_square_apart(start_sq, end_sq) {
-        return white_capture(start_sq, end_sq, chess);
+        white_capture(start_sq, end_sq, chess)
     } else if start_sq.file != end_sq.file || square_column_diff(start_sq, end_sq) > 1 {
-        return false;
+        false
     } else {
         one_square_forward(end_sq)
     }

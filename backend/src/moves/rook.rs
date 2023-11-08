@@ -12,10 +12,9 @@ pub fn move_rook(start_sq: &Square, _end_sq: &Square, _chess: &Chess) -> bool {
         return false;
     }
 
-    match RookMoveDirection::new(start_sq, _end_sq) {
-        Some(move_direction) => move_direction.make_move(start_sq, _end_sq, _chess),
-        None => false,
-    }
+    RookMoveDirection::new(start_sq, _end_sq).map_or(false, |move_direction| {
+        move_direction.make_move(start_sq, _end_sq, _chess)
+    })
 }
 
 #[cfg(test)]

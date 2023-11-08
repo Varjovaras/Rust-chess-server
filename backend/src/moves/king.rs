@@ -11,15 +11,12 @@ use super::move_helpers::helpers::{is_diagonal, is_horizontal, is_vertical};
 
 pub fn move_king(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if square_is_bordered_by_other_king(&chess.board, start_sq, end_sq) {
-        return false;
-    }
-
-    if move_is_castling(start_sq, end_sq, chess) {
+        false
+    } else if move_is_castling(start_sq, end_sq, chess) {
         true
-    } else if is_vertical(start_sq, end_sq) {
+    } else if is_vertical(start_sq, end_sq) || is_horizontal(start_sq, end_sq) {
         (start_sq.rank as u8).abs_diff(end_sq.rank as u8) == 1
-    } else if is_horizontal(start_sq, end_sq) {
-        (start_sq.file as u8).abs_diff(end_sq.file as u8) == 1
+            || (start_sq.file as u8).abs_diff(end_sq.file as u8) == 1
     } else if is_diagonal(start_sq, end_sq) {
         (start_sq.rank as u8).abs_diff(end_sq.rank as u8)
             == (start_sq.file as u8).abs_diff(end_sq.file as u8)
@@ -45,7 +42,6 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bo
     }
 
     let castling = chess.castling;
-
     match (start_sq.rank, end_sq.file) {
         (Rank::First, File::G) => {
             chess.board[5][0].piece == Piece::None

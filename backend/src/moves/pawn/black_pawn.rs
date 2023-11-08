@@ -7,39 +7,29 @@ use crate::{
 
 //only en passant affects board, that's why chess is mutable reference
 pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    if start_sq.rank == Rank::First {
-        return false;
-    }
-    if end_sq.rank > start_sq.rank {
-        // println!("Black pawn is moving backwards");
-        return false;
-    }
-    if start_sq.is_empty() {
-        return false;
-    }
-    if start_sq.rank == Rank::Seventh {
+    if start_sq.rank == Rank::First || end_sq.rank > start_sq.rank || start_sq.is_empty() {
+        false
+    } else if start_sq.rank == Rank::Seventh {
         black_starting_sq_move(start_sq, end_sq, chess)
     } else if diagonally_one_square_apart(start_sq, end_sq) {
-        return black_capture(start_sq, end_sq, chess);
+        black_capture(start_sq, end_sq, chess)
     } else if start_sq.file != end_sq.file || square_column_diff(start_sq, end_sq) > 1 {
-        return false;
+        false
     } else {
         one_square_forward(end_sq)
     }
 }
-
 fn black_starting_sq_move(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if diagonally_one_square_apart(start_sq, end_sq) {
         black_capture(start_sq, end_sq, chess)
     } else if start_sq.file != end_sq.file {
         return false;
     } else {
-        let column_diff = square_column_diff(start_sq, end_sq);
-        return match column_diff {
+        match square_column_diff(start_sq, end_sq) {
             1 => one_square_forward(end_sq),
             2 => two_squares_forward(start_sq, end_sq, chess),
             _ => false,
-        };
+        }
     }
 }
 

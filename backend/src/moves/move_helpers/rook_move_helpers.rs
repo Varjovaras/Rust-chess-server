@@ -12,11 +12,11 @@ impl RookMoveDirection {
         if move_is_up(start_sq, end_sq) {
             Some(Self::Up)
         } else if move_is_right(start_sq, end_sq) {
-            return Some(Self::Right);
+            Some(Self::Right)
         } else if move_is_left(start_sq, end_sq) {
-            return Some(Self::Left);
+            Some(Self::Left)
         } else if move_is_down(start_sq, end_sq) {
-            return Some(Self::Down);
+            Some(Self::Down)
         } else {
             None
         }

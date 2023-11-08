@@ -16,11 +16,11 @@ impl DiagonalMoveDirection {
         if move_is_up_and_left(start_sq, end_sq) {
             Some(Self::UpLeft)
         } else if move_is_up_and_right(start_sq, end_sq) {
-            return Some(Self::UpRight);
+            Some(Self::UpRight)
         } else if move_is_down_and_left(start_sq, end_sq) {
-            return Some(Self::DownLeft);
+            Some(Self::DownLeft)
         } else if move_is_down_and_right(start_sq, end_sq) {
-            return Some(Self::DownRight);
+            Some(Self::DownRight)
         } else {
             None
         }
