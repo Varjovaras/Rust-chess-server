@@ -9,32 +9,22 @@ use crate::{
 };
 
 pub fn diagonally_one_square_apart(first_sq: &Square, second_sq: &Square) -> bool {
-    let (first_sq_file, first_sq_rank) = (first_sq.file as u8, first_sq.rank as u8);
-    let (second_sq_file, second_sq_rank) = (second_sq.file as u8, second_sq.rank as u8);
-
-    first_sq_rank.abs_diff(second_sq_rank) == 1 && first_sq_file.abs_diff(second_sq_file) == 1
+    (first_sq.rank as u8).abs_diff(second_sq.rank as u8) == 1
+        && (first_sq.file as u8).abs_diff(second_sq.file as u8) == 1
 }
 
 pub fn _squares_on_same_row(first_sq: &Square, second_sq: &Square) -> bool {
-    let (first_sq_file, first_sq_rank) = (first_sq.file as u8, first_sq.rank as u8);
-    let (second_sq_file, second_sq_rank) = (second_sq.file as u8, second_sq.rank as u8);
-
-    first_sq_rank.abs_diff(second_sq_rank) == 0 && first_sq_file.abs_diff(second_sq_file) == 1
+    (first_sq.rank as u8).abs_diff(second_sq.rank as u8) == 0
+        && (first_sq.file as u8).abs_diff(second_sq.file as u8) == 1
 }
 
 pub fn _square_row_diff(first_sq: &Square, second_sq: &Square) -> u8 {
-    let first_sq_file = first_sq.file as u8;
-    let second_sq_file = second_sq.file as u8;
-    first_sq_file.abs_diff(second_sq_file)
+    (first_sq.file as u8).abs_diff(second_sq.file as u8)
 }
 
 pub fn square_column_diff(first_sq: &Square, second_sq: &Square) -> u8 {
-    let first_sq_rank = first_sq.rank as u8;
-    let second_sq_rank = second_sq.rank as u8;
-
-    first_sq_rank.abs_diff(second_sq_rank)
+    (first_sq.rank as u8).abs_diff(second_sq.rank as u8)
 }
-
 pub fn is_diagonal(first_sq: &Square, second_sq: &Square) -> bool {
     (first_sq.rank as u8).abs_diff(second_sq.rank as u8)
         == (first_sq.file as u8).abs_diff(second_sq.file as u8)
@@ -64,22 +54,45 @@ pub fn move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank > end_sq.rank
 }
 
-pub fn move_is_white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    start_sq.piece == Piece::Pawn(PieceColor::White)
+pub fn move_is_en_passant(
+    start_sq: &Square,
+    end_sq: &Square,
+    chess: &Chess,
+    start_rank: Rank,
+    end_rank: Rank,
+    color: PieceColor,
+    latest_move_enables_en_passant: fn(&Chess, &Square, &Square) -> bool,
+) -> bool {
+    start_sq.piece == Piece::Pawn(color)
         && diagonally_one_square_apart(start_sq, end_sq)
-        && start_sq.rank == Rank::Fifth
-        && end_sq.rank == Rank::Sixth
-        && latest_move_enables_white_en_passant(chess, start_sq, end_sq)
+        && start_sq.rank == start_rank
+        && end_sq.rank == end_rank
+        && latest_move_enables_en_passant(chess, start_sq, end_sq)
         && !end_sq.has_piece()
 }
 
+pub fn move_is_white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    move_is_en_passant(
+        start_sq,
+        end_sq,
+        chess,
+        Rank::Fifth,
+        Rank::Sixth,
+        PieceColor::White,
+        latest_move_enables_white_en_passant,
+    )
+}
+
 pub fn move_is_black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
-    start_sq.piece == Piece::Pawn(PieceColor::Black)
-        && diagonally_one_square_apart(start_sq, end_sq)
-        && start_sq.rank == Rank::Fourth
-        && end_sq.rank == Rank::Third
-        && latest_move_enables_black_en_passant(chess, start_sq, end_sq)
-        && !end_sq.has_piece()
+    move_is_en_passant(
+        start_sq,
+        end_sq,
+        chess,
+        Rank::Fourth,
+        Rank::Third,
+        PieceColor::Black,
+        latest_move_enables_black_en_passant,
+    )
 }
 
 #[cfg(test)]
