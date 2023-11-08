@@ -110,16 +110,4 @@ impl Square {
             },
         }
     }
-
-    // pub fn move_piece(&mut self) {
-    //     match self.piece {
-    //         Piece::None => todo!(),
-    //         Piece::Pawn(_) => self.piece.piece_move(),
-    //         Piece::Knight(_) => todo!(),
-    //         Piece::Bishop(_) => todo!(),
-    //         Piece::Rook(_) => todo!(),
-    //         Piece::Queen(_) => todo!(),
-    //         Piece::King(_) => todo!(),
-    //     }
-    // }
 }

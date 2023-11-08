@@ -38,42 +38,26 @@ impl DiagonalMoveDirection {
 
 fn move_top_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = start_sq.file as usize - end_sq.file as usize;
-    for i in 1..distance {
-        if chess.board[start_sq.file as usize - i][start_sq.rank as usize + i].has_piece() {
-            return false;
-        }
-    }
-    true
+    (1..distance)
+        .all(|i| !chess.board[start_sq.file as usize - i][start_sq.rank as usize + i].has_piece())
 }
 
 fn move_top_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = end_sq.file as usize - start_sq.file as usize;
-    for i in 1..distance {
-        if chess.board[start_sq.file as usize + i][start_sq.rank as usize + i].has_piece() {
-            return false;
-        }
-    }
-    true
+    (1..distance)
+        .all(|i| !chess.board[start_sq.file as usize + i][start_sq.rank as usize + i].has_piece())
 }
 
 fn move_down_left(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = start_sq.file as usize - end_sq.file as usize;
-    for i in 1..distance {
-        if chess.board[start_sq.file as usize - i][start_sq.rank as usize - i].has_piece() {
-            return false;
-        }
-    }
-    true
+    (1..distance)
+        .all(|i| !chess.board[start_sq.file as usize - i][start_sq.rank as usize - i].has_piece())
 }
 
 fn move_down_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     let distance = end_sq.file as usize - start_sq.file as usize;
-    for i in 1..distance {
-        if chess.board[start_sq.file as usize + i][start_sq.rank as usize - i].has_piece() {
-            return false;
-        }
-    }
-    true
+    (1..distance)
+        .all(|i| !chess.board[start_sq.file as usize + i][start_sq.rank as usize - i].has_piece())
 }
 
 #[cfg(test)]
