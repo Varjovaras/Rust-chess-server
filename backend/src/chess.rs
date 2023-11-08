@@ -64,14 +64,7 @@ impl Chess {
         chess
     }
 
-    pub fn _to_json(&self) -> String {
-        serde_json::to_string(&self).unwrap()
-    }
-
-    pub fn _from_json(json_str: &str) -> Result<Self, serde_json::Error> {
-        serde_json::from_str(json_str)
-    }
-
+    //refactor this mess, works as of now
     pub fn make_move(&mut self, start_sq: &mut Square, end_sq: &mut Square) {
         let moving_piece_color = start_sq.piece.color();
 
@@ -250,7 +243,6 @@ impl Chess {
     }
 
     pub fn king_is_not_in_check_after_move(&mut self, start_sq: &Square, end_sq: &Square) -> bool {
-        let mut temp_board = self.board;
         if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
             return false;
         }
@@ -259,30 +251,22 @@ impl Chess {
             return false;
         };
 
+        let mut temp_board = self.board;
         if move_is_white_en_passant(start_sq, end_sq, self)
             || move_is_black_en_passant(start_sq, end_sq, self)
         {
             temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None
+        } else {
+            temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
+            temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         }
 
-        temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
-        temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
         !king_is_in_check(&temp_board, *start_sq.piece.color(), self)
     }
 
     pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
-        let start_sq_chars: Vec<char> = start_sq.chars().collect();
-        let end_sq_chars: Vec<char> = end_sq.chars().collect();
-        let mut start_sq = *self.get_square_from_str(
-            start_sq_chars[0].to_string().as_str(),
-            start_sq_chars[1].to_string().as_str(),
-        );
-
-        let mut end_sq = *self.get_square_from_str(
-            end_sq_chars[0].to_string().as_str(),
-            end_sq_chars[1].to_string().as_str(),
-        );
-
+        let mut start_sq = *self.get_square_from_str(&start_sq[0..1], &start_sq[1..2]);
+        let mut end_sq = *self.get_square_from_str(&end_sq[0..1], &end_sq[1..2]);
         self.make_move(&mut start_sq, &mut end_sq)
     }
 
@@ -302,7 +286,7 @@ impl Chess {
     }
 
     pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
-        let file = File::_from_str_slice(file_str)._as_usize();
+        let file = File::_from_str_slice(file_str).as_usize();
         let rank = Rank::_from_str(rank_str).as_usize();
         if file > 7 || rank > 7 {
             panic!("get_square_from_str failed for inputting too big file or rank")
@@ -311,95 +295,76 @@ impl Chess {
     }
 
     pub fn print_board_white(&self) {
-        let mut clone_board = self.board;
-        clone_board.reverse();
-
         for i in (0..8).rev() {
             for j in (0..8).rev() {
-                print!("{} ", clone_board[j][i].piece_name());
+                print!("{} ", self.board[j][i].piece_name());
             }
-            println!(" ");
+            println!();
         }
     }
 
     pub fn _print_board_black(&self) {
-        let mut clone_board = self.board;
-        for square_vec in &mut clone_board {
-            square_vec.reverse();
-        }
-        clone_board.iter().for_each(|row| {
-            row.iter().for_each(|square| {
-                print!("{} ", square._square_name());
-            });
+        for i in 0..8 {
+            for j in 0..8 {
+                print!("{} ", self.board[j][i].piece_name());
+            }
             println!();
-        });
+        }
     }
 
     fn handle_castling(&mut self, start_sq: &Square, end_sq: &Square) {
-        match (start_sq.rank, end_sq.file) {
-            (Rank::First, File::G) => {
-                self.board[File::H as usize][Rank::First as usize].piece = Piece::None;
-                self.board[File::F as usize][Rank::First as usize].piece =
-                    Piece::Rook(PieceColor::White);
-                // self.board[File::G as usize][Rank::First as usize].piece =
-                //     Piece::King(PieceColor::White);
-                self.castling.white_king_side_castling = false;
-                self.castling.white_queen_side_castling = false;
-            }
-            (Rank::First, File::C) => {
-                self.board[File::A as usize][Rank::First as usize].piece = Piece::None;
-                self.board[File::D as usize][Rank::First as usize].piece =
-                    Piece::Rook(PieceColor::White);
-                // self.board[File::C as usize][Rank::First as usize].piece =
-                //     Piece::King(PieceColor::White);
-                self.castling.white_king_side_castling = false;
-                self.castling.white_queen_side_castling = false;
-            }
-            (Rank::Eighth, File::G) => {
-                self.board[File::H as usize][Rank::Eighth as usize].piece = Piece::None;
-                self.board[File::F as usize][Rank::Eighth as usize].piece =
-                    Piece::Rook(PieceColor::Black);
-                // self.board[File::G as usize][Rank::Eighth as usize].piece =
-                //     Piece::King(PieceColor::Black);
-                self.castling.black_king_side_castling = false;
-                self.castling.black_queen_side_castling = false;
-            }
-            (Rank::Eighth, File::C) => {
-                self.board[File::A as usize][Rank::Eighth as usize].piece = Piece::None;
-                self.board[File::D as usize][Rank::Eighth as usize].piece =
-                    Piece::Rook(PieceColor::Black);
-                // self.board[File::C as usize][Rank::Eighth as usize].piece =
-                //     Piece::King(PieceColor::Black);
-                self.castling.black_king_side_castling = false;
-                self.castling.black_queen_side_castling = false;
-            }
+        let (rook_file, rook_piece) = match (start_sq.rank, end_sq.file) {
+            (Rank::First, File::G) => (File::F, Piece::Rook(PieceColor::White)),
+            (Rank::First, File::C) => (File::D, Piece::Rook(PieceColor::White)),
+            (Rank::Eighth, File::G) => (File::F, Piece::Rook(PieceColor::Black)),
+            (Rank::Eighth, File::C) => (File::D, Piece::Rook(PieceColor::Black)),
             _ => panic!("Trying to castle with wrong start and end square"),
+        };
+
+        self.move_rook_for_castling(start_sq, rook_file, rook_piece);
+        self.update_castling_rights(start_sq);
+    }
+
+    fn move_rook_for_castling(&mut self, start_sq: &Square, rook_file: File, rook_piece: Piece) {
+        self.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
+        self.board[rook_file as usize][start_sq.rank as usize].piece = rook_piece;
+    }
+
+    fn update_castling_rights(&mut self, start_sq: &Square) {
+        match start_sq.rank {
+            Rank::First => {
+                self.castling.white_king_side_castling = false;
+                self.castling.white_queen_side_castling = false;
+            }
+            Rank::Eighth => {
+                self.castling.black_king_side_castling = false;
+                self.castling.black_queen_side_castling = false;
+            }
+            _ => {}
         }
     }
 
     fn remove_castling(&mut self, start_sq: &Square) {
-        match start_sq.piece {
-            Piece::King(PieceColor::White) => {
+        match (start_sq.piece, start_sq.file, start_sq.rank) {
+            (Piece::King(PieceColor::White), _, _) => {
                 self.castling.white_king_side_castling = false;
                 self.castling.white_queen_side_castling = false;
             }
-            Piece::King(PieceColor::Black) => {
+            (Piece::King(PieceColor::Black), _, _) => {
                 self.castling.black_king_side_castling = false;
                 self.castling.black_queen_side_castling = false;
             }
-            Piece::Rook(PieceColor::White) => {
-                if start_sq.file == File::A && start_sq.rank == Rank::First {
-                    self.castling.white_queen_side_castling = false;
-                } else if start_sq.file == File::H && start_sq.rank == Rank::First {
-                    self.castling.white_king_side_castling = false;
-                }
+            (Piece::Rook(PieceColor::White), File::A, Rank::First) => {
+                self.castling.white_queen_side_castling = false;
             }
-            Piece::Rook(PieceColor::Black) => {
-                if start_sq.file == File::A && start_sq.rank == Rank::Eighth {
-                    self.castling.black_queen_side_castling = false;
-                } else if start_sq.file == File::H && start_sq.rank == Rank::Eighth {
-                    self.castling.black_king_side_castling = false;
-                }
+            (Piece::Rook(PieceColor::White), File::H, Rank::First) => {
+                self.castling.white_king_side_castling = false;
+            }
+            (Piece::Rook(PieceColor::Black), File::A, Rank::Eighth) => {
+                self.castling.black_queen_side_castling = false;
+            }
+            (Piece::Rook(PieceColor::Black), File::H, Rank::Eighth) => {
+                self.castling.black_king_side_castling = false;
             }
             _ => (),
         }

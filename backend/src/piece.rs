@@ -45,23 +45,4 @@ impl Piece {
             Piece::King(color) => color,
         }
     }
-
-    // pub fn _legal_moves(
-    //     &self,
-    //     chessboard: [[Square; 8]; 8],
-    //     file: usize,
-    //     rank: usize,
-    // ) -> Vec<MoveFromCoordinates> {
-    //     let mut legal_moves: Vec<MoveFromCoordinates = Vec::new();
-    //     let start_sq = chessboard[file][rank];
-    //     (0..8).for_each(|file| {
-    //         (0..8).for_each(|rank| {
-    //             let end_sq = chessboard[file][rank];
-    //             if self.piece_move(&start_sq, &end_sq, &mut Chess::new()) {
-    //                 legal_moves.push((start_sq, end_sq, *self.color()));
-    //             }
-    //         });
-    //     });
-    //     legal_moves
-    // }
 }

@@ -15,14 +15,13 @@ type SquareCoordinates = (usize, usize);
 pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates);
 
 pub fn position_is_checkmate(chess: &mut Chess) -> bool {
-    let mut moves: Vec<MoveFromCoordinates> = Vec::new();
-    if chess.white_player.in_check() {
-        moves = possible_moves(chess, WHITE);
+    let moves: Vec<MoveFromCoordinates> = if chess.white_player.in_check() {
+        possible_moves(chess, WHITE)
     } else if chess.black_player.in_check() {
-        moves = possible_moves(chess, BLACK);
+        possible_moves(chess, BLACK)
     } else {
         return false;
-    }
+    };
 
     let is_checkmate = moves.iter().all(|possible_move| {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
