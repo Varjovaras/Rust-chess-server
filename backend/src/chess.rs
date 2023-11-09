@@ -234,8 +234,8 @@ impl Chess {
     }
 
     fn handle_check_after_move(&mut self, _start_sq: &Square) {
-        self.white_player.in_check = king_is_in_check(&self.board, PieceColor::White, self);
-        self.black_player.in_check = king_is_in_check(&self.board, PieceColor::Black, self);
+        self.white_player.in_check = king_is_in_check(&self.board, PieceColor::White);
+        self.black_player.in_check = king_is_in_check(&self.board, PieceColor::Black);
 
         if self.white_player.in_check {
             self.black_player.victory = checkmate::position_is_checkmate(self);
@@ -268,7 +268,7 @@ impl Chess {
 
         temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
         temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
-        !king_is_in_check(&temp_board, *start_sq.piece.color(), self)
+        !king_is_in_check(&temp_board, *start_sq.piece.color())
     }
 
     pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
@@ -311,13 +311,13 @@ impl Chess {
         &self.board[file][rank]
     }
 
-    pub fn print_board_white(&self) {
+    pub fn _print_board_white(&self) {
         let mut clone_board = self.board;
         clone_board.reverse();
 
         for i in (0..8).rev() {
             for j in (0..8).rev() {
-                print!("{} ", clone_board[j][i].piece_name());
+                print!("{} ", clone_board[j][i]._piece_name());
             }
             println!(" ");
         }
@@ -370,10 +370,6 @@ impl Chess {
         }
     }
 
-    fn in_between_castling_check() {
-        todo!("in_between_castling_check")
-    }
-
     fn remove_castling(&mut self, start_sq: &Square) {
         match start_sq.piece {
             Piece::King(PieceColor::White) => {
@@ -402,7 +398,7 @@ impl Chess {
         }
     }
 
-    pub fn print_moves(self) {
+    pub fn _print_moves(self) {
         self.list_of_moves.into_iter().for_each(|m| {
             println!("{:?}", m);
         });

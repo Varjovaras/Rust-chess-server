@@ -1,4 +1,5 @@
 use crate::{
+    check::king_is_in_check,
     chess::Chess,
     chessboard::{
         file::File, get_adjacent_squares, get_black_king, get_white_king, rank::Rank,
@@ -47,26 +48,47 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bo
             chess.board[5][0].piece == Piece::None
                 && chess.board[6][0].piece == Piece::None
                 && castling.white_king_side_castling
+                && not_checked_while_castling(5, 0, &chess.board)
         }
         (Rank::First, File::C) => {
             chess.board[1][0].piece == Piece::None
                 && chess.board[2][0].piece == Piece::None
                 && chess.board[3][0].piece == Piece::None
                 && castling.white_queen_side_castling
+                && not_checked_while_castling(3, 0, &chess.board)
         }
         (Rank::Eighth, File::G) => {
             chess.board[5][7].piece == Piece::None
                 && chess.board[6][7].piece == Piece::None
                 && castling.black_king_side_castling
+                && not_checked_while_castling(5, 7, &chess.board)
         }
         (Rank::Eighth, File::C) => {
             chess.board[1][7].piece == Piece::None
                 && chess.board[2][7].piece == Piece::None
                 && chess.board[3][7].piece == Piece::None
                 && castling.black_queen_side_castling
+                && not_checked_while_castling(3, 7, &chess.board)
         }
         _ => false,
     }
+}
+
+fn not_checked_while_castling(
+    in_between_king_sq_file: usize,
+    in_between_king_sq_rank: usize,
+    chess_board: &ChessBoard,
+) -> bool {
+    let color = if in_between_king_sq_rank == 0 {
+        PieceColor::White
+    } else {
+        PieceColor::Black
+    };
+    let mut temp_board = *chess_board;
+
+    temp_board[4][in_between_king_sq_rank].piece = Piece::None;
+    temp_board[in_between_king_sq_file][in_between_king_sq_rank].piece = Piece::King(color);
+    !king_is_in_check(&temp_board, color)
 }
 
 fn square_is_bordered_by_other_king(
@@ -134,6 +156,7 @@ mod tests {
         chess.board[6][0].piece = NONE;
         let sq1 = chess.board[4][0];
         let sq2 = chess.board[6][0];
+        chess._print_board_white();
         assert!(move_king(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[7][0];
@@ -144,6 +167,7 @@ mod tests {
         chess.board[1][0].piece = NONE;
         chess.board[2][0].piece = NONE;
         chess.board[3][0].piece = NONE;
+        chess._print_board_white();
         assert!(move_king(&sq1, &sq2, &chess));
 
         let sq1 = chess.board[4][7];

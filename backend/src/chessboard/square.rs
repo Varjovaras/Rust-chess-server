@@ -75,7 +75,7 @@ impl Square {
         self.piece != Piece::default()
     }
 
-    pub fn piece_name(&self) -> &str {
+    pub fn _piece_name(&self) -> &str {
         match self.piece {
             Piece::None => " ",
             Piece::Pawn(_) => match self.piece.color() {

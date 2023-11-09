@@ -45,4 +45,16 @@ impl Piece {
             Piece::King(color) => color,
         }
     }
+
+    pub fn name(&self) -> &str {
+        match self {
+            Piece::None => "no piece",
+            Piece::Pawn(_) => "pawn",
+            Piece::Knight(_) => "knight",
+            Piece::Bishop(_) => "bishop",
+            Piece::Rook(_) => "rook",
+            Piece::Queen(_) => "queen",
+            Piece::King(_) => "king",
+        }
+    }
 }
