@@ -85,7 +85,6 @@ fn not_checked_while_castling(
         PieceColor::Black
     };
     let mut temp_board = *chess_board;
-
     temp_board[4][in_between_king_sq_rank].piece = Piece::None;
     temp_board[in_between_king_sq_file][in_between_king_sq_rank].piece = Piece::King(color);
     !king_is_in_check(&temp_board, color)
