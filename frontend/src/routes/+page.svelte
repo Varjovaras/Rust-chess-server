@@ -82,11 +82,11 @@
 
 	<button
 		on:click={handleReset}
-		class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
+		class="bg-gray-200 hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
 	>
 		Reset board
 	</button>
-	<form class="grid grid-cols-2 gap-4 mt-8">
+	<!-- <form class="grid grid-cols-2 gap-4 mt-8">
 		<label class="col-span-1 bg-red-300">
 			<span class="block">Move from:</span>
 			<input type="text" class="block w-full" bind:value={fromSquare} />
@@ -95,5 +95,17 @@
 			<span class="block">Move to:</span>
 			<input type="text" class="block w-full" bind:value={toSquare} />
 		</label>
-	</form>
+	</form> -->
+	<div class="text-2xl font-bold text-center text-blue-500">pasa</div>
+
+	<footer class="mt-5">
+		<a
+			href="https://github.com/varjovaras"
+			target="_blank"
+			rel="noopener noreferrer"
+			class="text-blue-500 hover:text-blue-800"
+		>
+			<img src="/github-mark.png" alt="GitHub" class="w-8 h-8" />
+		</a>
+	</footer>
 </div>
