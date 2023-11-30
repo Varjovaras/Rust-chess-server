@@ -4,6 +4,7 @@ use crate::{
         get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
     },
     game_state::GameState,
+    make_move::king_is_not_in_check_after_move,
     moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
@@ -26,7 +27,7 @@ pub fn position_is_checkmate(chess: &mut Chess) -> bool {
     let is_checkmate = moves.iter().all(|possible_move| {
         let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
-        !chess.king_is_not_in_check_after_move(&start_sq, &end_sq)
+        !king_is_not_in_check_after_move(chess, &start_sq, &end_sq)
     });
 
     if is_checkmate {
