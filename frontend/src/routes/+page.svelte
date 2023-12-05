@@ -65,28 +65,22 @@
 	};
 </script>
 
-<div class="flex min-h-screen flex-col items-center justify-center bg-gray-900">
-	<h1
-		class="underline mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center"
-	>
-		Chess app
-	</h1>
-	<div class="mt-8 bg-red-300">
-		{#if chess.white_player.victory}
-			<p>White won</p>
-		{:else if chess.black_player.victory}
-			<p>Black won</p>
-		{/if}
-	</div>
-	<Chessboard {chess} {handleClick} />
+<div class="mt-8 bg-red-300">
+	{#if chess.white_player.victory}
+		<p>White won</p>
+	{:else if chess.black_player.victory}
+		<p>Black won</p>
+	{/if}
+</div>
+<Chessboard {chess} {handleClick} />
 
-	<button
-		on:click={handleReset}
-		class="bg-gray-200 hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-	>
-		Reset board
-	</button>
-	<!-- <form class="grid grid-cols-2 gap-4 mt-8">
+<button
+	on:click={handleReset}
+	class="bg-gray-200 hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+>
+	Reset board
+</button>
+<!-- <form class="grid grid-cols-2 gap-4 mt-8">
 		<label class="col-span-1 bg-red-300">
 			<span class="block">Move from:</span>
 			<input type="text" class="block w-full" bind:value={fromSquare} />
@@ -96,16 +90,3 @@
 			<input type="text" class="block w-full" bind:value={toSquare} />
 		</label>
 	</form> -->
-	<div class="text-2xl font-bold text-center text-blue-500">pasa</div>
-
-	<footer class="mt-5">
-		<a
-			href="https://github.com/varjovaras"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="text-blue-500 hover:text-blue-800"
-		>
-			<img src="/github-mark.png" alt="GitHub" class="w-8 h-8" />
-		</a>
-	</footer>
-</div>
