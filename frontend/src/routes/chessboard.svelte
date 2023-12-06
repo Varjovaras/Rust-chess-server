@@ -3,6 +3,8 @@
 	import type { Chess, ChessBoard, Square as SquareType } from './types';
 	export let chess: Chess;
 	export let handleClick: (sq: SquareType) => void;
+	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
+	let startSq = '';
 
 	$: boardToFront = handleBoardToFront(chess.board);
 
@@ -18,17 +20,20 @@
 		return boardToFront;
 	};
 
-	function handleDragStart(sq: SquareType) {
+	const handleDragStart = (sq: SquareType) => {
 		console.log('Drag started:', sq);
-	}
+		startSq = sq.file.toLowerCase() + (sq.rank + 1);
+	};
 
-	function handleDrop(event: DragEvent) {
-		console.log('ali');
+	const handleDrop = (event: DragEvent) => {
 		console.log('Drop event:', event);
 		const targetElement = event.target as HTMLElement;
 		console.log(targetElement);
-		// Use the targetElement here
-	}
+		console.log(targetElement.id);
+		if (targetElement.id !== '[object Object]' && targetElement.id !== '') {
+			handleMove(startSq, targetElement.id);
+		}
+	};
 
 	// ...
 </script>
@@ -44,7 +49,8 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + sq.rank}
+						id={sq.file + (sq.rank + 1)}
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
@@ -55,7 +61,8 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + sq.rank}
+						id={sq.file + (sq.rank + 1)}
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
@@ -66,7 +73,8 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + sq.rank}
+						id={sq.file + (sq.rank + 1)}
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
@@ -77,7 +85,8 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + sq.rank}
+						id={sq.file + (sq.rank + 1)}
+						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>

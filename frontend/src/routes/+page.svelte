@@ -17,40 +17,22 @@
 		} else {
 			toSquare = sq.file.toLowerCase() + (sq.rank + 1);
 			console.log(toSquare);
-			handleSubmit();
+			handleMove(fromSquare, toSquare);
 		}
 	};
-
-	const handleSubmit = () => {
-		console.log(`Move from ${fromSquare} to ${toSquare}`);
-		handleMove();
-		fromSquare = '';
-		toSquare = '';
-	};
-
-	const handleReset = async () => {
+	const handleMove = async (startSq: string, endSq: string) => {
+		console.log(`Move from ${startSq} to ${endSq}`);
 		try {
-			console.log('Resetting board');
-			const response = await fetch(`${apiUrl}/api/chess`);
-			const newChess = await response.json();
-			const validatedChess = schema.parse(newChess);
-			chess = validatedChess;
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const handleMove = async () => {
-		try {
-			const newChess = await fetchMove();
+			const newChess = await fetchMove(startSq, endSq);
 			chess = newChess;
+			fromSquare = '';
+			toSquare = '';
 		} catch (error) {
 			console.error(error);
 		}
 	};
-
-	const fetchMove = async (): Promise<Chess> => {
-		const newMove = [fromSquare, toSquare];
+	const fetchMove = async (startSq: string, endSq: string): Promise<Chess> => {
+		const newMove = [startSq, endSq];
 		console.log(newMove);
 		const response = await fetch(`${apiUrl}/api/chess`, {
 			method: 'POST',
@@ -63,8 +45,23 @@
 		const validatedChess = schema.parse(data.chess);
 		return validatedChess;
 	};
+	const handleReset = async () => {
+		try {
+			console.log('Resetting board');
+			const response = await fetch(`${apiUrl}/api/chess`);
+			const newChess = await response.json();
+			const validatedChess = schema.parse(newChess);
+			chess = validatedChess;
+		} catch (error) {
+			console.error(error);
+		}
+	};
 </script>
 
+<div class="text-cyan-50 text-center text-lg font-semibold">
+	<p class="mb-2">Move by clicking on a piece and then on the square you want to move it to.</p>
+	<p>You can also drag and drop pieces.</p>
+</div>
 <div class="mt-8 bg-red-300">
 	{#if chess.white_player.victory}
 		<p>White won</p>
@@ -72,14 +69,17 @@
 		<p>Black won</p>
 	{/if}
 </div>
-<Chessboard {chess} {handleClick} />
+<Chessboard {chess} {handleClick} {handleMove} />
 
 <button
 	on:click={handleReset}
-	class="bg-gray-200 hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+	class="bg-cyan-50 hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
 >
 	Reset board
 </button>
+<div class="text-cyan-50 text-center text-lg font-semibold">
+	<h2 class="">Not yet implemented features:</h2>
+</div>
 <!-- <form class="grid grid-cols-2 gap-4 mt-8">
 		<label class="col-span-1 bg-red-300">
 			<span class="block">Move from:</span>
