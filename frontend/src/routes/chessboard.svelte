@@ -42,7 +42,7 @@
 	<div class="grid grid-cols-8 gap-0">
 		{#each boardToFront as row}
 			{#each row as sq}
-				{#if chess.white_player.in_check && sq.color === 'White' && sq.piece !== 'None' && sq.piece.King === 'White'}
+				{#if chess.white_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
 						draggable="true"
@@ -54,7 +54,7 @@
 					>
 						<Square {sq} />
 					</button>
-				{:else if chess.black_player.in_check && sq.piece !== 'None' && sq.piece.King === 'Black'}
+				{:else if chess.black_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'Black'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
 						draggable="true"
