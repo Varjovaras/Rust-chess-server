@@ -36,12 +36,14 @@
 
 <div>
 	{#if sq.piece === 'None'}
-		<div />
+		<div id={sq.file + sq.rank} />
 	{:else}
 		<img
 			class="flex justify-center items-center w-full h-full"
 			src={pieceSwitch(sq.piece)}
 			alt={''}
+			draggable="true"
+			id={sq.piece?.toString()}
 		/>
 	{/if}
 </div>

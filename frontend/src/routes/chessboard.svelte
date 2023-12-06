@@ -17,6 +17,20 @@
 		}
 		return boardToFront;
 	};
+
+	function handleDragStart(sq: SquareType) {
+		console.log('Drag started:', sq);
+	}
+
+	function handleDrop(event: DragEvent) {
+		console.log('ali');
+		console.log('Drop event:', event);
+		const targetElement = event.target as HTMLElement;
+		console.log(targetElement);
+		// Use the targetElement here
+	}
+
+	// ...
 </script>
 
 <div class="flex justify-center items-center">
@@ -26,28 +40,44 @@
 				{#if chess.white_player.in_check && sq.color === 'White' && sq.piece !== 'None' && sq.piece.King === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
-						on:click|preventDefault={() => handleClick(sq)}
+						draggable="true"
+						on:dragstart={() => handleDragStart(sq)}
+						on:dragover|preventDefault
+						on:drop|preventDefault={handleDrop}
+						id={sq.file + sq.rank}
 					>
 						<Square {sq} />
 					</button>
 				{:else if chess.black_player.in_check && sq.piece !== 'None' && sq.piece.King === 'Black'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
-						on:click|preventDefault={() => handleClick(sq)}
+						draggable="true"
+						on:dragstart={() => handleDragStart(sq)}
+						on:dragover|preventDefault
+						on:drop|preventDefault={handleDrop}
+						id={sq.file + sq.rank}
 					>
 						<Square {sq} />
 					</button>
 				{:else if sq.color === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
-						on:click|preventDefault={() => handleClick(sq)}
+						draggable="true"
+						on:dragstart={() => handleDragStart(sq)}
+						on:dragover|preventDefault
+						on:drop|preventDefault={handleDrop}
+						id={sq.file + sq.rank}
 					>
 						<Square {sq} />
 					</button>
 				{:else}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
-						on:click|preventDefault={() => handleClick(sq)}
+						draggable="true"
+						on:dragstart={() => handleDragStart(sq)}
+						on:dragover|preventDefault
+						on:drop|preventDefault={handleDrop}
+						id={sq.file + sq.rank}
 					>
 						<Square {sq} />
 					</button>
