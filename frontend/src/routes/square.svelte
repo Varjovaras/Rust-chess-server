@@ -37,6 +37,7 @@
 <div>
 	{#if sq.piece === 'None'}
 		<div id={sq.file.toLowerCase() + sq.rank} />
+		<!-- {#if } -->
 	{:else}
 		<img
 			class="flex justify-center items-center w-full h-full"
