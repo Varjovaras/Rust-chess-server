@@ -25,14 +25,3 @@
 		<p class="text-gray-500 mt-2">Author: Kristjan Rajaniemi</p>
 	</footer>
 </div>
-<footer class="mt-5 flex flex-col items-center">
-	<a
-		href="https://github.com/varjovaras"
-		target="_blank"
-		rel="noopener noreferrer"
-		class="text-blue-500 hover:text-blue-800"
-	>
-		<img src="/github-mark.png" alt="GitHub" class="w-8 h-8" />
-	</a>
-	<p class="text-gray-500 mt-2">Author: Kristjan Rajaniemi</p>
-</footer>
