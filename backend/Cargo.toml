@@ -13,11 +13,11 @@ opt-level = 3
 rand = "0.8.4"
 serde_json = "1.0.70"
 serde = { version = "1.0.130", features = ["derive"] }
-axum = "0.6.18"
-shuttle-axum = "0.32.0"
-shuttle-runtime = "0.32.0"
+axum = "0.7.2"
+shuttle-axum = "0.34.1"
+shuttle-runtime = "0.34.1"
 tokio = "1.28.2"
 tower = { version = "0.4", features = ["full"] }
-tower-http = { version = "0.4.4", features = ["full"] }
+tower-http = { version = "0.5.0", features = ["full"] }
 serde_repr = "0.1"
-cargo-shuttle = "0.32.0"
+cargo-shuttle = "0.34.1"

@@ -57,4 +57,6 @@ impl Piece {
             Piece::King(_) => "king",
         }
     }
+
+    pub fn possible_moves() {}
 }
