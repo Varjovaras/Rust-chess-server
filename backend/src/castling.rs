@@ -30,3 +30,9 @@ impl Castling {
         }
     }
 }
+
+impl Default for Castling {
+    fn default() -> Self {
+        Self::new()
+    }
+}

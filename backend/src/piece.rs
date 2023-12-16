@@ -1,6 +1,17 @@
+use std::vec;
+
 use serde::{Deserialize, Serialize};
 
-use crate::{chess::Chess, chessboard::square::Square, moves};
+use crate::{
+    checkmate::MoveFromCoordinates,
+    chess::Chess,
+    chessboard::square::Square,
+    moves,
+    possible_moves::{
+        bishop_possible_moves, king_possible_moves, knight_possible_moves, pawn_possible_moves,
+        rook_possible_moves,
+    },
+};
 
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub enum PieceColor {
@@ -58,5 +69,19 @@ impl Piece {
         }
     }
 
-    pub fn possible_moves() {}
+    pub fn possible_moves(&self, sq: &Square) -> Vec<MoveFromCoordinates> {
+        match self {
+            Piece::None => vec![],
+            Piece::Pawn(_) => pawn_possible_moves(sq),
+            Piece::Knight(_) => knight_possible_moves(sq),
+            Piece::Bishop(_) => bishop_possible_moves(sq),
+            Piece::Rook(_) => rook_possible_moves(sq),
+            Piece::Queen(_) => {
+                let mut possible_moves = bishop_possible_moves(sq);
+                possible_moves.extend(rook_possible_moves(sq));
+                possible_moves
+            }
+            Piece::King(_) => king_possible_moves(sq),
+        }
+    }
 }

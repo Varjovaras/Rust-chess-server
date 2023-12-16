@@ -8,6 +8,7 @@ mod make_move;
 mod moves;
 mod piece;
 mod player;
+pub mod possible_moves;
 
 use axum::{
     http::{header::CONTENT_TYPE, Method, StatusCode},
