@@ -30,6 +30,17 @@ struct MoveResponse {
     pub chess: Chess,
 }
 
+#[derive(Debug, Deserialize)]
+struct PossibleMovesForSquareRequest {
+    _list_of_moves: Vec<((String, usize), (String, usize))>,
+    _square: (String, usize),
+}
+
+#[derive(Debug, Serialize)]
+struct PossibleMovesForSquareResponse {
+    moves: Vec<((File, Rank), (File, Rank))>,
+}
+
 use crate::{
     chess::Chess,
     chessboard::{file::File, rank::Rank},
@@ -59,6 +70,36 @@ async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveR
     let response = MoveResponse { chess };
     (StatusCode::OK, Json(response))
 }
+
+async fn _get_square_moves(
+    Json(payload): Json<PossibleMovesForSquareRequest>,
+) -> (StatusCode, Json<PossibleMovesForSquareResponse>) {
+    //setup new chess and iter and handle moves provided by payload
+    let mut chess = Chess::new_starting_position();
+
+    for move_tuple in &payload._list_of_moves {
+        let mut start_sq = *chess.get_square(
+            File::from(move_tuple.0 .0.as_str()), //file from string
+            Rank::from(move_tuple.0 .1),          //rank is usize already
+        );
+        let mut end_sq = *chess.get_square(
+            File::from(move_tuple.1 .0.as_str()),
+            Rank::from(move_tuple.1 .1),
+        );
+        chess.make_move(&mut start_sq, &mut end_sq);
+    }
+
+    let sq = chess.get_square(
+        File::from(payload._square.0.as_str()),
+        Rank::from(payload._square.1),
+    );
+
+    let moves = sq.piece.possible_moves(sq, &chess);
+
+    let response = PossibleMovesForSquareResponse { moves };
+    (StatusCode::OK, Json(response))
+}
+
 async fn chess() -> String {
     serde_json::to_string(&Chess::new_starting_position()).unwrap()
 }

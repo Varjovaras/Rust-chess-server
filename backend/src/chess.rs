@@ -86,7 +86,7 @@ impl Chess {
     }
 
     pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
-        let file = File::_from_str_slice(file_str).as_usize();
+        let file = File::from_str_slice(file_str).as_usize();
         let rank = Rank::_from_str(rank_str).as_usize();
         if file > 7 || rank > 7 {
             panic!("get_square_from_str failed for inputting too big file or rank")

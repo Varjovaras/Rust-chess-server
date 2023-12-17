@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 use crate::{
     checkmate::MoveFromCoordinates,
     chess::Chess,
-    chessboard::square::Square,
+    chessboard::{file::File, rank::Rank, square::Square},
     moves,
     possible_moves::{
         bishop_possible_moves, king_possible_moves, knight_possible_moves, pawn_possible_moves,
@@ -33,7 +33,7 @@ pub enum Piece {
 }
 
 impl Piece {
-    pub fn piece_move(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+    pub fn piece_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             Piece::None => false,
             Piece::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
@@ -69,8 +69,8 @@ impl Piece {
         }
     }
 
-    pub fn possible_moves(&self, sq: &Square) -> Vec<MoveFromCoordinates> {
-        match self {
+    pub fn possible_moves(&self, sq: &Square, chess: &Chess) -> Vec<((File, Rank), (File, Rank))> {
+        let moves = match self {
             Piece::None => vec![],
             Piece::Pawn(_) => pawn_possible_moves(sq),
             Piece::Knight(_) => knight_possible_moves(sq),
@@ -82,6 +82,28 @@ impl Piece {
                 possible_moves
             }
             Piece::King(_) => king_possible_moves(sq),
+        };
+
+        actual_moves(&moves, chess)
+    }
+}
+
+fn actual_moves(
+    moves: &Vec<MoveFromCoordinates>,
+    chess: &Chess,
+) -> Vec<((File, Rank), (File, Rank))> {
+    let mut actual_moves: Vec<((File, Rank), (File, Rank))> = vec![];
+    for sq_coords in moves {
+        let start_sq = chess.board[sq_coords.0 .0][sq_coords.0 .1];
+        let end_sq = chess.board[sq_coords.1 .0][sq_coords.1 .1];
+        if start_sq.piece.piece_move(&start_sq, &end_sq, chess) {
+            let start_file = File::from(sq_coords.0 .0);
+            let start_rank = Rank::from(sq_coords.0 .1);
+            let end_file = File::from(sq_coords.1 .0);
+            let end_rank = Rank::from(sq_coords.1 .1);
+            actual_moves.push(((start_file, start_rank), (end_file, end_rank)));
         }
     }
+
+    actual_moves
 }
