@@ -4,29 +4,40 @@ use crate::chessboard::{file::File, rank::Rank, square::Square};
 
 #[derive(Debug, Copy, Clone, Serialize, Deserialize)]
 pub struct Castling {
-    pub white_king_side_castling: bool,
-    pub white_queen_side_castling: bool,
-    pub black_king_side_castling: bool,
-    pub black_queen_side_castling: bool,
+    pub white: RightToCastle,
+    pub black: RightToCastle,
+}
+
+#[derive(Debug, Copy, Clone, Serialize, Deserialize)]
+pub struct RightToCastle {
+    pub king: bool,
+    pub queen: bool,
 }
 
 impl Castling {
-    pub fn new() -> Castling {
-        Castling {
-            white_king_side_castling: true,
-            white_queen_side_castling: true,
-            black_king_side_castling: true,
-            black_queen_side_castling: true,
+    pub const fn new() -> Self {
+        Self {
+            white: RightToCastle::new(),
+            black: RightToCastle::new(),
         }
     }
 
-    pub fn _castling_allowed(&self, start_sq: &Square, end_sq: &Square) -> bool {
+    pub const fn _castling_allowed(self, start_sq: Square, end_sq: Square) -> bool {
         match (start_sq.rank, end_sq.file) {
-            (Rank::First, File::G) => self.white_king_side_castling,
-            (Rank::First, File::C) => self.white_queen_side_castling,
-            (Rank::Eighth, File::G) => self.black_king_side_castling,
-            (Rank::Eighth, File::C) => self.black_queen_side_castling,
+            (Rank::First, File::G) => self.white.king,
+            (Rank::First, File::C) => self.white.queen,
+            (Rank::Eighth, File::G) => self.black.king,
+            (Rank::Eighth, File::C) => self.black.queen,
             _ => false,
+        }
+    }
+}
+
+impl RightToCastle {
+    pub const fn new() -> Self {
+        Self {
+            king: true,
+            queen: true,
         }
     }
 }

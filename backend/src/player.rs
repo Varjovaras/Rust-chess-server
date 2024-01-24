@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::piece::PieceColor;
 
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Player {
     color: PieceColor,
     pub in_check: bool,
@@ -10,8 +10,8 @@ pub struct Player {
 }
 
 impl Player {
-    pub fn new(color: PieceColor) -> Player {
-        Player {
+    pub const fn new(color: PieceColor) -> Self {
+        Self {
             color,
             victory: false,
             in_check: false,
@@ -22,7 +22,7 @@ impl Player {
     //     &self.color
     // }
 
-    pub fn in_check(&self) -> bool {
+    pub const fn in_check(self) -> bool {
         self.in_check
     }
 

@@ -41,7 +41,7 @@ pub fn new_board() -> ChessBoard {
     board
 }
 
-fn color_changer(color: SquareColor) -> SquareColor {
+const fn color_changer(color: SquareColor) -> SquareColor {
     //for initializing board
     match color {
         SquareColor::White => SquareColor::Black,
@@ -95,7 +95,7 @@ fn set_pieces(board: &mut ChessBoard, color: PieceColor, rank: usize, pieces: &[
             Piece::Queen(_) => Piece::Queen(color),
             Piece::King(_) => Piece::King(color),
             Piece::Pawn(_) => Piece::Pawn(color),
-            _ => panic!("Invalid piece type"),
+            Piece::None => panic!("Invalid piece type"),
         };
     }
 }
@@ -126,7 +126,7 @@ pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<&Square> {
     board
         .iter()
         .flatten()
-        .filter(|&square| square.piece.color() == &White)
+        .filter(|&square| square.piece.color() == White)
         .collect()
 }
 
@@ -134,11 +134,11 @@ pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<&Square> {
     board
         .iter()
         .flatten()
-        .filter(|&square| square.piece.color() == &Black)
+        .filter(|&square| square.piece.color() == Black)
         .collect()
 }
 
-pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
+pub fn get_adjacent_squares(sq: Square, board: &ChessBoard) -> Vec<Square> {
     let mut adjacent_squares: Vec<Square> = Vec::new();
     let file = sq.file as isize;
     let rank = sq.rank as isize;
@@ -158,6 +158,7 @@ pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
         let new_file = file + file_direction;
         let new_rank = rank + rank_direction;
         if (0..8).contains(&new_file) && (0..8).contains(&new_rank) {
+            #[allow(clippy::cast_sign_loss)]
             adjacent_squares.push(board[new_file as usize][new_rank as usize]);
         }
     }
@@ -207,6 +208,6 @@ mod tests {
     fn starting_position_works() {
         let mut chess: Chess = Chess::_new();
         chess.starting_position();
-        assert_eq!(chess.board[0][0].piece, Piece::Rook(PieceColor::White))
+        assert_eq!(chess.board[0][0].piece, Piece::Rook(PieceColor::White));
     }
 }

@@ -2,14 +2,15 @@ use serde::{Deserialize, Serialize};
 
 use crate::{chess::Chess, chessboard::square::Square, moves};
 
-#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
+#[allow(clippy::module_name_repetitions)]
 pub enum PieceColor {
     White,
     Black,
     None,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum Piece {
     #[default]
     None,
@@ -22,39 +23,39 @@ pub enum Piece {
 }
 
 impl Piece {
-    pub fn piece_move(&self, start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> bool {
+    pub fn piece_move(self, start_sq: Square, end_sq: Square, chess: &Chess) -> bool {
         match self {
-            Piece::None => false,
-            Piece::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
-            Piece::Knight(_) => moves::knight(start_sq, end_sq),
-            Piece::Bishop(_) => moves::bishop(start_sq, end_sq, chess),
-            Piece::Rook(_) => moves::rook(start_sq, end_sq, chess),
-            Piece::Queen(_) => moves::queen(start_sq, end_sq, chess),
-            Piece::King(_) => moves::king(start_sq, end_sq, chess),
+            Self::None => false,
+            Self::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
+            Self::Knight(_) => moves::knight(start_sq, end_sq),
+            Self::Bishop(_) => moves::bishop(start_sq, end_sq, chess),
+            Self::Rook(_) => moves::rook(start_sq, end_sq, chess),
+            Self::Queen(_) => moves::queen(start_sq, end_sq, chess),
+            Self::King(_) => moves::king(start_sq, end_sq, chess),
         }
     }
 
-    pub fn color(&self) -> &PieceColor {
+    pub const fn color(self) -> PieceColor {
         match self {
-            Piece::None => &PieceColor::None,
-            Piece::Pawn(color) => color,
-            Piece::Knight(color) => color,
-            Piece::Bishop(color) => color,
-            Piece::Rook(color) => color,
-            Piece::Queen(color) => color,
-            Piece::King(color) => color,
+            Self::None => PieceColor::None,
+            Self::Pawn(color)
+            | Self::Knight(color)
+            | Self::Bishop(color)
+            | Self::Rook(color)
+            | Self::Queen(color)
+            | Self::King(color) => color,
         }
     }
 
-    pub fn name(&self) -> &str {
+    pub const fn name(&self) -> &str {
         match self {
-            Piece::None => "no piece",
-            Piece::Pawn(_) => "pawn",
-            Piece::Knight(_) => "knight",
-            Piece::Bishop(_) => "bishop",
-            Piece::Rook(_) => "rook",
-            Piece::Queen(_) => "queen",
-            Piece::King(_) => "king",
+            Self::None => "no piece",
+            Self::Pawn(_) => "pawn",
+            Self::Knight(_) => "knight",
+            Self::Bishop(_) => "bishop",
+            Self::Rook(_) => "rook",
+            Self::Queen(_) => "queen",
+            Self::King(_) => "king",
         }
     }
 }
