@@ -58,8 +58,8 @@ async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveR
     let response = MoveResponse { chess };
     (StatusCode::OK, Json(response))
 }
-async fn chess() -> String {
-    serde_json::to_string(&Chess::new_starting_position()).unwrap()
+async fn chess() -> &'static str {
+    "chess"
 }
 
 #[shuttle_runtime::main]
