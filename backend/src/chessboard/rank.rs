@@ -1,6 +1,9 @@
 use serde_repr::{Deserialize_repr, Serialize_repr};
+use std::convert::TryFrom;
 
-#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd, Serialize_repr, Deserialize_repr)]
+#[derive(
+    Copy, Clone, Debug, PartialEq, Eq, Default, PartialOrd, Serialize_repr, Deserialize_repr,
+)]
 #[repr(u8)]
 pub enum Rank {
     #[default]
@@ -15,103 +18,109 @@ pub enum Rank {
 }
 
 impl Rank {
-    pub fn _as_str(&self) -> &'static str {
+    pub const fn _as_str(self) -> &'static str {
         match self {
-            Rank::First => "1",
-            Rank::Second => "2",
-            Rank::Third => "3",
-            Rank::Fourth => "4",
-            Rank::Fifth => "5",
-            Rank::Sixth => "6",
-            Rank::Seventh => "7",
-            Rank::Eighth => "8",
+            Self::First => "1",
+            Self::Second => "2",
+            Self::Third => "3",
+            Self::Fourth => "4",
+            Self::Fifth => "5",
+            Self::Sixth => "6",
+            Self::Seventh => "7",
+            Self::Eighth => "8",
         }
     }
 
-    pub fn as_usize(&self) -> usize {
+    pub const fn as_usize(self) -> usize {
         match self {
-            Rank::First => 0,
-            Rank::Second => 1,
-            Rank::Third => 2,
-            Rank::Fourth => 3,
-            Rank::Fifth => 4,
-            Rank::Sixth => 5,
-            Rank::Seventh => 6,
-            Rank::Eighth => 7,
+            Self::First => 0,
+            Self::Second => 1,
+            Self::Third => 2,
+            Self::Fourth => 3,
+            Self::Fifth => 4,
+            Self::Sixth => 5,
+            Self::Seventh => 6,
+            Self::Eighth => 7,
         }
     }
 
-    pub fn _from_str(s: &str) -> Rank {
+    pub fn _from_str(s: &str) -> Self {
         match s {
-            "1" => Rank::First,
-            "2" => Rank::Second,
-            "3" => Rank::Third,
-            "4" => Rank::Fourth,
-            "5" => Rank::Fifth,
-            "6" => Rank::Sixth,
-            "7" => Rank::Seventh,
-            "8" => Rank::Eighth,
+            "1" => Self::First,
+            "2" => Self::Second,
+            "3" => Self::Third,
+            "4" => Self::Fourth,
+            "5" => Self::Fifth,
+            "6" => Self::Sixth,
+            "7" => Self::Seventh,
+            "8" => Self::Eighth,
             _ => panic!("Invalid rank_str"),
         }
     }
 
-    pub(crate) fn get_ranks() -> [Rank; 8] {
+    pub(crate) const fn get_ranks() -> [Self; 8] {
         [
-            Rank::First,
-            Rank::Second,
-            Rank::Third,
-            Rank::Fourth,
-            Rank::Fifth,
-            Rank::Sixth,
-            Rank::Seventh,
-            Rank::Eighth,
+            Self::First,
+            Self::Second,
+            Self::Third,
+            Self::Fourth,
+            Self::Fifth,
+            Self::Sixth,
+            Self::Seventh,
+            Self::Eighth,
         ]
     }
 }
 
-impl From<u8> for Rank {
-    fn from(value: u8) -> Rank {
+impl TryFrom<u8> for Rank {
+    type Error = ();
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
         match value {
-            0 => Rank::First,
-            1 => Rank::Second,
-            2 => Rank::Third,
-            3 => Rank::Fourth,
-            4 => Rank::Fifth,
-            5 => Rank::Sixth,
-            6 => Rank::Seventh,
-            7 => Rank::Eighth,
+            0 => Ok(Self::First),
+            1 => Ok(Self::Second),
+            2 => Ok(Self::Third),
+            3 => Ok(Self::Fourth),
+            4 => Ok(Self::Fifth),
+            5 => Ok(Self::Sixth),
+            6 => Ok(Self::Seventh),
+            7 => Ok(Self::Eighth),
+            _ => Err(()),
+        }
+    }
+}
+
+impl TryFrom<usize> for Rank {
+    type Error = ();
+
+    fn try_from(value: usize) -> Result<Self, ()> {
+        match value {
+            0 => Ok(Self::First),
+            1 => Ok(Self::Second),
+            2 => Ok(Self::Third),
+            3 => Ok(Self::Fourth),
+            4 => Ok(Self::Fifth),
+            5 => Ok(Self::Sixth),
+            6 => Ok(Self::Seventh),
+            7 => Ok(Self::Eighth),
             _ => panic!("Invalid rank"),
         }
     }
 }
 
-impl From<usize> for Rank {
-    fn from(value: usize) -> Rank {
-        match value {
-            0 => Rank::First,
-            1 => Rank::Second,
-            2 => Rank::Third,
-            3 => Rank::Fourth,
-            4 => Rank::Fifth,
-            5 => Rank::Sixth,
-            6 => Rank::Seventh,
-            7 => Rank::Eighth,
-            _ => panic!("Invalid rank"),
-        }
-    }
-}
+impl TryFrom<&str> for Rank {
+    type Error = ();
 
-impl From<&str> for Rank {
-    fn from(s: &str) -> Rank {
+    fn try_from(s: &str) -> std::result::Result<Self, ()> {
         match s {
-            "1" => Rank::First,
-            "2" => Rank::Second,
-            "3" => Rank::Third,
-            "4" => Rank::Fourth,
-            "5" => Rank::Fifth,
-            "6" => Rank::Sixth,
-            "7" => Rank::Seventh,
-            "8" => Rank::Eighth,
+            "1" => Ok(Self::First),
+            "2" => Ok(Self::Second),
+            "3" => Ok(Self::Third),
+            "4" => Ok(Self::Fourth),
+            "5" => Ok(Self::Fifth),
+            "6" => Ok(Self::Sixth),
+            "7" => Ok(Self::Seventh),
+            "8" => Ok(Self::Eighth),
             _ => panic!("Invalid rank_str"),
         }
     }

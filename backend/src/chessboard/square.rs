@@ -4,22 +4,23 @@ use crate::piece::{Piece, PieceColor};
 
 use super::{file::File, rank::Rank};
 
-#[derive(Copy, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[allow(clippy::module_name_repetitions)]
 pub enum SquareColor {
     Black,
     #[default]
     White,
 }
 impl SquareColor {
-    fn _as_str(&self) -> &str {
+    const fn _as_str(&self) -> &str {
         match self {
-            SquareColor::Black => "black",
-            SquareColor::White => "white",
+            Self::Black => "black",
+            Self::White => "white",
         }
     }
 }
 
-#[derive(Copy, Clone, Debug, Default, PartialEq, Serialize, Deserialize)]
+#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Square {
     pub file: File,
     pub rank: Rank,
@@ -28,8 +29,8 @@ pub struct Square {
 }
 
 impl Square {
-    pub fn new(file: File, rank: Rank, color: SquareColor, piece: Piece) -> Square {
-        Square {
+    pub const fn new(file: File, rank: Rank, color: SquareColor, piece: Piece) -> Self {
+        Self {
             file,
             rank,
             color,
@@ -37,10 +38,10 @@ impl Square {
         }
     }
 
-    pub fn _new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Square {
-        let file = File::from(file);
-        let rank = Rank::from(rank);
-        Square {
+    pub fn _new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Self {
+        let file = File::try_from(file).expect("Invalid file");
+        let rank = Rank::try_from(rank).expect("Invalid rank");
+        Self {
             file,
             rank,
             color,
@@ -48,10 +49,10 @@ impl Square {
         }
     }
 
-    pub fn _new_without_piece(file: u8, rank: u8) -> Square {
-        let file = File::from(file);
-        let rank = Rank::from(rank);
-        Square {
+    pub fn _new_without_piece(file: u8, rank: u8) -> Self {
+        let file = File::try_from(file).expect("Invalid file");
+        let rank = Rank::try_from(rank).expect("Invalid rank");
+        Self {
             file,
             rank,
             color: SquareColor::default(),
@@ -59,23 +60,23 @@ impl Square {
         }
     }
 
-    pub fn _square_name(&self) -> String {
+    pub fn _square_name(self) -> String {
         self.file._as_str().to_owned() + self.rank._as_str()
     }
 
-    pub fn _square_color(&self) -> SquareColor {
+    pub const fn _square_color(self) -> SquareColor {
         self.color
     }
 
-    pub fn is_empty(&self) -> bool {
+    pub fn is_empty(self) -> bool {
         self.piece == Piece::default()
     }
 
-    pub fn has_piece(&self) -> bool {
+    pub fn has_piece(self) -> bool {
         self.piece != Piece::default()
     }
 
-    pub fn _piece_name(&self) -> &str {
+    pub const fn _piece_name(self) -> &'static str {
         match self.piece {
             Piece::None => " ",
             Piece::Pawn(_) => match self.piece.color() {

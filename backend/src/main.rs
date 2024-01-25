@@ -34,24 +34,20 @@ use crate::{
     chessboard::{file::File, rank::Rank},
 };
 
-async fn hello_world() -> &'static str {
-    "Hello, world!"
-}
-
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
     //setup new chess and iter and handle moves provided by payload
     let mut chess = Chess::new_starting_position();
 
     for move_tuple in &payload.list_of_moves {
-        let mut start_sq = *chess.get_square(
-            File::from(move_tuple.0 .0.as_str()), //file from string
-            Rank::from(move_tuple.0 .1),          //rank is usize already
+        let start_sq = chess.get_square(
+            File::try_from(move_tuple.0 .0.as_str()).expect("invalid file"), // try to convert from string
+            Rank::try_from(move_tuple.0 .1).expect("invalid rank"), // rank is usize already
         );
-        let mut end_sq = *chess.get_square(
-            File::from(move_tuple.1 .0.as_str()),
-            Rank::from(move_tuple.1 .1),
+        let end_sq = chess.get_square(
+            File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"), // try to convert from string
+            Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
         );
-        chess.make_move(&mut start_sq, &mut end_sq);
+        chess.make_move(start_sq, end_sq);
     }
 
     chess.make_move_from_str(&payload.new_move[0], &payload.new_move[1]);
@@ -59,17 +55,17 @@ async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveR
     (StatusCode::OK, Json(response))
 }
 async fn chess() -> &'static str {
-    "chess"
+    ""
 }
 
 #[shuttle_runtime::main]
+#[allow(clippy::unused_async)]
 async fn axum() -> ShuttleAxum {
     let cors = CorsLayer::new()
         .allow_methods([Method::GET, Method::POST])
         .allow_headers([CONTENT_TYPE])
         .allow_origin(Any);
     let router = Router::new()
-        .route("/", get(hello_world))
         .route("/api/chess", get(chess))
         .route("/api/chess", post(move_chess))
         .layer(cors);

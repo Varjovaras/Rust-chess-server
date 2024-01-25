@@ -1,9 +1,9 @@
 use core::panic;
 
 use serde::{Deserialize, Serialize};
+use std::convert::TryFrom;
 
-#[derive(Copy, Clone, Debug, PartialEq, Default, PartialOrd, Serialize, Deserialize)]
-
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Default, PartialOrd, Serialize, Deserialize)]
 pub enum File {
     #[default]
     A,
@@ -17,91 +17,95 @@ pub enum File {
 }
 
 impl File {
-    pub fn as_usize(&self) -> usize {
+    pub const fn as_usize(self) -> usize {
         match self {
-            File::A => 0,
-            File::B => 1,
-            File::C => 2,
-            File::D => 3,
-            File::E => 4,
-            File::F => 5,
-            File::G => 6,
-            File::H => 7,
+            Self::A => 0,
+            Self::B => 1,
+            Self::C => 2,
+            Self::D => 3,
+            Self::E => 4,
+            Self::F => 5,
+            Self::G => 6,
+            Self::H => 7,
         }
     }
 
-    pub fn _as_str(&self) -> &'static str {
+    pub const fn _as_str(self) -> &'static str {
         match self {
-            File::A => "A",
-            File::B => "B",
-            File::C => "C",
-            File::D => "D",
-            File::E => "E",
-            File::F => "F",
-            File::G => "G",
-            File::H => "H",
+            Self::A => "A",
+            Self::B => "B",
+            Self::C => "C",
+            Self::D => "D",
+            Self::E => "E",
+            Self::F => "F",
+            Self::G => "G",
+            Self::H => "H",
         }
     }
 
-    pub fn _from_str_slice(s: &str) -> File {
+    pub fn _from_str_slice(s: &str) -> Self {
         let str = s.to_uppercase();
         let file = &str[..];
         match file {
-            "A" => File::A,
-            "B" => File::B,
-            "C" => File::C,
-            "D" => File::D,
-            "E" => File::E,
-            "F" => File::F,
-            "G" => File::G,
-            "H" => File::H,
+            "A" => Self::A,
+            "B" => Self::B,
+            "C" => Self::C,
+            "D" => Self::D,
+            "E" => Self::E,
+            "F" => Self::F,
+            "G" => Self::G,
+            "H" => Self::H,
             _ => panic!("Invalid file_str"),
         }
     }
 
-    pub fn get_files() -> [File; 8] {
+    pub const fn get_files() -> [Self; 8] {
         [
-            File::A,
-            File::B,
-            File::C,
-            File::D,
-            File::E,
-            File::F,
-            File::G,
-            File::H,
+            Self::A,
+            Self::B,
+            Self::C,
+            Self::D,
+            Self::E,
+            Self::F,
+            Self::G,
+            Self::H,
         ]
     }
 }
 
-impl From<u8> for File {
-    fn from(i: u8) -> File {
+impl TryFrom<u8> for File {
+    type Error = ();
+
+    fn try_from(i: u8) -> Result<Self, Self::Error> {
         match i {
-            0 => File::A,
-            1 => File::B,
-            2 => File::C,
-            3 => File::D,
-            4 => File::E,
-            5 => File::F,
-            6 => File::G,
-            7 => File::H,
-            _ => panic!("Invalid file!"),
+            0 => Ok(Self::A),
+            1 => Ok(Self::B),
+            2 => Ok(Self::C),
+            3 => Ok(Self::D),
+            4 => Ok(Self::E),
+            5 => Ok(Self::F),
+            6 => Ok(Self::G),
+            7 => Ok(Self::H),
+            _ => Err(()),
         }
     }
 }
 
-impl From<&str> for File {
-    fn from(s: &str) -> File {
+impl TryFrom<&str> for File {
+    type Error = ();
+
+    fn try_from(s: &str) -> Result<Self, Self::Error> {
         let str = s.to_uppercase();
         let file = &str[..];
         match file {
-            "A" => File::A,
-            "B" => File::B,
-            "C" => File::C,
-            "D" => File::D,
-            "E" => File::E,
-            "F" => File::F,
-            "G" => File::G,
-            "H" => File::H,
+            "A" => Ok(Self::A),
+            "B" => Ok(Self::B),
+            "C" => Ok(Self::C),
+            "D" => Ok(Self::D),
+            "E" => Ok(Self::E),
+            "F" => Ok(Self::F),
+            "G" => Ok(Self::G),
+            "H" => Ok(Self::H),
             _ => panic!("Invalid file_str"),
         }
     }

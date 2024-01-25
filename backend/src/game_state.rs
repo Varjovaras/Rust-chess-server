@@ -6,7 +6,7 @@ use crate::{
     piece::Piece,
 };
 
-#[derive(Debug, PartialEq, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
 pub enum GameState {
     WhiteVictory,
     BlackVictory,
@@ -25,7 +25,7 @@ pub fn insufficient_material(chess: &Chess) -> bool {
 
     matches!(
         (white_knights, white_bishops, black_knights, black_bishops),
-        (0, 1, 1, 0) | (1, 0, 0, 1) | (2, 0, 0, 0) | (0, 0, 2, 0) | (1, 0, 0, 0) | (0, 0, 1, 0)
+        (0, 1 | 0, 1, 0) | (1, 0, 0, 1 | 0) | (2, 0, 0, 0) | (0, 0, 2, 0)
     )
 }
 

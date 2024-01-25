@@ -4,10 +4,10 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-pub mod black_pawn;
-pub mod white_pawn;
+pub mod black;
+pub mod white;
 
-pub fn promote(start_sq: &Square, end_sq: &Square, chess: &mut Chess) -> Option<Piece> {
+pub fn promote(start_sq: Square, end_sq: Square, chess: &Chess) -> Option<Piece> {
     let promoted_piece_color = match start_sq.piece {
         Piece::Pawn(PieceColor::White) => PieceColor::White,
         Piece::Pawn(PieceColor::Black) => PieceColor::Black,
