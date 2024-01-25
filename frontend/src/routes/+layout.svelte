@@ -3,12 +3,12 @@
 </script>
 
 <svelte:head>
-	<title>Chess</title>
+	<title>Chess App</title>
 </svelte:head>
 
 <div class="flex min-h-screen flex-col items-center justify-center bg-gray-900">
 	<h1
-		class=" mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center"
+		class=" mb-4 mt-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white text-center"
 	>
 		Chess app
 	</h1>
