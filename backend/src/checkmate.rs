@@ -4,7 +4,7 @@ use crate::{
         get_squares_with_black_pieces, get_squares_with_white_pieces, rank::Rank, square::Square,
     },
     game_state::GameState,
-    make_move::king_is_not_in_check_after_move,
+    make_chess_move::king_is_not_in_check_after_move,
     moves::{bishop::BISHOP_MOVES, knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
@@ -69,7 +69,7 @@ pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinat
     possible_moves
 }
 
-fn pawn_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn pawn_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     let file = sq.file as usize;
     let rank = sq.rank as usize;
     let mut possible_moves = Vec::new();
@@ -108,7 +108,7 @@ fn pawn_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     possible_moves
 }
 
-fn knight_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn knight_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     KNIGHT_MOVES
         .iter()
         .filter_map(|knight_move| {
@@ -127,7 +127,7 @@ fn knight_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
-fn bishop_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn bishop_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     BISHOP_MOVES
         .iter()
         .flat_map(|bishop_move| {
@@ -148,7 +148,7 @@ fn bishop_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
-fn rook_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn rook_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     ROOK_MOVES
         .iter()
         .flat_map(|rook_move| {
@@ -169,7 +169,7 @@ fn rook_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
-fn king_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn king_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     let king_moves: [(i8, i8); 8] = [
         (1, 1),
         (1, 0),

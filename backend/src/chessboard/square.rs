@@ -1,6 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-use crate::piece::{Piece, PieceColor};
+use crate::{
+    checkmate::{
+        bishop_possible_moves, king_possible_moves, knight_possible_moves, pawn_possible_moves,
+        rook_possible_moves, MoveFromCoordinates,
+    },
+    chess::Chess,
+    piece::{Piece, PieceColor},
+};
 
 use super::{file::File, rank::Rank};
 
@@ -111,4 +118,37 @@ impl Square {
             },
         }
     }
+
+    pub fn _possible_legal_moves(self, chess: &Chess, start_sq: Self) -> Vec<MoveFromCoordinates> {
+        let mut moves = vec![];
+        match self.piece {
+            Piece::None => {}
+            Piece::Pawn(_) => moves = pawn_possible_moves(start_sq),
+            Piece::Knight(_) => moves = knight_possible_moves(start_sq),
+            Piece::Bishop(_) => moves = bishop_possible_moves(start_sq),
+            Piece::Rook(_) => moves = rook_possible_moves(start_sq),
+            Piece::Queen(_) => {
+                moves = {
+                    moves = bishop_possible_moves(start_sq);
+                    moves.append(&mut rook_possible_moves(start_sq));
+                    moves
+                }
+            }
+            Piece::King(_) => moves = king_possible_moves(start_sq),
+        }
+
+        moves
+            .iter()
+            .filter(|possible_move| {
+                let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
+                let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
+                check_if_move_is_legal(chess, start_sq, end_sq)
+            })
+            .copied()
+            .collect::<Vec<MoveFromCoordinates>>()
+    }
+}
+
+const fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_square: Square) -> bool {
+    true
 }

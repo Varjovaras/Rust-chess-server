@@ -2,7 +2,7 @@ use crate::{
     castling::Castling,
     chessboard::{self, file::File, rank::Rank, square::Square, starting_position, ChessBoard},
     game_state::GameState,
-    make_move::make_move,
+    make_chess_move::make_chess_move,
     piece::PieceColor,
     player::Player,
 };
@@ -67,7 +67,7 @@ impl Chess {
     }
 
     pub fn make_move(&mut self, start_sq: Square, end_sq: Square) {
-        make_move(self, start_sq, end_sq);
+        make_chess_move(self, start_sq, end_sq);
     }
 
     pub fn starting_position(&mut self) {

@@ -4,7 +4,7 @@ mod checkmate;
 mod chess;
 mod chessboard;
 mod game_state;
-mod make_move;
+mod make_chess_move;
 mod moves;
 mod piece;
 mod player;

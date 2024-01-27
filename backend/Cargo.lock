@@ -476,9 +476,9 @@ dependencies = [
  "semver",
  "serde",
  "serde_json",
- "shuttle-common 0.32.0",
- "shuttle-proto 0.32.0",
- "shuttle-service 0.32.0",
+ "shuttle-common",
+ "shuttle-proto",
+ "shuttle-service",
  "strum 0.25.0",
  "tar",
  "tempfile",
@@ -2331,15 +2331,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "itertools"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "25db6b064527c5d482d0423354fcd07a89a2dfe07b67892e62411946db7f07b0"
-dependencies = [
- "either",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3660,9 +3651,9 @@ dependencies = [
  "serde",
  "serde_json",
  "shuttle-codegen",
- "shuttle-common 0.35.0",
- "shuttle-proto 0.35.0",
- "shuttle-service 0.35.0",
+ "shuttle-common",
+ "shuttle-proto",
+ "shuttle-service",
  "strfmt",
  "thiserror",
  "tokio",
@@ -3691,20 +3682,6 @@ dependencies = [
  "toml",
  "tower",
  "tracing",
-]
-
-[[package]]
-name = "shuttle-service"
-version = "0.35.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a83831eaa185d65300efc0e3bf41e8b5a80bc2dfd2d26228cf20124770192e01"
-dependencies = [
- "anyhow",
- "async-trait",
- "serde",
- "shuttle-common 0.35.0",
- "strfmt",
- "thiserror",
 ]
 
 [[package]]
@@ -4349,8 +4326,8 @@ checksum = "c67ac25c5407e7b961fafc6f7e9aa5958fd297aada2d20fa2ae1737357e55596"
 dependencies = [
  "js-sys",
  "once_cell",
- "opentelemetry 0.20.0",
- "opentelemetry_sdk 0.20.0",
+ "opentelemetry",
+ "opentelemetry_sdk",
  "smallvec",
  "tracing",
  "tracing-core",
