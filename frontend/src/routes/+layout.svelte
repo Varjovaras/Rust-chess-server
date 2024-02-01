@@ -14,7 +14,7 @@
 	</h1>
 	<slot />
 	<footer class="mt-5">
-		<div class="flex items-center text-gray-500 mt-2">
+		<div class="flex items-center text-gray-500 mt-2 pb-2">
 			<a href="https://github.com/varjovaras" target="_blank" rel="noopener noreferrer" class="">
 				<img src="/github-mark.png" alt="GitHub" class="w-8 h-8 mr-2" />
 			</a>
