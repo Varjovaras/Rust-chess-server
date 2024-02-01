@@ -60,7 +60,9 @@
 </script>
 
 <div class="text-cyan-50 text-center text-lg font-semibold">
-	<p class="mb-2">Move by clicking on a piece and then on the square you want to move it to.</p>
+	<p class="mb-2 px-2">
+		Move by clicking on a piece and then on the square you want to move it to.
+	</p>
 	<p>You can also drag and drop pieces.</p>
 </div>
 <div class="mt-8 bg-red-300">
@@ -80,7 +82,7 @@
 </button>
 <div class="text-cyan-50 text-left ml-2">
 	<h2 class="font-semibold mb-2 text-center">Not yet implemented features:</h2>
-	<div class="text-sm px-4">
+	<div class=" px-4">
 		<p>
 			Improving performance by passing all possible moves for the turn so move doesn't have to be
 			validated on the backend before updating frontend.
