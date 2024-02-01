@@ -1,10 +1,11 @@
 <script lang="ts">
+	import { startingPosition } from '$lib/startingPosition';
 	import Chessboard from './chessboard.svelte';
 	import { schema, type Chess, type Square } from './types';
 	export let data;
 	let fromSquare = '';
 	let toSquare = '';
-	let chess = data.post;
+	let chess = startingPosition;
 	let apiUrl = data.url;
 
 	const handleClick = (sq: Square) => {

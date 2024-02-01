@@ -1,6 +1,5 @@
 import { schema } from './types';
 import { env } from '$env/dynamic/public';
-import { startingPosition } from '$lib/startingPosition';
 import { error } from '@sveltejs/kit';
 
 export const load = async ({ fetch }) => {
@@ -12,13 +11,11 @@ export const load = async ({ fetch }) => {
 	}
 
 	try {
-		const response = await fetch(apiUrl);
+		const response = await fetch(`${apiUrl}/api/chess`);
 		if (!response.ok) {
 			throw new Error('Failed to fetch chess data');
 		}
-		const validatedChess = schema.parse(startingPosition);
-
-		return { post: validatedChess, url: apiUrl };
+		return { url: apiUrl };
 	} catch (e) {
 		return error(500, { message: 'Backend not found' });
 	}

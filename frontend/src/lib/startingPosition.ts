@@ -1,4 +1,6 @@
-export const startingPosition = {
+import type { Chess } from '../routes/types';
+
+export const startingPosition: Chess = {
 	board: [
 		[
 			{ file: 'A', rank: 0, color: 'Black', piece: { Rook: 'White' } },
