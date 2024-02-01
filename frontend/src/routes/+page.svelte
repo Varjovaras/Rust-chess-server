@@ -78,13 +78,27 @@
 >
 	Reset board
 </button>
-<div class="text-cyan-50 text-center text-lg font-semibold">
-	<h2>Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on the frontend</h2>
-	<h2 class="">Not yet implemented features:</h2>
-	<div>
-		<p>Improving performance by</p>
+<div class="text-cyan-50 text-left ml-2">
+	<h2 class="font-semibold mb-2 text-center">Not yet implemented features:</h2>
+	<div class="text-sm px-4">
+		<p>
+			Improving performance by passing all possible moves for the turn so move doesn't have to be
+			validated on the backend before updating frontend.
+		</p>
+		<p class="mt-2">
+			Currently the backend validates the move and returns the updated chess object. Lag while
+			making a move is caused by the API call
+		</p>
+		<p class="mt-4">
+			Implementing a backend that can play chess against the user. This will be done by using a
+			stockfish engine.
+		</p>
+		<p class="mt-4">Implementing playing other players via websocket</p>
 	</div>
 </div>
+<h3 class="font-semibold text-cyan-200 mt-4 text-center">
+	Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on the frontend
+</h3>
 <!-- <form class="grid grid-cols-2 gap-4 mt-8">
 		<label class="col-span-1 bg-red-300">''
 			<span class="block">Move from:</span>
