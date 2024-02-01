@@ -142,13 +142,13 @@ impl Square {
             .filter(|possible_move| {
                 let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
                 let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
-                check_if_move_is_legal(chess, start_sq, end_sq)
+                _check_if_move_is_legal(chess, start_sq, end_sq)
             })
             .copied()
             .collect::<Vec<MoveFromCoordinates>>()
     }
 }
 
-const fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_square: Square) -> bool {
+const fn _check_if_move_is_legal(_chess: &Chess, _start_sq: Square, _end_square: Square) -> bool {
     true
 }
