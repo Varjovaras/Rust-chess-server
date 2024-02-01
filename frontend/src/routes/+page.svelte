@@ -87,15 +87,15 @@
 			Improving performance by passing all possible moves for the turn so move doesn't have to be
 			validated on the backend before updating frontend.
 		</p>
-		<p class="mt-2">
+		<p class="mt-2 text-sm">
 			Currently the backend validates the move and returns the updated chess object. Lag while
 			making a move is caused by the API call
 		</p>
-		<p class="mt-4">
-			Implementing a backend that can play chess against the user. This will be done by using a
-			stockfish engine.
+		<p class="mt-2">
+			Implementing a backend that can play chess against the user. This will probably be done by
+			using a stockfish engine.
 		</p>
-		<p class="mt-4">Implementing playing other players via websocket</p>
+		<p class="mt-2">Implementing playing other players via websocket</p>
 	</div>
 </div>
 <h3 class="font-semibold text-cyan-200 mt-4 text-center">
