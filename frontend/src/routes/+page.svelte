@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { startingPosition } from '$lib/startingPosition';
 	import Chessboard from './chessboard.svelte';
-	import { schema, type Chess, type Square } from './types';
+	import { schema, type Chess, type Square } from '../lib/types';
 	export let data;
 	let fromSquare = '';
 	let toSquare = '';
@@ -79,7 +79,11 @@
 	Reset board
 </button>
 <div class="text-cyan-50 text-center text-lg font-semibold">
+	<h2>Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on the frontend</h2>
 	<h2 class="">Not yet implemented features:</h2>
+	<div>
+		<p>Improving performance by</p>
+	</div>
 </div>
 <!-- <form class="grid grid-cols-2 gap-4 mt-8">
 		<label class="col-span-1 bg-red-300">''

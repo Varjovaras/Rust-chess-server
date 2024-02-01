@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Piece, Square } from './types';
+	import type { Piece, Square } from '../lib/types';
 	export let sq: Square;
 
 	const pieceSwitch = (piece: Piece | 'None') => {

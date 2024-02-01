@@ -1,4 +1,4 @@
-import type { Chess } from '../routes/types';
+import type { Chess } from './types';
 
 export const startingPosition: Chess = {
 	board: [
@@ -86,10 +86,14 @@ export const startingPosition: Chess = {
 	turn_number: 0,
 	latest_move: null,
 	castling: {
-		white_king_side_castling: true,
-		white_queen_side_castling: true,
-		black_king_side_castling: true,
-		black_queen_side_castling: true
+		white: {
+			king: true,
+			queen: true
+		},
+		black: {
+			king: true,
+			queen: true
+		}
 	},
 	white_player: { color: 'White', in_check: false, victory: false },
 	black_player: { color: 'Black', in_check: false, victory: false },

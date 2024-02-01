@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Square from './square.svelte';
-	import type { Chess, ChessBoard, Square as SquareType } from './types';
+	import type { Chess, ChessBoard, Square as SquareType } from '../lib/types';
 	export let chess: Chess;
 	export let handleClick: (sq: SquareType) => void;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
