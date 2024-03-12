@@ -2,11 +2,11 @@
 	import { startingPosition } from '$lib/startingPosition';
 	import Chessboard from './chessboard.svelte';
 	import { schema, type Chess, type Square } from '../lib/types';
-	export let data;
+	export let data: { url: string };
 	let fromSquare = '';
 	let toSquare = '';
 	let chess = startingPosition;
-	let apiUrl = data.url;
+	const apiUrl = data.url;
 
 	const handleClick = (sq: Square) => {
 		if (fromSquare === '' && sq.piece === 'None') {

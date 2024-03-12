@@ -7,27 +7,27 @@
 		switch (true) {
 			case piece.Pawn && piece.Pawn !== undefined:
 				if (piece.Pawn === 'White') return '/pieces/white_pawn.svg';
-				else return `/pieces/black_pawn.svg`;
+				return '/pieces/black_pawn.svg';
 
 			case piece.Rook !== undefined:
 				if (piece.Rook === 'White') return '/pieces/white_rook.svg';
-				else return `/pieces/black_rook.svg`;
+				return '/pieces/black_rook.svg';
 
 			case piece.Knight !== undefined:
 				if (piece.Knight === 'White') return '/pieces/white_knight.svg';
-				else return `/pieces/black_knight.svg`;
+				return '/pieces/black_knight.svg';
 
 			case piece.Bishop !== undefined:
 				if (piece.Bishop === 'White') return '/pieces/white_bishop.svg';
-				else return `/pieces/black_bishop.svg`;
+				return '/pieces/black_bishop.svg';
 
 			case piece.Queen !== undefined:
 				if (piece.Queen === 'White') return '/pieces/white_queen.svg';
-				else return `/pieces/black_queen.svg`;
+				return '/pieces/black_queen.svg';
 
 			case piece.King !== undefined:
 				if (piece.King === 'White') return '/pieces/white_king.svg';
-				else return `/pieces/black_king.svg`;
+				return '/pieces/black_king.svg';
 			default:
 				return '';
 		}

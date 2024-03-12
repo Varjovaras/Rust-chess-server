@@ -6,12 +6,10 @@
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
 	let startSq = '';
 
-	$: boardToFront = handleBoardToFront(chess.board);
-
 	const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
-		let boardToFront: ChessBoard = [[]];
+		const boardToFront: ChessBoard = [[]];
 		for (let i = 7; i >= 0; i--) {
-			let arr = [];
+			const arr = [];
 			for (let j = 7; j >= 0; j--) {
 				arr.push(chessboard[j][i]);
 			}
@@ -19,6 +17,9 @@
 		}
 		return boardToFront;
 	};
+
+	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
+	$: boardToFront = handleBoardToFront(chess.board);
 
 	const handleDragStart = (sq: SquareType) => {
 		console.log('Drag started:', sq);

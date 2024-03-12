@@ -1,4 +1,3 @@
-import { schema } from '../lib/types';
 import { env } from '$env/dynamic/public';
 import { error } from '@sveltejs/kit';
 
