@@ -3,4 +3,4 @@
 	console.log($page.error);
 </script>
 
-<h1 class=" text-indigo-50">{$page.status}: {$page.error?.message}</h1>
+<h1 class="text-indigo-50">{$page.status}: {$page.error?.message}</h1>
