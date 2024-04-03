@@ -1,7 +1,6 @@
 use core::panic;
 
 use serde::{Deserialize, Serialize};
-use std::convert::TryFrom;
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq, Default, PartialOrd, Serialize, Deserialize)]
 pub enum File {

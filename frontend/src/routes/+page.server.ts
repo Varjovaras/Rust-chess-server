@@ -9,6 +9,7 @@ export const load = async ({ fetch }) => {
 		apiUrl = env.PUBLIC_PROD_URL;
 	}
 
+	//this is to check if backend is online
 	try {
 		const response = await fetch(`${apiUrl}/api/chess`);
 		if (!response.ok) {

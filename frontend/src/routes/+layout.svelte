@@ -12,6 +12,9 @@
 	>
 		Chess app
 	</h1>
+	<h3 class="font-semibold text-cyan-200 my-4 text-center">
+		Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on the frontend
+	</h3>
 	<slot />
 	<footer class="mt-5">
 		<div class="flex items-center text-gray-500 mt-2 pb-2">

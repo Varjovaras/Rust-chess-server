@@ -49,9 +49,7 @@
 	const handleReset = async () => {
 		try {
 			console.log('Resetting board');
-			const response = await fetch(`${apiUrl}/api/chess`);
-			const newChess = await response.json();
-			const validatedChess = schema.parse(newChess);
+			const validatedChess = schema.parse(startingPosition);
 			chess = validatedChess;
 		} catch (error) {
 			console.error(error);
@@ -59,7 +57,7 @@
 	};
 </script>
 
-<div class="text-cyan-50 text-center text-lg font-semibold">
+<div class="text-cyan-50 text-center font-semibold">
 	<p class="mb-2 px-2">
 		Move by clicking on a piece and then on the square you want to move it to.
 	</p>
@@ -80,27 +78,26 @@
 >
 	Reset board
 </button>
-<div class="text-cyan-50 text-left ml-2">
+<div class="text-cyan-50 ml-2">
 	<h2 class="font-semibold mb-2 text-center">Not yet implemented features:</h2>
-	<div class=" px-4">
-		<p>
+	<ul class="px-4 text-center text-sm">
+		<li>
 			Improving performance by passing all possible moves for the turn so move doesn't have to be
 			validated on the backend before updating frontend.
-		</p>
-		<p class="mt-2 text-sm">
+		</li>
+		<li class="mt-2">
 			Currently the backend validates the move and returns the updated chess object. Lag while
-			making a move is caused by the API call
-		</p>
-		<p class="mt-2">
+			making a move is caused by the API call to external backend
+		</li>
+		<li class="mt-2">
 			Implementing a backend that can play chess against the user. This will probably be done by
 			using a stockfish engine.
-		</p>
-		<p class="mt-2">Implementing playing other players via websocket</p>
-	</div>
+		</li>
+		<li class="mt-2">Implementing playing other players via websocket</li>
+		<li class="mt-2">Drag and drop on mobile without scrolling</li>
+	</ul>
 </div>
-<h3 class="font-semibold text-cyan-200 mt-4 text-center">
-	Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on the frontend
-</h3>
+
 <!-- <form class="grid grid-cols-2 gap-4 mt-8">
 		<label class="col-span-1 bg-red-300">''
 			<span class="block">Move from:</span>

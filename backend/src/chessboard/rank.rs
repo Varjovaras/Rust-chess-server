@@ -1,5 +1,4 @@
 use serde_repr::{Deserialize_repr, Serialize_repr};
-use std::convert::TryFrom;
 
 #[derive(
     Copy, Clone, Debug, PartialEq, Eq, Default, PartialOrd, Serialize_repr, Deserialize_repr,
