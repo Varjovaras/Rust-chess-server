@@ -80,10 +80,11 @@
 </button>
 <div class="text-cyan-50 ml-2">
 	<h2 class="font-semibold mb-2 text-center">Not yet implemented features:</h2>
-	<ul class="px-4 text-center text-sm">
+	<ul class="px-4 text-left text-sm">
 		<li>
 			Improving performance by passing all possible moves for the turn so move doesn't have to be
 			validated on the backend before updating frontend.
+			<p class="text-xs">Also allows showing possible moves for each piece when hovered</p>
 		</li>
 		<li class="mt-2">
 			Currently the backend validates the move and returns the updated chess object. Lag while
