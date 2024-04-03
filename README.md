@@ -19,6 +19,8 @@ https://tailwindcss.com
 
 https://www.typescriptlang.org
 
-### frontend deployed with vercel
+### Frontend deployed with vercel
 
 https://vercel.com
+
+https://chess-in-rust.vercel.app
