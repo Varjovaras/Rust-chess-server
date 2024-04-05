@@ -129,18 +129,18 @@ impl Square {
         let mut moves = vec![];
         match self.piece {
             Piece::None => {}
-            Piece::Pawn(_) => moves = pawn_possible_moves(self.clone()),
-            Piece::Knight(_) => moves = knight_possible_moves(self.clone()),
-            Piece::Bishop(_) => moves = bishop_possible_moves(self.clone()),
-            Piece::Rook(_) => moves = rook_possible_moves(self.clone()),
+            Piece::Pawn(_) => moves = pawn_possible_moves(self),
+            Piece::Knight(_) => moves = knight_possible_moves(self),
+            Piece::Bishop(_) => moves = bishop_possible_moves(self),
+            Piece::Rook(_) => moves = rook_possible_moves(self),
             Piece::Queen(_) => {
                 moves = {
-                    moves = bishop_possible_moves(self.clone());
-                    moves.append(&mut rook_possible_moves(self.clone()));
+                    moves = bishop_possible_moves(self);
+                    moves.append(&mut rook_possible_moves(self));
                     moves
                 }
             }
-            Piece::King(_) => moves = king_possible_moves(self.clone()),
+            Piece::King(_) => moves = king_possible_moves(self),
         }
 
         moves
@@ -156,17 +156,17 @@ impl Square {
 }
 
 fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
-    let mut temp_board = chess.board;
+    let mut temp_board = chess.board.clone();
     if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
         return false;
     }
 
-    if !start_sq.piece.piece_move(start_sq, end_sq, chess) {
+    if !start_sq.piece.piece_move(&start_sq, &end_sq, chess) {
         return false;
     };
 
-    if move_is_white_en_passant(start_sq, end_sq, chess)
-        || move_is_black_en_passant(start_sq, end_sq, chess)
+    if move_is_white_en_passant(&start_sq, &end_sq, chess)
+        || move_is_black_en_passant(&start_sq, &end_sq, chess)
     {
         temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
     }

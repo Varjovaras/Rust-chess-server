@@ -70,7 +70,7 @@ pub fn move_is_en_passant(
         && !end_sq.has_piece()
 }
 
-pub fn move_is_white_en_passant(start_sq: Square, end_sq: Square, chess: &Chess) -> bool {
+pub fn move_is_white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     move_is_en_passant(
         start_sq,
         end_sq,
@@ -82,7 +82,7 @@ pub fn move_is_white_en_passant(start_sq: Square, end_sq: Square, chess: &Chess)
     )
 }
 
-pub fn move_is_black_en_passant(start_sq: Square, end_sq: Square, chess: &Chess) -> bool {
+pub fn move_is_black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     move_is_en_passant(
         start_sq,
         end_sq,

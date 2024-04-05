@@ -2,6 +2,8 @@ pub mod file;
 pub mod rank;
 pub mod square;
 
+use std::array::from_fn;
+
 use crate::piece::{
     Piece::King,
     Piece::{self},
@@ -17,30 +19,49 @@ use self::{
 
 pub type ChessBoard = [[Square; 8]; 8];
 
+// pub fn new_board() -> ChessBoard {
+//     let mut board: ChessBoard = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
+//     let mut color = SquareColor::Black; //starting color of the bottom left corner
+
+//     //initialize empty row
+//     let default_row = [Square::default(); 8];
+//     let files = File::get_files();
+//     let ranks = Rank::get_ranks();
+
+//     for file in files {
+//         let mut row = default_row;
+//         //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
+//         for rank in ranks {
+//             let sq = Square::new(file, rank, color, Piece::default());
+//             row[rank as usize] = sq;
+//             color = color_changer(color); //every other square is black or white
+//         }
+//         board[file as usize] = row;
+//         //when row changes, do additional color change
+//         color = color_changer(color);
+//     }
+//     board
+// }
+
 pub fn new_board() -> ChessBoard {
-    let mut board: ChessBoard = [[Square::default(); 8]; 8]; //initialize empty 8*8 board
     let mut color = SquareColor::Black; //starting color of the bottom left corner
 
-    //initialize empty row
-    let default_row = [Square::default(); 8];
     let files = File::get_files();
     let ranks = Rank::get_ranks();
 
-    for file in files {
-        let mut row = default_row;
-        //initialize squares to a row, for example A1, A2, A3, A4, A5, A6, A7, A8
-        for rank in ranks {
-            let sq = Square::new(file, rank, color, Piece::default());
-            row[rank as usize] = sq;
-            color = color_changer(color); //every other square is black or white
-        }
-        board[file as usize] = row;
-        //when row changes, do additional color change
-        color = color_changer(color);
-    }
+    let board: ChessBoard = from_fn(|file| {
+        let mut rank_color = color;
+        let rank_array = from_fn(|rank| {
+            let sq = Square::new(files[file], ranks[rank], rank_color, Piece::default());
+            rank_color = color_changer(rank_color); //every other square is black or white
+            sq
+        });
+        color = color_changer(color); // change starting color for each rank
+        rank_array
+    });
+
     board
 }
-
 const fn color_changer(color: SquareColor) -> SquareColor {
     //for initializing board
     match color {

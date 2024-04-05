@@ -57,7 +57,7 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     if start_sq.piece == Piece::Pawn(PieceColor::White) && end_sq.rank == Rank::Eighth
         || start_sq.piece == Piece::Pawn(PieceColor::Black) && end_sq.rank == Rank::First
     {
-        match promote(start_sq, end_sq, chess) {
+        match promote(*start_sq, *end_sq, chess) {
             Some(Piece::King(_) | Piece::Pawn(_)) | None => return,
             Some(promoted_piece) => {
                 chess.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
@@ -108,7 +108,7 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     update_board(chess, start_sq, end_sq);
 }
 
-fn handle_rook_and_king_move(chess: &mut Chess, start_sq: Square, end_sq: Square) {
+fn handle_rook_and_king_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     //remove castling if king or rook moves
     if move_is_castling(start_sq, end_sq, chess) {
         handle_castling(chess, start_sq, end_sq);
@@ -147,7 +147,7 @@ fn move_is_allowed(chess: &mut Chess, start_sq_piece_color: PieceColor) -> bool 
     true
 }
 
-fn update_board(chess: &mut Chess, start_sq: Square, end_sq: Square) {
+fn update_board(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     if end_sq.has_piece()
         || start_sq.piece == Piece::Pawn(PieceColor::White)
         || start_sq.piece == Piece::Pawn(PieceColor::Black)
@@ -191,7 +191,7 @@ fn handle_check_after_move(chess: &mut Chess) {
     }
 }
 
-pub fn king_is_not_in_check_after_move(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
+pub fn king_is_not_in_check_after_move(chess: &Chess, start_sq: &Square, end_sq: &Square) -> bool {
     let mut temp_board = chess.board;
     if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
         return false;
