@@ -1,11 +1,13 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    check::is_king_in_check_state,
     checkmate::{
         bishop_possible_moves, king_possible_moves, knight_possible_moves, pawn_possible_moves,
         rook_possible_moves, MoveFromCoordinates,
     },
     chess::Chess,
+    moves::move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
     piece::{Piece, PieceColor},
 };
 
@@ -27,12 +29,13 @@ impl SquareColor {
     }
 }
 
-#[derive(Copy, Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Square {
     pub file: File,
     pub rank: Rank,
     pub color: SquareColor,
     pub piece: Piece,
+    pub possible_moves: Vec<MoveFromCoordinates>,
 }
 
 impl Square {
@@ -42,6 +45,7 @@ impl Square {
             rank,
             color,
             piece,
+            possible_moves: vec![],
         }
     }
 
@@ -53,6 +57,7 @@ impl Square {
             rank,
             color,
             piece,
+            possible_moves: vec![],
         }
     }
 
@@ -64,26 +69,27 @@ impl Square {
             rank,
             color: SquareColor::default(),
             piece: Piece::default(),
+            possible_moves: vec![],
         }
     }
 
-    pub fn _square_name(self) -> String {
+    pub fn _square_name(&self) -> String {
         self.file._as_str().to_owned() + self.rank._as_str()
     }
 
-    pub const fn _square_color(self) -> SquareColor {
+    pub const fn _square_color(&self) -> SquareColor {
         self.color
     }
 
-    pub fn is_empty(self) -> bool {
+    pub fn is_empty(&self) -> bool {
         self.piece == Piece::default()
     }
 
-    pub fn has_piece(self) -> bool {
+    pub fn has_piece(&self) -> bool {
         self.piece != Piece::default()
     }
 
-    pub const fn _piece_name(self) -> &'static str {
+    pub const fn _piece_name(&self) -> &'static str {
         match self.piece {
             Piece::None => " ",
             Piece::Pawn(_) => match self.piece.color() {
@@ -119,36 +125,53 @@ impl Square {
         }
     }
 
-    pub fn _possible_legal_moves(self, chess: &Chess, start_sq: Self) -> Vec<MoveFromCoordinates> {
+    pub fn possible_legal_moves(&self, chess: &Chess) -> Vec<MoveFromCoordinates> {
         let mut moves = vec![];
         match self.piece {
             Piece::None => {}
-            Piece::Pawn(_) => moves = pawn_possible_moves(start_sq),
-            Piece::Knight(_) => moves = knight_possible_moves(start_sq),
-            Piece::Bishop(_) => moves = bishop_possible_moves(start_sq),
-            Piece::Rook(_) => moves = rook_possible_moves(start_sq),
+            Piece::Pawn(_) => moves = pawn_possible_moves(self.clone()),
+            Piece::Knight(_) => moves = knight_possible_moves(self.clone()),
+            Piece::Bishop(_) => moves = bishop_possible_moves(self.clone()),
+            Piece::Rook(_) => moves = rook_possible_moves(self.clone()),
             Piece::Queen(_) => {
                 moves = {
-                    moves = bishop_possible_moves(start_sq);
-                    moves.append(&mut rook_possible_moves(start_sq));
+                    moves = bishop_possible_moves(self.clone());
+                    moves.append(&mut rook_possible_moves(self.clone()));
                     moves
                 }
             }
-            Piece::King(_) => moves = king_possible_moves(start_sq),
+            Piece::King(_) => moves = king_possible_moves(self.clone()),
         }
 
         moves
             .iter()
             .filter(|possible_move| {
-                let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
-                let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
-                _check_if_move_is_legal(chess, start_sq, end_sq)
+                let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1].clone();
+                let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1].clone();
+                check_if_move_is_legal(chess, start_sq, end_sq)
             })
             .copied()
             .collect::<Vec<MoveFromCoordinates>>()
     }
 }
 
-const fn _check_if_move_is_legal(_chess: &Chess, _start_sq: Square, _end_square: Square) -> bool {
-    true
+fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
+    let mut temp_board = chess.board;
+    if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
+        return false;
+    }
+
+    if !start_sq.piece.piece_move(start_sq, end_sq, chess) {
+        return false;
+    };
+
+    if move_is_white_en_passant(start_sq, end_sq, chess)
+        || move_is_black_en_passant(start_sq, end_sq, chess)
+    {
+        temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
+    }
+
+    temp_board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
+    temp_board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
+    !is_king_in_check_state(&temp_board, start_sq.piece.color())
 }

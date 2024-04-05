@@ -25,9 +25,9 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
     };
 
     let is_checkmate = moves.iter().all(|possible_move| {
-        let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
-        let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
-        !king_is_not_in_check_after_move(&*chess, start_sq, end_sq)
+        let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
+        let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
+        !king_is_not_in_check_after_move(&*chess, *start_sq, *end_sq)
     });
 
     if is_checkmate {
@@ -189,7 +189,6 @@ pub fn king_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
             if (0..=7).contains(&file) && (0..=7).contains(&rank) {
                 Some((
                     (sq.file as usize, sq.rank as usize),
-                    #[allow(clippy::cast_sign_loss)]
                     (file as usize, rank as usize),
                 ))
             } else {

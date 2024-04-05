@@ -101,7 +101,10 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: Square, end_sq: Square) {
     {
         handle_rook_and_king_move(chess, start_sq, end_sq);
     }
-
+    chess.board.iter_mut().for_each(|file| {
+        file.iter()
+            .for_each(|sq| sq.possible_moves = sq.possible_legal_moves(chess));
+    });
     update_board(chess, start_sq, end_sq);
 }
 

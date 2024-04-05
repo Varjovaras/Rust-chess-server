@@ -1,10 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    chess::Chess,
-    chessboard::square::Square,
-    moves::{self},
-};
+use crate::{chess::Chess, chessboard::square::Square, moves};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]
