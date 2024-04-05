@@ -27,7 +27,7 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
     let is_checkmate = moves.iter().all(|possible_move| {
         let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
         let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
-        !king_is_not_in_check_after_move(&*chess, *start_sq, *end_sq)
+        !king_is_not_in_check_after_move(&*chess, start_sq.clone(), end_sq.clone())
     });
 
     if is_checkmate {
@@ -44,7 +44,7 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
 }
 
 pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinates> {
-    let chessboard = chess.board;
+    let chessboard = chess.board.clone();
     let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
     let pieces = match color {
         PieceColor::White => get_squares_with_white_pieces(&chessboard),
@@ -55,21 +55,21 @@ pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinat
     for sq in &pieces {
         match sq.piece {
             Piece::None => {}
-            Piece::Pawn(_) => possible_moves.append(&mut pawn_possible_moves(**sq)),
-            Piece::Knight(_) => possible_moves.append(&mut knight_possible_moves(**sq)),
-            Piece::Bishop(_) => possible_moves.append(&mut bishop_possible_moves(**sq)),
-            Piece::Rook(_) => possible_moves.append(&mut rook_possible_moves(**sq)),
+            Piece::Pawn(_) => possible_moves.append(&mut pawn_possible_moves(sq)),
+            Piece::Knight(_) => possible_moves.append(&mut knight_possible_moves(sq)),
+            Piece::Bishop(_) => possible_moves.append(&mut bishop_possible_moves(sq)),
+            Piece::Rook(_) => possible_moves.append(&mut rook_possible_moves(sq)),
             Piece::Queen(_) => {
-                possible_moves.append(&mut bishop_possible_moves(**sq));
-                possible_moves.append(&mut rook_possible_moves(**sq));
+                possible_moves.append(&mut bishop_possible_moves(sq));
+                possible_moves.append(&mut rook_possible_moves(sq));
             }
-            Piece::King(_) => possible_moves.append(&mut king_possible_moves(**sq)),
+            Piece::King(_) => possible_moves.append(&mut king_possible_moves(sq)),
         }
     }
     possible_moves
 }
 
-pub fn pawn_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     let file = sq.file as usize;
     let rank = sq.rank as usize;
     let mut possible_moves = Vec::new();
@@ -108,7 +108,7 @@ pub fn pawn_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
     possible_moves
 }
 
-pub fn knight_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn knight_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     KNIGHT_MOVES
         .iter()
         .filter_map(|knight_move| {
@@ -127,7 +127,7 @@ pub fn knight_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
-pub fn bishop_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn bishop_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     BISHOP_MOVES
         .iter()
         .flat_map(|bishop_move| {
@@ -148,7 +148,7 @@ pub fn bishop_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
-pub fn rook_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn rook_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     ROOK_MOVES
         .iter()
         .flat_map(|rook_move| {
@@ -169,7 +169,7 @@ pub fn rook_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
-pub fn king_possible_moves(sq: Square) -> Vec<MoveFromCoordinates> {
+pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     let king_moves: [(i8, i8); 8] = [
         (1, 1),
         (1, 0),

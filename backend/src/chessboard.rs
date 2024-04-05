@@ -138,7 +138,7 @@ pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<&Square> {
         .collect()
 }
 
-pub fn get_adjacent_squares(sq: Square, board: &ChessBoard) -> Vec<Square> {
+pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
     let mut adjacent_squares: Vec<Square> = Vec::new();
     let file = sq.file as isize;
     let rank = sq.rank as isize;

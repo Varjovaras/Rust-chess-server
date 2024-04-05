@@ -12,7 +12,7 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-pub fn make_chess_move(chess: &mut Chess, start_sq: Square, end_sq: Square) {
+pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     let moving_piece_color = start_sq.piece.color();
 
     if !move_is_allowed(chess, moving_piece_color) {

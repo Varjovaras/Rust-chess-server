@@ -10,7 +10,7 @@ use crate::{
 
 use super::move_helpers::helpers::{is_diagonal, is_horizontal, is_vertical};
 
-pub fn move_piece(start_sq: Square, end_sq: Square, chess: &Chess) -> bool {
+pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if square_is_bordered_by_other_king(&chess.board, start_sq, end_sq) {
         false
     } else if move_is_castling(start_sq, end_sq, chess) {
@@ -26,7 +26,7 @@ pub fn move_piece(start_sq: Square, end_sq: Square, chess: &Chess) -> bool {
     }
 }
 
-pub fn move_is_castling(start_sq: Square, end_sq: Square, chess: &Chess) -> bool {
+pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if !(start_sq.piece == Piece::King(PieceColor::White))
         && !(start_sq.piece == Piece::King(PieceColor::Black))
     {
@@ -84,7 +84,7 @@ fn not_checked_while_castling(
     } else {
         PieceColor::Black
     };
-    let mut temp_board = *chess_board;
+    let mut temp_board = chess_board.clone();
     temp_board[4][in_between_king_sq_rank].piece = Piece::None;
     temp_board[in_between_king_sq_file][in_between_king_sq_rank].piece = Piece::King(color);
     !is_king_in_check_state(&temp_board, color)
@@ -92,8 +92,8 @@ fn not_checked_while_castling(
 
 fn square_is_bordered_by_other_king(
     chessboard: &ChessBoard,
-    start_sq: Square,
-    end_sq: Square,
+    start_sq: &Square,
+    end_sq: &Square,
 ) -> bool {
     let king_color = start_sq.piece.color();
     let enemy_king_sq = match king_color {

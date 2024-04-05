@@ -66,10 +66,6 @@ impl Chess {
         serde_json::from_str(json_str)
     }
 
-    pub fn make_move(&mut self, start_sq: Square, end_sq: Square) {
-        make_chess_move(self, start_sq, end_sq);
-    }
-
     pub fn starting_position(&mut self) {
         self.board = chessboard::new_board();
         self.board = starting_position();
@@ -81,11 +77,11 @@ impl Chess {
         self.gamestate = GameState::InProgress;
     }
 
-    pub const fn get_square(&self, file: File, rank: Rank) -> Square {
-        self.board[file as usize][rank as usize]
+    pub fn get_square(&self, file: File, rank: Rank) -> Square {
+        self.board[file as usize][rank as usize].clone()
     }
 
-    pub fn get_square_from_str(&mut self, file_str: &str, rank_str: &str) -> &Square {
+    pub fn get_square_from_str(&self, file_str: &str, rank_str: &str) -> &Square {
         let file = File::_from_str_slice(file_str).as_usize();
         let rank = Rank::_from_str(rank_str).as_usize();
         assert!(
@@ -96,7 +92,7 @@ impl Chess {
     }
 
     pub fn _print_board_white(&self) {
-        let mut clone_board = self.board;
+        let mut clone_board = self.board.clone();
         clone_board.reverse();
 
         for i in (0..8).rev() {
@@ -108,7 +104,7 @@ impl Chess {
     }
 
     pub fn _print_board_black(&self) {
-        let mut clone_board = self.board;
+        let mut clone_board = self.board.clone();
         for square_vec in &mut clone_board {
             square_vec.reverse();
         }
@@ -123,17 +119,21 @@ impl Chess {
     pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();
-        let start_sq = *self.get_square_from_str(
-            start_sq_chars[0].to_string().as_str(),
-            start_sq_chars[1].to_string().as_str(),
-        );
+        let start_sq = self
+            .get_square_from_str(
+                start_sq_chars[0].to_string().as_str(),
+                start_sq_chars[1].to_string().as_str(),
+            )
+            .clone();
 
-        let end_sq = *self.get_square_from_str(
-            end_sq_chars[0].to_string().as_str(),
-            end_sq_chars[1].to_string().as_str(),
-        );
+        let end_sq = self
+            .get_square_from_str(
+                end_sq_chars[0].to_string().as_str(),
+                end_sq_chars[1].to_string().as_str(),
+            )
+            .clone();
 
-        self.make_move(start_sq, end_sq);
+        make_chess_move(self, &start_sq, &end_sq);
     }
 
     pub fn _print_moves(self) {
@@ -157,9 +157,9 @@ mod tests {
     fn make_move_works() {
         let mut chess: Chess = Chess::_new();
         chess.starting_position();
-        let start_sq = *chess.get_square_from_str("e", "2");
-        let end_sq = *chess.get_square_from_str("e", "4");
-        chess.make_move(start_sq, end_sq);
+        let start_sq = chess.get_square_from_str("e", "2").clone();
+        let end_sq = chess.get_square_from_str("e", "4").clone();
+        make_chess_move(&mut chess, &start_sq, &end_sq);
 
         assert_eq!(chess.get_square_from_str("e", "2").piece, Piece::None);
         assert_eq!(
@@ -172,9 +172,9 @@ mod tests {
             Some((start_sq, end_sq, PieceColor::White))
         );
 
-        let start_sq = *chess.get_square_from_str("e", "4");
-        let end_sq = *chess.get_square_from_str("e", "5");
-        chess.make_move(start_sq, end_sq);
+        let start_sq = chess.get_square_from_str("e", "4").clone();
+        let end_sq = chess.get_square_from_str("e", "5").clone();
+        make_chess_move(&mut chess, &start_sq, &end_sq);
         assert_eq!(
             chess.get_square_from_str("e", "4").piece,
             Piece::Pawn(PieceColor::White)
@@ -182,9 +182,10 @@ mod tests {
         assert_eq!(chess.get_square_from_str("e", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 1);
 
-        let start_sq = *chess.get_square_from_str("e", "7");
-        let end_sq = *chess.get_square_from_str("e", "5");
-        chess.make_move(start_sq, end_sq);
+        let start_sq = chess.get_square_from_str("e", "7").clone();
+        let end_sq = chess.get_square_from_str("e", "5").clone();
+        make_chess_move(&mut chess, &start_sq, &end_sq);
+
         assert_eq!(
             chess.get_square_from_str("e", "5").piece,
             Piece::Pawn(PieceColor::Black)
@@ -192,9 +193,9 @@ mod tests {
         assert_eq!(chess.get_square_from_str("e", "7").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
 
-        let start_sq = *chess.get_square_from_str("e", "4");
-        let end_sq = *chess.get_square_from_str("d", "5");
-        chess.make_move(start_sq, end_sq);
+        let start_sq = chess.get_square_from_str("e", "4").clone();
+        let end_sq = chess.get_square_from_str("d", "5").clone();
+        make_chess_move(&mut chess, &start_sq, &end_sq);
         assert_eq!(chess.get_square_from_str("d", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
     }
