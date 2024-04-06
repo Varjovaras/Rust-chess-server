@@ -125,7 +125,7 @@ impl Square {
         }
     }
 
-    pub fn possible_legal_moves(&self, chess: &Chess) -> Vec<MoveFromCoordinates> {
+    pub fn _possible_legal_moves(&self, chess: &Chess) -> Vec<MoveFromCoordinates> {
         let mut moves = vec![];
         match self.piece {
             Piece::None => {}
@@ -148,14 +148,14 @@ impl Square {
             .filter(|possible_move| {
                 let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1].clone();
                 let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1].clone();
-                check_if_move_is_legal(chess, start_sq, end_sq)
+                _check_if_move_is_legal(chess, start_sq, end_sq)
             })
             .copied()
             .collect::<Vec<MoveFromCoordinates>>()
     }
 }
 
-fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
+fn _check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
     let mut temp_board = chess.board.clone();
     if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
         return false;

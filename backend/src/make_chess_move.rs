@@ -57,13 +57,14 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     if start_sq.piece == Piece::Pawn(PieceColor::White) && end_sq.rank == Rank::Eighth
         || start_sq.piece == Piece::Pawn(PieceColor::Black) && end_sq.rank == Rank::First
     {
-        match promote(*start_sq, *end_sq, chess) {
+        match promote(start_sq, end_sq, chess) {
             Some(Piece::King(_) | Piece::Pawn(_)) | None => return,
             Some(promoted_piece) => {
                 chess.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
                 chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
                 handle_check_after_move(chess);
-                chess.latest_move = Some((start_sq, end_sq, start_sq.piece.color()));
+                chess.latest_move =
+                    Some((start_sq.clone(), end_sq.clone(), start_sq.piece.color()));
                 chess.turn_number += 1;
                 chess.list_of_moves.push((
                     (start_sq.file, start_sq.rank.as_usize()),
@@ -101,21 +102,21 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     {
         handle_rook_and_king_move(chess, start_sq, end_sq);
     }
-    chess.board.iter_mut().for_each(|file| {
-        file.iter()
-            .for_each(|sq| sq.possible_moves = sq.possible_legal_moves(chess));
-    });
+    // chess.board.iter_mut().for_each(|file| {
+    //     file.iter()
+    //         .for_each(|sq| sq.possible_moves = sq.possible_legal_moves(chess));
+    // });
     update_board(chess, start_sq, end_sq);
 }
 
 fn handle_rook_and_king_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     //remove castling if king or rook moves
     if move_is_castling(start_sq, end_sq, chess) {
-        handle_castling(chess, start_sq, end_sq);
+        handle_castling(chess, start_sq.clone(), end_sq.clone());
         handle_check_after_move(chess);
         return;
     }
-    remove_castling(chess, start_sq);
+    remove_castling(chess, start_sq.clone());
 }
 
 fn move_is_allowed(chess: &mut Chess, start_sq_piece_color: PieceColor) -> bool {
@@ -165,7 +166,7 @@ fn update_board(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     chess.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
     chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
 
-    chess.latest_move = Some((start_sq, end_sq, start_sq.piece.color()));
+    chess.latest_move = Some((start_sq.clone(), end_sq.clone(), start_sq.piece.color()));
     chess.turn_number += 1;
     handle_check_after_move(chess);
     chess.list_of_moves.push((
@@ -192,7 +193,7 @@ fn handle_check_after_move(chess: &mut Chess) {
 }
 
 pub fn king_is_not_in_check_after_move(chess: &Chess, start_sq: &Square, end_sq: &Square) -> bool {
-    let mut temp_board = chess.board;
+    let mut temp_board = chess.board.clone();
     if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
         return false;
     }

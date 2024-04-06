@@ -116,6 +116,10 @@ impl Chess {
         }
     }
 
+    pub fn make_move(&mut self, start_sq: Square, end_sq: Square) {
+        make_chess_move(self, &start_sq, &end_sq);
+    }
+
     pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();

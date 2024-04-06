@@ -16,7 +16,7 @@ pub fn pawn(start_sq: &Square, end_sq: &Square, chess: &Chess, color: PieceColor
     }
 }
 
-pub const fn knight(start_sq: &Square, end_sq: &Square) -> bool {
+pub fn knight(start_sq: &Square, end_sq: &Square) -> bool {
     knight::move_piece(start_sq, end_sq)
 }
 

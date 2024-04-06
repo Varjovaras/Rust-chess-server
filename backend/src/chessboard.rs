@@ -180,7 +180,7 @@ pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
         let new_rank = rank + rank_direction;
         if (0..8).contains(&new_file) && (0..8).contains(&new_rank) {
             #[allow(clippy::cast_sign_loss)]
-            adjacent_squares.push(board[new_file as usize][new_rank as usize]);
+            adjacent_squares.push(board[new_file as usize][new_rank as usize].clone());
         }
     }
 
