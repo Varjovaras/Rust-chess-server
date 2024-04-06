@@ -97,7 +97,7 @@ fn check_by_white_pawn(king_file: i8, king_rank: i8, board: &ChessBoard) -> bool
             && board[king_file as usize - 1][king_rank as usize - 1].piece
                 == Piece::Pawn(PieceColor::White);
         if right_attack || left_attack {
-            println!("in check by white pawn");
+            // println!("in check by white pawn");
         }
         right_attack || left_attack
     } else {
@@ -116,7 +116,7 @@ fn check_by_black_pawn(king_file: i8, king_rank: i8, chess_board: &ChessBoard) -
             && chess_board[king_file as usize + 1][king_rank as usize + 1].piece
                 == Piece::Pawn(PieceColor::Black);
         if right_attack || left_attack {
-            println!("in check by black pawn");
+            // println!("in check by black pawn");
         }
         right_attack || left_attack
     } else {
@@ -143,7 +143,7 @@ fn bishop_or_queen_check(
             let sq = &chess_board[test_file as usize][test_rank as usize];
 
             if sq.has_piece() && is_piece_bishop_or_queen(sq.piece, opponent_color) {
-                println!("in check by {:?}", sq.piece.name());
+                // println!("in check by {:?}", sq.piece.name());
                 return true;
             } else if sq.has_piece() {
                 break;
@@ -173,7 +173,7 @@ fn knight_check(
             #[allow(clippy::cast_sign_loss)]
             let sq = &chess_board[test_file as usize][test_rank as usize];
             if sq.has_piece() && sq.piece == Piece::Knight(opponent_color) {
-                println!("in check by {:?}", sq.piece.name());
+                // println!("in check by {:?}", sq.piece.name());
             }
             sq.has_piece() && sq.piece == Piece::Knight(opponent_color)
         } else {
