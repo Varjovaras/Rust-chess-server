@@ -63,4 +63,4 @@ export type Piece = z.TypeOf<typeof pieceSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;
 export type ListOfMoves = z.TypeOf<typeof listOfMovesSchema>;
 export type GameState = z.TypeOf<typeof gameStateSchema>;
-type Castling = z.TypeOf<typeof castlingSchema>;
+// type Castling = z.TypeOf<typeof castlingSchema>;

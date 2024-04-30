@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { startingPosition } from '$lib/startingPosition';
-	import Chessboard from './chessboard.svelte';
+	import Chessboard from '$lib/chessboard.svelte';
 	import { schema, type Chess, type Square } from '../lib/types';
 	export let data: { url: string };
 	let fromSquare = '';
@@ -21,6 +21,7 @@
 			handleMove(fromSquare, toSquare);
 		}
 	};
+
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);
 		try {
@@ -32,8 +33,9 @@
 			console.error(error);
 		}
 	};
+
 	const fetchMove = async (startSq: string, endSq: string): Promise<Chess> => {
-		const newMove = [startSq, endSq];
+		const newMove: [string, string] = [startSq, endSq];
 		console.log(newMove);
 		const response = await fetch(`${apiUrl}/api/chess`, {
 			method: 'POST',
@@ -46,6 +48,7 @@
 		const validatedChess = schema.parse(data.chess);
 		return validatedChess;
 	};
+
 	const handleReset = async () => {
 		try {
 			console.log('Resetting board');
