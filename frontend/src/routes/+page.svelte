@@ -5,32 +5,15 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-	let fromSquare = '';
-	let toSquare = '';
+
 	let chess = data.data.chess;
 	const apiUrl = data.data.url;
-
-	const handleClick = (sq: Square) => {
-		if (fromSquare === '' && sq.piece === 'None') {
-			return;
-		}
-		if (fromSquare === '') {
-			fromSquare = sq.file.toLowerCase() + (sq.rank + 1);
-			console.log(fromSquare);
-		} else {
-			toSquare = sq.file.toLowerCase() + (sq.rank + 1);
-			console.log(toSquare);
-			handleMove(fromSquare, toSquare);
-		}
-	};
 
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);
 		try {
 			const newChess = await fetchMove(startSq, endSq);
 			chess = newChess;
-			fromSquare = '';
-			toSquare = '';
 		} catch (error) {
 			console.error(error);
 		}
@@ -79,7 +62,7 @@
 		<p>Black won</p>
 	{/if}
 </div>
-<Chessboard {chess} {handleClick} {handleMove} />
+<Chessboard {chess} {handleMove} />
 
 <button
 	on:click={handleReset}

@@ -2,7 +2,7 @@ use crate::{
     check::is_king_in_check_state,
     checkmate,
     chess::Chess,
-    chessboard::{file::File, rank::Rank, square::Square},
+    chessboard::{add_possible_moves_to_squares, file::File, rank::Rank, square::Square},
     game_state::{insufficient_material, GameState},
     moves::{
         king::move_is_castling,
@@ -120,24 +120,6 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     });
     update_board(chess, start_sq, end_sq);
     add_possible_moves_to_squares(chess);
-}
-
-fn add_possible_moves_to_squares(chess: &mut Chess) {
-    let possible_moves: Vec<Vec<_>> = chess
-        .board
-        .iter()
-        .map(|row| {
-            row.iter()
-                .map(|square| square.possible_legal_moves(chess))
-                .collect()
-        })
-        .collect();
-
-    for (i, row) in chess.board.iter_mut().enumerate() {
-        for (j, square) in row.iter_mut().enumerate() {
-            square.possible_moves.clone_from(&possible_moves[i][j]);
-        }
-    }
 }
 
 fn handle_rook_and_king_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {

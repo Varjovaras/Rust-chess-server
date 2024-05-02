@@ -2,9 +2,14 @@
 	import Square from './square.svelte';
 	import type { Chess, ChessBoard, Square as SquareType } from '../lib/types';
 	export let chess: Chess;
-	export let handleClick: (sq: SquareType) => void;
+	// export let handleClick: (sq: SquareType) => void;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
 	let startSq = '';
+	let selectedButton: string | null = null;
+	let fromSquare = '';
+	let toSquare = '';
+	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
+	// biome-ignore lint/correctness/noUnusedLabels: <explanation>
 
 	const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 		const boardToFront: ChessBoard = [[]];
@@ -18,12 +23,34 @@
 		return boardToFront;
 	};
 
+	const handleClick = async (sq: SquareType) => {
+		if (fromSquare === '' && sq.piece === 'None') {
+			selectedButton = null;
+			return;
+		}
+		let file = sq.file.toLowerCase();
+		let rank = sq.rank + 1;
+		if (fromSquare === '') {
+			console.log('?!?!??!?!??!?!?!?!?');
+			fromSquare = file + rank;
+			selectedButton = file + rank;
+		} else if (fromSquare !== '') {
+			toSquare = file + rank;
+			await handleMove(fromSquare, toSquare);
+			fromSquare = '';
+			toSquare = '';
+			selectedButton = null;
+		}
+	};
+
 	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
 	$: boardToFront = handleBoardToFront(chess.board);
 
 	const handleDragStart = (sq: SquareType) => {
-		// console.log('Drag started:', sq);
-		startSq = sq.file.toLowerCase() + (sq.rank + 1);
+		let file = sq.file.toLowerCase();
+		let rank = sq.rank + 1;
+		selectedButton = file + rank;
+		startSq = file + rank;
 	};
 
 	const handleDrop = (event: DragEvent) => {
@@ -31,7 +58,9 @@
 
 		if (targetElement.id !== '[object Object]' && targetElement.id !== '') {
 			handleMove(startSq, targetElement.id);
+			selectedButton = null;
 		}
+		selectedButton = null;
 	};
 
 	// ...
@@ -43,48 +72,56 @@
 			{#each row as sq}
 				{#if chess.white_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'White'}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center sm:h-16 sm:w-16"
+						class:selected={selectedButton ===
+							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1)}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
 				{:else if chess.black_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'Black'}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center sm:h-16 sm:w-16"
+						class:selected={selectedButton ===
+							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1)}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
 				{:else if sq.color === 'White'}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center sm:h-16 sm:w-16"
+						class:selected={selectedButton ===
+							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1)}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
 					</button>
 				{:else}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center hover:bg-cyan-200 hover:text-base focus:bg-teal-500 sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center sm:h-16 sm:w-16"
+						class:selected={selectedButton ===
+							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1)}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
@@ -94,3 +131,9 @@
 		{/each}
 	</div>
 </div>
+
+<style>
+	.selected {
+		background-color: lightskyblue;
+	}
+</style>
