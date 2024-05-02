@@ -1,6 +1,9 @@
 use crate::{
     castling::Castling,
-    chessboard::{self, file::File, rank::Rank, square::Square, starting_position, ChessBoard},
+    chessboard::{
+        self, add_possible_moves_to_squares, file::File, rank::Rank, square::Square,
+        starting_position, ChessBoard,
+    },
     game_state::GameState,
     make_chess_move::make_chess_move,
     piece::PieceColor,
@@ -55,6 +58,7 @@ impl Chess {
             list_of_moves: Vec::new(),
         };
         chess.starting_position();
+        add_possible_moves_to_squares(&mut chess);
         chess
     }
 

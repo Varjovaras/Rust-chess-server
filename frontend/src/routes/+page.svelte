@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { startingPosition } from '$lib/startingPosition';
+	// import { startingPosition } from '$lib/startingPosition';
 	import Chessboard from '$lib/chessboard.svelte';
-	import { schema, type Chess, type Square } from '../lib/types';
-	export let data: { url: string };
+	import { chessSchema, type Chess, type Square } from '../lib/types';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 	let fromSquare = '';
 	let toSquare = '';
-	let chess = startingPosition;
-	const apiUrl = data.url;
+	let chess = data.data.chess;
+	const apiUrl = data.data.url;
 
 	const handleClick = (sq: Square) => {
 		if (fromSquare === '' && sq.piece === 'None') {
@@ -36,7 +38,6 @@
 
 	const fetchMove = async (startSq: string, endSq: string): Promise<Chess> => {
 		const newMove: [string, string] = [startSq, endSq];
-		console.log(newMove);
 		const response = await fetch(`${apiUrl}/api/chess`, {
 			method: 'POST',
 			headers: {
@@ -45,14 +46,16 @@
 			body: JSON.stringify({ list_of_moves: chess.list_of_moves, new_move: newMove })
 		});
 		const data = await response.json();
-		const validatedChess = schema.parse(data.chess);
+		const validatedChess = chessSchema.parse(data.chess);
 		return validatedChess;
 	};
 
 	const handleReset = async () => {
 		try {
 			console.log('Resetting board');
-			const validatedChess = schema.parse(startingPosition);
+			const response = await fetch(`${apiUrl}/api/chess`);
+			const data = await response.json();
+			const validatedChess = chessSchema.parse(data.chess);
 			chess = validatedChess;
 		} catch (error) {
 			console.error(error);

@@ -125,10 +125,10 @@ impl Square {
         }
     }
 
-    pub fn _possible_legal_moves(&self, chess: &Chess) -> Vec<MoveFromCoordinates> {
+    pub fn possible_legal_moves(&self, chess: &Chess) -> Vec<MoveFromCoordinates> {
         let mut moves = vec![];
         match self.piece {
-            Piece::None => {}
+            Piece::None => return moves,
             Piece::Pawn(_) => moves = pawn_possible_moves(self),
             Piece::Knight(_) => moves = knight_possible_moves(self),
             Piece::Bishop(_) => moves = bishop_possible_moves(self),

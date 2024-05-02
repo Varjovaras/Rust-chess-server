@@ -12,6 +12,7 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
+//NEEDS REFACTOR
 pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     let moving_piece_color = start_sq.piece.color();
 
@@ -102,11 +103,41 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     {
         handle_rook_and_king_move(chess, start_sq, end_sq);
     }
-    // chess.board.iter_mut().for_each(|file| {
-    //     file.iter()
-    //         .for_each(|sq| sq.possible_moves = sq.possible_legal_moves(chess));
-    // });
+    let possible_moves: Vec<Vec<_>> = chess
+        .board
+        .iter()
+        .map(|file| {
+            file.iter()
+                .map(|sq| sq.possible_legal_moves(chess))
+                .collect()
+        })
+        .collect();
+
+    chess.board.iter_mut().enumerate().for_each(|(i, file)| {
+        file.iter_mut().enumerate().for_each(|(j, sq)| {
+            sq.possible_moves.clone_from(&possible_moves[i][j]);
+        });
+    });
     update_board(chess, start_sq, end_sq);
+    add_possible_moves_to_squares(chess);
+}
+
+fn add_possible_moves_to_squares(chess: &mut Chess) {
+    let possible_moves: Vec<Vec<_>> = chess
+        .board
+        .iter()
+        .map(|row| {
+            row.iter()
+                .map(|square| square.possible_legal_moves(chess))
+                .collect()
+        })
+        .collect();
+
+    for (i, row) in chess.board.iter_mut().enumerate() {
+        for (j, square) in row.iter_mut().enumerate() {
+            square.possible_moves.clone_from(&possible_moves[i][j]);
+        }
+    }
 }
 
 fn handle_rook_and_king_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {

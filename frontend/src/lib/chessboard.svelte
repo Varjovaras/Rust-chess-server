@@ -22,15 +22,13 @@
 	$: boardToFront = handleBoardToFront(chess.board);
 
 	const handleDragStart = (sq: SquareType) => {
-		console.log('Drag started:', sq);
+		// console.log('Drag started:', sq);
 		startSq = sq.file.toLowerCase() + (sq.rank + 1);
 	};
 
 	const handleDrop = (event: DragEvent) => {
-		console.log('Drop event:', event);
 		const targetElement = event.target as HTMLElement;
-		console.log(targetElement);
-		console.log(targetElement.id);
+
 		if (targetElement.id !== '[object Object]' && targetElement.id !== '') {
 			handleMove(startSq, targetElement.id);
 		}

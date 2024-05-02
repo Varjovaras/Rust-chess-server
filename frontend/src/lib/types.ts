@@ -7,14 +7,20 @@ export const pieceSchema = z.object({
 	Rook: z.string().optional(),
 	Queen: z.string().optional(),
 	King: z.string().optional(),
-	None: z.literal('None').optional()
+	None: z.literal('None').optional(),
 });
 
 export const squareSchema = z.object({
 	file: z.string(),
 	rank: z.number(),
 	color: z.string(),
-	piece: z.union([pieceSchema, z.literal('None')])
+	piece: z.union([pieceSchema, z.literal('None')]),
+	possible_moves: z.array(
+		z.tuple([
+			z.tuple([z.number(), z.number()]),
+			z.tuple([z.number(), z.number()]),
+		])
+	),
 });
 
 export const boardSchema = z.array(z.array(squareSchema));
@@ -22,30 +28,40 @@ export const boardSchema = z.array(z.array(squareSchema));
 export const castlingSchema = z.object({
 	white: z.object({
 		king: z.boolean(),
-		queen: z.boolean()
+		queen: z.boolean(),
 	}),
 	black: z.object({
 		king: z.boolean(),
-		queen: z.boolean()
-	})
+		queen: z.boolean(),
+	}),
 });
 
 export const playerSchema = z.object({
 	color: z.string(),
 	in_check: z.boolean(),
-	victory: z.boolean()
+	victory: z.boolean(),
 });
 
-const latestMoveSchema = z.array(z.union([squareSchema, z.string()])).nullable();
+const latestMoveSchema = z
+	.array(z.union([squareSchema, z.string()]))
+	.nullable();
 
 const fileSchema = z.string().length(1);
 const rankSchema = z.number();
-const moveSchema = z.tuple([z.tuple([fileSchema, rankSchema]), z.tuple([fileSchema, rankSchema])]);
+const moveSchema = z.tuple([
+	z.tuple([fileSchema, rankSchema]),
+	z.tuple([fileSchema, rankSchema]),
+]);
 export const listOfMovesSchema = z.array(moveSchema);
 
-export const gameStateSchema = z.enum(['InProgress', 'WhiteVictory', 'BlackVictory', 'Draw']);
+export const gameStateSchema = z.enum([
+	'InProgress',
+	'WhiteVictory',
+	'BlackVictory',
+	'Draw',
+]);
 
-export const schema = z.object({
+export const chessSchema = z.object({
 	board: boardSchema,
 	turn_number: z.number(),
 	latest_move: latestMoveSchema,
@@ -54,10 +70,10 @@ export const schema = z.object({
 	black_player: playerSchema,
 	gamestate: gameStateSchema,
 	fifty_move_rule: z.number(),
-	list_of_moves: listOfMovesSchema
+	list_of_moves: listOfMovesSchema,
 });
 
-export type Chess = z.TypeOf<typeof schema>;
+export type Chess = z.TypeOf<typeof chessSchema>;
 export type ChessBoard = z.TypeOf<typeof boardSchema>;
 export type Piece = z.TypeOf<typeof pieceSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;

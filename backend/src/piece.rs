@@ -47,17 +47,17 @@ impl Piece {
         }
     }
 
-    pub const fn name(&self) -> &str {
-        match self {
-            Self::None => "no piece",
-            Self::Pawn(_) => "pawn",
-            Self::Knight(_) => "knight",
-            Self::Bishop(_) => "bishop",
-            Self::Rook(_) => "rook",
-            Self::Queen(_) => "queen",
-            Self::King(_) => "king",
-        }
-    }
+    // pub const fn name(&self) -> &str {
+    //     match self {
+    //         Self::None => "no piece",
+    //         Self::Pawn(_) => "pawn",
+    //         Self::Knight(_) => "knight",
+    //         Self::Bishop(_) => "bishop",
+    //         Self::Rook(_) => "rook",
+    //         Self::Queen(_) => "queen",
+    //         Self::King(_) => "king",
+    //     }
+    // }
 
     // pub fn possible_legal_moves(self, chess: &Chess, start_sq: Square) -> Vec<MoveFromCoordinates> {
     //     let mut moves = vec![];

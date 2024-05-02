@@ -54,8 +54,11 @@ async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveR
     let response = MoveResponse { chess };
     (StatusCode::OK, Json(response))
 }
-async fn chess() -> &'static str {
-    ""
+
+async fn chess() -> (StatusCode, Json<MoveResponse>) {
+    let chess = Chess::new_starting_position();
+    let response = MoveResponse { chess };
+    (StatusCode::OK, Json(response))
 }
 
 #[shuttle_runtime::main]
@@ -72,3 +75,12 @@ async fn axum() -> ShuttleAxum {
 
     Ok(router.into())
 }
+
+// fn main() {
+//     let mut chess = Chess::new_starting_position();
+//     chess.make_move_from_str("e2", "e4");
+//     chess._print_board_white();
+//     chess.make_move_from_str("d7", "d5");
+
+//     println!("{:?}", chess.board[4][3]);
+// }

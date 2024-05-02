@@ -8,5 +8,17 @@
 		"rules": {
 			"recommended": true
 		}
-	}
+	},
+	"overrides": [
+		{
+			"include": ["*.svelte"],
+			"linter": {
+				"rules": {
+					"style": {
+						"useConst": "off"
+					}
+				}
+			}
+		}
+	]
 }

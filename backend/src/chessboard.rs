@@ -4,11 +4,12 @@ pub mod square;
 
 use std::array::from_fn;
 
-use crate::piece::{
-    Piece::King,
-    Piece::{self},
-    PieceColor::White,
-    PieceColor::{self, Black},
+use crate::{
+    chess::Chess,
+    piece::{
+        Piece::{self, King},
+        PieceColor::{self, Black, White},
+    },
 };
 
 use self::{
@@ -103,7 +104,6 @@ pub fn starting_position() -> ChessBoard {
             .map(|piece_fn| piece_fn(Black))
             .collect::<Vec<_>>(),
     );
-
     board
 }
 
@@ -185,6 +185,24 @@ pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
     }
 
     adjacent_squares
+}
+
+pub fn add_possible_moves_to_squares(chess: &mut Chess) {
+    let possible_moves: Vec<Vec<_>> = chess
+        .board
+        .iter()
+        .map(|row| {
+            row.iter()
+                .map(|square| square.possible_legal_moves(chess))
+                .collect()
+        })
+        .collect();
+
+    for (i, row) in chess.board.iter_mut().enumerate() {
+        for (j, square) in row.iter_mut().enumerate() {
+            square.possible_moves.clone_from(&possible_moves[i][j]);
+        }
+    }
 }
 
 #[cfg(test)]
