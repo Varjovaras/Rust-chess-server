@@ -8,8 +8,6 @@
 	let selectedButton: string | null = null;
 	let fromSquare = '';
 	let toSquare = '';
-	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
-	// biome-ignore lint/correctness/noUnusedLabels: <explanation>
 
 	const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 		const boardToFront: ChessBoard = [[]];
@@ -31,7 +29,6 @@
 		let file = sq.file.toLowerCase();
 		let rank = sq.rank + 1;
 		if (fromSquare === '') {
-			console.log('?!?!??!?!??!?!?!?!?');
 			fromSquare = file + rank;
 			selectedButton = file + rank;
 		} else if (fromSquare !== '') {
@@ -72,7 +69,7 @@
 			{#each row as sq}
 				{#if chess.white_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'White'}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-800 text-center sm:h-16 sm:w-16 hover:bg-red-900"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
@@ -86,7 +83,7 @@
 					</button>
 				{:else if chess.black_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'Black'}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-900 text-center sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-800 hover:bg-red-900 text-center sm:h-16 sm:w-16"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
@@ -100,7 +97,7 @@
 					</button>
 				{:else if sq.color === 'White'}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center sm:h-16 sm:w-16 hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
@@ -114,7 +111,7 @@
 					</button>
 				{:else}
 					<button
-						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center sm:h-16 sm:w-16"
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center sm:h-16 sm:w-16 hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
@@ -134,6 +131,6 @@
 
 <style>
 	.selected {
-		background-color: lightskyblue;
+		@apply bg-cyan-600;
 	}
 </style>
