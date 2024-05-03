@@ -170,7 +170,7 @@ pub fn rook_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
 }
 
 pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
-    let king_moves: [(i8, i8); 8] = [
+    let king_moves: [(i8, i8); 10] = [
         (1, 1),
         (1, 0),
         (1, -1),
@@ -179,6 +179,8 @@ pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         (-1, 1),
         (-1, 0),
         (-1, -1),
+        (2, 0),
+        (-2, 0),
     ];
 
     king_moves
