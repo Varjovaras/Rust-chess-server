@@ -5,7 +5,6 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-
 	let chess = data.data.chess;
 	const apiUrl = data.data.url;
 

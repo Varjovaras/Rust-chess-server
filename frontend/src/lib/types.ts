@@ -23,6 +23,13 @@ export const squareSchema = z.object({
 	),
 });
 
+export const possibleMoveSchema = z.array(
+	z.tuple([
+		z.tuple([z.number(), z.number()]),
+		z.tuple([z.number(), z.number()]),
+	])
+);
+
 export const boardSchema = z.array(z.array(squareSchema));
 
 export const castlingSchema = z.object({
@@ -79,4 +86,5 @@ export type Piece = z.TypeOf<typeof pieceSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;
 export type ListOfMoves = z.TypeOf<typeof listOfMovesSchema>;
 export type GameState = z.TypeOf<typeof gameStateSchema>;
+export type PossibleMoves = z.TypeOf<typeof possibleMoveSchema>;
 // type Castling = z.TypeOf<typeof castlingSchema>;

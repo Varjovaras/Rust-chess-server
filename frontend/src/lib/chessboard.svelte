@@ -1,13 +1,22 @@
 <script lang="ts">
 	import Square from './square.svelte';
-	import type { Chess, ChessBoard, Square as SquareType } from '../lib/types';
+	import type {
+		Chess,
+		ChessBoard,
+		PossibleMoves,
+		Square as SquareType,
+	} from '../lib/types';
+
 	export let chess: Chess;
-	// export let handleClick: (sq: SquareType) => void;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
+	$: {
+		console.log(chess.board[3][1]);
+	}
 	let startSq = '';
 	let selectedButton: string | null = null;
 	let fromSquare = '';
 	let toSquare = '';
+	let possibleMoves: PossibleMoves = [];
 
 	const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 		const boardToFront: ChessBoard = [[]];
@@ -24,6 +33,7 @@
 	const handleClick = async (sq: SquareType) => {
 		if (fromSquare === '' && sq.piece === 'None') {
 			selectedButton = null;
+			possibleMoves = [];
 			return;
 		}
 		let file = sq.file.toLowerCase();
@@ -31,12 +41,14 @@
 		if (fromSquare === '') {
 			fromSquare = file + rank;
 			selectedButton = file + rank;
+			possibleMoves = sq.possible_moves;
 		} else if (fromSquare !== '') {
 			toSquare = file + rank;
 			await handleMove(fromSquare, toSquare);
 			fromSquare = '';
 			toSquare = '';
 			selectedButton = null;
+			possibleMoves = [];
 		}
 	};
 
@@ -65,8 +77,8 @@
 
 <div class="flex justify-center items-center">
 	<div class="grid grid-cols-8 gap-0">
-		{#each boardToFront as row}
-			{#each row as sq}
+		{#each boardToFront as row, i}
+			{#each row as sq, j}
 				{#if chess.white_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'White'}
 					<button
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-red-800 text-center sm:h-16 sm:w-16 hover:bg-red-900"
@@ -100,6 +112,9 @@
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center sm:h-16 sm:w-16 hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
+						class:possible_move={possibleMoves.some(
+							(move) => move[1][0] === j && move[1][1] === 8 - i
+						)}
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
@@ -114,6 +129,9 @@
 						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center sm:h-16 sm:w-16 hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
+						class:possible_move={possibleMoves.some(
+							(move) => move[1][0] === j && move[1][1] === 8 - i
+						)}
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
@@ -132,5 +150,8 @@
 <style>
 	.selected {
 		@apply bg-cyan-600;
+	}
+	.possible_move {
+		@apply bg-red-900;
 	}
 </style>
