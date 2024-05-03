@@ -77,8 +77,8 @@ pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     match sq.piece.color() {
         PieceColor::White => {
             if rank == 1 {
-                possible_moves.push(((file, rank), (file, Rank::Third as usize)));
-                possible_moves.push(((file, rank), (file, Rank::Fourth as usize)));
+                possible_moves.push(((file, rank), (file, Rank::Third.as_usize())));
+                possible_moves.push(((file, rank), (file, Rank::Fourth.as_usize())));
             } else {
                 possible_moves.push(((file, rank), (file, rank + 1)));
             }
@@ -91,8 +91,8 @@ pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         }
         PieceColor::Black => {
             if rank == 6 {
-                possible_moves.push(((file, rank), (file, Rank::Fifth as usize)));
-                possible_moves.push(((file, rank), (file, Rank::Sixth as usize)));
+                possible_moves.push(((file, rank), (file, Rank::Fifth.as_usize())));
+                possible_moves.push(((file, rank), (file, Rank::Sixth.as_usize())));
             } else {
                 possible_moves.push(((file, rank), (file, rank - 1)));
             }
