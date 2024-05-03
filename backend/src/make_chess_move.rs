@@ -1,8 +1,13 @@
 use crate::{
     check::is_king_in_check_state,
-    checkmate,
+    checkmate::{self},
     chess::Chess,
-    chessboard::{add_possible_moves_to_squares, file::File, rank::Rank, square::Square},
+    chessboard::{
+        add_possible_moves_to_squares,
+        file::File,
+        rank::Rank,
+        square::{check_if_move_is_legal, Square},
+    },
     game_state::{insufficient_material, GameState},
     moves::{
         king::move_is_castling,
@@ -103,19 +108,30 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     {
         handle_rook_and_king_move(chess, start_sq, end_sq);
     }
-    let possible_moves: Vec<Vec<_>> = chess
+    let legal_moves: Vec<Vec<_>> = chess
         .board
         .iter()
         .map(|file| {
             file.iter()
-                .map(|sq| sq.possible_legal_moves(chess))
+                .map(|sq| {
+                    let possible_moves = sq.possible_legal_moves(chess);
+
+                    possible_moves
+                        .into_iter()
+                        .filter(|possible_move| {
+                            let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
+                            let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
+                            check_if_move_is_legal(chess, start_sq.clone(), end_sq.clone())
+                        })
+                        .collect::<Vec<_>>()
+                })
                 .collect()
         })
         .collect();
 
     chess.board.iter_mut().enumerate().for_each(|(i, file)| {
         file.iter_mut().enumerate().for_each(|(j, sq)| {
-            sq.possible_moves.clone_from(&possible_moves[i][j]);
+            sq.possible_moves.clone_from(&legal_moves[i][j]);
         });
     });
     update_board(chess, start_sq, end_sq);

@@ -148,14 +148,14 @@ impl Square {
             .filter(|possible_move| {
                 let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1].clone();
                 let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1].clone();
-                _check_if_move_is_legal(chess, start_sq, end_sq)
+                check_if_move_is_legal(chess, start_sq, end_sq)
             })
             .copied()
             .collect::<Vec<MoveFromCoordinates>>()
     }
 }
 
-fn _check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
+pub fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
     let mut temp_board = chess.board.clone();
     if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
         return false;
