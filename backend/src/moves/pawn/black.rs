@@ -50,7 +50,6 @@ fn black_capture(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         && end_sq.rank == Rank::Third
         && latest_move_enables_black_en_passant(chess, start_sq, end_sq)
     {
-        println!("!??!?!??!");
         return black_en_passant(start_sq, end_sq, chess);
     }
 

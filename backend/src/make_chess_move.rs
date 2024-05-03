@@ -303,30 +303,3 @@ fn remove_castling(chess: &mut Chess, start_sq: Square) {
         _ => panic!("Castling without starting piece shouldn't happen"),
     }
 }
-
-// fn move_is_allowed_without_mutating_chess(chess: &Chess, start_sq_piece_color: PieceColor) -> bool {
-//     if chess.gamestate != GameState::InProgress {
-//         return false;
-//     }
-
-//     if chess.white_player.victory || chess.black_player.victory {
-//         return false;
-//     }
-
-//     if chess.fifty_move_rule >= 50 {
-//         return false;
-//     }
-
-//     if insufficient_material(chess) {
-//         return false;
-//     }
-
-//     //wrong players turn
-//     if start_sq_piece_color == PieceColor::White && chess.turn_number % 2 == 1
-//         || start_sq_piece_color == PieceColor::Black && chess.turn_number % 2 == 0
-//     {
-//         return false;
-//     }
-
-//     true
-// }

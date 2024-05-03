@@ -91,96 +91,89 @@ pub fn latest_move_enables_white_en_passant(
 
 #[cfg(test)]
 mod tests {
-    // use crate::chessboard::file::File;
+    use crate::chessboard::file::File;
 
-    // use super::*;
-    // #[test]
-    // fn white_pawn_moves_from_starting_square() {
-    //     let mut chess: Chess = Chess::_new();
-    //     chess.starting_position();
+    use super::*;
+    #[test]
+    fn white_pawn_moves_from_starting_square() {
+        let mut chess: Chess = Chess::_new();
+        chess.starting_position();
 
-    //     //Bishop on B2
-    //     chess.board[1][1].piece = Piece::Bishop(PieceColor::Black);
+        //Bishop on B2
+        chess.board[1][1].piece = Piece::Bishop(PieceColor::Black);
 
-    //     assert!(move_white_pawn(
-    //         chess.get_square(File::E, Rank::Second),
-    //         chess.get_square(File::E, Rank::Third),
-    //         &chess
-    //     ));
-    //     assert!(move_white_pawn(
-    //         chess.get_square(File::E, Rank::Second),
-    //         chess.get_square(File::E, Rank::Fourth),
-    //         &chess
-    //     ));
-    //     assert!(!move_white_pawn(
-    //         chess.get_square(File::E, Rank::Second),
-    //         chess.get_square(File::A, Rank::Third),
-    //         &chess
-    //     ));
-    //     assert!(!move_white_pawn(
-    //         chess.get_square(File::E, Rank::Second),
-    //         chess.get_square(File::E, Rank::Fifth),
-    //         &chess
-    //     ));
-    //     // println!(
-    //     //     "{:?}",
-    //     //     move_white_pawn(
-    //     //         chess.get_square(File::A, Rank::Second),
-    //     //         chess.get_square(File::A, Rank::Fourth),
-    //     //         &chess
-    //     //     )
-    //     // );
-    //     assert!(move_white_pawn(
-    //         chess.get_square(File::A, Rank::Second),
-    //         chess.get_square(File::A, Rank::Fourth),
-    //         &chess
-    //     ));
-    // }
-    // #[test]
-    // fn white_normal_pawn_moves() {
-    //     let mut chess: Chess = Chess::_new();
-    //     chess.starting_position();
+        assert!(move_white_pawn(
+            &chess.get_square(File::E, Rank::Second),
+            &chess.get_square(File::E, Rank::Third),
+            &chess
+        ));
+        assert!(move_white_pawn(
+            &chess.get_square(File::E, Rank::Second),
+            &chess.get_square(File::E, Rank::Fourth),
+            &chess
+        ));
+        assert!(!move_white_pawn(
+            &chess.get_square(File::E, Rank::Second),
+            &chess.get_square(File::A, Rank::Third),
+            &chess
+        ));
+        assert!(!move_white_pawn(
+            &chess.get_square(File::E, Rank::Second),
+            &chess.get_square(File::E, Rank::Fifth),
+            &chess
+        ));
 
-    //     //Bishop on B2
-    //     chess.board[1][1].piece = Piece::Bishop(PieceColor::Black);
-    //     chess.board[3][2].piece = Piece::Pawn(PieceColor::White);
+        assert!(move_white_pawn(
+            &chess.get_square(File::A, Rank::Second),
+            &chess.get_square(File::A, Rank::Fourth),
+            &chess
+        ));
+    }
+    #[test]
+    fn white_normal_pawn_moves() {
+        let mut chess: Chess = Chess::_new();
+        chess.starting_position();
 
-    //     assert!(move_white_pawn(
-    //         chess.get_square(File::D, Rank::Third),
-    //         chess.get_square(File::D, Rank::Fourth),
-    //         &chess
-    //     ));
+        //Bishop on B2
+        chess.board[1][1].piece = Piece::Bishop(PieceColor::Black);
+        chess.board[3][2].piece = Piece::Pawn(PieceColor::White);
 
-    //     assert!(!move_white_pawn(
-    //         chess.get_square(File::D, Rank::Third),
-    //         chess.get_square(File::E, Rank::Third),
-    //         &chess
-    //     ));
-    // }
+        assert!(move_white_pawn(
+            &chess.get_square(File::D, Rank::Third),
+            &chess.get_square(File::D, Rank::Fourth),
+            &chess
+        ));
 
-    // #[test]
-    // fn white_en_passant_works() {
-    //     let mut chess: Chess = Chess::_new();
-    //     chess.starting_position();
-    //     chess.make_move_from_str("e2", "e4");
-    //     chess.make_move_from_str("c7", "c5");
-    //     chess.make_move_from_str("e4", "e5");
-    //     chess.make_move_from_str("d7", "d5");
-    //     assert!(latest_move_enables_white_en_passant(
-    //         &chess,
-    //         chess.get_square(File::E, Rank::Fifth),
-    //         chess.get_square(File::D, Rank::Sixth),
-    //     ));
-    //     assert!(!latest_move_enables_white_en_passant(
-    //         &chess,
-    //         chess.get_square(File::E, Rank::Fifth),
-    //         chess.get_square(File::F, Rank::Sixth),
-    //     ));
+        assert!(!move_white_pawn(
+            &chess.get_square(File::D, Rank::Third),
+            &chess.get_square(File::E, Rank::Third),
+            &chess
+        ));
+    }
 
-    //     assert!(move_white_pawn(
-    //         chess.get_square(File::E, Rank::Fifth),
-    //         chess.get_square(File::D, Rank::Sixth),
-    //         &chess
-    //     ));
-    // }
+    #[test]
+    fn white_en_passant_works() {
+        let mut chess: Chess = Chess::_new();
+        chess.starting_position();
+        chess.make_move_from_str("e2", "e4");
+        chess.make_move_from_str("c7", "c5");
+        chess.make_move_from_str("e4", "e5");
+        chess.make_move_from_str("d7", "d5");
+        assert!(latest_move_enables_white_en_passant(
+            &chess,
+            &chess.get_square(File::E, Rank::Fifth),
+            &chess.get_square(File::D, Rank::Sixth),
+        ));
+        assert!(!latest_move_enables_white_en_passant(
+            &chess,
+            &chess.get_square(File::E, Rank::Fifth),
+            &chess.get_square(File::F, Rank::Sixth),
+        ));
+
+        assert!(move_white_pawn(
+            &chess.get_square(File::E, Rank::Fifth),
+            &chess.get_square(File::D, Rank::Sixth),
+            &chess
+        ));
+    }
 }

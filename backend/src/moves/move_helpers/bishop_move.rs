@@ -62,6 +62,9 @@ fn move_down_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 
 #[cfg(test)]
 mod tests {
+    //
+    //  THESE TESTS NEED FIXING
+    //
     // use crate::piece::{Piece, PieceColor};
 
     // use super::*;
@@ -71,26 +74,32 @@ mod tests {
     //     chess.starting_position();
     //     //no piece on D2
     //     chess.board[3][1].piece = Piece::None;
-
-    //     let start_sq = *chess.get_square_from_str("c", "1");
-    //     let end_sq = *chess.get_square_from_str("g", "5");
-
-    //     assert!(move_top_right(start_sq, end_sq, &chess));
-
+    //     {
+    //         let start_sq = chess.get_square_from_str("c", "1");
+    //         let end_sq = chess.get_square_from_str("g", "5");
+    //         assert!(move_top_right(start_sq, end_sq, &chess));
+    //     }
     //     //D2 is now blocked
     //     chess.board[3][1].piece = Piece::Queen(PieceColor::Black);
-    //     assert!(!move_top_right(start_sq, end_sq, &chess));
-
-    //     //b2 is not empty
-    //     let end_sq = *chess.get_square_from_str("a", "3");
-    //     assert!(!move_top_left(start_sq, end_sq, &chess));
+    //     {
+    //         let start_sq = chess.get_square_from_str("c", "1");
+    //         let end_sq = chess.get_square_from_str("g", "5");
+    //         assert!(!move_top_right(start_sq, end_sq, &chess));
+    //         //b2 is not empty
+    //         let end_sq = chess.get_square_from_str("a", "3");
+    //         assert!(!move_top_left(start_sq, end_sq, &chess));
+    //     }
     //     chess.board[1][1].piece = Piece::None;
-    //     assert!(move_top_left(start_sq, end_sq, &chess));
+    //     {
+    //         let start_sq = chess.get_square_from_str("c", "1");
+    //         let end_sq = chess.get_square_from_str("g", "5");
+    //         assert!(move_top_left(start_sq, end_sq, &chess));
+    //     }
 
     //     //Bishop on F2
     //     chess.board[5][1].piece = Piece::Bishop(PieceColor::Black);
-    //     let start_sq = *chess.get_square_from_str("f", "2");
-    //     let end_sq = *chess.get_square_from_str("a", "7");
+    //     let start_sq = chess.get_square_from_str("f", "2");
+    //     let end_sq = chess.get_square_from_str("a", "7");
     //     assert!(move_top_left(start_sq, end_sq, &chess));
 
     //     chess.board[4][2].piece = Piece::Bishop(PieceColor::Black);
@@ -99,24 +108,24 @@ mod tests {
     //     chess.board[1][5].piece = Piece::Bishop(PieceColor::Black);
     //     assert!(!move_top_left(start_sq, end_sq, &chess));
 
-    //     let start_sq = *chess.get_square_from_str("b", "6");
-    //     let end_sq = *chess.get_square_from_str("f", "2");
+    //     let start_sq = chess.get_square_from_str("b", "6");
+    //     let end_sq = chess.get_square_from_str("f", "2");
     //     assert!(move_down_right(start_sq, end_sq, &chess));
-    //     let end_sq = *chess.get_square_from_str("g", "1");
+    //     let end_sq = chess.get_square_from_str("g", "1");
     //     assert!(!move_down_right(start_sq, end_sq, &chess));
 
     //     //Bishop on H8 and pawn on G7 blocks it
     //     chess.board[7][7].piece = Piece::Bishop(PieceColor::White);
-    //     let start_sq = *chess.get_square_from_str("h", "8");
-    //     let end_sq = *chess.get_square_from_str("a", "1");
+    //     let start_sq = chess.get_square_from_str("h", "8");
+    //     let end_sq = chess.get_square_from_str("a", "1");
     //     assert!(!move_down_left(start_sq, end_sq, &chess));
-    //     let end_sq = *chess.get_square_from_str("c", "3");
+    //     let end_sq = chess.get_square_from_str("c", "3");
     //     assert!(!move_down_left(start_sq, end_sq, &chess));
 
     //     chess.board[6][6].piece = Piece::None;
 
     //     assert!(move_down_left(start_sq, end_sq, &chess));
-    //     let end_sq = *chess.get_square_from_str("a", "1");
+    //     let end_sq = chess.get_square_from_str("a", "1");
     //     assert!(move_down_left(start_sq, end_sq, &chess));
     // }
 }

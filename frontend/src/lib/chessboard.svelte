@@ -9,9 +9,7 @@
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
-	$: {
-		console.log(chess.board[3][1]);
-	}
+
 	let startSq = '';
 	let selectedButton: string | null = null;
 	let fromSquare = '';
