@@ -7,20 +7,20 @@
 </svelte:head>
 
 <div
-	class="flex min-h-screen flex-col items-center justify-center bg-gray-900 px-4"
+	class="flex min-h-screen flex-col items-center justify-center bg-gray-900 p-4"
 >
 	<h1
-		class=" mb-4 mt-4 text-4xl font-extrabold leading-none tracking-tight text-cyan-50 md:text-5xl lg:text-6xl dark:text-white text-center"
+		class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-cyan-50 md:text-5xl lg:text-6xl dark:text-white text-center"
 	>
 		Chess app
 	</h1>
-	<h3 class="font-semibold text-cyan-200 my-4 text-center">
+	<h3 class="font-semibold text-cyan-200 text-center mb-4">
 		Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on
 		the frontend
 	</h3>
 	<slot />
 	<footer class="mt-5">
-		<div class="flex items-center text-gray-500 mt-2 pb-2">
+		<div class="flex items-center text-gray-500">
 			<a
 				href="https://github.com/varjovaras"
 				target="_blank"

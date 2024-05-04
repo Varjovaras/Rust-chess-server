@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Chessboard from '$lib/chessboard.svelte';
-	import { chessSchema, type Chess, type Square } from '../lib/types';
+	import { chessSchema, type Chess } from '../lib/types';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
