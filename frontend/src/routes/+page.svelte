@@ -1,5 +1,4 @@
 <script lang="ts">
-	// import { startingPosition } from '$lib/startingPosition';
 	import Chessboard from '$lib/chessboard.svelte';
 	import { chessSchema, type Chess, type Square } from '../lib/types';
 	import type { PageData } from './$types';
