@@ -57,6 +57,7 @@
 		let file = sq.file.toLowerCase();
 		let rank = sq.rank + 1;
 		selectedButton = file + rank;
+		possibleMoves = sq.possible_moves;
 		startSq = file + rank;
 	};
 
@@ -68,6 +69,7 @@
 			selectedButton = null;
 		}
 		selectedButton = null;
+		possibleMoves = [];
 	};
 
 	// ...
