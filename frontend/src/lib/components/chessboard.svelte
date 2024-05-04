@@ -5,7 +5,7 @@
 		ChessBoard,
 		PossibleMoves,
 		Square as SquareType,
-	} from '../lib/types';
+	} from '../types';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;

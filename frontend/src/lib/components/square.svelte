@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Piece, Square } from '../lib/types';
+	import type { Piece, Square } from '../types';
 	export let sq: Square;
 
 	const returnCorrectPieceColor = (piece: Piece | 'None') => {

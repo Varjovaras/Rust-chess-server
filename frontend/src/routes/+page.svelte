@@ -1,5 +1,10 @@
 <script lang="ts">
-	import Chessboard from '$lib/chessboard.svelte';
+	import Chessboard from '$lib/components/chessboard.svelte';
+	import GameOver from '$lib/components/gameOver.svelte';
+	import Improvements from '$lib/components/improvements.svelte';
+	import InputForm from '$lib/components/inputForm.svelte';
+	import MoveGuide from '$lib/components/moveGuide.svelte';
+	import ResetButton from '$lib/components/resetButton.svelte';
 	import { chessSchema, type Chess } from '../lib/types';
 	import type { PageData } from './$types';
 
@@ -47,58 +52,9 @@
 	};
 </script>
 
-<div class="text-cyan-50 text-center font-semibold">
-	<p class="mb-2 px-2">
-		Move by clicking on a piece and then on the square you want to move it to.
-	</p>
-	<p>You can also drag and drop pieces.</p>
-</div>
-<div class="mt-8 bg-red-300">
-	{#if chess.white_player.victory}
-		<p>White won</p>
-	{:else if chess.black_player.victory}
-		<p>Black won</p>
-	{/if}
-</div>
+<MoveGuide />
+<GameOver {chess} />
 <Chessboard {chess} {handleMove} />
-
-<button
-	on:click={handleReset}
-	class="bg-cyan-50 my-4 hover:bg-gray-100 text-gray-900 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
->
-	Reset board
-</button>
-<div class="text-cyan-50 ml-2">
-	<h2 class="font-semibold mb-2 text-center">Not yet implemented features:</h2>
-	<ul class="px-4 text-left text-sm">
-		<li>
-			Improving performance by passing all possible moves for the turn so move
-			doesn't have to be validated on the backend before updating frontend.
-			<p class="text-xs">
-				Also allows showing possible moves for each piece when hovered
-			</p>
-		</li>
-		<li class="mt-2">
-			Currently the backend validates the move and returns the updated chess
-			object. Lag while making a move is caused by the API call to external
-			backend
-		</li>
-		<li class="mt-2">
-			Implementing a backend that can play chess against the user. This will
-			probably be done by using a stockfish engine.
-		</li>
-		<li class="mt-2">Implementing playing other players via websocket</li>
-		<li class="mt-2">Drag and drop on mobile without scrolling</li>
-	</ul>
-</div>
-
-<!-- <form class="grid grid-cols-2 gap-4 mt-8">
-		<label class="col-span-1 bg-red-300">''
-			<span class="block">Move from:</span>
-			<input type="text" class="block w-full" bind:value={fromSquare} />
-		</label>
-		<label class="col-span-1 bg-red-300">
-			<span class="block">Move to:</span>
-			<input type="text" class="block w-full" bind:value={toSquare} />
-		</label>
-	</form> -->
+<ResetButton {handleReset} />
+<Improvements />
+<!-- <InputForm {fromSquare} {toSquare} /> -->
