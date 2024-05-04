@@ -2,9 +2,9 @@
 	import Chessboard from '$lib/components/chessboard.svelte';
 	import GameOver from '$lib/components/gameOver.svelte';
 	import Improvements from '$lib/components/improvements.svelte';
-	import InputForm from '$lib/components/inputForm.svelte';
 	import MoveGuide from '$lib/components/moveGuide.svelte';
 	import ResetButton from '$lib/components/resetButton.svelte';
+	import { startingPosition } from '$lib/startingPosition';
 	import { chessSchema, type Chess } from '../lib/types';
 	import type { PageData } from './$types';
 
@@ -39,17 +39,19 @@
 		return validatedChess;
 	};
 
-	const handleReset = async () => {
-		try {
-			console.log('Resetting board');
-			const response = await fetch(`${apiUrl}/api/chess`);
-			const data = await response.json();
-			const validatedChess = chessSchema.parse(data.chess);
-			chess = validatedChess;
-		} catch (error) {
-			console.error(error);
-		}
-	};
+	const handleReset =
+		// async
+		() => {
+			try {
+				console.log('Resetting game');
+				// const response = await fetch(`${apiUrl}/api/chess`);
+				// const data = await response.json();
+				// const validatedChess: Chess = chessSchema.parse(data.chess);
+				chess = startingPosition;
+			} catch (error) {
+				console.error(error);
+			}
+		};
 </script>
 
 <MoveGuide />
@@ -57,4 +59,3 @@
 <Chessboard {chess} {handleMove} />
 <ResetButton {handleReset} />
 <Improvements />
-<!-- <InputForm {fromSquare} {toSquare} /> -->
