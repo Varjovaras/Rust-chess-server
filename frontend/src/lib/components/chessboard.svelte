@@ -28,6 +28,9 @@
 		return boardToFront;
 	};
 
+	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
+	$: boardToFront = handleBoardToFront(chess.board);
+
 	const handleClick = async (sq: SquareType) => {
 		if (fromSquare === '' && sq.piece === 'None') {
 			selectedButton = null;
@@ -50,10 +53,10 @@
 		}
 	};
 
-	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
-	$: boardToFront = handleBoardToFront(chess.board);
-
 	const handleDragStart = (sq: SquareType) => {
+		if (sq.piece === 'None') {
+			return;
+		}
 		let file = sq.file.toLowerCase();
 		let rank = sq.rank + 1;
 		selectedButton = file + rank;
@@ -88,7 +91,7 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1) + sq.piece}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
@@ -102,7 +105,7 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1) + sq.piece}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
@@ -119,7 +122,7 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1)}
+						id={sq.file.toLowerCase() + (sq.rank + 1) + sq.piece}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />

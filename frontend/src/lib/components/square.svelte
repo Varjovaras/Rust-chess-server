@@ -49,7 +49,7 @@
 			src={returnCorrectPieceColor(sq.piece)}
 			alt={'square with a piece'}
 			draggable="true"
-			id={`${sq.file.toLowerCase()}${sq.rank + 1} no piece`}
+			id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 		/>
 	{/if}
 </div>
