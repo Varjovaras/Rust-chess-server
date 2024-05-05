@@ -42,14 +42,14 @@
 
 <div>
 	{#if sq.piece === 'None'}
-		<div id={sq.file.toLowerCase() + (sq.rank + 1)} />
+		<div id={`${sq.file.toLowerCase()}${sq.rank + 1} no piece`} />
 	{:else}
 		<img
 			class="flex justify-center items-center w-full h-full"
 			src={returnCorrectPieceColor(sq.piece)}
-			alt={''}
+			alt={'square with a piece'}
 			draggable="true"
-			id={sq.file.toLowerCase() + (sq.rank + 1)}
+			id={`${sq.file.toLowerCase()}${sq.rank + 1} no piece`}
 		/>
 	{/if}
 </div>

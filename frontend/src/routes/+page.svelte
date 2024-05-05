@@ -44,9 +44,6 @@
 		() => {
 			try {
 				console.log('Resetting game');
-				// const response = await fetch(`${apiUrl}/api/chess`);
-				// const data = await response.json();
-				// const validatedChess: Chess = chessSchema.parse(data.chess);
 				chess = startingPosition;
 			} catch (error) {
 				console.error(error);
