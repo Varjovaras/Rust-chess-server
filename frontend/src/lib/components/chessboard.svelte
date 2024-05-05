@@ -68,7 +68,7 @@
 		const targetElement = event.target as HTMLElement;
 
 		if (targetElement.id !== '[object Object]' && targetElement.id !== '') {
-			handleMove(startSq, targetElement.id);
+			handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
 			selectedButton = null;
 		}
 		selectedButton = null;
@@ -91,7 +91,7 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1) + sq.piece}
+						id={`${sq.file.toLowerCase()}${sq.rank + 1} white king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
@@ -105,7 +105,41 @@
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1) + sq.piece}
+						id={`${sq.file.toLowerCase()}${sq.rank + 1} black king in check`}
+						on:click|preventDefault={() => handleClick(sq)}
+					>
+						<Square {sq} />
+					</button>
+				{:else if sq.color === 'White' && sq.piece !== 'None'}
+					<button
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-200 text-center sm:h-16 sm:w-16 hover:bg-gray-600"
+						class:selected={selectedButton ===
+							sq.file.toLowerCase() + (sq.rank + 1)}
+						class:possible_move={possibleMoves.some(
+							(move) => move[1][0] === j && move[1][1] === 8 - i
+						)}
+						draggable="true"
+						on:dragstart={() => handleDragStart(sq)}
+						on:dragover|preventDefault
+						on:drop|preventDefault={handleDrop}
+						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
+						on:click|preventDefault={() => handleClick(sq)}
+					>
+						<Square {sq} />
+					</button>
+				{:else if sq.color === 'Black' && sq.piece !== 'None'}
+					<button
+						class="lg:h-18 lg:w-18 h-11 w-11 bg-gray-400 text-center sm:h-16 sm:w-16 hover:bg-gray-600"
+						class:selected={selectedButton ===
+							sq.file.toLowerCase() + (sq.rank + 1)}
+						class:possible_move={possibleMoves.some(
+							(move) => move[1][0] === j && move[1][1] === 8 - i
+						)}
+						draggable="true"
+						on:dragstart={() => handleDragStart(sq)}
+						on:dragover|preventDefault
+						on:drop|preventDefault={handleDrop}
+						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
@@ -118,11 +152,10 @@
 						class:possible_move={possibleMoves.some(
 							(move) => move[1][0] === j && move[1][1] === 8 - i
 						)}
-						draggable="true"
-						on:dragstart={() => handleDragStart(sq)}
+						draggable="false"
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1) + sq.piece}
+						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
@@ -135,11 +168,10 @@
 						class:possible_move={possibleMoves.some(
 							(move) => move[1][0] === j && move[1][1] === 8 - i
 						)}
-						draggable="true"
-						on:dragstart={() => handleDragStart(sq)}
+						draggable="false"
 						on:dragover|preventDefault
 						on:drop|preventDefault={handleDrop}
-						id={sq.file.toLowerCase() + (sq.rank + 1)}
+						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
 					>
 						<Square {sq} />
