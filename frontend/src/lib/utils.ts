@@ -1,4 +1,4 @@
-import type { ChessBoard } from "./types";
+import type { ChessBoard, Piece } from "./types";
 
 export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
     const boardToFront: ChessBoard = [[]];
@@ -16,3 +16,39 @@ export const isWhiteTurn = (turnNumber: number): boolean => {
     return turnNumber % 2 === 0;
 };
 
+export const returnCorrectPieceColor = (piece: Piece | 'None') => {
+    if (piece === 'None') return '';
+    switch (true) {
+        case piece.Pawn !== undefined:
+            return piece.Pawn === 'White'
+                ? '/pieces/white_pawn.svg'
+                : '/pieces/black_pawn.svg';
+
+        case piece.Rook !== undefined:
+            return piece.Rook === 'White'
+                ? '/pieces/white_rook.svg'
+                : '/pieces/black_rook.svg';
+
+        case piece.Knight !== undefined:
+            return piece.Knight === 'White'
+                ? '/pieces/white_knight.svg'
+                : '/pieces/black_knight.svg';
+
+        case piece.Bishop !== undefined:
+            return piece.Bishop === 'White'
+                ? '/pieces/white_bishop.svg'
+                : '/pieces/black_bishop.svg';
+
+        case piece.Queen !== undefined:
+            return piece.Queen === 'White'
+                ? '/pieces/white_queen.svg'
+                : '/pieces/black_queen.svg';
+
+        case piece.King !== undefined:
+            return piece.King === 'White'
+                ? '/pieces/white_king.svg'
+                : '/pieces/black_king.svg';
+        default:
+            return '';
+    }
+};

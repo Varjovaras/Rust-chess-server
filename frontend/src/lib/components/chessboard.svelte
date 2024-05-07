@@ -76,7 +76,6 @@
 
 	const handleDrop = (event: DragEvent) => {
 		const targetElement = event.target as HTMLElement;
-
 		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
 		selectedButton = null;
 		possibleMoves = [];
