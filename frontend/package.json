@@ -13,7 +13,7 @@
     "format": "prettier --plugin-search-dir . --write ."
   },
   "devDependencies": {
-    "@biomejs/biome": "1.6.0",
+    "@biomejs/biome": "^1.7.3",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/adapter-vercel": "^4.0.0",
     "@sveltejs/kit": "^2.0.0",
