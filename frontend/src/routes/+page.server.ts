@@ -26,6 +26,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
 			},
 		};
 	} catch (e) {
-		return error(500, { message: 'Backend not found' });
+		return error(500, { message: 'Backend not online' });
 	}
 };

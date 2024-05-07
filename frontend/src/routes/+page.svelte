@@ -36,19 +36,16 @@
 		});
 		const data = await response.json();
 		const validatedChess = chessSchema.parse(data.chess);
+		if (chess.board === validatedChess.board) {
+			console.log('Move was not possible');
+		}
 		return validatedChess;
 	};
 
-	const handleReset =
-		// async
-		() => {
-			try {
-				console.log('Resetting game');
-				chess = startingPosition;
-			} catch (error) {
-				console.error(error);
-			}
-		};
+	const handleReset = () => {
+		console.log('Resetting game');
+		chess = startingPosition;
+	};
 </script>
 
 <MoveGuide />

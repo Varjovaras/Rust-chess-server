@@ -1,11 +1,7 @@
 <script lang="ts">
 	import Square from './square.svelte';
-	import type {
-		Chess,
-		ChessBoard,
-		PossibleMoves,
-		Square as SquareType,
-	} from '../types';
+	import type { Chess, PossibleMoves, Square as SquareType } from '../types';
+	import { handleBoardToFront, isWhiteTurn } from '$lib/utils';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
@@ -16,66 +12,75 @@
 	let toSquare = '';
 	let possibleMoves: PossibleMoves = [];
 
-	const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
-		const boardToFront: ChessBoard = [[]];
-		for (let i = 7; i >= 0; i--) {
-			const arr = [];
-			for (let j = 7; j >= 0; j--) {
-				arr.push(chessboard[j][i]);
-			}
-			boardToFront.push(arr.reverse());
-		}
-		return boardToFront;
-	};
-
-	// biome-ignore lint/suspicious/noConfusingLabels: <explanation>
 	$: boardToFront = handleBoardToFront(chess.board);
+	$: whiteTurn = isWhiteTurn(chess.turn_number);
 
 	const handleClick = async (sq: SquareType) => {
-		if (fromSquare === '' && sq.piece === 'None') {
-			selectedButton = null;
-			possibleMoves = [];
-			return;
-		}
 		let file = sq.file.toLowerCase();
 		let rank = sq.rank + 1;
-		if (fromSquare === '') {
-			fromSquare = file + rank;
-			selectedButton = file + rank;
+		let squareId = file + rank;
+
+		if (!fromSquare) {
+			if (sq.piece === 'None' || !rightPlayersTurn(sq)) {
+				console.log(
+					sq.piece === 'None' ? `No piece on ${squareId}` : 'Wrong players turn'
+				);
+				resetSelection();
+				return;
+			}
+			fromSquare = squareId;
+			selectedButton = squareId;
 			possibleMoves = sq.possible_moves;
-		} else if (fromSquare !== '') {
-			toSquare = file + rank;
+		} else {
+			toSquare = squareId;
 			await handleMove(fromSquare, toSquare);
-			fromSquare = '';
-			toSquare = '';
-			selectedButton = null;
-			possibleMoves = [];
+			resetSelection();
 		}
+	};
+
+	const resetSelection = () => {
+		fromSquare = '';
+		toSquare = '';
+		selectedButton = null;
+		possibleMoves = [];
+	};
+
+	const rightPlayersTurn = (sq: SquareType): boolean => {
+		return (
+			(whiteTurn &&
+				sq.piece &&
+				typeof sq.piece === 'object' &&
+				Object.values(sq.piece).includes('White')) ||
+			(!whiteTurn &&
+				sq.piece &&
+				typeof sq.piece === 'object' &&
+				Object.values(sq.piece).includes('Black'))
+		);
 	};
 
 	const handleDragStart = (sq: SquareType) => {
 		if (sq.piece === 'None') {
+			console.log(`No piece on ${sq.file}${sq.rank}`);
+			return;
+		}
+		if (!rightPlayersTurn(sq)) {
 			return;
 		}
 		let file = sq.file.toLowerCase();
 		let rank = sq.rank + 1;
-		selectedButton = file + rank;
+		let squareId = file + rank;
+		selectedButton = squareId;
 		possibleMoves = sq.possible_moves;
-		startSq = file + rank;
+		startSq = squareId;
 	};
 
 	const handleDrop = (event: DragEvent) => {
 		const targetElement = event.target as HTMLElement;
 
-		if (targetElement.id !== '[object Object]' && targetElement.id !== '') {
-			handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
-			selectedButton = null;
-		}
+		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
 		selectedButton = null;
 		possibleMoves = [];
 	};
-
-	// ...
 </script>
 
 <div class="flex justify-center items-center">
