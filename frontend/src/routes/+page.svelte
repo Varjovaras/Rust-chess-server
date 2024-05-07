@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Chessboard from '$lib/components/chessboard.svelte';
+	import ErrorMessage from '$lib/components/errorMessage.svelte';
 	import GameOver from '$lib/components/gameOver.svelte';
 	import Improvements from '$lib/components/improvements.svelte';
 	import MoveGuide from '$lib/components/moveGuide.svelte';
@@ -10,6 +11,7 @@
 
 	export let data: PageData;
 	let chess = data.data.chess;
+	let errorMessage = '';
 	const apiUrl = data.data.url;
 
 	const handleMove = async (startSq: string, endSq: string) => {
@@ -50,6 +52,8 @@
 
 <MoveGuide />
 <GameOver {chess} />
+<ErrorMessage {errorMessage} />
+
 <Chessboard {chess} {handleMove} />
 <ResetButton {handleReset} />
 <Improvements />
