@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Square from './square.svelte';
 	import type { Chess, PossibleMoves, Square as SquareType } from '../types';
-	import { handleBoardToFront, isWhiteTurn } from '$lib/utils';
+	import { handleBoardToFront, isWhiteTurn, legalMove } from '$lib/utils';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
@@ -21,7 +21,7 @@
 		let squareId = file + rank;
 
 		if (!fromSquare) {
-			if (sq.piece === 'None' || !rightPlayersTurn(sq)) {
+			if (sq.piece === 'None' || !legalMove(sq, whiteTurn)) {
 				console.log(
 					sq.piece === 'None' ? `No piece on ${squareId}` : 'Wrong players turn'
 				);
@@ -45,25 +45,12 @@
 		possibleMoves = [];
 	};
 
-	const rightPlayersTurn = (sq: SquareType): boolean => {
-		return (
-			(whiteTurn &&
-				sq.piece &&
-				typeof sq.piece === 'object' &&
-				Object.values(sq.piece).includes('White')) ||
-			(!whiteTurn &&
-				sq.piece &&
-				typeof sq.piece === 'object' &&
-				Object.values(sq.piece).includes('Black'))
-		);
-	};
-
 	const handleDragStart = (sq: SquareType) => {
 		if (sq.piece === 'None') {
 			console.log(`No piece on ${sq.file}${sq.rank}`);
 			return;
 		}
-		if (!rightPlayersTurn(sq)) {
+		if (!legalMove(sq, whiteTurn)) {
 			return;
 		}
 		let file = sq.file.toLowerCase();
@@ -77,8 +64,7 @@
 	const handleDrop = (event: DragEvent) => {
 		const targetElement = event.target as HTMLElement;
 		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
-		selectedButton = null;
-		possibleMoves = [];
+		resetSelection();
 	};
 </script>
 

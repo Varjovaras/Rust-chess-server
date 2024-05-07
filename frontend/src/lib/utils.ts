@@ -1,4 +1,4 @@
-import type { ChessBoard, Piece } from "./types";
+import type { ChessBoard, Piece, Square } from "./types";
 
 export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
     const boardToFront: ChessBoard = [[]];
@@ -14,6 +14,10 @@ export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 
 export const isWhiteTurn = (turnNumber: number): boolean => {
     return turnNumber % 2 === 0;
+};
+export const legalMove = (sq: Square, whiteTurn: boolean): boolean => {
+    const color = whiteTurn ? 'White' : 'Black';
+    return sq.piece && Object.values(sq.piece).includes(color);
 };
 
 export const returnCorrectPieceColor = (piece: Piece | 'None') => {

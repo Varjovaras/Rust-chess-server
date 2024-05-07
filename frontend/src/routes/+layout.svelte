@@ -11,7 +11,7 @@
 <div
 	class="flex min-h-screen flex-col items-center justify-center bg-gray-900 p-4"
 >
-	<meta name="description" content="Put your description here." />
+	<meta name="description" content="Chess portfolio simulator" />
 	<Title />
 	<slot />
 	<Footer />
