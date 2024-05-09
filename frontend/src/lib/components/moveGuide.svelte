@@ -1,4 +1,4 @@
-<div class="text-cyan-50 text-center font-semibold">
+<div class="text-center">
 	<p class="mb-2 px-2">
 		Move by clicking on a piece and then on the square you want to move it to.
 	</p>

@@ -53,7 +53,6 @@
 <MoveGuide />
 <GameOver {chess} />
 <ErrorMessage {errorMessage} />
-
 <Chessboard {chess} {handleMove} />
 <ResetButton {handleReset} />
 <Improvements />

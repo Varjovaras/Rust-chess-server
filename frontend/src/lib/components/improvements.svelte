@@ -1,8 +1,8 @@
 <script lang="ts">
 </script>
 
-<div class="text-cyan-50 ml-2">
-	<h2 class="font-semibold mb-2 text-center">Not yet implemented features:</h2>
+<div class=" ml-2">
+	<h2 class="mb-2 text-center h2">Not yet implemented features:</h2>
 	<ul class="px-4 text-left text-sm">
 		<li>
 			Improving performance by passing all possible moves for the turn so move
