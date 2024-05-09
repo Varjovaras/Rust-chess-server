@@ -1,7 +1,11 @@
 <script lang="ts">
-	import Square from './square.svelte';
-	import type { Chess, PossibleMoves, Square as SquareType } from '../types';
-	import { handleBoardToFront, isWhiteTurn, legalMove } from '$lib/utils';
+	import type { Chess, PossibleMoves, Square as SquareType } from '../../types';
+	import {
+		handleBoardToFront,
+		isWhiteTurn,
+		legalMove,
+	} from '$lib/components/chess/utils';
+	import Piece from './piece.svelte';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
@@ -66,9 +70,42 @@
 		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
 		resetSelection();
 	};
+
+	const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
+		handleDragStart(sq);
+	};
+
+	type TouchPosition = {
+		x: number;
+		y: number;
+	};
+
+	let lastKnownTouchPosition: null | TouchPosition = null;
+
+	const handleTouchMove = (event: TouchEvent) => {
+		lastKnownTouchPosition = {
+			x: event.touches[0].clientX,
+			y: event.touches[0].clientY,
+		};
+	};
+
+	const handleTouchEnd = async (event: TouchEvent) => {
+		if (lastKnownTouchPosition) {
+			const targetElement = document.elementFromPoint(
+				lastKnownTouchPosition.x,
+				lastKnownTouchPosition.y
+			) as HTMLElement;
+			const endSq = targetElement.id[0] + targetElement.id[1];
+			if (endSq !== startSq) {
+				await handleMove(startSq, endSq);
+				resetSelection();
+			}
+		}
+		lastKnownTouchPosition = null;
+	};
 </script>
 
-<div class="flex justify-center items-center">
+<div class="flex justify-center items-center pb-4">
 	<div class="grid grid-cols-8 gap-0">
 		{#each boardToFront as row, i}
 			{#each row as sq, j}
@@ -83,8 +120,11 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} white king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if chess.black_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'Black'}
 					<button
@@ -94,11 +134,14 @@
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
-						on:drop|preventDefault={handleDrop}
+						on:drop={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} black king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if sq.color === 'White' && sq.piece !== 'None'}
 					<button
@@ -111,11 +154,14 @@
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
-						on:drop|preventDefault={handleDrop}
+						on:drop={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if sq.color === 'Black' && sq.piece !== 'None'}
 					<button
@@ -131,8 +177,11 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if sq.color === 'White'}
 					<button
@@ -147,8 +196,11 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else}
 					<button
@@ -163,8 +215,11 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{/if}
 			{/each}
