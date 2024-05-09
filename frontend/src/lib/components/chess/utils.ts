@@ -1,4 +1,4 @@
-import type { ChessBoard, Piece, Square } from "./types";
+import type { ChessBoard, Piece, Square } from "../../types";
 
 export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
     const boardToFront: ChessBoard = [[]];

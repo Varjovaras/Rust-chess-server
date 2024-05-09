@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Chessboard from '$lib/components/chessboard.svelte';
+	import Chessboard from '$lib/components/chess/chessboard.svelte';
 	import ErrorMessage from '$lib/components/errorMessage.svelte';
-	import GameOver from '$lib/components/gameOver.svelte';
+	import GameOver from '$lib/components/chess/gameOver.svelte';
 	import Improvements from '$lib/components/improvements.svelte';
 	import MoveGuide from '$lib/components/moveGuide.svelte';
-	import ResetButton from '$lib/components/resetButton.svelte';
-	import { startingPosition } from '$lib/startingPosition';
+	import ResetButton from '$lib/components/chess/resetButton.svelte';
+	import { startingPosition } from '$lib/components/chess/startingPosition';
 	import { chessSchema, type Chess } from '../lib/types';
 	import type { PageData } from './$types';
 

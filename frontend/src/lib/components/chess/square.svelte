@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { returnCorrectPieceColor } from '$lib/utils';
-	import type { Square } from '../types';
+	import { returnCorrectPieceColor } from '$lib/components/chess/utils';
+	import type { Square } from '../../types';
 	export let sq: Square;
 </script>
 

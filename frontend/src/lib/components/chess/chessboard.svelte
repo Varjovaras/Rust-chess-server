@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Square from './square.svelte';
-	import type { Chess, PossibleMoves, Square as SquareType } from '../types';
-	import { handleBoardToFront, isWhiteTurn, legalMove } from '$lib/utils';
+	import type { Chess, PossibleMoves, Square as SquareType } from '../../types';
+	import {
+		handleBoardToFront,
+		isWhiteTurn,
+		legalMove,
+	} from '$lib/components/chess/utils';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
