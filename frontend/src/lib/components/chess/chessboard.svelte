@@ -70,9 +70,39 @@
 		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
 		resetSelection();
 	};
+
+	const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
+		handleDragStart(sq);
+	};
+
+	type TouchPosition = {
+		x: number;
+		y: number;
+	};
+
+	let lastKnownTouchPosition: null | TouchPosition = null;
+
+	const handleTouchMove = (event: TouchEvent) => {
+		lastKnownTouchPosition = {
+			x: event.touches[0].clientX,
+			y: event.touches[0].clientY,
+		};
+	};
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (lastKnownTouchPosition) {
+			const targetElement = document.elementFromPoint(
+				lastKnownTouchPosition.x,
+				lastKnownTouchPosition.y
+			) as HTMLElement;
+			handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
+		}
+		resetSelection();
+		lastKnownTouchPosition = null;
+		event.preventDefault();
+	};
 </script>
 
-<div class="flex justify-center items-center">
+<div class="flex justify-center items-center pb-4">
 	<div class="grid grid-cols-8 gap-0">
 		{#each boardToFront as row, i}
 			{#each row as sq, j}
@@ -87,6 +117,10 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} white king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|preventDefault={(event) =>
+							handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|preventDefault={handleTouchEnd}
 					>
 						<Square {sq} />
 					</button>
@@ -101,6 +135,10 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} black king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|preventDefault={(event) =>
+							handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|preventDefault={handleTouchEnd}
 					>
 						<Square {sq} />
 					</button>
@@ -118,6 +156,10 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|preventDefault={(event) =>
+							handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|preventDefault={handleTouchEnd}
 					>
 						<Square {sq} />
 					</button>
@@ -135,6 +177,10 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|preventDefault={(event) =>
+							handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|preventDefault={handleTouchEnd}
 					>
 						<Square {sq} />
 					</button>
@@ -151,6 +197,10 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|preventDefault={(event) =>
+							handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|preventDefault={handleTouchEnd}
 					>
 						<Square {sq} />
 					</button>
@@ -167,6 +217,10 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
+						on:touchstart|preventDefault={(event) =>
+							handleTouchStart(event, sq)}
+						on:touchmove|preventDefault={handleTouchMove}
+						on:touchend|preventDefault={handleTouchEnd}
 					>
 						<Square {sq} />
 					</button>
