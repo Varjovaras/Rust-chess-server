@@ -1,7 +1,7 @@
 import { env } from '$env/dynamic/public';
-import { chessSchema } from '$lib/types';
 import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
+import { chessSchema } from '$lib/types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	let apiUrl: string;

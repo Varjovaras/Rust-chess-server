@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
 </script>
 
 <div class=" ml-2">
@@ -23,4 +23,4 @@
 		<li class="mt-2">Implementing playing other players via websocket</li>
 		<li class="mt-2">Drag and drop on mobile without scrolling</li>
 	</ul>
-</div>
+</div> -->
