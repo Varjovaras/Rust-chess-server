@@ -1,7 +1,7 @@
 <script lang="ts"></script>
 
 <footer class="mt-5">
-	<div class="flex items-center text-gray-100">
+	<div class="flex items-center">
 		<a
 			href="https://github.com/varjovaras"
 			target="_blank"

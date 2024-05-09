@@ -50,7 +50,6 @@
 	};
 </script>
 
-<MoveGuide />
 <GameOver {chess} />
 <ErrorMessage {errorMessage} />
 <Chessboard {chess} {handleMove} />

@@ -89,17 +89,19 @@
 		};
 	};
 
-	const handleTouchEnd = (event: TouchEvent) => {
+	const handleTouchEnd = async (event: TouchEvent) => {
 		if (lastKnownTouchPosition) {
 			const targetElement = document.elementFromPoint(
 				lastKnownTouchPosition.x,
 				lastKnownTouchPosition.y
 			) as HTMLElement;
-			handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
+			const endSq = targetElement.id[0] + targetElement.id[1];
+			if (endSq !== startSq) {
+				await handleMove(startSq, endSq);
+				resetSelection();
+			}
 		}
-		resetSelection();
 		lastKnownTouchPosition = null;
-		event.preventDefault();
 	};
 </script>
 
@@ -118,10 +120,9 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} white king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
-						on:touchstart|preventDefault={(event) =>
-							handleTouchStart(event, sq)}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
 						on:touchmove|preventDefault={handleTouchMove}
-						on:touchend|preventDefault={handleTouchEnd}
+						on:touchend|passive={handleTouchEnd}
 					>
 						<Piece {sq} />
 					</button>
@@ -133,13 +134,12 @@
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
-						on:drop|preventDefault={handleDrop}
+						on:drop={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} black king in check`}
 						on:click|preventDefault={() => handleClick(sq)}
-						on:touchstart|preventDefault={(event) =>
-							handleTouchStart(event, sq)}
-						on:touchmove|preventDefault={handleTouchMove}
-						on:touchend|preventDefault={handleTouchEnd}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
 						<Piece {sq} />
 					</button>
@@ -154,13 +154,12 @@
 						draggable="true"
 						on:dragstart={() => handleDragStart(sq)}
 						on:dragover|preventDefault
-						on:drop|preventDefault={handleDrop}
+						on:drop={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
-						on:touchstart|preventDefault={(event) =>
-							handleTouchStart(event, sq)}
-						on:touchmove|preventDefault={handleTouchMove}
-						on:touchend|preventDefault={handleTouchEnd}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
 						<Piece {sq} />
 					</button>
@@ -178,10 +177,9 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
-						on:touchstart|preventDefault={(event) =>
-							handleTouchStart(event, sq)}
-						on:touchmove|preventDefault={handleTouchMove}
-						on:touchend|preventDefault={handleTouchEnd}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
 						<Piece {sq} />
 					</button>
@@ -198,10 +196,9 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
-						on:touchstart|preventDefault={(event) =>
-							handleTouchStart(event, sq)}
-						on:touchmove|preventDefault={handleTouchMove}
-						on:touchend|preventDefault={handleTouchEnd}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
 						<Piece {sq} />
 					</button>
@@ -218,10 +215,9 @@
 						on:drop|preventDefault={handleDrop}
 						id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 						on:click|preventDefault={() => handleClick(sq)}
-						on:touchstart|preventDefault={(event) =>
-							handleTouchStart(event, sq)}
-						on:touchmove|preventDefault={handleTouchMove}
-						on:touchend|preventDefault={handleTouchEnd}
+						on:touchstart|passive={(event) => handleTouchStart(event, sq)}
+						on:touchmove|passive={handleTouchMove}
+						on:touchend|passive={handleTouchEnd}
 					>
 						<Piece {sq} />
 					</button>
