@@ -5,7 +5,7 @@
 	import Improvements from '$lib/components/improvements.svelte';
 	import MoveGuide from '$lib/components/moveGuide.svelte';
 	import ResetButton from '$lib/components/resetButton.svelte';
-	import { startingPosition } from '$lib/startingPosition';
+	import { startingPosition } from '$lib/components/chess/startingPosition';
 	import { chessSchema, type Chess } from '../lib/types';
 	import type { PageData } from './$types';
 
