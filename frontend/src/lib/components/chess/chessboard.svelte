@@ -1,11 +1,11 @@
 <script lang="ts">
-	import Square from './square.svelte';
 	import type { Chess, PossibleMoves, Square as SquareType } from '../../types';
 	import {
 		handleBoardToFront,
 		isWhiteTurn,
 		legalMove,
 	} from '$lib/components/chess/utils';
+	import Piece from './piece.svelte';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
@@ -88,6 +88,7 @@
 			y: event.touches[0].clientY,
 		};
 	};
+
 	const handleTouchEnd = (event: TouchEvent) => {
 		if (lastKnownTouchPosition) {
 			const targetElement = document.elementFromPoint(
@@ -122,7 +123,7 @@
 						on:touchmove|preventDefault={handleTouchMove}
 						on:touchend|preventDefault={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if chess.black_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'Black'}
 					<button
@@ -140,7 +141,7 @@
 						on:touchmove|preventDefault={handleTouchMove}
 						on:touchend|preventDefault={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if sq.color === 'White' && sq.piece !== 'None'}
 					<button
@@ -161,7 +162,7 @@
 						on:touchmove|preventDefault={handleTouchMove}
 						on:touchend|preventDefault={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if sq.color === 'Black' && sq.piece !== 'None'}
 					<button
@@ -182,7 +183,7 @@
 						on:touchmove|preventDefault={handleTouchMove}
 						on:touchend|preventDefault={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else if sq.color === 'White'}
 					<button
@@ -202,7 +203,7 @@
 						on:touchmove|preventDefault={handleTouchMove}
 						on:touchend|preventDefault={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{:else}
 					<button
@@ -222,7 +223,7 @@
 						on:touchmove|preventDefault={handleTouchMove}
 						on:touchend|preventDefault={handleTouchEnd}
 					>
-						<Square {sq} />
+						<Piece {sq} />
 					</button>
 				{/if}
 			{/each}
