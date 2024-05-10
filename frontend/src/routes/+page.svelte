@@ -9,10 +9,11 @@
 	import { chessSchema, type Chess } from '../lib/types';
 	import type { PageData } from './$types';
 
-	export let data: PageData;
-	let chess = data.data.chess;
+	// export let data: PageData;
+	// let chess = data.data.chess;
+	let chess = startingPosition;
 	let errorMessage = '';
-	const apiUrl = data.data.url;
+	const apiUrl = '';
 
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);

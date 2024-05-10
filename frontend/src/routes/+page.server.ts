@@ -1,31 +1,30 @@
-import { env } from '$env/dynamic/public';
-import { error } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
-import { chessSchema } from '$lib/types';
+import { env } from "$env/dynamic/public";
+import { error } from "@sveltejs/kit";
+import type { PageServerLoad } from "./$types";
+import { chessSchema } from "$lib/types";
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	let apiUrl: string;
-	if (import.meta.env.MODE === 'development') {
-		apiUrl = env.PUBLIC_DEV_URL;
+	let wsUrl: string;
+	if (import.meta.env.MODE === "development") {
+		wsUrl = env.PUBLIC_DEV_WS_URL;
 	} else {
-		apiUrl = env.PUBLIC_PROD_URL;
+		wsUrl = env.PUBLIC_PROD_WS_URL;
 	}
 
-	try {
-		const response = await fetch(`${apiUrl}/api/chess`);
-		if (!response.ok) {
-			throw new Error('Failed to fetch chess data');
-		}
+	const ws = new WebSocket(wsUrl);
 
-		const data = await response.json();
-		const chess = chessSchema.parse(data.chess);
-		return {
-			data: {
-				chess,
-				url: apiUrl,
-			},
-		};
-	} catch (e) {
-		return error(500, { message: 'Backend not online' });
-	}
+	ws.onopen = () => {
+		console.log("WebSocket is connected");
+	};
+
+	ws.onmessage = (event) => {
+		console.log(`Received data: ${event.data["chess"]}`);
+	};
+
+	ws.onerror = (errorEvent) => {
+		console.error("WebSocket error: ", errorEvent);
+	};
+	ws.onclose = (event) => {
+		console.log("WebSocket is closed with event: ", event);
+	};
 };
