@@ -2,12 +2,16 @@
 	import Footer from '$lib/components/footer.svelte';
 	import Title from '$lib/components/title.svelte';
 	import '../app.css';
+	import { initializeStores, Modal } from '@skeletonlabs/skeleton';
+
+	initializeStores();
 </script>
 
 <svelte:head>
 	<title>Chess App</title>
 </svelte:head>
 
+<Modal />
 <div
 	class="flex flex-col items-center justify-center space-y-4 my-4 max-w-screen-xl min-h-screen mx-auto overflow-auto flex-shrink-0"
 >
