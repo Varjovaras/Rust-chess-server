@@ -9,7 +9,7 @@
 		<div id={`${sq.file.toLowerCase()}${sq.rank + 1} no piece`} />
 	{:else}
 		<img
-			class="flex justify-center items-center w-full h-full"
+			class="mx-auto block max-w-full w-full h-full"
 			src={returnCorrectPieceColor(sq.piece)}
 			alt={'square with a piece'}
 			draggable="true"

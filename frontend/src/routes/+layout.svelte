@@ -8,7 +8,9 @@
 	<title>Chess App</title>
 </svelte:head>
 
-<div class="flex flex-col items-center justify-center p-4">
+<div
+	class="flex flex-col items-center justify-center space-y-4 my-4 max-w-screen-xl min-h-screen mx-auto overflow-auto flex-shrink-0"
+>
 	<meta name="description" content="Chess portfolio simulator" />
 	<Title />
 	<slot />
