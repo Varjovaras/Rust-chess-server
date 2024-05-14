@@ -74,5 +74,10 @@
 
 <ErrorMessage {errorMessage} />
 <Chessboard {chess} {handleMove} />
+
 <ResetButton {handleReset} />
+<div class="text-center mx-4">
+	Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on
+	the frontend
+</div>
 <Improvements />
