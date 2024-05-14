@@ -2,12 +2,11 @@
 	import Chessboard from '$lib/components/chess/chessboard.svelte';
 	import { startingPosition } from '$lib/components/chess/startingPosition';
 	import ErrorMessage from '$lib/components/errorMessage.svelte';
-	import Improvements from '$lib/components/improvements.svelte';
-	// import MoveGuide from "$lib/components/moveGuide.svelte";
 	import ResetButton from '$lib/components/resetButton.svelte';
 	import { type Chess, chessSchema } from '../lib/types';
 	import type { PageData } from './$types';
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
+	import TechStack from '$lib/components/techStack.svelte';
 
 	const modalStore = getModalStore();
 
@@ -74,10 +73,5 @@
 
 <ErrorMessage {errorMessage} />
 <Chessboard {chess} {handleMove} />
-
 <ResetButton {handleReset} />
-<div class="text-center mx-4">
-	Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on
-	the frontend
-</div>
-<Improvements />
+<TechStack />
