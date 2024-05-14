@@ -111,7 +111,7 @@
 			{#each row as sq, j}
 				{#if chess.white_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'White'}
 					<button
-						class="h-11 w-11 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-22 lg:w-22 xl:w-24 xl:h-24 bg-red-800 text-center hover:bg-red-900"
+						class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-red-800 text-center hover:bg-red-900"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
@@ -128,7 +128,7 @@
 					</button>
 				{:else if chess.black_player.in_check && typeof sq.piece === 'object' && sq.piece.King !== undefined && sq.piece.King === 'Black'}
 					<button
-						class="h-11 w-11 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-22 lg:w-22 xl:w-24 xl:h-24 bg-red-800 hover:bg-red-900 text-center"
+						class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-red-800 hover:bg-red-900 text-center"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						draggable="true"
@@ -145,7 +145,7 @@
 					</button>
 				{:else if sq.color === 'White' && sq.piece !== 'None'}
 					<button
-						class="h-11 w-11 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-22 lg:w-22 xl:w-24 xl:h-24 bg-gray-200 text-center hover:bg-gray-600"
+						class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-gray-200 text-center hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						class:possible_move={possibleMoves.some(
@@ -165,7 +165,7 @@
 					</button>
 				{:else if sq.color === 'Black' && sq.piece !== 'None'}
 					<button
-						class="h-11 w-11 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-22 lg:w-22 xl:w-24 xl:h-24 bg-gray-400 text-center hover:bg-gray-600"
+						class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-gray-400 text-center hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						class:possible_move={possibleMoves.some(
@@ -185,7 +185,7 @@
 					</button>
 				{:else if sq.color === 'White'}
 					<button
-						class="h-11 w-11 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-22 lg:w-22 xl:w-24 xl:h-24 bg-gray-200 text-center hover:bg-gray-600"
+						class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-gray-200 text-center hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						class:possible_move={possibleMoves.some(
@@ -204,7 +204,7 @@
 					</button>
 				{:else}
 					<button
-						class="h-11 w-11 sm:h-16 sm:w-16 md:h-20 md:w-20 lg:h-22 lg:w-22 xl:w-24 xl:h-24 bg-gray-400 text-center hover:bg-gray-600"
+						class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-gray-400 text-center hover:bg-gray-600"
 						class:selected={selectedButton ===
 							sq.file.toLowerCase() + (sq.rank + 1)}
 						class:possible_move={possibleMoves.some(
