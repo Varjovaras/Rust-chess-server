@@ -6,6 +6,7 @@
 		Built with Rust on the backend and Sveltekit, Typescript and Tailwindcss on
 		the frontend
 	</p>
+	<p>Deployed on Vercel</p>
 	<ul class="m-4">
 		todo:
 		<div class="text-xs">
