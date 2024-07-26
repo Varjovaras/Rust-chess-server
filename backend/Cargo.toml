@@ -17,7 +17,6 @@ strip = "symbols" # Strip symbols from binary
 unsafe_code = "forbid"
 
 
-
 [lints.clippy]
 enum_glob_use = "deny"
 pedantic = { level = "deny", priority = -1 }
