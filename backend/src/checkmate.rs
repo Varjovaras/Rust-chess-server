@@ -25,8 +25,8 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
     };
 
     let is_checkmate = moves.iter().all(|possible_move| {
-        let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
-        let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
+        let start_sq = &chess.board[possible_move.0.0][possible_move.0.1];
+        let end_sq = &chess.board[possible_move.1.0][possible_move.1.1];
         !king_is_not_in_check_after_move(&*chess, start_sq, end_sq)
     });
 
@@ -42,7 +42,8 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
 
     is_checkmate
 }
-
+#[must_use]
+#[allow(clippy::missing_panics_doc)]
 pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinates> {
     let chessboard = chess.board.clone();
     let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
@@ -69,6 +70,7 @@ pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinat
     possible_moves
 }
 
+#[must_use]
 pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     let file = sq.file as usize;
     let rank = sq.rank as usize;
@@ -108,6 +110,7 @@ pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     possible_moves
 }
 
+#[must_use]
 pub fn knight_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     KNIGHT_MOVES
         .iter()
@@ -127,6 +130,7 @@ pub fn knight_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
+#[must_use]
 pub fn bishop_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     BISHOP_MOVES
         .iter()
@@ -148,6 +152,7 @@ pub fn bishop_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
+#[must_use]
 pub fn rook_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     ROOK_MOVES
         .iter()
@@ -169,6 +174,7 @@ pub fn rook_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         .collect()
 }
 
+#[must_use]
 pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     let king_moves: [(i8, i8); 10] = [
         (1, 1),
@@ -183,6 +189,7 @@ pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
         (-2, 0),
     ];
 
+    #[allow(clippy::cast_sign_loss)]
     king_moves
         .iter()
         .filter_map(|king_move| {

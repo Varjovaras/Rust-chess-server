@@ -4,7 +4,7 @@ use super::move_helpers::{bishop_move::DiagonalMoveDirection, helpers::is_diagon
 
 pub const BISHOP_MOVES: [(i8, i8); 4] = [(-1, 1), (1, 1), (1, -1), (-1, -1)];
 
-pub fn move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use] pub fn move_bishob(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if !is_diagonal(start_sq, end_sq)
         || end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color()
     {

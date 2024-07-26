@@ -8,7 +8,7 @@ pub enum MoveDirection {
 }
 
 impl MoveDirection {
-    pub fn new(start_sq: &Square, end_sq: &Square) -> Option<Self> {
+    #[must_use] pub fn new(start_sq: &Square, end_sq: &Square) -> Option<Self> {
         if move_is_up(start_sq, end_sq) {
             Some(Self::Up)
         } else if move_is_right(start_sq, end_sq) {
@@ -22,7 +22,7 @@ impl MoveDirection {
         }
     }
 
-    pub fn make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    #[must_use] pub fn make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             Self::Up => move_up(start_sq, end_sq, chess),
             Self::Right => move_right(start_sq, end_sq, chess),

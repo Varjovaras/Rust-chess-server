@@ -31,6 +31,7 @@ pub struct Chess {
 }
 
 impl Chess {
+    #[must_use]
     pub fn _new() -> Self {
         Self {
             board: chessboard::new_board(),
@@ -45,6 +46,7 @@ impl Chess {
         }
     }
 
+    #[must_use]
     pub fn new_starting_position() -> Self {
         let mut chess = Self {
             board: chessboard::new_board(),
@@ -62,10 +64,13 @@ impl Chess {
         chess
     }
 
+    #[allow(clippy::missing_panics_doc)]
+    #[must_use]
     pub fn _to_json(&self) -> String {
         serde_json::to_string(&self).expect("Failed to convert to JSON")
     }
 
+    #[allow(clippy::missing_errors_doc)]
     pub fn _from_json(json_str: &str) -> Result<Self, serde_json::Error> {
         serde_json::from_str(json_str)
     }
@@ -81,10 +86,13 @@ impl Chess {
         self.gamestate = GameState::InProgress;
     }
 
+    #[must_use]
     pub fn get_square(&self, file: File, rank: Rank) -> Square {
         self.board[file as usize][rank as usize].clone()
     }
 
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub fn get_square_from_str(&self, file_str: &str, rank_str: &str) -> &Square {
         let file = File::_from_str_slice(file_str).as_usize();
         let rank = Rank::_from_str(rank_str).as_usize();
@@ -120,8 +128,8 @@ impl Chess {
         }
     }
 
-    pub fn make_move(&mut self, start_sq: Square, end_sq: Square) {
-        make_chess_move(self, &start_sq, &end_sq);
+    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square) {
+        make_chess_move(self, start_sq, end_sq);
     }
 
     pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {

@@ -15,7 +15,7 @@ pub enum GameState {
     InProgress,
 }
 
-pub fn insufficient_material(chess: &Chess) -> bool {
+#[must_use] pub fn insufficient_material(chess: &Chess) -> bool {
     let (white_knights, white_bishops) = count_pieces(get_squares_with_white_pieces(&chess.board));
     let (black_knights, black_bishops) = count_pieces(get_squares_with_black_pieces(&chess.board));
 

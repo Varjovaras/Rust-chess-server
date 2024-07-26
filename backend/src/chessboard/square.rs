@@ -39,6 +39,7 @@ pub struct Square {
 }
 
 impl Square {
+    #[must_use]
     pub const fn new(file: File, rank: Rank, color: SquareColor, piece: Piece) -> Self {
         Self {
             file,
@@ -49,6 +50,9 @@ impl Square {
         }
     }
 
+
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub fn _new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Self {
         let file = File::try_from(file).expect("Invalid file");
         let rank = Rank::try_from(rank).expect("Invalid rank");
@@ -61,6 +65,8 @@ impl Square {
         }
     }
 
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub fn _new_without_piece(file: u8, rank: u8) -> Self {
         let file = File::try_from(file).expect("Invalid file");
         let rank = Rank::try_from(rank).expect("Invalid rank");
@@ -73,22 +79,27 @@ impl Square {
         }
     }
 
+    #[must_use]
     pub fn _square_name(&self) -> String {
         self.file._as_str().to_owned() + self.rank._as_str()
     }
 
+    #[must_use]
     pub const fn _square_color(&self) -> SquareColor {
         self.color
     }
 
+    #[must_use]
     pub fn is_empty(&self) -> bool {
         self.piece == Piece::default()
     }
 
+    #[must_use]
     pub fn has_piece(&self) -> bool {
         self.piece != Piece::default()
     }
 
+    #[must_use]
     pub const fn _piece_name(&self) -> &'static str {
         match self.piece {
             Piece::None => " ",
@@ -125,6 +136,7 @@ impl Square {
         }
     }
 
+    #[must_use]
     pub fn possible_legal_moves(&self, chess: &Chess) -> Vec<MoveFromCoordinates> {
         let mut moves = vec![];
         match self.piece {
@@ -146,16 +158,17 @@ impl Square {
         moves
             .iter()
             .filter(|possible_move| {
-                let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1].clone();
-                let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1].clone();
-                check_if_move_is_legal(chess, start_sq, end_sq)
+                let start_sq = chess.board[possible_move.0.0][possible_move.0.1].clone();
+                let end_sq = chess.board[possible_move.1.0][possible_move.1.1].clone();
+                check_if_move_is_legal(chess, &start_sq, &end_sq)
             })
             .copied()
             .collect::<Vec<MoveFromCoordinates>>()
     }
 }
 
-pub fn check_if_move_is_legal(chess: &Chess, start_sq: Square, end_sq: Square) -> bool {
+#[must_use]
+pub fn check_if_move_is_legal(chess: &Chess, start_sq: &Square, end_sq: &Square) -> bool {
     let mut temp_board = chess.board.clone();
     if end_sq.has_piece() && end_sq.piece.color() == start_sq.piece.color() {
         return false;

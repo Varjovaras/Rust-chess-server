@@ -7,6 +7,8 @@ use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
 use tower_http::cors::{Any, CorsLayer};
 use chess::Chess;
+use chess::chessboard::file::File;
+use chess::chessboard::rank::Rank;
 
 #[derive(Debug, Deserialize)]
 struct MoveRequest {
@@ -20,21 +22,20 @@ struct MoveResponse {
 }
 
 
-
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
     //setup new chess and iter and handle moves provided by payload
     let mut chess = Chess::new_starting_position();
 
     for move_tuple in &payload.list_of_moves {
         let start_sq = chess.get_square(
-            File::try_from(move_tuple.0 .0.as_str()).expect("invalid file"), // try to convert from string
-            Rank::try_from(move_tuple.0 .1).expect("invalid rank"), // rank is usize already
+            File::try_from(move_tuple.0.0.as_str()).expect("invalid file"), // try to convert from string
+            Rank::try_from(move_tuple.0.1).expect("invalid rank"), // rank is usize already
         );
         let end_sq = chess.get_square(
-            File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"), // try to convert from string
-            Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
+            File::try_from(move_tuple.1.0.as_str()).expect("invalid file"), // try to convert from string
+            Rank::try_from(move_tuple.1.1).expect("invalid rank"),
         );
-        chess.make_move(start_sq, end_sq);
+        chess.make_move(&start_sq, &end_sq);
     }
 
     chess.make_move_from_str(&payload.new_move[0], &payload.new_move[1]);

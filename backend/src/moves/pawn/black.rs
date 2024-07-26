@@ -6,7 +6,7 @@ use crate::{
 };
 
 //only en passant affects board, that's why chess is mutable reference
-pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use] pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::First || end_sq.rank > start_sq.rank || start_sq.is_empty() {
         false
     } else if start_sq.rank == Rank::Seventh {
@@ -69,7 +69,7 @@ fn black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-pub fn latest_move_enables_black_en_passant(
+#[must_use] pub fn latest_move_enables_black_en_passant(
     chess: &Chess,
     start_sq: &Square,
     end_sq: &Square,

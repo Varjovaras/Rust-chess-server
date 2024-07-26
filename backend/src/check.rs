@@ -1,10 +1,12 @@
 use crate::{
-    chessboard::{get_black_king, get_white_king, ChessBoard},
-    moves::bishop::BISHOP_MOVES,
+    chessboard::{ChessBoard, get_black_king, get_white_king},
     moves::{knight::KNIGHT_MOVES, rook::ROOK_MOVES},
+    moves::bishop::BISHOP_MOVES,
     piece::{Piece, PieceColor},
 };
 
+#[must_use]
+#[allow(clippy::missing_panics_doc)]
 pub fn is_king_in_check_state(chess_board: &ChessBoard, king_color: PieceColor) -> bool {
     let king_sq = match king_color {
         PieceColor::White => {
@@ -91,11 +93,11 @@ fn check_by_white_pawn(king_file: i8, king_rank: i8, board: &ChessBoard) -> bool
         #[allow(clippy::cast_sign_loss)]
         let right_attack = king_file < 7
             && board[king_file as usize + 1][king_rank as usize - 1].piece
-                == Piece::Pawn(PieceColor::White);
+            == Piece::Pawn(PieceColor::White);
         #[allow(clippy::cast_sign_loss)]
         let left_attack = king_file > 0
             && board[king_file as usize - 1][king_rank as usize - 1].piece
-                == Piece::Pawn(PieceColor::White);
+            == Piece::Pawn(PieceColor::White);
         if right_attack || left_attack {
             // println!("in check by white pawn");
         }
@@ -110,11 +112,11 @@ fn check_by_black_pawn(king_file: i8, king_rank: i8, chess_board: &ChessBoard) -
         #[allow(clippy::cast_sign_loss)]
         let right_attack = king_file > 0
             && chess_board[king_file as usize - 1][king_rank as usize + 1].piece
-                == Piece::Pawn(PieceColor::Black);
+            == Piece::Pawn(PieceColor::Black);
         #[allow(clippy::cast_sign_loss)]
         let left_attack = king_file < 7
             && chess_board[king_file as usize + 1][king_rank as usize + 1].piece
-                == Piece::Pawn(PieceColor::Black);
+            == Piece::Pawn(PieceColor::Black);
         if right_attack || left_attack {
             // println!("in check by black pawn");
         }
@@ -244,20 +246,20 @@ mod tests {
             king_file,
             king_rank,
             WHITE,
-            &chess.board
+            &chess.board,
         ));
         assert!(!bishop_or_queen_check(
             king_file,
             king_rank,
             BLACK,
-            &chess.board
+            &chess.board,
         ));
         chess.board[5][5].piece = Piece::Knight(WHITE);
         assert!(!bishop_or_queen_check(
             king_file,
             king_rank,
             WHITE,
-            &chess.board
+            &chess.board,
         ));
 
         let king_file = 7;
@@ -266,20 +268,20 @@ mod tests {
             king_file,
             king_rank,
             WHITE,
-            &chess.board
+            &chess.board,
         ));
         chess.board[0][7].piece = Piece::Bishop(BLACK);
         assert!(bishop_or_queen_check(
             king_file,
             king_rank,
             WHITE,
-            &chess.board
+            &chess.board,
         ));
         assert!(!bishop_or_queen_check(
             king_file,
             king_rank,
             BLACK,
-            &chess.board
+            &chess.board,
         ));
     }
 

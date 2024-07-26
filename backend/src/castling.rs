@@ -14,6 +14,12 @@ pub struct RightToCastle {
     pub queen: bool,
 }
 
+impl Default for Castling {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Castling {
     #[must_use]
     pub const fn new() -> Self {
@@ -23,7 +29,8 @@ impl Castling {
         }
     }
 
-    pub fn _castling_allowed(self, start_sq: Square, end_sq: Square) -> bool {
+    #[must_use]
+    pub const fn _castling_allowed(self, start_sq: &Square, end_sq: &Square) -> bool {
         match (start_sq.rank, end_sq.file) {
             (Rank::First, File::G) => self.white.king,
             (Rank::First, File::C) => self.white.queen,
@@ -34,7 +41,14 @@ impl Castling {
     }
 }
 
+impl Default for RightToCastle {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl RightToCastle {
+    #[must_use]
     pub const fn new() -> Self {
         Self {
             king: true,

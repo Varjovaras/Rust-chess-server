@@ -7,7 +7,7 @@ use super::move_helpers::{
     rook_move::MoveDirection,
 };
 
-pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use] pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if !is_vertical(start_sq, end_sq) && !is_horizontal(start_sq, end_sq) {
         return false;
     }

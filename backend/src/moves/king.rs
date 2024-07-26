@@ -10,7 +10,7 @@ use crate::{
 
 use super::move_helpers::helpers::{is_diagonal, is_horizontal, is_vertical};
 
-pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use] pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if square_is_bordered_by_other_king(&chess.board, start_sq, end_sq) {
         false
     } else if move_is_castling(start_sq, end_sq, chess) {
@@ -26,7 +26,7 @@ pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     }
 }
 
-pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use] pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if !(start_sq.piece == Piece::King(PieceColor::White))
         && !(start_sq.piece == Piece::King(PieceColor::Black))
     {

@@ -44,7 +44,7 @@ pub type ChessBoard = [[Square; 8]; 8];
 //     board
 // }
 
-pub fn new_board() -> ChessBoard {
+#[must_use] pub fn new_board() -> ChessBoard {
     let mut color = SquareColor::Black; //starting color of the bottom left corner
 
     let files = File::get_files();
@@ -71,7 +71,7 @@ const fn color_changer(color: SquareColor) -> SquareColor {
     }
 }
 
-pub fn starting_position() -> ChessBoard {
+#[must_use] pub fn starting_position() -> ChessBoard {
     let mut board = new_board();
     let pieces = [
         Piece::Rook,
@@ -121,7 +121,7 @@ fn set_pieces(board: &mut ChessBoard, color: PieceColor, rank: usize, pieces: &[
     }
 }
 
-pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
+#[must_use] pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
     for file in board.iter().take(8) {
         for square in file {
             if square.piece == King(White) {
@@ -132,7 +132,7 @@ pub fn get_white_king(board: &ChessBoard) -> Option<&Square> {
     None
 }
 
-pub fn get_black_king(board: &ChessBoard) -> Option<&Square> {
+#[must_use] pub fn get_black_king(board: &ChessBoard) -> Option<&Square> {
     for file in board.iter().take(8) {
         for square in file {
             if square.piece == King(Black) {
@@ -143,7 +143,7 @@ pub fn get_black_king(board: &ChessBoard) -> Option<&Square> {
     None
 }
 
-pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<&Square> {
+#[must_use] pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<&Square> {
     board
         .iter()
         .flatten()
@@ -151,7 +151,7 @@ pub fn get_squares_with_white_pieces(board: &ChessBoard) -> Vec<&Square> {
         .collect()
 }
 
-pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<&Square> {
+#[must_use] pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<&Square> {
     board
         .iter()
         .flatten()
@@ -159,7 +159,7 @@ pub fn get_squares_with_black_pieces(board: &ChessBoard) -> Vec<&Square> {
         .collect()
 }
 
-pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
+#[must_use] pub fn get_adjacent_squares(sq: &Square, board: &ChessBoard) -> Vec<Square> {
     let mut adjacent_squares: Vec<Square> = Vec::new();
     let file = sq.file as isize;
     let rank = sq.rank as isize;

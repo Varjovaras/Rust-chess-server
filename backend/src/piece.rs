@@ -23,7 +23,7 @@ pub enum Piece {
 }
 
 impl Piece {
-    pub fn piece_move(self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    #[must_use] pub fn piece_move(self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             Self::None => false,
             Self::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
@@ -35,7 +35,7 @@ impl Piece {
         }
     }
 
-    pub const fn color(self) -> PieceColor {
+    #[must_use] pub const fn color(self) -> PieceColor {
         match self {
             Self::None => PieceColor::None,
             Self::Pawn(color)

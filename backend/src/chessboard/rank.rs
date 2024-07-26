@@ -17,6 +17,8 @@ pub enum Rank {
 }
 
 impl Rank {
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub const fn _as_str(self) -> &'static str {
         match self {
             Self::First => "1",
@@ -30,6 +32,7 @@ impl Rank {
         }
     }
 
+    #[must_use]
     pub const fn as_usize(self) -> usize {
         match self {
             Self::First => 0,
@@ -43,6 +46,8 @@ impl Rank {
         }
     }
 
+    #[must_use]
+    #[allow(clippy::missing_panics_doc)]
     pub fn _from_str(s: &str) -> Self {
         match s {
             "1" => Self::First,
