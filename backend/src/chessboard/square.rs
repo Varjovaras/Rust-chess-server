@@ -174,12 +174,12 @@ pub fn check_if_move_is_legal(chess: &Chess, start_sq: &Square, end_sq: &Square)
         return false;
     }
 
-    if !start_sq.piece.piece_move(&start_sq, &end_sq, chess) {
+    if !start_sq.piece.piece_move(start_sq, end_sq, chess) {
         return false;
     };
 
-    if move_is_white_en_passant(&start_sq, &end_sq, chess)
-        || move_is_black_en_passant(&start_sq, &end_sq, chess)
+    if move_is_white_en_passant(start_sq, end_sq, chess)
+        || move_is_black_en_passant(start_sq, end_sq, chess)
     {
         temp_board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
     }

@@ -121,7 +121,7 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
                         .filter(|possible_move| {
                             let start_sq = &chess.board[possible_move.0.0][possible_move.0.1];
                             let end_sq = &chess.board[possible_move.1.0][possible_move.1.1];
-                            check_if_move_is_legal(chess, &start_sq, &end_sq)
+                            check_if_move_is_legal(chess, start_sq, end_sq)
                         })
                         .collect::<Vec<_>>()
                 })
@@ -141,11 +141,11 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
 fn handle_rook_and_king_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     //remove castling if king or rook moves
     if move_is_castling(start_sq, end_sq, chess) {
-        handle_castling(chess, &start_sq, &end_sq);
+        handle_castling(chess, start_sq, end_sq);
         handle_check_after_move(chess);
         return;
     }
-    remove_castling(chess, &start_sq);
+    remove_castling(chess, start_sq);
 }
 
 fn move_is_allowed(chess: &mut Chess, start_sq_piece_color: PieceColor) -> bool {
