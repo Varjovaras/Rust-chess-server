@@ -1,5 +1,5 @@
 [package]
-name = "chessbackend"
+name = "chess"
 version = "0.1.0"
 edition = "2021"
 
@@ -16,19 +16,28 @@ strip = "symbols" # Strip symbols from binary
 [lints.rust]
 unsafe_code = "forbid"
 
+
+
 [lints.clippy]
 enum_glob_use = "deny"
-unwrap_used = "deny"
+pedantic = { level = "deny", priority = -1 }
+nursery = { level = "deny", priority = -1 }
+correctness = { level = "deny", priority = -1 }
+complexity = { level = "deny", priority = -1 }
+perf = { level = "deny", priority = -1 }
+# cargo = { level = "deny", priority = -1 }
+# restriction = { level = "deny", priority = -1 }
+
 
 [dependencies]
-rand = "0.8.4"
-serde_json = "1.0.70"
-serde = { version = "1.0.130", features = ["derive"] }
-axum = "0.7.4"
-shuttle-axum = "0.46.0"
-shuttle-runtime = "0.46.0"
-tokio = "1.28.2"
-tower = { version = "0.4", features = ["full"] }
-tower-http = { version = "0.5.1", features = ["full"] }
+rand = "0.9.0-alpha.1"
+serde_json = "1.0.120"
+serde = { version = "1.0.204", features = ["derive"] }
+axum = "0.7.5"
+shuttle-axum = "0.47.0"
+shuttle-runtime = "0.47.0"
+tokio = "1.39.1"
+tower = { version = "0.4.13", features = ["full"] }
+tower-http = { version = "0.5.2", features = ["full"] }
 serde_repr = "0.1"
-cargo-shuttle = "0.46.0"
+cargo-shuttle = "0.47.0"

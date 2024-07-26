@@ -15,6 +15,7 @@ pub struct RightToCastle {
 }
 
 impl Castling {
+    #[must_use]
     pub const fn new() -> Self {
         Self {
             white: RightToCastle::new(),

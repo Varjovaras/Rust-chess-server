@@ -1,14 +1,3 @@
-mod castling;
-mod check;
-mod checkmate;
-mod chess;
-mod chessboard;
-mod game_state;
-mod make_chess_move;
-mod moves;
-mod piece;
-mod player;
-
 use axum::{
     http::{header::CONTENT_TYPE, Method, StatusCode},
     routing::{get, post},
@@ -17,6 +6,7 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
 use tower_http::cors::{Any, CorsLayer};
+use chess::Chess;
 
 #[derive(Debug, Deserialize)]
 struct MoveRequest {
@@ -29,10 +19,7 @@ struct MoveResponse {
     pub chess: Chess,
 }
 
-use crate::{
-    chess::Chess,
-    chessboard::{file::File, rank::Rank},
-};
+
 
 async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
     //setup new chess and iter and handle moves provided by payload
