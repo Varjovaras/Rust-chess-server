@@ -1,5 +1,5 @@
 .DS_Store
-
+/node_modules
 
 
 # Added by cargo
@@ -9,5 +9,3 @@ target/
 Secrets*.toml
 test_sub.sh
 public/
-
-/.DS_Store
