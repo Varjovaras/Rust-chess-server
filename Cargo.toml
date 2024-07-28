@@ -1,0 +1,25 @@
+[workspace]
+resolver = "2"
+members = ["chess", "backend"]
+
+
+[profile.dev]
+opt-level = 0
+
+[profile.release]
+opt-level = 'z'   # Optimize for size.
+lto = true        # Enable Link Time Optimisation
+codegen-units = 1 # Reduced to increase optimisations.
+panic = 'abort'   # Abort on panic
+strip = "symbols" # Strip symbols from binary
+
+
+# [lints.clippy]
+# enum_glob_use = "deny"
+# pedantic = { level = "deny", priority = -1 }
+# nursery = { level = "deny", priority = -1 }
+# correctness = { level = "deny", priority = -1 }
+# complexity = { level = "deny", priority = -1 }
+# perf = { level = "deny", priority = -1 }
+# cargo = { level = "deny", priority = -1 }
+# restriction = { level = "deny", priority = -1 }

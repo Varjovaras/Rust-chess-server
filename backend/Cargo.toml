@@ -1,34 +1,10 @@
 [package]
-name = "chess"
+name = "backend"
 version = "0.1.0"
 edition = "2021"
 
-[profile.dev]
-opt-level = 0
-
-[profile.release]
-opt-level = 'z'   # Optimize for size.
-lto = true        # Enable Link Time Optimisation
-codegen-units = 1 # Reduced to increase optimisations.
-panic = 'abort'   # Abort on panic
-strip = "symbols" # Strip symbols from binary
-
-[lints.rust]
-unsafe_code = "forbid"
-
-
-[lints.clippy]
-enum_glob_use = "deny"
-pedantic = { level = "deny", priority = -1 }
-nursery = { level = "deny", priority = -1 }
-correctness = { level = "deny", priority = -1 }
-complexity = { level = "deny", priority = -1 }
-perf = { level = "deny", priority = -1 }
-# cargo = { level = "deny", priority = -1 }
-# restriction = { level = "deny", priority = -1 }
-
-
 [dependencies]
+chess = { path = "../chess" }
 rand = "0.9.0-alpha.1"
 serde_json = "1.0.120"
 serde = { version = "1.0.204", features = ["derive"] }

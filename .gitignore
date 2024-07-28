@@ -1,2 +1,13 @@
 .DS_Store
 
+
+
+# Added by cargo
+
+/target
+target/
+Secrets*.toml
+test_sub.sh
+public/
+
+/.DS_Store
