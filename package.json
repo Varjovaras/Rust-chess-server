@@ -1,11 +1,16 @@
 {
-  "name": "rust-chess-server",
-  "module": "index.ts",
-  "type": "module",
-  "devDependencies": {
-    "@types/bun": "latest"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+    "name": "rust-chess-server",
+    "module": "index.ts",
+    "type": "module",
+    "scripts": {
+        "deploy": "cargo-shuttle deploy --name chessbackend",
+        "restart": "cargo-shuttle project restart --name chessbackend",
+        "status": "cargo-shuttle project status --name chessbackend"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    }
 }
