@@ -5,7 +5,12 @@
     "scripts": {
         "deploy": "cargo-shuttle deploy --name chessbackend",
         "restart": "cargo-shuttle project restart --name chessbackend",
-        "status": "cargo-shuttle project status --name chessbackend"
+        "status": "cargo-shuttle project status --name chessbackend",
+        "dev": "cd frontend && bun dev",
+        "check": "cd frontend && bun check",
+        "check:watch": "cd frontend && bun check:watch",
+        "lint": "cd frontend && bun lint",
+        "format": "cd frontend && bun format"
     },
     "devDependencies": {
         "@types/bun": "latest"
