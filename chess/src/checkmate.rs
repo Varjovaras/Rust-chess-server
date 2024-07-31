@@ -17,16 +17,16 @@ pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates);
 
 pub fn is_checkmate_position(chess: &mut Chess) -> bool {
     let moves: Vec<MoveFromCoordinates> = if chess.white_player.in_check() {
-        possible_moves(chess, WHITE)
+        possible_legal_moves(chess, WHITE)
     } else if chess.black_player.in_check() {
-        possible_moves(chess, BLACK)
+        possible_legal_moves(chess, BLACK)
     } else {
         return false;
     };
 
     let is_checkmate = moves.iter().all(|possible_move| {
-        let start_sq = &chess.board[possible_move.0.0][possible_move.0.1];
-        let end_sq = &chess.board[possible_move.1.0][possible_move.1.1];
+        let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
+        let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
         !king_is_not_in_check_after_move(&*chess, start_sq, end_sq)
     });
 
@@ -44,7 +44,7 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
 }
 #[must_use]
 #[allow(clippy::missing_panics_doc)]
-pub fn possible_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinates> {
+pub fn possible_legal_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoordinates> {
     let chessboard = chess.board.clone();
     let mut possible_moves: Vec<MoveFromCoordinates> = Vec::new();
     let pieces = match color {
@@ -224,7 +224,7 @@ mod tests {
         assert!(!chess.black_player.in_check);
         assert!(chess.white_player.in_check);
         assert!(chess.black_player.victory);
-        chess._print_board_white();
+        chess._print_white_board_to_terminal();
 
         chess.starting_position();
         chess.make_move_from_str("e2", "e4");
@@ -233,7 +233,7 @@ mod tests {
         chess.make_move_from_str("d1", "h5");
         chess.make_move_from_str("b8", "c6");
         chess.make_move_from_str("h5", "e5");
-        chess._print_board_white();
+        chess._print_white_board_to_terminal();
         assert!(chess.black_player.in_check);
         chess.make_move_from_str("c6", "e7");
         assert!(!chess.black_player.in_check);

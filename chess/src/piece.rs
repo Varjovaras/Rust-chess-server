@@ -1,6 +1,14 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{chess::Chess, chessboard::square::Square, moves};
+use crate::{
+    checkmate::{
+        bishop_possible_moves, king_possible_moves, knight_possible_moves, pawn_possible_moves,
+        rook_possible_moves, MoveFromCoordinates,
+    },
+    chess::Chess,
+    chessboard::square::{check_if_move_is_legal, Square},
+    moves,
+};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]
@@ -23,7 +31,8 @@ pub enum Piece {
 }
 
 impl Piece {
-    #[must_use] pub fn piece_move(self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    #[must_use]
+    pub fn piece_move(self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             Self::None => false,
             Self::Pawn(color) => moves::pawn(start_sq, end_sq, chess, color),
@@ -35,7 +44,8 @@ impl Piece {
         }
     }
 
-    #[must_use] pub const fn color(self) -> PieceColor {
+    #[must_use]
+    pub const fn color(self) -> PieceColor {
         match self {
             Self::None => PieceColor::None,
             Self::Pawn(color)
@@ -59,7 +69,11 @@ impl Piece {
     //     }
     // }
 
-    // pub fn possible_legal_moves(self, chess: &Chess, start_sq: Square) -> Vec<MoveFromCoordinates> {
+    // pub fn possible_legal_moves(
+    //     self,
+    //     chess: &Chess,
+    //     start_sq: &Square,
+    // ) -> Vec<MoveFromCoordinates> {
     //     let mut moves = vec![];
     //     match self {
     //         Self::None => {}
@@ -80,8 +94,8 @@ impl Piece {
     //     moves
     //         .iter()
     //         .filter(|possible_move| {
-    //             let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1];
-    //             let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1];
+    //             let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
+    //             let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
     //             check_if_move_is_legal(chess, start_sq, end_sq)
     //         })
     //         .copied()

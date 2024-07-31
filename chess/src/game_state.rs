@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
 
 use crate::{
+    checkmate::possible_legal_moves,
     chess::Chess,
     chessboard::{get_squares_with_black_pieces, get_squares_with_white_pieces, square::Square},
-    piece::Piece,
+    piece::{Piece, PieceColor},
 };
 
 #[derive(Debug, PartialEq, Eq, Clone, Copy, Serialize, Deserialize)]
@@ -15,7 +16,8 @@ pub enum GameState {
     InProgress,
 }
 
-#[must_use] pub fn insufficient_material(chess: &Chess) -> bool {
+#[must_use]
+pub fn insufficient_material(chess: &Chess) -> bool {
     let (white_knights, white_bishops) = count_pieces(get_squares_with_white_pieces(&chess.board));
     let (black_knights, black_bishops) = count_pieces(get_squares_with_black_pieces(&chess.board));
 
@@ -27,6 +29,11 @@ pub enum GameState {
         (white_knights, white_bishops, black_knights, black_bishops),
         (0, 1 | 0, 1, 0) | (1, 0, 0, 1 | 0) | (2, 0, 0, 0) | (0, 0, 2, 0)
     )
+}
+
+#[must_use]
+pub fn stalemate(chess: &Chess, moving_color: PieceColor) -> bool {
+    possible_legal_moves(chess, moving_color).is_empty()
 }
 
 fn count_pieces(squares: Vec<&Square>) -> (u8, u8) {
