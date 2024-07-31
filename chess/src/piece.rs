@@ -1,14 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use crate::{
-    checkmate::{
-        bishop_possible_moves, king_possible_moves, knight_possible_moves, pawn_possible_moves,
-        rook_possible_moves, MoveFromCoordinates,
-    },
-    chess::Chess,
-    chessboard::square::{check_if_move_is_legal, Square},
-    moves,
-};
+use crate::{chess::Chess, chessboard::square::Square, moves};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[allow(clippy::module_name_repetitions)]

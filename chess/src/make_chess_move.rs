@@ -2,13 +2,8 @@ use crate::{
     check::is_king_in_check_state,
     checkmate::{self},
     chess::Chess,
-    chessboard::{
-        add_possible_moves_to_squares,
-        file::File,
-        rank::Rank,
-        square::{check_if_move_is_legal, Square},
-    },
-    game_state::{insufficient_material, GameState},
+    chessboard::{add_possible_moves_to_squares, file::File, rank::Rank, square::Square},
+    game_state::{insufficient_material, stalemate, GameState},
     moves::{
         king::move_is_castling,
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
@@ -17,9 +12,14 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-//NEEDS REFACTOR
+#[allow(clippy::missing_panics_doc)]
 pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     let moving_piece_color = start_sq.piece.color();
+    let opposite_color = match moving_piece_color {
+        PieceColor::White => PieceColor::Black,
+        PieceColor::Black => PieceColor::White,
+        PieceColor::None => PieceColor::None,
+    };
 
     if !move_is_allowed(chess, moving_piece_color) {
         return;
@@ -108,34 +108,13 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     {
         handle_rook_and_king_move(chess, start_sq, end_sq);
     }
-    let legal_moves: Vec<Vec<_>> = chess
-        .board
-        .iter()
-        .map(|file| {
-            file.iter()
-                .map(|sq| {
-                    let possible_moves = sq.possible_legal_moves(chess);
 
-                    possible_moves
-                        .into_iter()
-                        .filter(|possible_move| {
-                            let start_sq = &chess.board[possible_move.0.0][possible_move.0.1];
-                            let end_sq = &chess.board[possible_move.1.0][possible_move.1.1];
-                            check_if_move_is_legal(chess, start_sq, end_sq)
-                        })
-                        .collect::<Vec<_>>()
-                })
-                .collect()
-        })
-        .collect();
-
-    chess.board.iter_mut().enumerate().for_each(|(i, file)| {
-        file.iter_mut().enumerate().for_each(|(j, sq)| {
-            sq.possible_moves.clone_from(&legal_moves[i][j]);
-        });
-    });
     update_board(chess, start_sq, end_sq);
     add_possible_moves_to_squares(chess);
+
+    if stalemate(chess, opposite_color) {
+        chess.gamestate = GameState::Stalemate;
+    }
 }
 
 fn handle_rook_and_king_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
