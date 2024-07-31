@@ -10,7 +10,7 @@
         "check": "cd frontend && bun check",
         "check:watch": "cd frontend && bun check:watch",
         "lint": "cd frontend && bun lint",
-        "format": "cd frontend && bun format"
+        "build": "cd frontend && bun run build"
     },
     "devDependencies": {
         "@types/bun": "latest"

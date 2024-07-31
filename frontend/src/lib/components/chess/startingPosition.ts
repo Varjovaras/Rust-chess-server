@@ -1,4 +1,4 @@
-import type { Chess } from "../../types";
+import type { Chess } from "$lib/types";
 
 export const startingPosition: Chess = {
 	board: [
