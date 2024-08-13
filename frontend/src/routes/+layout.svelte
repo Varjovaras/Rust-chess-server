@@ -19,5 +19,14 @@
 	class="flex flex-col items-center justify-center space-y-4 my-4 max-w-screen-xl min-h-screen mx-auto overflow-auto flex-shrink-0"
 >
 	<slot />
-	<Footer />
 </div>
+<Footer />
+
+<style>
+	:global(body) {
+		overscroll-behavior-y: none;
+	}
+	:global(html) {
+		overflow-y: auto;
+	}
+</style>

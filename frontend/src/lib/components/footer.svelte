@@ -1,15 +1,21 @@
 <script lang="ts"></script>
 
-<footer class="m-4">
-	<div class="flex items-center">
+<footer
+	class="bg-surface-500/15 shadow-lg px-4 py-4 left-0 right-0 bottom-0 flex justify-between items-center w-full"
+>
+	<nav class="flex space-x-4">
+		<a href="/technology" class=" hover:text-gray-200">Technology</a>
+		<a href="/about" class=" hover:text-gray-200">About</a>
+	</nav>
+	<div class="text-gray-600 text-xs flex flex-row">
 		<a
 			href="https://github.com/varjovaras"
 			target="_blank"
 			rel="noopener noreferrer"
 			class=""
 		>
-			<img src="/github-mark.png" alt="GitHub" class="w-8 h-8 mr-2" />
+			<img src="/github-mark.png" alt="GitHub link" class="w-4 h-4 mr-2" />
 		</a>
-		<p class="font-mono">Author: Kristjan Rajaniemi</p>
+		© 2024 Kristjan Rajaniemi
 	</div>
 </footer>
