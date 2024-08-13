@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
   import {
     handleBoardToFront,
     isWhiteTurn,
     legalMove,
   } from "$lib/components/chess/utils";
+  import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
   import Piece from "./piece.svelte";
 
   export let chess: Chess;
@@ -71,7 +71,7 @@
     resetSelection();
   };
 
-  const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
+  const handleTouchStart = (_event: TouchEvent, sq: SquareType) => {
     handleDragStart(sq);
   };
 
@@ -103,13 +103,15 @@
     }
     lastKnownTouchPosition = null;
   };
+
+
 </script>
 
 <div class="flex justify-center items-center">
   <div class="grid grid-cols-8 gap-0">
     {#each boardToFront as row, i}
       {#each row as sq, j}
-        {#if chess.white_player.in_check && typeof sq.piece === "object" && typeof sq.piece.King === "string"  &&  sq.piece.King === "White"}
+        {#if chess.white_player.in_check && typeof sq.piece === "object" && sq.piece.King !== undefined  &&  sq.piece.King === "White"}
           <button
             class="h-11 w-11 sm:h-14 sm:w-14 md:h-16 md:w-16 lg:h-18 lg:w-18 xl:w-20 xl:h-20 bg-red-800 text-center hover:bg-red-900"
             class:selected={selectedButton ===
