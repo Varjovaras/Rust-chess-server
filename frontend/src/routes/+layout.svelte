@@ -16,7 +16,7 @@
 <Modal />
 <Header />
 <div
-	class="flex flex-col items-center justify-center space-y-4 my-4 max-w-screen-xl min-h-screen mx-auto overflow-auto flex-shrink-0"
+	class="flex flex-col items-center justify-center max-w-screen-xl min-h-screen mx-auto overflow-auto flex-shrink-0"
 >
 	<slot />
 </div>
@@ -24,9 +24,7 @@
 
 <style>
 	:global(body) {
-		overscroll-behavior-y: none;
-	}
-	:global(html) {
-		overflow-y: auto;
+		padding-top: 16px; /* Adjust this value to match the height of your header */
+		padding-bottom: 16px; /* Adjust this value to match the height of your footer */
 	}
 </style>
