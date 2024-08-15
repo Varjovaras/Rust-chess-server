@@ -1,23 +1,23 @@
 <script lang="ts">
-  import type { PossibleMoves, Square } from "$lib/types";
-  import Piece from "./piece.svelte";
-  type Coordinates = {
-    i: number;
-    j: number;
-  };
+import type { PossibleMoves, Square } from "$lib/types";
+import Piece from "./piece.svelte";
+type Coordinates = {
+	i: number;
+	j: number;
+};
 
-  export let sq: Square;
-  export let selectedButton: string | null;
-  export let possibleMoves: PossibleMoves;
-  export let handleDragStart: (sq: Square) => void;
-  export let handleDrop: (event: DragEvent) => void;
-  export let handleClick: (sq: Square) => Promise<void>;
-  export let handleTouchStart: (event: TouchEvent, sq: Square) => void;
-  export let handleTouchMove: (event: TouchEvent) => void;
-  export let handleTouchEnd: (event: TouchEvent) => void;
-  export let buttonClass: string;
-  export const draggable = true;
-  export let coordinates: Coordinates;
+export let sq: Square;
+export let selectedButton: string | null;
+export let possibleMoves: PossibleMoves;
+export let handleDragStart: (sq: Square) => void;
+export let handleDrop: (event: DragEvent) => void;
+export let handleClick: (sq: Square) => Promise<void>;
+export let handleTouchStart: (event: TouchEvent, sq: Square) => void;
+export let handleTouchMove: (event: TouchEvent) => void;
+export let handleTouchEnd: (event: TouchEvent) => void;
+export let buttonClass: string;
+export const draggable = true;
+export let coordinates: Coordinates;
 </script>
 
 <button

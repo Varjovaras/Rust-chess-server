@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RustLogo from './rustLogo.svelte';
+import RustLogo from "./rustLogo.svelte";
 </script>
 
 <div>

@@ -1,10 +1,10 @@
 <script>
-	import Footer from '$lib/components/footer.svelte';
-	import Header from '$lib/components/header.svelte';
-	import '../app.css';
-	import { initializeStores, Modal } from '@skeletonlabs/skeleton';
+import Footer from "$lib/components/footer.svelte";
+import Header from "$lib/components/header.svelte";
+import "../app.css";
+import { Modal, initializeStores } from "@skeletonlabs/skeleton";
 
-	initializeStores();
+initializeStores();
 </script>
 
 <svelte:head>

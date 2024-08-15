@@ -10,7 +10,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "biome lint  . --apply",
-		"biome": "biome check .",
+		"biome": "biome check . --apply",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {

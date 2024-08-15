@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const pieceSchema = z.object({
 	Pawn: z.string().optional(),
@@ -7,19 +7,19 @@ export const pieceSchema = z.object({
 	Rook: z.string().optional(),
 	Queen: z.string().optional(),
 	King: z.string().optional(),
-	None: z.literal('None').optional(),
+	None: z.literal("None").optional(),
 });
 
 export const squareSchema = z.object({
 	file: z.string(),
 	rank: z.number(),
 	color: z.string(),
-	piece: z.union([pieceSchema, z.literal('None')]),
+	piece: z.union([pieceSchema, z.literal("None")]),
 	possible_moves: z.array(
 		z.tuple([
 			z.tuple([z.number(), z.number()]),
 			z.tuple([z.number(), z.number()]),
-		])
+		]),
 	),
 });
 
@@ -27,7 +27,7 @@ export const possibleMoveSchema = z.array(
 	z.tuple([
 		z.tuple([z.number(), z.number()]),
 		z.tuple([z.number(), z.number()]),
-	])
+	]),
 );
 
 export const boardSchema = z.array(z.array(squareSchema));
@@ -62,10 +62,10 @@ const moveSchema = z.tuple([
 export const listOfMovesSchema = z.array(moveSchema);
 
 export const gameStateSchema = z.enum([
-	'InProgress',
-	'WhiteVictory',
-	'BlackVictory',
-	'Draw',
+	"InProgress",
+	"WhiteVictory",
+	"BlackVictory",
+	"Draw",
 ]);
 
 export const chessSchema = z.object({

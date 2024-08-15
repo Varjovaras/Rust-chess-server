@@ -1,5 +1,5 @@
 <script lang="ts">
-	import TechStack from '$lib/components/techStack.svelte';
+import TechStack from "$lib/components/techStack.svelte";
 </script>
 
 <TechStack />

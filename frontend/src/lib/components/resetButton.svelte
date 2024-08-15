@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let handleReset: () => void;
+export let handleReset: () => void;
 </script>
 
 <button
