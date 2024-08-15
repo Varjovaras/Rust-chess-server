@@ -9,8 +9,8 @@
 		"preview": "vite preview",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
-		"lint": "biome lint --error-on-warnings ./src",
-		"biome": "biome check ./src --write ",
+		"lint": "biome lint  . --apply",
+		"biome": "biome check .",
 		"format": "prettier --plugin-search-dir . --write ."
 	},
 	"devDependencies": {
