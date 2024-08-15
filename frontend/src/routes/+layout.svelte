@@ -24,7 +24,7 @@
 
 <style>
 	:global(body) {
-		padding-top: 16px; /* Adjust this value to match the height of your header */
-		padding-bottom: 16px; /* Adjust this value to match the height of your footer */
+		padding-top: 16px;
+		padding-bottom: 16px;
 	}
 </style>
