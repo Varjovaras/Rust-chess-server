@@ -6,7 +6,6 @@
 	import { type Chess, chessSchema } from '$lib/types';
 	import type { PageData } from './$types';
 	import { getModalStore, type ModalSettings } from '@skeletonlabs/skeleton';
-	import TechStack from '$lib/components/techStack.svelte';
 
 	const modalStore = getModalStore();
 
@@ -78,6 +77,8 @@
 	};
 </script>
 
-<ErrorMessage {errorMessage} />
-<Chessboard {chess} {handleMove} />
-<ResetButton {handleReset} />
+<div class="flex flex-col h-screen p-8 overflow-auto">
+	<ErrorMessage {errorMessage} />
+	<Chessboard {chess} {handleMove} />
+	<ResetButton {handleReset} />
+</div>

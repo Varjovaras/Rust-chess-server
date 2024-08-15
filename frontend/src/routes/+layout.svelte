@@ -1,7 +1,6 @@
 <script>
 	import Footer from '$lib/components/footer.svelte';
 	import Header from '$lib/components/header.svelte';
-	import Title from '$lib/components/title.svelte';
 	import '../app.css';
 	import { initializeStores, Modal } from '@skeletonlabs/skeleton';
 
@@ -14,17 +13,18 @@
 </svelte:head>
 
 <Modal />
-<Header />
-<div
-	class="flex flex-col items-center justify-center max-w-screen-xl min-h-screen mx-auto overflow-auto flex-shrink-0"
->
-	<slot />
+
+<div class="flex flex-col h-screen max-w-screen-xl w-screen">
+	<Header />
+	<main class="flex-1 overflow-hidden p-4">
+		<slot />
+	</main>
+	<Footer />
 </div>
-<Footer />
 
 <style>
-	:global(body) {
-		padding-top: 16px;
-		padding-bottom: 16px;
+	:global(html, body) {
+		height: 100%;
+		overflow: hidden;
 	}
 </style>
