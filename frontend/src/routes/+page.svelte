@@ -77,7 +77,7 @@
 	};
 </script>
 
-<div class="flex flex-col h-screen p-8 overflow-auto">
+<div class="flex flex-col h-screen p-8">
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />
