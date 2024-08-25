@@ -1,10 +1,10 @@
 <script>
-import Footer from "$lib/components/footer.svelte";
-import Header from "$lib/components/header.svelte";
-import "../app.css";
-import { Modal, initializeStores } from "@skeletonlabs/skeleton";
+	import Footer from '$lib/components/footer.svelte';
+	import Header from '$lib/components/header.svelte';
+	import '../app.css';
+	import { Modal, initializeStores } from '@skeletonlabs/skeleton';
 
-initializeStores();
+	initializeStores();
 </script>
 
 <svelte:head>
@@ -16,7 +16,7 @@ initializeStores();
 
 <div class="flex flex-col h-screen max-w-screen-xl w-screen">
 	<Header />
-	<main class="flex-1 overflow-hidden p-4">
+	<main class="flex-1 overflow-auto p-4">
 		<slot />
 	</main>
 	<Footer />
