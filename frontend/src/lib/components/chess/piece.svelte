@@ -4,14 +4,14 @@
 	export let sq: Square;
 
 	$: pieceSize = `
-    w-[8vw] h-[8vw]
-    sm:w-[10vw] sm:h-[10vw]
-    md:w-[8vw] md:h-[8vw]
-    lg:w-[6vw] lg:h-[6vw]
-    xl:w-[5vw] xl:h-[5vw]
-    min-w-10 min-h-10
-    max-w-24 max-h-24
-	aspect-square
+    w-[7.5vw] h-[7.5vw]
+    sm:w-[9.5vw] sm:h-[9.5vw]
+    md:w-[7.5vw] md:h-[7.5vw]
+    lg:w-[5.5vw] lg:h-[5.5vw]
+    xl:w-[4.5vw] xl:h-[4.5vw]
+    min-w-9 min-h-9
+    max-w-23 max-h-23
+    aspect-square
   `;
 </script>
 
