@@ -16,7 +16,7 @@
 
 <div class="flex flex-col h-screen w-screen">
 	<Header />
-	<main class="flex-1 overflow-auto content-center">
+	<main class="flex-1 overflow-auto">
 		<slot />
 	</main>
 	<Footer />
