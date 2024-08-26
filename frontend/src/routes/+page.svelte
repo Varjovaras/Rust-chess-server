@@ -70,7 +70,7 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center content-center">
+<div class="flex flex-col justify-center content-center py-4">
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />
