@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { returnCorrectPieceColor } from '$lib/components/chess/utils';
 	import type { Square } from '$lib/types';
+	import { slide } from 'svelte/transition';
+
 	export let sq: Square;
 
 	$: pieceSize = `
@@ -29,6 +31,7 @@
 			draggable="true"
 			id={`${sq.file.toLowerCase()}${sq.rank + 1} ${sq.piece}`}
 			style="object-fit: contain; width: 100%; height: 100%;"
+			transition:slide={{ duration: 200 }}
 		/>
 	{/if}
 </div>
