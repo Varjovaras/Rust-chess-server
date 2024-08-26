@@ -1,31 +1,30 @@
 <script>
-    import Footer from "$lib/components/footer.svelte";
-    import Header from "$lib/components/header.svelte";
-    import "../app.css";
-    import { Modal, initializeStores } from "@skeletonlabs/skeleton";
+	import Footer from '$lib/components/footer.svelte';
+	import Header from '$lib/components/header.svelte';
+	import '../app.css';
+	import { Modal, initializeStores } from '@skeletonlabs/skeleton';
 
-    initializeStores();
+	initializeStores();
 </script>
 
 <svelte:head>
-    <title>Chess App</title>
-    <meta name="description" content="Chess portfolio simulator" />
+	<title>Chess App</title>
+	<meta name="description" content="Chess portfolio simulator" />
 </svelte:head>
 
 <Modal />
 
-<div class="flex flex-col h-screen w-screen overflow-hidden">
-    <Header />
-    <main class="flex-1 overflow-auto p-4">
-        <slot />
-    </main>
-    <Footer />
+<div class="flex flex-col h-screen w-screen">
+	<Header />
+	<main class="flex-1 overflow-auto content-center">
+		<slot />
+	</main>
+	<Footer />
 </div>
 
 <style>
-    :global(html, body) {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-    }
+	:global(html, body) {
+		height: 100%;
+		width: 100%;
+	}
 </style>
