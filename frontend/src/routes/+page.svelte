@@ -6,8 +6,37 @@
 	import { type Chess, chessSchema } from '$lib/types';
 	import { type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
 	import type { PageData } from './$types';
+	import { createWebSocketStore } from '$lib/websocketStore';
+	import { onMount, onDestroy } from 'svelte';
 
 	const modalStore = getModalStore();
+	const ws = createWebSocketStore('ws://localhost:8000/websocket'); // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	let messages: any[] = [];
+
+	onMount(() => {
+		const unsubscribe = ws.subscribe((socket) => {
+			if (socket) {
+				socket.addEventListener('message', (event) => {
+					try {
+						const data = JSON.parse(event.data);
+						messages = [...messages, data];
+					} catch (error) {
+						console.error('Failed to parse WebSocket message:', error);
+					}
+				});
+
+				socket.addEventListener('error', (event) => {
+					console.error('WebSocket error:', event);
+				});
+			}
+		});
+
+		return () => unsubscribe();
+	});
+
+	function sendMessage() {
+		ws.send('Hello, WebSocket!');
+	}
 
 	const whiteModal: ModalSettings = {
 		type: 'alert',
@@ -75,3 +104,13 @@
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />
 </div>
+<button on:click={sendMessage}>Send Message</button>
+<ul>
+	{#each messages as message}
+		<li>
+			Clients: {message.clients_count}, Time: {new Date(
+				message.dateTime,
+			).toLocaleString()}, API Status: {message.is_up ? 'Up' : 'Down'}
+		</li>
+	{/each}
+</ul>
