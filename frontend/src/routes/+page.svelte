@@ -12,22 +12,38 @@
 	const modalStore = getModalStore();
 	const ws = createWebSocketStore('ws://localhost:8000/websocket'); // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	let messages: any[] = [];
+	let isConnected = false;
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
 			if (socket) {
+				isConnected = true;
 				socket.addEventListener('message', (event) => {
 					try {
 						const data = JSON.parse(event.data);
-						messages = [...messages, data];
+						if (data.chess) {
+							// Update the chess state
+							chess = chessSchema.parse(data.chess);
+
+							// Check for victory conditions
+							if (chess.white_player.victory) {
+								modalStore.trigger(whiteModal);
+							} else if (chess.black_player.victory) {
+								modalStore.trigger(blackModal);
+							}
+						} else {
+							// Handle other types of messages (e.g., client count, API status)
+							messages = [...messages, data];
+						}
 					} catch (error) {
 						console.error('Failed to parse WebSocket message:', error);
 					}
 				});
-
 				socket.addEventListener('error', (event) => {
 					console.error('WebSocket error:', event);
 				});
+			} else {
+				isConnected = false;
 			}
 		});
 
@@ -55,42 +71,15 @@
 	export let data: PageData;
 	let chess = data.data.chess;
 	const errorMessage = '';
-	const apiUrl = data.data.url;
 
 	const handleMove = async (startSq: string, endSq: string) => {
-		0;
 		console.log(`Move from ${startSq} to ${endSq}`);
-		try {
-			chess = await fetchMove(startSq, endSq);
-			if (chess.white_player.victory) {
-				modalStore.trigger(whiteModal);
-			} else if (chess.black_player.victory) {
-				modalStore.trigger(blackModal);
-			}
-			// removeHoverEffect(); // Remove hover effect from all buttons after the move
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-	const fetchMove = async (startSq: string, endSq: string): Promise<Chess> => {
-		const newMove: [string, string] = [startSq, endSq];
-		const response = await fetch(`${apiUrl}/api/chess`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				list_of_moves: chess.list_of_moves,
-				new_move: newMove,
-			}),
-		});
-		const data = await response.json();
-		const validatedChess = chessSchema.parse(data.chess);
-		if (chess.board === validatedChess.board) {
-			console.log('Move was not possible');
-		}
-		return validatedChess;
+		const moveRequest = {
+			list_of_moves: chess.list_of_moves,
+			new_move: [startSq, endSq],
+		};
+		console.log(moveRequest);
+		ws.send(JSON.stringify(moveRequest));
 	};
 
 	const handleReset = () => {
@@ -114,3 +103,4 @@
 		</li>
 	{/each}
 </ul>
+<div>Connection status: {isConnected ? 'Connected' : 'Disconnected'}</div>
