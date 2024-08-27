@@ -9,10 +9,13 @@
 	import { createWebSocketStore } from '$lib/websocketStore';
 	import { onMount, onDestroy } from 'svelte';
 
+	export let data: PageData;
+
 	const modalStore = getModalStore();
-	const ws = createWebSocketStore('ws://localhost:8000/websocket'); // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const ws = createWebSocketStore(data.data.url); // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	let messages: any[] = [];
 	let isConnected = false;
+	let chess = data.data.chess;
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
@@ -68,8 +71,6 @@
 		body: 'Black won!',
 	};
 
-	export let data: PageData;
-	let chess = data.data.chess;
 	const errorMessage = '';
 
 	const handleMove = async (startSq: string, endSq: string) => {
