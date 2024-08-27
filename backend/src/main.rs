@@ -87,7 +87,7 @@ async fn axum() -> ShuttleAxum {
 
     let router = Router::new()
         .route("/websocket", get(websocket_handler))
-        .nest_service("/", ServeDir::new("static"))
+        // .nest_service("/", ServeDir::new("static"))
         .layer(Extension(state));
 
     Ok(router.into())
