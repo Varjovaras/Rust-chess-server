@@ -1,73 +1,174 @@
 use axum::{
-    http::{header::CONTENT_TYPE, Method, StatusCode},
-    routing::{get, post},
-    Json, Router,
+    extract::{
+        ws::{Message, WebSocket},
+        WebSocketUpgrade,
+    },
+    response::IntoResponse,
+    routing::get,
+    Extension, Router,
 };
-use chess::chessboard::file::File;
-use chess::chessboard::rank::Rank;
-use chess::Chess;
+use chess::{
+    chessboard::{file::File, rank::Rank},
+    Chess,
+};
+use chrono::{DateTime, Utc};
+use futures::{SinkExt, StreamExt};
 use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
-use tower_http::cors::{Any, CorsLayer};
+use std::{sync::Arc, time::Duration};
+use tokio::sync::mpsc;
+use tokio::{
+    sync::{watch, Mutex},
+    time::sleep,
+};
+use tower_http::services::ServeDir;
 
-#[derive(Debug, Deserialize)]
+struct State {
+    clients_count: usize,
+    rx: watch::Receiver<Message>,
+    chess: Arc<Mutex<Chess>>,
+}
+
+const PAUSE_SECS: u64 = 15;
+const STATUS_URI: &str = "https://api.shuttle.rs";
+
+#[derive(Serialize)]
+struct Response {
+    clients_count: usize,
+    #[serde(rename = "dateTime")]
+    date_time: DateTime<Utc>,
+    is_up: bool,
+}
+
+#[derive(Debug, Deserialize, Clone)]
 struct MoveRequest {
     list_of_moves: Vec<((String, usize), (String, usize))>,
     new_move: [String; 2],
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 struct MoveResponse {
     pub chess: Chess,
 }
 
-async fn move_chess(Json(payload): Json<MoveRequest>) -> (StatusCode, Json<MoveResponse>) {
-    //setup new chess and iter and handle moves provided by payload
-    let mut chess = Chess::new_starting_position();
-
-    for move_tuple in &payload.list_of_moves {
-        let start_sq = chess.get_square(
-            File::try_from(move_tuple.0 .0.as_str()).expect("invalid file"), // try to convert from string
-            Rank::try_from(move_tuple.0 .1).expect("invalid rank"), // rank is usize already
-        );
-        let end_sq = chess.get_square(
-            File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"), // try to convert from string
-            Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
-        );
-        chess.make_move(&start_sq, &end_sq);
-    }
-
-    chess.make_move_from_str(&payload.new_move[0], &payload.new_move[1]);
-    let response = MoveResponse { chess };
-    (StatusCode::OK, Json(response))
-}
-
-async fn chess() -> (StatusCode, Json<MoveResponse>) {
-    let chess = Chess::new_starting_position();
-    let response = MoveResponse { chess };
-    (StatusCode::OK, Json(response))
-}
-
 #[shuttle_runtime::main]
-#[allow(clippy::unused_async)]
 async fn axum() -> ShuttleAxum {
-    let cors = CorsLayer::new()
-        .allow_methods([Method::GET, Method::POST])
-        .allow_headers([CONTENT_TYPE])
-        .allow_origin(Any);
+    let (tx, rx) = watch::channel(Message::Text("{}".to_string()));
+    let chess = Arc::new(Mutex::new(Chess::new_starting_position()));
+    let state = Arc::new(Mutex::new(State {
+        clients_count: 0,
+        rx,
+        chess: chess.clone(),
+    }));
+
+    // Spawn a thread to continually check the status of the api
+    let state_send = state.clone();
+    tokio::spawn(async move {
+        let duration = Duration::from_secs(PAUSE_SECS);
+
+        loop {
+            let is_up = reqwest::get(STATUS_URI).await;
+            let is_up = is_up.is_ok();
+
+            let response = Response {
+                clients_count: state_send.lock().await.clients_count,
+                date_time: Utc::now(),
+                is_up,
+            };
+            let msg = serde_json::to_string(&response).unwrap();
+
+            if tx.send(Message::Text(msg)).is_err() {
+                break;
+            }
+
+            sleep(duration).await;
+        }
+    });
+
     let router = Router::new()
-        .route("/api/chess", get(chess))
-        .route("/api/chess", post(move_chess))
-        .layer(cors);
+        .route("/websocket", get(websocket_handler))
+        .nest_service("/", ServeDir::new("static"))
+        .layer(Extension(state));
 
     Ok(router.into())
 }
 
-// fn main() {
-//     let mut chess = Chess::new_starting_position();
-//     chess.make_move_from_str("e2", "e4");
-//     chess._print_board_white();
-//     chess.make_move_from_str("d7", "d5");
+async fn websocket_handler(
+    ws: WebSocketUpgrade,
+    Extension(state): Extension<Arc<Mutex<State>>>,
+) -> impl IntoResponse {
+    ws.on_upgrade(|socket| websocket(socket, state))
+}
 
-//     println!("{:?}", chess.board[4][3]);
-// }
+async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
+    let (mut sender, mut receiver) = stream.split();
+    let mut rx = {
+        let mut state = state.lock().await;
+        state.clients_count += 1;
+        state.rx.clone()
+    };
+
+    let chess = state.lock().await.chess.clone();
+
+    // Create a channel for communication between tasks
+    let (tx, mut rx_channel) = mpsc::channel(100);
+
+    let mut send_task = tokio::spawn(async move {
+        loop {
+            tokio::select! {
+                _ = rx.changed() => {
+                    let msg = rx.borrow().clone();
+                    if sender.send(msg).await.is_err() {
+                        break;
+                    }
+                }
+                Some(msg) = rx_channel.recv() => {
+                    if sender.send(msg).await.is_err() {
+                        break;
+                    }
+                }
+            }
+        }
+    });
+
+    let mut recv_task = tokio::spawn(async move {
+        while let Some(Ok(Message::Text(text))) = receiver.next().await {
+            let move_request: Result<MoveRequest, serde_json::Error> = serde_json::from_str(&text);
+            if let Ok(move_request) = move_request {
+                let mut chess_game = chess.lock().await;
+
+                // Apply previous moves
+                for move_tuple in &move_request.list_of_moves {
+                    let start_sq = chess_game.get_square(
+                        File::try_from(move_tuple.0 .0.as_str()).expect("invalid file"),
+                        Rank::try_from(move_tuple.0 .1).expect("invalid rank"),
+                    );
+                    let end_sq = chess_game.get_square(
+                        File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"),
+                        Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
+                    );
+                    chess_game.make_move(&start_sq, &end_sq);
+                }
+
+                // Make the new move
+                chess_game.make_move_from_str(&move_request.new_move[0], &move_request.new_move[1]);
+
+                // Send updated chess state to all clients
+                let response = MoveResponse {
+                    chess: chess_game.clone(),
+                };
+                let response_json = serde_json::to_string(&response).unwrap();
+                if tx.send(Message::Text(response_json)).await.is_err() {
+                    break;
+                }
+            }
+        }
+    });
+
+    tokio::select! {
+        _ = (&mut send_task) => recv_task.abort(),
+        _ = (&mut recv_task) => send_task.abort(),
+    };
+
+    state.lock().await.clients_count -= 1;
+}
