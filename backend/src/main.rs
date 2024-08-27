@@ -1,5 +1,3 @@
-use std::{sync::Arc, time::Duration};
-
 use axum::{
     extract::{
         ws::{Message, WebSocket},
@@ -9,10 +7,16 @@ use axum::{
     routing::get,
     Extension, Router,
 };
+use chess::{
+    chessboard::{file::File, rank::Rank},
+    Chess,
+};
 use chrono::{DateTime, Utc};
 use futures::{SinkExt, StreamExt};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use shuttle_axum::ShuttleAxum;
+use std::{sync::Arc, time::Duration};
+use tokio::sync::mpsc;
 use tokio::{
     sync::{watch, Mutex},
     time::sleep,
@@ -22,6 +26,7 @@ use tower_http::services::ServeDir;
 struct State {
     clients_count: usize,
     rx: watch::Receiver<Message>,
+    chess: Arc<Mutex<Chess>>,
 }
 
 const PAUSE_SECS: u64 = 15;
@@ -35,13 +40,25 @@ struct Response {
     is_up: bool,
 }
 
+#[derive(Debug, Deserialize, Clone)]
+struct MoveRequest {
+    list_of_moves: Vec<((String, usize), (String, usize))>,
+    new_move: [String; 2],
+}
+
+#[derive(Debug, Serialize, Clone)]
+struct MoveResponse {
+    pub chess: Chess,
+}
+
 #[shuttle_runtime::main]
 async fn axum() -> ShuttleAxum {
     let (tx, rx) = watch::channel(Message::Text("{}".to_string()));
-
+    let chess = Arc::new(Mutex::new(Chess::new_starting_position()));
     let state = Arc::new(Mutex::new(State {
         clients_count: 0,
         rx,
+        chess: chess.clone(),
     }));
 
     // Spawn a thread to continually check the status of the api
@@ -84,39 +101,74 @@ async fn websocket_handler(
 }
 
 async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
-    // By splitting we can send and receive at the same time.
     let (mut sender, mut receiver) = stream.split();
-
     let mut rx = {
         let mut state = state.lock().await;
         state.clients_count += 1;
         state.rx.clone()
     };
 
-    // This task will receive watch messages and forward it to this connected client.
-    let mut send_task = tokio::spawn(async move {
-        while let Ok(()) = rx.changed().await {
-            let msg = rx.borrow().clone();
+    let chess = state.lock().await.chess.clone();
 
-            if sender.send(msg).await.is_err() {
-                break;
+    // Create a channel for communication between tasks
+    let (tx, mut rx_channel) = mpsc::channel(100);
+
+    let mut send_task = tokio::spawn(async move {
+        loop {
+            tokio::select! {
+                _ = rx.changed() => {
+                    let msg = rx.borrow().clone();
+                    if sender.send(msg).await.is_err() {
+                        break;
+                    }
+                }
+                Some(msg) = rx_channel.recv() => {
+                    if sender.send(msg).await.is_err() {
+                        break;
+                    }
+                }
             }
         }
     });
 
-    // This task will receive messages from this client.
     let mut recv_task = tokio::spawn(async move {
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
-            println!("this example does not read any messages, but got: {text}");
+            let move_request: Result<MoveRequest, serde_json::Error> = serde_json::from_str(&text);
+            if let Ok(move_request) = move_request {
+                let mut chess_game = chess.lock().await;
+
+                // Apply previous moves
+                for move_tuple in &move_request.list_of_moves {
+                    let start_sq = chess_game.get_square(
+                        File::try_from(move_tuple.0 .0.as_str()).expect("invalid file"),
+                        Rank::try_from(move_tuple.0 .1).expect("invalid rank"),
+                    );
+                    let end_sq = chess_game.get_square(
+                        File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"),
+                        Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
+                    );
+                    chess_game.make_move(&start_sq, &end_sq);
+                }
+
+                // Make the new move
+                chess_game.make_move_from_str(&move_request.new_move[0], &move_request.new_move[1]);
+
+                // Send updated chess state to all clients
+                let response = MoveResponse {
+                    chess: chess_game.clone(),
+                };
+                let response_json = serde_json::to_string(&response).unwrap();
+                if tx.send(Message::Text(response_json)).await.is_err() {
+                    break;
+                }
+            }
         }
     });
 
-    // If any one of the tasks exit, abort the other.
     tokio::select! {
         _ = (&mut send_task) => recv_task.abort(),
         _ = (&mut recv_task) => send_task.abort(),
     };
 
-    // This client disconnected
     state.lock().await.clients_count -= 1;
 }
