@@ -12,7 +12,8 @@
 	export let data: PageData;
 
 	const modalStore = getModalStore();
-	const ws = createWebSocketStore(data.data.url); // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const ws = createWebSocketStore(data.data.url);
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	let messages: any[] = [];
 	let isConnected = false;
 	let chess = data.data.chess;
@@ -53,10 +54,15 @@
 		return () => unsubscribe();
 	});
 
-	function sendMessage() {
-		ws.send('Hello, WebSocket!');
-	}
-
+	onDestroy(() => {
+		console.log(
+			'Component is being destroyed, resetting chess to starting position',
+		);
+		if (isConnected) {
+			ws.send(JSON.stringify({ action: 'reset' }));
+		}
+		chess = startingPosition;
+	});
 	const whiteModal: ModalSettings = {
 		type: 'alert',
 		// Data
@@ -93,15 +99,16 @@
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />
+	<div class="p-8">
+		<ul>
+			{#each messages as message}
+				<li>
+					Clients: {message.clients_count}, Time: {new Date(
+						message.dateTime,
+					).toLocaleString()}, API Status: {message.is_up ? 'Up' : 'Down'}
+				</li>
+			{/each}
+		</ul>
+		<div>Connection status: {isConnected ? 'Connected' : 'Disconnected'}</div>
+	</div>
 </div>
-<button on:click={sendMessage}>Send Message</button>
-<ul>
-	{#each messages as message}
-		<li>
-			Clients: {message.clients_count}, Time: {new Date(
-				message.dateTime,
-			).toLocaleString()}, API Status: {message.is_up ? 'Up' : 'Down'}
-		</li>
-	{/each}
-</ul>
-<div>Connection status: {isConnected ? 'Connected' : 'Disconnected'}</div>

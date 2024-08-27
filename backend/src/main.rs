@@ -21,7 +21,6 @@ use tokio::{
     sync::{watch, Mutex},
     time::sleep,
 };
-use tower_http::services::ServeDir;
 
 struct State {
     clients_count: usize,
@@ -49,6 +48,11 @@ struct MoveRequest {
 #[derive(Debug, Serialize, Clone)]
 struct MoveResponse {
     pub chess: Chess,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+struct ResetRequest {
+    action: String,
 }
 
 #[shuttle_runtime::main]
@@ -133,8 +137,7 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
 
     let mut recv_task = tokio::spawn(async move {
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
-            let move_request: Result<MoveRequest, serde_json::Error> = serde_json::from_str(&text);
-            if let Ok(move_request) = move_request {
+            if let Ok(move_request) = serde_json::from_str::<MoveRequest>(&text) {
                 let mut chess_game = chess.lock().await;
 
                 // Apply previous moves
@@ -160,6 +163,20 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                 let response_json = serde_json::to_string(&response).unwrap();
                 if tx.send(Message::Text(response_json)).await.is_err() {
                     break;
+                }
+            } else if let Ok(reset_request) = serde_json::from_str::<ResetRequest>(&text) {
+                if reset_request.action == "reset" {
+                    let mut chess_game = chess.lock().await;
+                    *chess_game = Chess::new_starting_position();
+
+                    // Send updated chess state to all clients
+                    let response = MoveResponse {
+                        chess: chess_game.clone(),
+                    };
+                    let response_json = serde_json::to_string(&response).unwrap();
+                    if tx.send(Message::Text(response_json)).await.is_err() {
+                        break;
+                    }
                 }
             }
         }
