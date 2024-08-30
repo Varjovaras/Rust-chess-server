@@ -6,7 +6,7 @@ use crate::{
     },
     game_state::GameState,
     make_chess_move::make_chess_move,
-    piece::PieceColor,
+    piece::{Piece, PieceColor},
     player::Player,
 };
 
@@ -16,6 +16,17 @@ pub type LatestMove = (Square, Square, PieceColor);
 type SquareCoordinates = (File, usize);
 pub type Move = (SquareCoordinates, SquareCoordinates);
 pub type ListOfMoves = Vec<Move>;
+
+/**
+ÄIMPLEMENT THIS TO FRONTEND BACKEND AND LIBRARY
+ * PiecesEaten is a struct that contains two vectors, one for white pieces eaten and one for black pieces eaten.
+ * The vectors contain the pieces that have been eaten during the game.
+*/
+#[derive(Debug, Clone, Serialize, Deserialize)]
+struct PiecesEaten {
+    white: Vec<Piece>,
+    black: Vec<Piece>,
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Chess {
@@ -28,6 +39,7 @@ pub struct Chess {
     pub gamestate: GameState,
     pub fifty_move_rule: u8,
     pub list_of_moves: ListOfMoves,
+    pub pieces_eaten: PiecesEaten,
 }
 
 impl Chess {

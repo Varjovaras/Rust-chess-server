@@ -66,6 +66,7 @@
         }
         chess = startingPosition;
     });
+
     const whiteModal: ModalSettings = {
         type: "alert",
         // Data
