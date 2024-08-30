@@ -1,7 +1,7 @@
 use crate::{
-    chessboard::{ChessBoard, get_black_king, get_white_king},
-    moves::{knight::KNIGHT_MOVES, rook::ROOK_MOVES},
+    chessboard::{get_black_king, get_white_king, ChessBoard},
     moves::bishop::BISHOP_MOVES,
+    moves::{knight::KNIGHT_MOVES, rook::ROOK_MOVES},
     piece::{Piece, PieceColor},
 };
 
@@ -93,11 +93,11 @@ fn check_by_white_pawn(king_file: i8, king_rank: i8, board: &ChessBoard) -> bool
         #[allow(clippy::cast_sign_loss)]
         let right_attack = king_file < 7
             && board[king_file as usize + 1][king_rank as usize - 1].piece
-            == Piece::Pawn(PieceColor::White);
+                == Piece::Pawn(PieceColor::White);
         #[allow(clippy::cast_sign_loss)]
         let left_attack = king_file > 0
             && board[king_file as usize - 1][king_rank as usize - 1].piece
-            == Piece::Pawn(PieceColor::White);
+                == Piece::Pawn(PieceColor::White);
         if right_attack || left_attack {
             // println!("in check by white pawn");
         }
@@ -112,11 +112,11 @@ fn check_by_black_pawn(king_file: i8, king_rank: i8, chess_board: &ChessBoard) -
         #[allow(clippy::cast_sign_loss)]
         let right_attack = king_file > 0
             && chess_board[king_file as usize - 1][king_rank as usize + 1].piece
-            == Piece::Pawn(PieceColor::Black);
+                == Piece::Pawn(PieceColor::Black);
         #[allow(clippy::cast_sign_loss)]
         let left_attack = king_file < 7
             && chess_board[king_file as usize + 1][king_rank as usize + 1].piece
-            == Piece::Pawn(PieceColor::Black);
+                == Piece::Pawn(PieceColor::Black);
         if right_attack || left_attack {
             // println!("in check by black pawn");
         }

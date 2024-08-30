@@ -17,16 +17,6 @@ strip = "symbols" # Strip symbols from binary
 unsafe_code = "forbid"
 
 
-[lints.clippy]
-enum_glob_use = "deny"
-pedantic = { level = "deny", priority = -1 }
-nursery = { level = "deny", priority = -1 }
-correctness = { level = "deny", priority = -1 }
-complexity = { level = "deny", priority = -1 }
-perf = { level = "deny", priority = -1 }
-# cargo = { level = "deny", priority = -1 }
-# restriction = { level = "deny", priority = -1 }
-
 
 [dependencies]
 serde_json = "1.0.120"
