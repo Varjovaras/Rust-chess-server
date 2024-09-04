@@ -5,18 +5,18 @@
 	import ResetButton from '$lib/components/resetButton.svelte';
 	import { chessSchema } from '$lib/types';
 	import { type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
-	import type { PageData } from './$types';
 	import { createWebSocketStore } from '$lib/websocketStore';
 	import { onMount, onDestroy } from 'svelte';
+	import { env } from '$env/dynamic/public';
 
-	export let data: PageData;
+	const apiUrl = env.PUBLIC_PROD_WS_URL;
 
 	const modalStore = getModalStore();
-	const ws = createWebSocketStore(data.data.url);
+	const ws = createWebSocketStore(apiUrl);
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	let messages: any[] = [];
 	let isConnected = false;
-	let chess = data.data.chess;
+	let chess = startingPosition;
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
@@ -86,7 +86,6 @@
 			list_of_moves: chess.list_of_moves,
 			new_move: [startSq, endSq],
 		};
-		console.log(moveRequest);
 		ws.send(JSON.stringify(moveRequest));
 	};
 
