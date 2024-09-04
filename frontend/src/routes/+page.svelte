@@ -12,7 +12,10 @@
 	const apiUrl = env.PUBLIC_PROD_WS_URL;
 
 	const modalStore = getModalStore();
+	console.log('hello :D');
 	const ws = createWebSocketStore(apiUrl);
+	console.log('not hello :D');
+
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	let messages: any[] = [];
 	let isConnected = false;
