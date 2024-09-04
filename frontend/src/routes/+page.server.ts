@@ -7,12 +7,13 @@ import { startingPosition } from "$lib/components/chess/startingPosition";
 export const load: PageServerLoad = async () => {
 	let apiUrl: string;
 	if (import.meta.env.MODE === "development") {
-		apiUrl = env.PUBLIC_DEV_WS_URL;
+		apiUrl = env.PUBLIC_PROD_WS_URL;
 	} else {
 		apiUrl = env.PUBLIC_PROD_WS_URL;
 	}
 
 	try {
+		console.log(apiUrl);
 		return {
 			data: {
 				chess: startingPosition,
