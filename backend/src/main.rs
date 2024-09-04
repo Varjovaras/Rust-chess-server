@@ -1,3 +1,5 @@
+#![allow(clippy::redundant_pub_crate)]
+
 use axum::{
     extract::{
         ws::{Message, WebSocket},
@@ -55,6 +57,7 @@ struct ResetRequest {
     action: String,
 }
 
+#[allow(clippy::unused_async)]
 #[shuttle_runtime::main]
 async fn axum() -> ShuttleAxum {
     let (tx, rx) = watch::channel(Message::Text("{}".to_string()));
@@ -62,7 +65,7 @@ async fn axum() -> ShuttleAxum {
     let state = Arc::new(Mutex::new(State {
         clients_count: 0,
         rx,
-        chess: chess.clone(),
+        chess,
     }));
 
     // Spawn a thread to continually check the status of the api
@@ -79,6 +82,7 @@ async fn axum() -> ShuttleAxum {
                 date_time: Utc::now(),
                 is_up,
             };
+            #[allow(clippy::unwrap_used)]
             let msg = serde_json::to_string(&response).unwrap();
 
             if tx.send(Message::Text(msg)).is_err() {
@@ -118,6 +122,7 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
     let (tx, mut rx_channel) = mpsc::channel(100);
 
     let mut send_task = tokio::spawn(async move {
+        #[allow(clippy::redundant_pub_crate)]
         loop {
             tokio::select! {
                 _ = rx.changed() => {
@@ -160,10 +165,13 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                 let response = MoveResponse {
                     chess: chess_game.clone(),
                 };
+                #[allow(clippy::unwrap_used)]
                 let response_json = serde_json::to_string(&response).unwrap();
                 if tx.send(Message::Text(response_json)).await.is_err() {
                     break;
                 }
+                // Explicitly drop chess_game here
+                drop(chess_game);
             } else if let Ok(reset_request) = serde_json::from_str::<ResetRequest>(&text) {
                 if reset_request.action == "reset" {
                     let mut chess_game = chess.lock().await;
@@ -173,15 +181,17 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                     let response = MoveResponse {
                         chess: chess_game.clone(),
                     };
+                    #[allow(clippy::unwrap_used)]
                     let response_json = serde_json::to_string(&response).unwrap();
                     if tx.send(Message::Text(response_json)).await.is_err() {
                         break;
                     }
+                    // Explicitly drop chess_game here
+                    drop(chess_game);
                 }
             }
         }
     });
-
     tokio::select! {
         _ = (&mut send_task) => recv_task.abort(),
         _ = (&mut recv_task) => send_task.abort(),
