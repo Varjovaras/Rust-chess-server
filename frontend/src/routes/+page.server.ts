@@ -12,15 +12,10 @@ export const load: PageServerLoad = async () => {
 		apiUrl = env.PUBLIC_PROD_WS_URL;
 	}
 
-	try {
-		console.log(apiUrl);
-		return {
-			data: {
-				chess: startingPosition,
-				url: apiUrl,
-			},
-		};
-	} catch (e) {
-		return error(500, { message: "Backend not online" });
-	}
+	return {
+		data: {
+			chess: startingPosition,
+			url: apiUrl,
+		},
+	};
 };
