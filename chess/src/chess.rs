@@ -23,9 +23,25 @@ pub type ListOfMoves = Vec<Move>;
  * The vectors contain the pieces that have been eaten during the game.
 */
 #[derive(Debug, Clone, Serialize, Deserialize)]
-struct PiecesEaten {
+pub struct PiecesEaten {
     white: Vec<Piece>,
     black: Vec<Piece>,
+}
+
+impl PiecesEaten {
+    #[must_use]
+    pub fn new() -> Self {
+        Self {
+            white: vec![],
+            black: vec![],
+        }
+    }
+}
+
+impl Default for PiecesEaten {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -55,6 +71,7 @@ impl Chess {
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
             list_of_moves: Vec::new(),
+            pieces_eaten: PiecesEaten::new(),
         }
     }
 
@@ -70,6 +87,7 @@ impl Chess {
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
             list_of_moves: Vec::new(),
+            pieces_eaten: PiecesEaten::new(),
         };
         chess.starting_position();
         add_possible_moves_to_squares(&mut chess);
