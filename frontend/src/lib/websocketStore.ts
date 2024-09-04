@@ -8,14 +8,22 @@ interface WebSocketStore {
 
 export const createWebSocketStore = (url: string): WebSocketStore => {
 	const { subscribe, set } = writable<WebSocket | null>(null);
+	let socket: WebSocket | null = null;
 
-	const socket = new WebSocket(url);
-
-	socket.addEventListener("open", () => set(socket));
-	socket.addEventListener("close", () => set(null));
+	if (typeof window !== "undefined") {
+		socket = new WebSocket(url);
+		socket.addEventListener("open", () => set(socket));
+		socket.addEventListener("close", () => set(null));
+	}
 
 	return {
 		subscribe,
-		send: (message: string) => socket.send(message),
+		send: (message: string) => {
+			if (socket && socket.readyState === WebSocket.OPEN) {
+				socket.send(message);
+			} else {
+				console.error("WebSocket is not open. Message not sent.");
+			}
+		},
 	};
 };
