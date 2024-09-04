@@ -19,7 +19,7 @@ pub type ListOfMoves = Vec<Move>;
 
 /**
 ÄIMPLEMENT THIS TO FRONTEND BACKEND AND LIBRARY
- * PiecesEaten is a struct that contains two vectors, one for white pieces eaten and one for black pieces eaten.
+ * `PiecesEaten` is a struct that contains two vectors, one for white pieces eaten and one for black pieces eaten.
  * The vectors contain the pieces that have been eaten during the game.
 */
 #[derive(Debug, Clone, Serialize, Deserialize)]

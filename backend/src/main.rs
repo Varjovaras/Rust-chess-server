@@ -186,12 +186,27 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                     if tx.send(Message::Text(response_json)).await.is_err() {
                         break;
                     }
+
+                    // Send a reset confirmation message
+                    let reset_confirmation = serde_json::json!({
+                        "type": "reset_confirmation",
+                        "message": "Game has been reset to starting position"
+                    });
+                    if tx
+                        .send(Message::Text(reset_confirmation.to_string()))
+                        .await
+                        .is_err()
+                    {
+                        break;
+                    }
+
                     // Explicitly drop chess_game here
                     drop(chess_game);
                 }
             }
         }
     });
+
     tokio::select! {
         _ = (&mut send_task) => recv_task.abort(),
         _ = (&mut recv_task) => send_task.abort(),
