@@ -4,6 +4,7 @@
 	"type": "module",
 	"scripts": {
 		"deploy": "cargo-shuttle deploy",
+		"shuttle": "cargo shuttle run",
 		"restart": "cargo-shuttle project restart",
 		"status": "cargo-shuttle project status",
 		"dev": "cd frontend && bun dev",
