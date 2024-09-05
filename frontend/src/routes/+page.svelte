@@ -104,7 +104,6 @@
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />
-
 	{#if isDevMode}
 		<WebsocketInfo {messages} {isConnected} />
 	{/if}

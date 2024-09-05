@@ -1,6 +1,6 @@
 <script lang="ts">
-export let fromSquare: string;
-export let toSquare: string;
+	export let fromSquare: string;
+	export let toSquare: string;
 </script>
 
 <form class="grid grid-cols-2 gap-4 mt-8">
