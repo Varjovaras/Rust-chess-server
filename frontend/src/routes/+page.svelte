@@ -8,8 +8,10 @@
 	import { createWebSocketStore } from '$lib/websocketStore';
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
+	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
 
-	const apiUrl = env.PUBLIC_PROD_WS_URL;
+	const isDevMode = import.meta.env.DEV;
+	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
 
 	const modalStore = getModalStore();
 	const ws = createWebSocketStore(apiUrl);
@@ -29,7 +31,6 @@
 						if (data.chess) {
 							// Update the chess state
 							chess = chessSchema.parse(data.chess);
-
 							// Check for victory conditions
 							if (chess.white_player.victory) {
 								modalStore.trigger(whiteModal);
@@ -37,7 +38,6 @@
 								modalStore.trigger(blackModal);
 							}
 						} else {
-							// Handle other types of messages (e.g., client count, API status)
 							messages = [...messages, data];
 						}
 					} catch (error) {
@@ -104,18 +104,8 @@
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />
-	<div class="p-8">
-		<ul>
-			{#each messages as message}
-				<li>
-					Clients: {message.clients_count}, Time: {new Date(
-						message.dateTime,
-					).toLocaleString()}, API Status: {message.is_up ? 'Up' : 'Down'}
-				</li>
-			{/each}
-		</ul>
-		<div>
-			Connection status: {isConnected ? 'Connected' : 'Disconnected'}
-		</div>
-	</div>
+
+	{#if isDevMode}
+		<WebsocketInfo {messages} {isConnected} />
+	{/if}
 </div>
