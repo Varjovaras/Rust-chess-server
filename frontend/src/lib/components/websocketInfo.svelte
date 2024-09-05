@@ -1,7 +1,7 @@
 <script lang="ts">
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-export let messages: any[];
-export let isConnected: boolean;
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	export let messages: any[];
+	export let isConnected: boolean;
 </script>
 
 <div class="p-8">

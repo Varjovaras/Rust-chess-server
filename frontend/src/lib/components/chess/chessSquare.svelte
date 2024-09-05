@@ -1,34 +1,39 @@
 <script lang="ts">
-import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
-import Piece from "./piece.svelte";
+    import type {
+        Chess,
+        PossibleMoves,
+        Square as SquareType,
+    } from "../../types";
+    import Piece from "./piece.svelte";
 
-export let chess: Chess;
-export let sq: SquareType;
-export let selectedButton: string | null;
-export let possibleMoves: PossibleMoves;
-export let handleClick: (sq: SquareType) => void;
-export let handleDragStart: (sq: SquareType) => void;
-export let handleDrop: (event: DragEvent) => void;
-export let handleTouchStart: (event: TouchEvent, sq: SquareType) => void;
-export let handleTouchMove: (event: TouchEvent) => void;
-export let handleTouchEnd: (event: TouchEvent) => void;
+    export let chess: Chess;
+    export let sq: SquareType;
+    export let selectedButton: string | null;
+    export let possibleMoves: PossibleMoves;
+    export let handleClick: (sq: SquareType) => void;
+    export let handleDragStart: (sq: SquareType) => void;
+    export let handleDrop: (event: DragEvent) => void;
+    export let handleTouchStart: (event: TouchEvent, sq: SquareType) => void;
+    export let handleTouchMove: (event: TouchEvent) => void;
+    export let handleTouchEnd: (event: TouchEvent) => void;
 
-$: squareId = `${sq.file.toLowerCase()}${sq.rank + 1}`;
-$: isSelected = selectedButton === squareId;
-$: isPossibleMove = possibleMoves.some(
-	(move) => move[1][0] === sq.file.charCodeAt(0) - 65 && move[1][1] === sq.rank,
-);
-$: isKingInCheck =
-	typeof sq.piece === "object" &&
-	sq.piece.King !== undefined &&
-	((sq.piece.King === "White" && chess.white_player.in_check) ||
-		(sq.piece.King === "Black" && chess.black_player.in_check));
+    $: squareId = `${sq.file.toLowerCase()}${sq.rank + 1}`;
+    $: isSelected = selectedButton === squareId;
+    $: isPossibleMove = possibleMoves.some(
+        (move) =>
+            move[1][0] === sq.file.charCodeAt(0) - 65 && move[1][1] === sq.rank,
+    );
+    $: isKingInCheck =
+        typeof sq.piece === "object" &&
+        sq.piece.King !== undefined &&
+        ((sq.piece.King === "White" && chess.white_player.in_check) ||
+            (sq.piece.King === "Black" && chess.black_player.in_check));
 
-$: squareColor = sq.color === "White" ? "bg-gray-200" : "bg-gray-400";
-$: hoverColor = "hover:bg-gray-600";
-$: checkColor = isKingInCheck ? "bg-red-800 hover:bg-red-900" : "";
+    $: squareColor = sq.color === "White" ? "bg-gray-200" : "bg-gray-400";
+    $: hoverColor = "hover:bg-gray-600";
+    $: checkColor = isKingInCheck ? "bg-red-800 hover:bg-red-900" : "";
 
-$: squareClass = `
+    $: squareClass = `
     w-[11vw] h-[11vw]
     sm:w-[7vw] sm:h-[7vw]
     md:w-[5vw] md:h-[5vw]
@@ -41,7 +46,7 @@ $: squareClass = `
     ${isSelected ? "selected" : ""}
     ${isPossibleMove ? "possible_move" : ""}
   `;
-$: draggable = sq.piece !== "None";
+    $: draggable = sq.piece !== "None";
 </script>
 
 <button

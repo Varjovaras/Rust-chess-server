@@ -1,11 +1,11 @@
 <script lang="ts">
-import { returnCorrectPieceColor } from "$lib/components/chess/utils";
-import type { Square } from "$lib/types";
-// import { slide } from 'svelte/transition';
+	import { returnCorrectPieceColor } from '$lib/components/chess/utils';
+	import type { Square } from '$lib/types';
+	// import { slide } from 'svelte/transition';
 
-export let sq: Square;
+	export let sq: Square;
 
-$: pieceSize = `
+	$: pieceSize = `
     w-[7.5vw] h-[7.5vw]
     sm:w-[9.5vw] sm:h-[9.5vw]
     md:w-[7.5vw] md:h-[7.5vw]
