@@ -1,5 +1,5 @@
 <script lang="ts">
-	import RustLogo from '$lib/components/rustLogo.svelte';
+import RustLogo from "$lib/components/rustLogo.svelte";
 </script>
 
 <section class="flex flex-col items-center justify-center min-h-screen p-4">
