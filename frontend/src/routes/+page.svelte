@@ -9,6 +9,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
+	import EatenPieces from '$lib/components/chess/eatenPieces.svelte';
 
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
@@ -20,6 +21,8 @@
 	let messages: any[] = [];
 	let isConnected = false;
 	let chess = startingPosition;
+	$: eatenPieces = chess.pieces_eaten;
+	console.log(eatenPieces);
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
@@ -103,6 +106,7 @@
 <div class="flex flex-col justify-center content-center py-4">
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
+	<EatenPieces {eatenPieces} />
 	<ResetButton {handleReset} />
 	{#if isDevMode}
 		<WebsocketInfo {messages} {isConnected} />

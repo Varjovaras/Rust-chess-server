@@ -56,3 +56,14 @@ export const returnCorrectPieceColor = (piece: Piece | "None") => {
 			return "";
 	}
 };
+
+export const nameOfPiece = (piece: Piece): string => {
+	if (piece.Pawn) return "Pawn";
+	if (piece.Knight) return "Knight";
+	if (piece.Bishop) return "Bishop";
+	if (piece.Rook) return "Rook";
+	if (piece.Queen) return "Queen";
+	if (piece.King) return "King";
+	if (piece.None) return "None";
+	return "Unknown";
+};

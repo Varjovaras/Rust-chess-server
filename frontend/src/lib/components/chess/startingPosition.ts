@@ -402,4 +402,8 @@ export const startingPosition: Chess = {
 	gamestate: "InProgress",
 	fifty_move_rule: 0,
 	list_of_moves: [],
+	pieces_eaten: {
+		white: [],
+		black: [],
+	},
 };
