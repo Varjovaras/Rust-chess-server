@@ -6,7 +6,8 @@ use super::{
     rook,
 };
 
-#[must_use] pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use]
+pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if is_diagonal(start_sq, end_sq) {
         bishop::move_bishob(start_sq, end_sq, chess)
     } else if is_horizontal(start_sq, end_sq) || is_vertical(start_sq, end_sq) {

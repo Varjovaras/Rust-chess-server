@@ -224,7 +224,7 @@ mod tests {
         assert!(!chess.black_player.in_check);
         assert!(chess.white_player.in_check);
         assert!(chess.black_player.victory);
-        chess._print_white_board_to_terminal();
+        chess.print_white_board_to_terminal();
 
         chess.starting_position();
         chess.make_move_from_str("e2", "e4");
@@ -233,7 +233,7 @@ mod tests {
         chess.make_move_from_str("d1", "h5");
         chess.make_move_from_str("b8", "c6");
         chess.make_move_from_str("h5", "e5");
-        chess._print_white_board_to_terminal();
+        chess.print_white_board_to_terminal();
         assert!(chess.black_player.in_check);
         chess.make_move_from_str("c6", "e7");
         assert!(!chess.black_player.in_check);

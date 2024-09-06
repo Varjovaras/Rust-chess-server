@@ -157,7 +157,7 @@ mod tests {
         chess.board[6][0].piece = NONE;
         let sq1 = chess.board[4][0].clone();
         let sq2 = chess.board[6][0].clone();
-        chess._print_white_board_to_terminal();
+        chess.print_white_board_to_terminal();
         assert!(move_piece(&sq1, &sq2, &chess));
 
         let sq2 = chess.board[7][0].clone();
@@ -168,7 +168,7 @@ mod tests {
         chess.board[1][0].piece = NONE;
         chess.board[2][0].piece = NONE;
         chess.board[3][0].piece = NONE;
-        chess._print_white_board_to_terminal();
+        chess.print_white_board_to_terminal();
         assert!(move_piece(&sq1, &sq2, &chess));
 
         let sq1 = chess.board[4][7].clone();

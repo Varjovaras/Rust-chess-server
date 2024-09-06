@@ -107,7 +107,7 @@ impl Chess {
         &self.board[file][rank]
     }
 
-    pub fn _print_white_board_to_terminal(&self) {
+    pub fn print_white_board_to_terminal(&self) {
         let mut clone_board = self.board.clone();
         clone_board.reverse();
 
@@ -119,7 +119,7 @@ impl Chess {
         }
     }
 
-    pub fn _print_black_board_to_terminal(&self) {
+    pub fn print_black_board_to_terminal(&self) {
         let mut clone_board = self.board.clone();
         for square_vec in &mut clone_board {
             square_vec.reverse();
@@ -156,7 +156,7 @@ impl Chess {
         make_chess_move(self, &start_sq, &end_sq);
     }
 
-    pub fn _print_moves(self) {
+    pub fn print_moves(self) {
         self.list_of_moves.into_iter().for_each(|m| {
             println!("{m:?}");
         });
