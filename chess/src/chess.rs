@@ -6,7 +6,8 @@ use crate::{
     },
     game_state::GameState,
     make_chess_move::make_chess_move,
-    piece::{Piece, PieceColor},
+    piece::PieceColor,
+    pieces_eaten::PiecesEaten,
     player::Player,
 };
 
@@ -16,33 +17,6 @@ pub type LatestMove = (Square, Square, PieceColor);
 type SquareCoordinates = (File, usize);
 pub type Move = (SquareCoordinates, SquareCoordinates);
 pub type ListOfMoves = Vec<Move>;
-
-/**
-ÄIMPLEMENT THIS TO FRONTEND BACKEND AND LIBRARY
- * `PiecesEaten` is a struct that contains two vectors, one for white pieces eaten and one for black pieces eaten.
- * The vectors contain the pieces that have been eaten during the game.
-*/
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct PiecesEaten {
-    white: Vec<Piece>,
-    black: Vec<Piece>,
-}
-
-impl PiecesEaten {
-    #[must_use]
-    pub fn new() -> Self {
-        Self {
-            white: vec![],
-            black: vec![],
-        }
-    }
-}
-
-impl Default for PiecesEaten {
-    fn default() -> Self {
-        Self::new()
-    }
-}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Chess {
@@ -96,12 +70,12 @@ impl Chess {
 
     #[allow(clippy::missing_panics_doc)]
     #[must_use]
-    pub fn _to_json(&self) -> String {
+    pub fn to_json(&self) -> String {
         serde_json::to_string(&self).expect("Failed to convert to JSON")
     }
 
     #[allow(clippy::missing_errors_doc)]
-    pub fn _from_json(json_str: &str) -> Result<Self, serde_json::Error> {
+    pub fn from_json(json_str: &str) -> Result<Self, serde_json::Error> {
         serde_json::from_str(json_str)
     }
 
