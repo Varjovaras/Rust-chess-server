@@ -6,7 +6,8 @@ use crate::{
 };
 
 //only en passant affects board, that's why insert is mutable reference
-#[must_use] pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use]
+pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::Eighth || start_sq.rank > end_sq.rank || start_sq.is_empty() {
         false
     } else if start_sq.rank == Rank::Second {
@@ -75,7 +76,8 @@ fn white_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-#[must_use] pub fn latest_move_enables_white_en_passant(
+#[must_use]
+pub fn latest_move_enables_white_en_passant(
     chess: &Chess,
     start_sq: &Square,
     end_sq: &Square,
@@ -96,7 +98,7 @@ mod tests {
     use super::*;
     #[test]
     fn white_pawn_moves_from_starting_square() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::default();
         chess.starting_position();
 
         //Bishop on B2
@@ -131,7 +133,7 @@ mod tests {
     }
     #[test]
     fn white_normal_pawn_moves() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::default();
         chess.starting_position();
 
         //Bishop on B2
@@ -153,7 +155,7 @@ mod tests {
 
     #[test]
     fn white_en_passant_works() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::default();
         chess.starting_position();
         chess.make_move_from_str("e2", "e4");
         chess.make_move_from_str("c7", "c5");

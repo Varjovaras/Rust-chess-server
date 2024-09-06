@@ -11,7 +11,8 @@ pub const KNIGHT_MOVES: [(i8, i8); 8] = [
     (2, -1),
 ];
 
-#[must_use] pub const fn move_piece(start_sq: &Square, end_sq: &Square) -> bool {
+#[must_use]
+pub const fn move_piece(start_sq: &Square, end_sq: &Square) -> bool {
     let start_sq_file = start_sq.file as u8;
     let start_sq_rank = start_sq.rank as u8;
     let end_sq_file = end_sq.file as u8;
@@ -32,7 +33,7 @@ mod tests {
     const BLACK_HORSE: Piece = Piece::Knight(PieceColor::Black);
     #[test]
     fn knight_move_works() {
-        let mut chess = Chess::_new();
+        let mut chess = Chess::default();
         chess.starting_position();
         chess.board[4][4].piece = BLACK_HORSE;
         let sq1 = &chess.board[4][4];

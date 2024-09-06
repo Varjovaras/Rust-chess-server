@@ -7,7 +7,8 @@ use super::move_helpers::{
     rook_move::MoveDirection,
 };
 
-#[must_use] pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use]
+pub fn move_piece(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if !is_vertical(start_sq, end_sq) && !is_horizontal(start_sq, end_sq) {
         return false;
     }
@@ -28,7 +29,7 @@ mod tests {
 
     #[test]
     fn rook_move_works() {
-        let mut chess = Chess::_new();
+        let mut chess = Chess::default();
         chess.starting_position();
         let sq1 = &chess.board[0][0];
         let sq2 = &chess.board[0][6];

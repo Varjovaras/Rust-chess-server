@@ -199,7 +199,7 @@ mod tests {
 
     #[test]
     fn test_black_pawn_check() {
-        let mut chess = Chess::_new();
+        let mut chess = Chess::default();
         let king_file = 0;
         let king_rank = 0;
         assert!(!check_by_black_pawn(king_file, king_rank, &chess.board));
@@ -223,7 +223,7 @@ mod tests {
 
     #[test]
     fn test_check_by_white_pawn() {
-        let chess = Chess::_new();
+        let chess = Chess::default();
         let mut board = chess.board;
         board[5][3].piece = Piece::Pawn(PieceColor::White);
         board[7][7].piece = Piece::Pawn(PieceColor::White);
@@ -237,7 +237,7 @@ mod tests {
 
     #[test]
     fn bishop_check_tests() {
-        let mut chess = Chess::_new();
+        let mut chess = Chess::default();
         chess.board[6][6].piece = Piece::Bishop(BLACK);
         let king_file = 0;
         let king_rank = 0;
@@ -287,7 +287,7 @@ mod tests {
 
     #[test]
     fn test_rook_check() {
-        let chess = Chess::_new();
+        let chess = Chess::default();
         let mut board = chess.board;
         board[1][1].piece = Piece::Rook(PieceColor::White);
 

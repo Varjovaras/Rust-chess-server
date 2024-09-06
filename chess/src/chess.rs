@@ -34,7 +34,7 @@ pub struct Chess {
 
 impl Chess {
     #[must_use]
-    pub fn _new() -> Self {
+    fn new() -> Self {
         Self {
             board: chessboard::new_board(),
             turn_number: 0,
@@ -163,6 +163,12 @@ impl Chess {
     }
 }
 
+impl Default for Chess {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use crate::piece::Piece;
@@ -170,12 +176,12 @@ mod tests {
     use super::*;
     #[test]
     fn chess_initialization_works() {
-        let _chess: Chess = Chess::_new();
+        let _chess: Chess = Chess::new();
     }
 
     #[test]
     fn make_move_works() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::new();
         chess.starting_position();
         let start_sq = chess.get_square_from_str("e", "2").clone();
         let end_sq = chess.get_square_from_str("e", "4").clone();

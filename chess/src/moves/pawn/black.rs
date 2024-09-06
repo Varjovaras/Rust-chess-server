@@ -6,7 +6,8 @@ use crate::{
 };
 
 //only en passant affects board, that's why chess is mutable reference
-#[must_use] pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+#[must_use]
+pub fn move_black_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::First || end_sq.rank > start_sq.rank || start_sq.is_empty() {
         false
     } else if start_sq.rank == Rank::Seventh {
@@ -69,7 +70,8 @@ fn black_en_passant(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     true
 }
 
-#[must_use] pub fn latest_move_enables_black_en_passant(
+#[must_use]
+pub fn latest_move_enables_black_en_passant(
     chess: &Chess,
     start_sq: &Square,
     end_sq: &Square,
@@ -90,7 +92,7 @@ mod tests {
     use super::*;
     #[test]
     fn black_pawn_moves_from_starting_square() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::default();
         chess.starting_position();
 
         //Bishop on B7
@@ -132,7 +134,7 @@ mod tests {
     }
     #[test]
     fn normal_pawn_moves() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::default();
         chess.starting_position();
 
         //Bishop on B2, black pawn on D6
@@ -154,7 +156,7 @@ mod tests {
 
     #[test]
     fn black_en_passant_works() {
-        let mut chess: Chess = Chess::_new();
+        let mut chess: Chess = Chess::default();
         chess.starting_position();
         chess.make_move_from_str("e2", "e4");
         chess.make_move_from_str("d7", "d5");

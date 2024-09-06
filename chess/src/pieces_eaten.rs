@@ -17,7 +17,7 @@ impl PiecesEaten {
         }
     }
 
-    pub fn append_piece(&mut self, piece: Piece) {
+    pub fn add_piece(&mut self, piece: Piece) {
         match piece.color() {
             PieceColor::White => self.white.push(piece),
             PieceColor::Black => self.black.push(piece),
