@@ -105,7 +105,6 @@ mod tests {
         assert_eq!(chess.pieces_eaten.white.len(), 1);
         assert_eq!(chess.pieces_eaten.black.len(), 2);
         assert_eq!(chess.pieces_eaten.white[0], white_pawn);
-
         assert_eq!(chess.pieces_eaten.black[1], black_knight);
     }
 }

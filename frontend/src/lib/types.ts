@@ -68,6 +68,11 @@ export const gameStateSchema = z.enum([
 	"Draw",
 ]);
 
+export const piecesEatenSchema = z.object({
+	white: z.array(pieceSchema),
+	black: z.array(pieceSchema),
+});
+
 export const chessSchema = z.object({
 	board: boardSchema,
 	turn_number: z.number(),
@@ -78,6 +83,7 @@ export const chessSchema = z.object({
 	gamestate: gameStateSchema,
 	fifty_move_rule: z.number(),
 	list_of_moves: listOfMovesSchema,
+	pieces_eaten: piecesEatenSchema,
 });
 
 export type Chess = z.TypeOf<typeof chessSchema>;
@@ -88,3 +94,4 @@ export type ListOfMoves = z.TypeOf<typeof listOfMovesSchema>;
 export type GameState = z.TypeOf<typeof gameStateSchema>;
 export type PossibleMoves = z.TypeOf<typeof possibleMoveSchema>;
 export type Castling = z.TypeOf<typeof castlingSchema>;
+export type PiecesEaten = z.TypeOf<typeof piecesEatenSchema>;
