@@ -109,6 +109,9 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
         handle_rook_and_king_move(chess, start_sq, end_sq);
     }
 
+    if end_sq.has_piece() {
+        chess.pieces_eaten.add_piece(end_sq.piece);
+    }
     update_board(chess, start_sq, end_sq);
     add_possible_moves_to_squares(chess);
 
