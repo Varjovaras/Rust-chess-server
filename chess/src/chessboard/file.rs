@@ -44,7 +44,6 @@ impl File {
         }
     }
 
-
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
     pub fn _from_str_slice(s: &str) -> Self {

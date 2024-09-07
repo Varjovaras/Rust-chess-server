@@ -50,7 +50,6 @@ impl Square {
         }
     }
 
-
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
     pub fn _new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Self {
@@ -158,8 +157,8 @@ impl Square {
         moves
             .iter()
             .filter(|possible_move| {
-                let start_sq = chess.board[possible_move.0.0][possible_move.0.1].clone();
-                let end_sq = chess.board[possible_move.1.0][possible_move.1.1].clone();
+                let start_sq = chess.board[possible_move.0 .0][possible_move.0 .1].clone();
+                let end_sq = chess.board[possible_move.1 .0][possible_move.1 .1].clone();
                 check_if_move_is_legal(chess, &start_sq, &end_sq)
             })
             .copied()

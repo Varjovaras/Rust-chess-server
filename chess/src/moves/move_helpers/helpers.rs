@@ -7,49 +7,60 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-#[must_use] pub const fn diagonally_one_square_apart(first_sq: &Square, second_sq: &Square) -> bool {
+#[must_use]
+pub const fn diagonally_one_square_apart(first_sq: &Square, second_sq: &Square) -> bool {
     (first_sq.rank as u8).abs_diff(second_sq.rank as u8) == 1
         && (first_sq.file as u8).abs_diff(second_sq.file as u8) == 1
 }
 
-#[must_use] pub const fn _squares_on_same_row(first_sq: &Square, second_sq: &Square) -> bool {
+#[must_use]
+pub const fn _squares_on_same_row(first_sq: &Square, second_sq: &Square) -> bool {
     (first_sq.rank as u8).abs_diff(second_sq.rank as u8) == 0
         && (first_sq.file as u8).abs_diff(second_sq.file as u8) == 1
 }
 
-#[must_use] pub const fn _square_row_diff(first_sq: &Square, second_sq: &Square) -> u8 {
+#[must_use]
+pub const fn _square_row_diff(first_sq: &Square, second_sq: &Square) -> u8 {
     (first_sq.file as u8).abs_diff(second_sq.file as u8)
 }
 
-#[must_use] pub const fn square_column_diff(first_sq: &Square, second_sq: &Square) -> u8 {
+#[must_use]
+pub const fn square_column_diff(first_sq: &Square, second_sq: &Square) -> u8 {
     (first_sq.rank as u8).abs_diff(second_sq.rank as u8)
 }
-#[must_use] pub const fn is_diagonal(first_sq: &Square, second_sq: &Square) -> bool {
+#[must_use]
+pub const fn is_diagonal(first_sq: &Square, second_sq: &Square) -> bool {
     (first_sq.rank as u8).abs_diff(second_sq.rank as u8)
         == (first_sq.file as u8).abs_diff(second_sq.file as u8)
 }
 
-#[must_use] pub fn is_vertical(first_sq: &Square, second_sq: &Square) -> bool {
+#[must_use]
+pub fn is_vertical(first_sq: &Square, second_sq: &Square) -> bool {
     first_sq.rank != second_sq.rank && first_sq.file == second_sq.file
 }
 
-#[must_use] pub fn is_horizontal(first_sq: &Square, second_sq: &Square) -> bool {
+#[must_use]
+pub fn is_horizontal(first_sq: &Square, second_sq: &Square) -> bool {
     first_sq.rank == second_sq.rank && first_sq.file != second_sq.file
 }
 
-#[must_use] pub fn move_is_up_and_left(start_sq: &Square, end_sq: &Square) -> bool {
+#[must_use]
+pub fn move_is_up_and_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank < end_sq.rank
 }
 
-#[must_use] pub fn move_is_up_and_right(start_sq: &Square, end_sq: &Square) -> bool {
+#[must_use]
+pub fn move_is_up_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank < end_sq.rank
 }
 
-#[must_use] pub fn move_is_down_and_left(start_sq: &Square, end_sq: &Square) -> bool {
+#[must_use]
+pub fn move_is_down_and_left(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file > end_sq.file && start_sq.rank > end_sq.rank
 }
 
-#[must_use] pub fn move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
+#[must_use]
+pub fn move_is_down_and_right(start_sq: &Square, end_sq: &Square) -> bool {
     start_sq.file < end_sq.file && start_sq.rank > end_sq.rank
 }
 

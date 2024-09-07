@@ -10,7 +10,8 @@ pub struct Player {
 }
 
 impl Player {
-    #[must_use] pub const fn new(color: PieceColor) -> Self {
+    #[must_use]
+    pub const fn new(color: PieceColor) -> Self {
         Self {
             color,
             victory: false,
@@ -22,7 +23,8 @@ impl Player {
     //     &self.color
     // }
 
-    #[must_use] pub const fn in_check(self) -> bool {
+    #[must_use]
+    pub const fn in_check(self) -> bool {
         self.in_check
     }
 

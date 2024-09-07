@@ -3,8 +3,6 @@
 
 	export let eatenPieces: PiecesEaten;
 
-	$: console.log(eatenPieces);
-
 	type WhitePieces = {
 		white: {
 			Pawn?: string | undefined;

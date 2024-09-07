@@ -12,7 +12,8 @@ pub enum DiagonalMoveDirection {
 }
 
 impl DiagonalMoveDirection {
-    #[must_use] pub fn new(start_sq: &Square, end_sq: &Square) -> Option<Self> {
+    #[must_use]
+    pub fn new(start_sq: &Square, end_sq: &Square) -> Option<Self> {
         if move_is_up_and_left(start_sq, end_sq) {
             Some(Self::UpLeft)
         } else if move_is_up_and_right(start_sq, end_sq) {
@@ -26,7 +27,8 @@ impl DiagonalMoveDirection {
         }
     }
 
-    #[must_use] pub fn make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
+    #[must_use]
+    pub fn make_move(&self, start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
         match self {
             Self::UpLeft => move_top_left(start_sq, end_sq, chess),
             Self::UpRight => move_top_right(start_sq, end_sq, chess),
