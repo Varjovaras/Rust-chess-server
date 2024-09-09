@@ -52,7 +52,7 @@ impl Square {
 
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub fn _new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Self {
+    pub fn new_from_u8(file: u8, rank: u8, color: SquareColor, piece: Piece) -> Self {
         let file = File::try_from(file).expect("Invalid file");
         let rank = Rank::try_from(rank).expect("Invalid rank");
         Self {
@@ -66,7 +66,7 @@ impl Square {
 
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub fn _new_without_piece(file: u8, rank: u8) -> Self {
+    pub fn new_without_piece(file: u8, rank: u8) -> Self {
         let file = File::try_from(file).expect("Invalid file");
         let rank = Rank::try_from(rank).expect("Invalid rank");
         Self {
@@ -79,12 +79,12 @@ impl Square {
     }
 
     #[must_use]
-    pub fn _square_name(&self) -> String {
+    pub fn square_name(&self) -> String {
         self.file.as_str().to_owned() + self.rank.as_str()
     }
 
     #[must_use]
-    pub const fn _square_color(&self) -> SquareColor {
+    pub const fn square_color(&self) -> SquareColor {
         self.color
     }
 
@@ -99,7 +99,7 @@ impl Square {
     }
 
     #[must_use]
-    pub const fn _piece_name(&self) -> &'static str {
+    pub const fn piece_name(&self) -> &'static str {
         match self.piece {
             Piece::None => " ",
             Piece::Pawn(_) => match self.piece.color() {

@@ -117,7 +117,7 @@ impl Chess {
 
         for i in (0..8).rev() {
             for j in (0..8).rev() {
-                print!("{} ", clone_board[j][i]._piece_name());
+                print!("{} ", clone_board[j][i].piece_name());
             }
             println!(" ");
         }
@@ -130,7 +130,7 @@ impl Chess {
         }
         for row in &clone_board {
             for square in row {
-                print!("{} ", square._square_name());
+                print!("{} ", square.square_name());
             }
             println!();
         }
