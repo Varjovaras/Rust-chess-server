@@ -121,6 +121,24 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
     // Create a channel for communication between tasks
     let (tx, mut rx_channel) = mpsc::channel(100);
 
+    let initial_chess_state = {
+        let chess_game = chess.lock().await;
+        serde_json::json!({
+            "type": "initial_state",
+            "chess": *chess_game
+        })
+    };
+
+    if (sender
+        .send(Message::Text(
+            serde_json::to_string(&initial_chess_state).expect(":D"),
+        ))
+        .await)
+        .is_err()
+    {
+        return; // Client disconnected
+    }
+
     let mut send_task = tokio::spawn(async move {
         #[allow(clippy::redundant_pub_crate)]
         loop {
@@ -162,9 +180,10 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                 chess_game.make_move_from_str(&move_request.new_move[0], &move_request.new_move[1]);
 
                 // Send updated chess state to all clients
-                let response = MoveResponse {
-                    chess: chess_game.clone(),
-                };
+                let response = serde_json::json!({
+                    "type": "update",
+                    "chess": *chess_game
+                });
                 #[allow(clippy::unwrap_used)]
                 let response_json = serde_json::to_string(&response).unwrap();
                 if tx.send(Message::Text(response_json)).await.is_err() {
@@ -178,25 +197,13 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                     *chess_game = Chess::new_starting_position();
 
                     // Send updated chess state to all clients
-                    let response = MoveResponse {
-                        chess: chess_game.clone(),
-                    };
+                    let response = serde_json::json!({
+                        "type": "reset",
+                        "chess": *chess_game
+                    });
                     #[allow(clippy::unwrap_used)]
                     let response_json = serde_json::to_string(&response).unwrap();
                     if tx.send(Message::Text(response_json)).await.is_err() {
-                        break;
-                    }
-
-                    // Send a reset confirmation message
-                    let reset_confirmation = serde_json::json!({
-                        "type": "reset_confirmation",
-                        "message": "Game has been reset to starting position"
-                    });
-                    if tx
-                        .send(Message::Text(reset_confirmation.to_string()))
-                        .await
-                        .is_err()
-                    {
                         break;
                     }
 

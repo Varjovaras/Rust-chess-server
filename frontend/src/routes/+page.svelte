@@ -22,7 +22,6 @@
 	let isConnected = false;
 	let chess = startingPosition;
 	$: eatenPieces = chess.pieces_eaten;
-	console.log(eatenPieces);
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
@@ -31,7 +30,10 @@
 				socket.addEventListener('message', (event) => {
 					try {
 						const data = JSON.parse(event.data);
-						if (data.chess) {
+						if (data.type === 'initial_state' && data.chess) {
+							// Initialize the chess state
+							chess = chessSchema.parse(data.chess);
+						} else if (data.type === 'update' && data.chess) {
 							// Update the chess state
 							chess = chessSchema.parse(data.chess);
 							// Check for victory conditions
@@ -40,6 +42,9 @@
 							} else if (chess.black_player.victory) {
 								modalStore.trigger(blackModal);
 							}
+						} else if (data.type === 'reset' && data.chess) {
+							// Reset the chess state
+							chess = chessSchema.parse(data.chess);
 						} else {
 							messages = [...messages, data];
 						}
@@ -47,6 +52,7 @@
 						console.error('Failed to parse WebSocket message:', error);
 					}
 				});
+				console.log('Connected via websocket');
 				socket.addEventListener('error', (event) => {
 					console.error('WebSocket error:', event);
 				});
@@ -54,10 +60,8 @@
 				isConnected = false;
 			}
 		});
-
 		return () => unsubscribe();
 	});
-
 	onDestroy(() => {
 		console.log(
 			'Component is being destroyed, resetting chess to starting position',
