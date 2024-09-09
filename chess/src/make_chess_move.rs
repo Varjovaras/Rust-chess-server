@@ -2,7 +2,7 @@ use crate::{
     check::is_king_in_check_state,
     checkmate::{self},
     chess::Chess,
-    chessboard::{file::File, rank::Rank, square::Square},
+    chessboard::{add_possible_moves_to_squares, file::File, rank::Rank, square::Square},
     game_state::{insufficient_material, stalemate, GameState},
     moves::{
         king::move_is_castling,
@@ -22,6 +22,7 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
 
     handle_special_moves(chess, start_sq, end_sq);
     update_board(chess, start_sq, end_sq);
+    add_possible_moves_to_squares(chess);
     handle_game_state(chess, opposite_color);
 }
 
