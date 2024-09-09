@@ -31,7 +31,7 @@ impl File {
     }
 
     #[must_use]
-    pub const fn _as_str(self) -> &'static str {
+    pub const fn as_str(self) -> &'static str {
         match self {
             Self::A => "A",
             Self::B => "B",
@@ -46,7 +46,7 @@ impl File {
 
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub fn _from_str_slice(s: &str) -> Self {
+    pub fn from_str_slice(s: &str) -> Self {
         let str = s.to_uppercase();
         let file = &str[..];
         match file {

@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use crate::{
     castling::Castling,
     chessboard::{
@@ -98,8 +100,10 @@ impl Chess {
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
     pub fn get_square_from_str(&self, file_str: &str, rank_str: &str) -> &Square {
-        let file = File::_from_str_slice(file_str).as_usize();
-        let rank = Rank::_from_str(rank_str).as_usize();
+        let file = File::from_str_slice(file_str).as_usize();
+        let rank = Rank::from_str(rank_str)
+            .expect("Invalid rank string provided")
+            .as_usize();
         assert!(
             !(file > 7 || rank > 7),
             "get_square_from_str failed for inputting too big file or rank"

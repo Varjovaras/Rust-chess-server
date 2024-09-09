@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use serde_repr::{Deserialize_repr, Serialize_repr};
 
 #[derive(
@@ -19,7 +21,7 @@ pub enum Rank {
 impl Rank {
     #[must_use]
     #[allow(clippy::missing_panics_doc)]
-    pub const fn _as_str(self) -> &'static str {
+    pub const fn as_str(self) -> &'static str {
         match self {
             Self::First => "1",
             Self::Second => "2",
@@ -46,22 +48,6 @@ impl Rank {
         }
     }
 
-    #[must_use]
-    #[allow(clippy::missing_panics_doc)]
-    pub fn _from_str(s: &str) -> Self {
-        match s {
-            "1" => Self::First,
-            "2" => Self::Second,
-            "3" => Self::Third,
-            "4" => Self::Fourth,
-            "5" => Self::Fifth,
-            "6" => Self::Sixth,
-            "7" => Self::Seventh,
-            "8" => Self::Eighth,
-            _ => panic!("Invalid rank_str"),
-        }
-    }
-
     pub(crate) const fn get_ranks() -> [Self; 8] {
         [
             Self::First,
@@ -73,6 +59,24 @@ impl Rank {
             Self::Seventh,
             Self::Eighth,
         ]
+    }
+}
+
+impl FromStr for Rank {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s {
+            "1" => Ok(Self::First),
+            "2" => Ok(Self::Second),
+            "3" => Ok(Self::Third),
+            "4" => Ok(Self::Fourth),
+            "5" => Ok(Self::Fifth),
+            "6" => Ok(Self::Sixth),
+            "7" => Ok(Self::Seventh),
+            "8" => Ok(Self::Eighth),
+            _ => Err(format!("Invalid rank_str: {s}")),
+        }
     }
 }
 

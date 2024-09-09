@@ -80,7 +80,7 @@ impl Square {
 
     #[must_use]
     pub fn _square_name(&self) -> String {
-        self.file._as_str().to_owned() + self.rank._as_str()
+        self.file.as_str().to_owned() + self.rank.as_str()
     }
 
     #[must_use]
