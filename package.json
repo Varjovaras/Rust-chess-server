@@ -3,7 +3,7 @@
 	"module": "index.ts",
 	"type": "module",
 	"scripts": {
-		"deploy": "cargo-shuttle project restart && cargo-shuttle project deploy",
+		"deploy": "cargo-shuttle project restart && cargo shuttle deploy",
 		"shuttle": "cargo shuttle run",
 		"restart": "cargo-shuttle project restart",
 		"status": "cargo-shuttle project status",

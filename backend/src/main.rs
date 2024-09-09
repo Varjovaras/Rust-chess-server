@@ -47,10 +47,10 @@ struct MoveRequest {
     new_move: [String; 2],
 }
 
-#[derive(Debug, Serialize, Clone)]
-struct MoveResponse {
-    pub chess: Chess,
-}
+// #[derive(Debug, Serialize, Clone)]
+// struct MoveResponse {
+//     pub chess: Chess,
+// }
 
 #[derive(Debug, Deserialize, Clone)]
 struct ResetRequest {
