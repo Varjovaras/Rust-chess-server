@@ -10,6 +10,17 @@ pub enum PieceColor {
     None,
 }
 
+impl PieceColor {
+    #[must_use]
+    pub const fn opposite(&self) -> Self {
+        match self {
+            Self::White => Self::Black,
+            Self::Black => Self::White,
+            Self::None => Self::None,
+        }
+    }
+}
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Default, Serialize, Deserialize)]
 pub enum Piece {
     #[default]
@@ -49,48 +60,18 @@ impl Piece {
         }
     }
 
-    // pub const fn name(&self) -> &str {
-    //     match self {
-    //         Self::None => "no piece",
-    //         Self::Pawn(_) => "pawn",
-    //         Self::Knight(_) => "knight",
-    //         Self::Bishop(_) => "bishop",
-    //         Self::Rook(_) => "rook",
-    //         Self::Queen(_) => "queen",
-    //         Self::King(_) => "king",
-    //     }
-    // }
+    #[must_use]
+    pub const fn is_king(self) -> bool {
+        matches!(self, Self::King(_))
+    }
 
-    // pub fn possible_legal_moves(
-    //     self,
-    //     chess: &Chess,
-    //     start_sq: &Square,
-    // ) -> Vec<MoveFromCoordinates> {
-    //     let mut moves = vec![];
-    //     match self {
-    //         Self::None => {}
-    //         Self::Pawn(_) => moves = pawn_possible_moves(start_sq),
-    //         Self::Knight(_) => moves = knight_possible_moves(start_sq),
-    //         Self::Bishop(_) => moves = bishop_possible_moves(start_sq),
-    //         Self::Rook(_) => moves = rook_possible_moves(start_sq),
-    //         Self::Queen(_) => {
-    //             moves = {
-    //                 moves = bishop_possible_moves(start_sq);
-    //                 moves.append(&mut rook_possible_moves(start_sq));
-    //                 moves
-    //             }
-    //         }
-    //         Self::King(_) => moves = king_possible_moves(start_sq),
-    //     }
+    #[must_use]
+    pub const fn is_rook(self) -> bool {
+        matches!(self, Self::Rook(_))
+    }
 
-    //     moves
-    //         .iter()
-    //         .filter(|possible_move| {
-    //             let start_sq = &chess.board[possible_move.0 .0][possible_move.0 .1];
-    //             let end_sq = &chess.board[possible_move.1 .0][possible_move.1 .1];
-    //             check_if_move_is_legal(chess, start_sq, end_sq)
-    //         })
-    //         .copied()
-    //         .collect::<Vec<MoveFromCoordinates>>()
-    // }
+    #[must_use]
+    pub const fn is_pawn(self) -> bool {
+        matches!(self, Self::Pawn(_))
+    }
 }
