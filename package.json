@@ -12,7 +12,8 @@
 		"check:watch": "cd frontend && bun check:watch",
 		"lint": "cd frontend && bun lint",
 		"build": "cd frontend && bun run build",
-		"biome": "cd frontend && bun run biome"
+		"biome": "cd frontend && bun run biome",
+
 	},
 	"devDependencies": {
 		"@types/bun": "latest"
