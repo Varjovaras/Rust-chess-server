@@ -4,11 +4,19 @@
 		isWhiteTurn,
 		legalMove,
 	} from '$lib/components/chess/utils';
-	import type { Chess, PossibleMoves, Square as SquareType } from '../../types';
+	import type {
+		Chess,
+		PiecesEaten,
+		PossibleMoves,
+		Square as SquareType,
+	} from '../../types';
 	import ChessSquare from './chessSquare.svelte';
+	import { countEatenPieces } from './eatenPieces';
+	import EatenPiecesList from './EatenPiecesList.svelte';
 
 	export let chess: Chess;
 	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
+	export let piecesEaten: PiecesEaten;
 
 	let startSq = '';
 	let selectedButton: string | null = null;
@@ -18,6 +26,7 @@
 
 	$: boardToFront = handleBoardToFront(chess.board);
 	$: whiteTurn = isWhiteTurn(chess.turn_number);
+	$: piecesEatenCount = countEatenPieces(piecesEaten);
 
 	const handleClick = async (sq: SquareType) => {
 		const file = sq.file.toLowerCase();
@@ -107,23 +116,27 @@
 	};
 </script>
 
-<div class="flex justify-center items-center p-4">
-	<div class="grid grid-cols-8 gap-0">
-		{#each boardToFront as row, i}
-			{#each row as sq, j}
-				<ChessSquare
-					{chess}
-					{sq}
-					{selectedButton}
-					{possibleMoves}
-					{handleClick}
-					{handleDragStart}
-					{handleDrop}
-					{handleTouchStart}
-					{handleTouchMove}
-					{handleTouchEnd}
-				/>
+<div class="flex justify-center items-center p-4 space-x-8">
+	<div class="flex flex-row justify-center items-center">
+		<EatenPiecesList color="white" pieces={piecesEatenCount.white} />
+		<div class="grid grid-cols-8 gap-0">
+			{#each boardToFront as row, i}
+				{#each row as sq, j}
+					<ChessSquare
+						{chess}
+						{sq}
+						{selectedButton}
+						{possibleMoves}
+						{handleClick}
+						{handleDragStart}
+						{handleDrop}
+						{handleTouchStart}
+						{handleTouchMove}
+						{handleTouchEnd}
+					/>
+				{/each}
 			{/each}
-		{/each}
+		</div>
+		<EatenPiecesList color="black" pieces={piecesEatenCount.black} />
 	</div>
 </div>

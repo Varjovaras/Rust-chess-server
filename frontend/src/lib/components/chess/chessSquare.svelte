@@ -33,7 +33,7 @@
     w-[11vw] h-[11vw]
     sm:w-[7vw] sm:h-[7vw]
     md:w-[5vw] md:h-[5vw]
-    lg:w-[4vw] lg:h-[4vw]
+    lg:w-[6vw] lg:h-[6vw]
     xl:w-[3.5vw] xl:h-[3.5vw]
     max-w-20 max-h-20
     min-w-8 min-h-8

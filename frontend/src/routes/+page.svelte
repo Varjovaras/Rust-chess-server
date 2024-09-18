@@ -109,8 +109,7 @@
 
 <div class="flex flex-col justify-center content-center py-4">
 	<ErrorMessage {errorMessage} />
-	<Chessboard {chess} {handleMove} />
-	<EatenPieces {eatenPieces} />
+	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
 	<ResetButton {handleReset} />
 	{#if isDevMode}
 		<WebsocketInfo {messages} {isConnected} />
