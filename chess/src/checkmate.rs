@@ -16,9 +16,9 @@ type SquareCoordinates = (usize, usize);
 pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates);
 
 pub fn is_checkmate_position(chess: &mut Chess) -> bool {
-    let moves: Vec<MoveFromCoordinates> = if chess.white_player.in_check() {
+    let moves: Vec<MoveFromCoordinates> = if chess.clone().get_white_player().in_check() {
         possible_legal_moves(chess, WHITE)
-    } else if chess.black_player.in_check() {
+    } else if chess.clone().get_black_player().in_check() {
         possible_legal_moves(chess, BLACK)
     } else {
         return false;
@@ -31,11 +31,11 @@ pub fn is_checkmate_position(chess: &mut Chess) -> bool {
     });
 
     if is_checkmate {
-        chess.gamestate = if chess.white_player.in_check() {
-            chess.black_player.victory = true;
+        chess.gamestate = if chess.clone().get_white_player().in_check() {
+            chess.players.1.victory = true;
             GameState::BlackVictory
         } else {
-            chess.white_player.victory = true;
+            chess.players.0.victory = true;
             GameState::WhiteVictory
         };
     }
@@ -218,12 +218,12 @@ mod tests {
         chess.make_move_from_str("f2", "f3");
         chess.make_move_from_str("e7", "e5");
         chess.make_move_from_str("g2", "g4");
-        assert!(!chess.white_player.in_check);
-        assert!(!chess.black_player.in_check);
+        assert!(!chess.players.0.in_check);
+        assert!(!chess.players.1.in_check);
         chess.make_move_from_str("d8", "h4");
-        assert!(!chess.black_player.in_check);
-        assert!(chess.white_player.in_check);
-        assert!(chess.black_player.victory);
+        assert!(!chess.players.1.in_check);
+        assert!(chess.players.0.in_check);
+        assert!(chess.players.1.victory);
         chess.print_white_board_to_terminal();
 
         chess.starting_position();
@@ -234,16 +234,16 @@ mod tests {
         chess.make_move_from_str("b8", "c6");
         chess.make_move_from_str("h5", "e5");
         chess.print_white_board_to_terminal();
-        assert!(chess.black_player.in_check);
+        assert!(chess.players.1.in_check);
         chess.make_move_from_str("c6", "e7");
-        assert!(!chess.black_player.in_check);
+        assert!(!chess.players.1.in_check);
 
         chess.make_move_from_str("f1", "c4");
         chess.make_move_from_str("a7", "a6");
         chess.make_move_from_str("e5", "f4");
         chess.make_move_from_str("a6", "a5");
         chess.make_move_from_str("c4", "f7");
-        assert!(chess.black_player.in_check);
-        assert!(chess.white_player.victory);
+        assert!(chess.players.1.in_check);
+        assert!(chess.players.0.victory);
     }
 }

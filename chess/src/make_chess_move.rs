@@ -61,8 +61,8 @@ fn is_move_valid(
 
 fn is_game_active(chess: &Chess) -> bool {
     chess.gamestate == GameState::InProgress
-        && !chess.white_player.victory
-        && !chess.black_player.victory
+        && !chess.players.0.victory
+        && !chess.players.1.victory
         && chess.fifty_move_rule < 50
         && !insufficient_material(chess)
 }
@@ -74,8 +74,8 @@ fn is_correct_turn(chess: &Chess, moving_piece_color: PieceColor) -> bool {
 
 const fn is_king_in_check(chess: &Chess, color: PieceColor) -> bool {
     match color {
-        PieceColor::White => chess.white_player.in_check(),
-        PieceColor::Black => chess.black_player.in_check(),
+        PieceColor::White => chess.players.0.in_check(),
+        PieceColor::Black => chess.players.1.in_check(),
         PieceColor::None => false,
     }
 }
@@ -147,10 +147,9 @@ fn update_board(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
 
     chess.latest_move = Some((start_sq.clone(), end_sq.clone(), start_sq.piece.color()));
     chess.turn_number += 1;
-    chess.list_of_moves.push((
-        (start_sq.file, start_sq.rank.as_usize()),
-        (end_sq.file, end_sq.rank.as_usize()),
-    ));
+    chess
+        .list_of_moves
+        .push(((start_sq.file, start_sq.rank), (end_sq.file, end_sq.rank)));
 }
 
 fn handle_game_state(chess: &mut Chess, opposite_color: PieceColor) {
@@ -160,11 +159,11 @@ fn handle_game_state(chess: &mut Chess, opposite_color: PieceColor) {
 }
 
 fn check_for_victory(chess: &mut Chess) {
-    if chess.white_player.in_check && checkmate::is_checkmate_position(chess) {
-        chess.black_player.victory = true;
+    if chess.players.0.in_check && checkmate::is_checkmate_position(chess) {
+        chess.players.1.victory = true;
         chess.gamestate = GameState::BlackVictory;
-    } else if chess.black_player.in_check && checkmate::is_checkmate_position(chess) {
-        chess.white_player.victory = true;
+    } else if chess.players.1.in_check && checkmate::is_checkmate_position(chess) {
+        chess.players.0.victory = true;
         chess.gamestate = GameState::WhiteVictory;
     }
 }
@@ -176,8 +175,8 @@ fn check_for_stalemate(chess: &mut Chess, opposite_color: PieceColor) {
 }
 
 fn update_check_status(chess: &mut Chess) {
-    chess.white_player.in_check = is_king_in_check_state(&chess.board, PieceColor::White);
-    chess.black_player.in_check = is_king_in_check_state(&chess.board, PieceColor::Black);
+    chess.players.0.in_check = is_king_in_check_state(&chess.board, PieceColor::White);
+    chess.players.1.in_check = is_king_in_check_state(&chess.board, PieceColor::Black);
 }
 
 #[must_use]

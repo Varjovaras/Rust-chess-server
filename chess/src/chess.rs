@@ -16,9 +16,14 @@ use crate::{
 use serde::{Deserialize, Serialize};
 
 pub type LatestMove = (Square, Square, PieceColor);
-type SquareCoordinates = (File, usize);
+type SquareCoordinates = (File, Rank);
 pub type Move = (SquareCoordinates, SquareCoordinates);
 pub type ListOfMoves = Vec<Move>;
+
+/**
+ * first player is white, second is black
+ */
+pub type Players = (Player, Player);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Chess {
@@ -26,8 +31,7 @@ pub struct Chess {
     pub turn_number: i32,
     pub latest_move: Option<LatestMove>,
     pub castling: Castling,
-    pub white_player: Player,
-    pub black_player: Player,
+    pub players: (Player, Player),
     pub gamestate: GameState,
     pub fifty_move_rule: u8,
     pub list_of_moves: ListOfMoves,
@@ -42,8 +46,10 @@ impl Chess {
             turn_number: 0,
             latest_move: None,
             castling: Castling::new(),
-            white_player: Player::new(PieceColor::White),
-            black_player: Player::new(PieceColor::Black),
+            players: (
+                Player::new(PieceColor::White),
+                Player::new(PieceColor::Black),
+            ),
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
             list_of_moves: Vec::new(),
@@ -58,8 +64,10 @@ impl Chess {
             turn_number: 0,
             latest_move: None,
             castling: Castling::new(),
-            white_player: Player::new(PieceColor::White),
-            black_player: Player::new(PieceColor::Black),
+            players: (
+                Player::new(PieceColor::White),
+                Player::new(PieceColor::Black),
+            ),
             gamestate: GameState::InProgress,
             fifty_move_rule: 0,
             list_of_moves: Vec::new(),
@@ -85,16 +93,26 @@ impl Chess {
         self.board = chessboard::new_board();
         self.board = starting_position();
         self.turn_number = 0;
-        self.white_player.victory = false;
-        self.black_player.victory = false;
-        self.white_player.in_check = false;
-        self.black_player.in_check = false;
+        self.players.0.victory = false;
+        self.players.1.victory = false;
+        self.players.0.in_check = false;
+        self.players.1.in_check = false;
         self.gamestate = GameState::InProgress;
     }
 
     #[must_use]
     pub fn get_square(&self, file: File, rank: Rank) -> Square {
         self.board[file as usize][rank as usize].clone()
+    }
+
+    #[must_use]
+    pub fn get_white_player(self) -> Player {
+        self.players.0
+    }
+
+    #[must_use]
+    pub fn get_black_player(self) -> Player {
+        self.players.1
     }
 
     #[must_use]
