@@ -44,32 +44,32 @@ pub fn move_is_castling(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bo
         return false;
     }
 
-    let castling = chess.castling;
+    let players = chess.players;
     match (start_sq.rank, end_sq.file) {
         (Rank::First, File::G) => {
             chess.board[5][0].piece == Piece::None
                 && chess.board[6][0].piece == Piece::None
-                && castling.white.king
+                && players.0.castling.kingside
                 && not_checked_while_castling(5, 0, &chess.board)
         }
         (Rank::First, File::C) => {
             chess.board[1][0].piece == Piece::None
                 && chess.board[2][0].piece == Piece::None
                 && chess.board[3][0].piece == Piece::None
-                && castling.white.queen
+                && players.0.castling.queenside
                 && not_checked_while_castling(3, 0, &chess.board)
         }
         (Rank::Eighth, File::G) => {
             chess.board[5][7].piece == Piece::None
                 && chess.board[6][7].piece == Piece::None
-                && castling.black.king
+                && players.1.castling.kingside
                 && not_checked_while_castling(5, 7, &chess.board)
         }
         (Rank::Eighth, File::C) => {
             chess.board[1][7].piece == Piece::None
                 && chess.board[2][7].piece == Piece::None
                 && chess.board[3][7].piece == Piece::None
-                && castling.black.queen
+                && players.1.castling.queenside
                 && not_checked_while_castling(3, 7, &chess.board)
         }
         _ => false,

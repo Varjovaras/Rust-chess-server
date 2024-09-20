@@ -1,28 +1,26 @@
 use serde::{Deserialize, Serialize};
 
-use crate::piece::PieceColor;
+use crate::{castling::RightToCastle, piece::PieceColor};
 
 /**
  * First is kingside castling, second is queenside castling
  */
-type Castling = (bool, bool);
-
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 pub struct Player {
-    color: PieceColor,
+    pub color: PieceColor,
     pub in_check: bool,
     pub victory: bool,
-    check: Castling,
+    pub castling: RightToCastle,
 }
 
 impl Player {
     #[must_use]
-    pub const fn new(color: PieceColor) -> Self {
+    pub fn new(color: PieceColor) -> Self {
         Self {
             color,
             victory: false,
             in_check: false,
-            check: (true, true),
+            castling: RightToCastle::default(),
         }
     }
 
@@ -33,12 +31,12 @@ impl Player {
 
     #[must_use]
     pub const fn kingside_castling_allowed(self) -> bool {
-        self.check.0
+        self.castling.kingside
     }
 
     #[must_use]
     pub const fn queenside_castling_allowed(self) -> bool {
-        self.check.1
+        self.castling.queenside
     }
 
     #[must_use]
@@ -46,15 +44,15 @@ impl Player {
         self.in_check
     }
 
-    pub fn castle_king_side(&mut self) {
-        self.check.0 = false;
+    pub fn castle(&mut self) {
+        self.castling.remove_castling();
     }
 
-    pub fn castle_queen_side(&mut self) {
-        self.check.1 = false;
+    pub fn no_kingside_castling(&mut self) {
+        self.castling.kingside = false;
     }
 
-    // pub fn victory(&self) -> bool {
-    //     self.victory
-    // }
+    pub fn no_queenside_castling(&mut self) {
+        self.castling.queenside = false;
+    }
 }

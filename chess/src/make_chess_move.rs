@@ -203,26 +203,20 @@ pub fn king_is_not_in_check_after_move(chess: &Chess, start_sq: &Square, end_sq:
 
 fn remove_castling(chess: &mut Chess, start_sq: &Square) {
     match start_sq.piece {
-        Piece::King(PieceColor::White) => {
-            chess.castling.white.king = false;
-            chess.castling.white.queen = false;
-        }
-        Piece::King(PieceColor::Black) => {
-            chess.castling.black.king = false;
-            chess.castling.black.queen = false;
-        }
+        Piece::King(PieceColor::White) => chess.players.0.castle(),
+        Piece::King(PieceColor::Black) => chess.players.1.castle(),
         Piece::Rook(PieceColor::White) => {
             if start_sq.file == File::A && start_sq.rank == Rank::First {
-                chess.castling.white.queen = false;
+                chess.players.0.no_queenside_castling();
             } else if start_sq.file == File::H && start_sq.rank == Rank::First {
-                chess.castling.white.king = false;
+                chess.players.0.no_kingside_castling();
             }
         }
         Piece::Rook(PieceColor::Black) => {
             if start_sq.file == File::A && start_sq.rank == Rank::Eighth {
-                chess.castling.black.queen = false;
+                chess.players.1.no_queenside_castling();
             } else if start_sq.file == File::H && start_sq.rank == Rank::Eighth {
-                chess.castling.black.king = false;
+                chess.players.1.no_kingside_castling();
             }
         }
         _ => panic!("Castling without starting piece shouldn't happen"),

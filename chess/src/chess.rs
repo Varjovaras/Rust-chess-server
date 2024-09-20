@@ -1,7 +1,6 @@
 use std::str::FromStr;
 
 use crate::{
-    castling::Castling,
     chessboard::{
         self, add_possible_moves_to_squares, file::File, rank::Rank, square::Square,
         starting_position, ChessBoard,
@@ -30,7 +29,7 @@ pub struct Chess {
     pub board: ChessBoard,
     pub turn_number: i32,
     pub latest_move: Option<LatestMove>,
-    pub castling: Castling,
+    // pub castling: Castling,
     pub players: (Player, Player),
     pub gamestate: GameState,
     pub fifty_move_rule: u8,
@@ -45,7 +44,6 @@ impl Chess {
             board: chessboard::new_board(),
             turn_number: 0,
             latest_move: None,
-            castling: Castling::new(),
             players: (
                 Player::new(PieceColor::White),
                 Player::new(PieceColor::Black),
@@ -63,7 +61,6 @@ impl Chess {
             board: chessboard::new_board(),
             turn_number: 0,
             latest_move: None,
-            castling: Castling::new(),
             players: (
                 Player::new(PieceColor::White),
                 Player::new(PieceColor::Black),
