@@ -37,9 +37,9 @@
 							// Update the chess state
 							chess = chessSchema.parse(data.chess);
 							// Check for victory conditions
-							if (chess.white_player.victory) {
+							if (chess.players[0].victory) {
 								modalStore.trigger(whiteModal);
-							} else if (chess.black_player.victory) {
+							} else if (chess.players[1].victory) {
 								modalStore.trigger(blackModal);
 							}
 						} else if (data.type === 'reset' && data.chess) {

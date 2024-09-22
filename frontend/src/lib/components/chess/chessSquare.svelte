@@ -22,8 +22,8 @@
 	$: isKingInCheck =
 		typeof sq.piece === 'object' &&
 		sq.piece.King !== undefined &&
-		((sq.piece.King === 'White' && chess.white_player.in_check) ||
-			(sq.piece.King === 'Black' && chess.black_player.in_check));
+		((sq.piece.King === 'White' && chess.players[0].in_check) ||
+			(sq.piece.King === 'Black' && chess.players[1].in_check));
 
 	$: squareColor = sq.color === 'White' ? 'bg-gray-200' : 'bg-gray-400';
 	$: hoverColor = 'hover:bg-gray-600';

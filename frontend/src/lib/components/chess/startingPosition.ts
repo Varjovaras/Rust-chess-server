@@ -393,12 +393,27 @@ export const startingPosition: Chess = {
 	],
 	turn_number: 0,
 	latest_move: null,
-	castling: {
-		white: { king: true, queen: true },
-		black: { king: true, queen: true },
-	},
-	white_player: { color: "White", in_check: false, victory: false },
-	black_player: { color: "Black", in_check: false, victory: false },
+	players: [
+		{
+			color: "white",
+			in_check: false,
+			victory: false,
+			castling: {
+				kingside: true,
+				queenside: false,
+			},
+		},
+		{
+			color: "black",
+			in_check: false,
+			victory: false,
+			castling: {
+				kingside: true,
+				queenside: false,
+			},
+		},
+	],
+
 	gamestate: "InProgress",
 	fifty_move_rule: 0,
 	list_of_moves: [],
