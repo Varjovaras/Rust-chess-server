@@ -33,20 +33,15 @@ export const possibleMoveSchema = z.array(
 export const boardSchema = z.array(z.array(squareSchema));
 
 export const castlingSchema = z.object({
-	white: z.object({
-		king: z.boolean(),
-		queen: z.boolean(),
-	}),
-	black: z.object({
-		king: z.boolean(),
-		queen: z.boolean(),
-	}),
+	kingside: z.boolean(),
+	queenside: z.boolean(),
 });
 
 export const playerSchema = z.object({
 	color: z.string(),
 	in_check: z.boolean(),
 	victory: z.boolean(),
+	castling: castlingSchema,
 });
 
 const latestMoveSchema = z
@@ -77,9 +72,8 @@ export const chessSchema = z.object({
 	board: boardSchema,
 	turn_number: z.number(),
 	latest_move: latestMoveSchema,
-	castling: castlingSchema,
-	white_player: playerSchema,
-	black_player: playerSchema,
+	// castling: castlingSchema,
+	players: z.tuple([playerSchema, playerSchema]),
 	gamestate: gameStateSchema,
 	fifty_move_rule: z.number(),
 	list_of_moves: listOfMovesSchema,
