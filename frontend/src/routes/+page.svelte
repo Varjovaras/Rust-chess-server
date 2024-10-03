@@ -21,9 +21,6 @@
 	let isConnected = false;
 	let chess = startingPosition;
 	$: eatenPieces = chess.pieces_eaten;
-	$: {
-		console.log(isConnected);
-	}
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
