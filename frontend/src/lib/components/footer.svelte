@@ -6,7 +6,7 @@
 	<nav class="flex space-x-4">
 		<a href="/" class=" hover:text-gray-200">Home</a>
 		<a href="/technology" class=" hover:text-gray-200">Technology</a>
-		<a href="/about" class=" hover:text-gray-200">About</a>
+		<a href="/about" class=" hover:text-gray-200">About me</a>
 	</nav>
 	<div class="text-gray-600 text-xs flex flex-row">
 		<a

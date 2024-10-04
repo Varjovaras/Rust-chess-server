@@ -9,6 +9,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
+	import { fade } from 'svelte/transition';
 
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
@@ -106,11 +107,17 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center content-center py-4">
-	<ErrorMessage {errorMessage} />
-	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
-	<ResetButton {handleReset} />
-	{#if isDevMode}
-		<WebsocketInfo {messages} {isConnected} />
-	{/if}
-</div>
+{#if isConnected}
+	<div class="flex flex-col justify-center content-center py-4">
+		<ErrorMessage {errorMessage} />
+		<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
+		<ResetButton {handleReset} />
+		{#if isDevMode}
+			<WebsocketInfo {messages} {isConnected} />
+		{/if}
+	</div>
+{:else}
+	<div class="flex flex-row justify-center content-center py-4">
+		<h1 class="h1">Error connecting to websocket</h1>
+	</div>
+{/if}
