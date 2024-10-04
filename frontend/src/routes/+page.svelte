@@ -9,7 +9,6 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
-	import { fade } from 'svelte/transition';
 
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
@@ -118,6 +117,6 @@
 	</div>
 {:else}
 	<div class="flex flex-row justify-center content-center py-4">
-		<h1 class="h1">Error connecting to websocket</h1>
+		<h1 class="h1">Not connected to websocket backend</h1>
 	</div>
 {/if}
