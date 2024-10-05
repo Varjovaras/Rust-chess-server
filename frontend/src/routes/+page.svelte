@@ -14,6 +14,7 @@
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
 	export let data: PageData;
+	console.log(`Status of backend: ${data.status}`);
 
 	const modalStore = getModalStore();
 	const ws = createWebSocketStore(apiUrl);
