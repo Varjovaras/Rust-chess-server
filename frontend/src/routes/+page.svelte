@@ -49,6 +49,7 @@
 						}
 					} catch (error) {
 						console.error('Failed to parse WebSocket message:', error);
+						isConnected = false;
 					}
 				});
 				console.log('Connected via websocket');
@@ -61,6 +62,7 @@
 		});
 		return () => unsubscribe();
 	});
+
 	onDestroy(() => {
 		console.log(
 			'Component is being destroyed, resetting chess to starting position',
@@ -106,17 +108,11 @@
 	};
 </script>
 
-{#if isConnected}
-	<div class="flex flex-col justify-center content-center py-4">
-		<ErrorMessage {errorMessage} />
-		<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
-		<ResetButton {handleReset} />
-		{#if isDevMode}
-			<WebsocketInfo {messages} {isConnected} />
-		{/if}
-	</div>
-{:else}
-	<div class="flex flex-row justify-center content-center py-4">
-		<h1 class="h1">Not connected to websocket backend</h1>
-	</div>
-{/if}
+<div class="flex flex-col justify-center content-center py-4">
+	<ErrorMessage {errorMessage} />
+	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
+	<ResetButton {handleReset} />
+	{#if isDevMode}
+		<WebsocketInfo {messages} {isConnected} />
+	{/if}
+</div>
