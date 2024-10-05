@@ -9,9 +9,11 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
+	import type { PageData } from './$types';
 
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
+	export let data: PageData;
 
 	const modalStore = getModalStore();
 	const ws = createWebSocketStore(apiUrl);

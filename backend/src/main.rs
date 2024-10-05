@@ -23,6 +23,7 @@ use tokio::{
     sync::{watch, Mutex},
     time::sleep,
 };
+use tower_http::cors::{Any, CorsLayer};
 
 struct State {
     clients_count: usize,
@@ -93,9 +94,15 @@ async fn axum() -> ShuttleAxum {
         }
     });
 
+    let cors = CorsLayer::new()
+        .allow_origin(Any)
+        .allow_methods(Any)
+        .allow_headers(Any);
+
     let router = Router::new()
         .route("/websocket", get(websocket_handler))
-        // .nest_service("/", ServeDir::new("static"))
+        .route("/status", get(get_status))
+        .layer(cors)
         .layer(Extension(state));
 
     Ok(router.into())
@@ -220,4 +227,8 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
     };
 
     state.lock().await.clients_count -= 1;
+}
+
+async fn get_status() -> impl IntoResponse {
+    "OK"
 }
