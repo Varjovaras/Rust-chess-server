@@ -1,6 +1,7 @@
 import type { PageLoad } from "./$types";
 import { env } from "$env/dynamic/public";
 import { error } from "@sveltejs/kit";
+import { startingPosition } from "$lib/components/chess/startingPosition";
 
 export const load: PageLoad = async ({ fetch }) => {
 	const isDevMode = import.meta.env.DEV;
@@ -14,7 +15,7 @@ export const load: PageLoad = async ({ fetch }) => {
 		// const data = await response.json();
 		return {
 			status: "ok",
-			// data,
+			startingPosition: startingPosition,
 		};
 	} catch (e) {
 		console.error("Error connecting to backend:", e);

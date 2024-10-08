@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const pieceSchema = z.object({
+export const pieceTypeSchema = z.object({
 	Pawn: z.string().optional(),
 	Knight: z.string().optional(),
 	Bishop: z.string().optional(),
@@ -10,11 +10,21 @@ export const pieceSchema = z.object({
 	None: z.literal("None").optional(),
 });
 
+// const pieceTypeSchema = z.enum([
+// 	"Pawn",
+// 	"Knight",
+// 	"Bishop",
+// 	"Rook",
+// 	"Queen",
+// 	"King",
+// 	"None",
+// ]);
+
 export const squareSchema = z.object({
 	file: z.string(),
 	rank: z.number(),
 	color: z.string(),
-	piece: z.union([pieceSchema, z.literal("None")]),
+	piece: z.union([pieceTypeSchema, z.literal("None")]),
 	possible_moves: z.array(
 		z.tuple([
 			z.tuple([z.number(), z.number()]),
@@ -64,8 +74,8 @@ export const gameStateSchema = z.enum([
 ]);
 
 export const piecesEatenSchema = z.object({
-	white: z.array(pieceSchema),
-	black: z.array(pieceSchema),
+	white: z.array(pieceTypeSchema),
+	black: z.array(pieceTypeSchema),
 });
 
 export const chessSchema = z.object({
@@ -82,7 +92,7 @@ export const chessSchema = z.object({
 
 export type Chess = z.TypeOf<typeof chessSchema>;
 export type ChessBoard = z.TypeOf<typeof boardSchema>;
-export type Piece = z.TypeOf<typeof pieceSchema>;
+export type Piece = z.TypeOf<typeof pieceTypeSchema>;
 export type Square = z.TypeOf<typeof squareSchema>;
 export type ListOfMoves = z.TypeOf<typeof listOfMovesSchema>;
 export type GameState = z.TypeOf<typeof gameStateSchema>;

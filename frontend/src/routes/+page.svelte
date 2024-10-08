@@ -20,9 +20,9 @@
 	const ws = createWebSocketStore(apiUrl);
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	let messages: any[] = [];
+	let websocketMessages: any[] = [];
 	let isConnected = false;
-	let chess = startingPosition;
+	let chess = data.startingPosition;
 	$: eatenPieces = chess.pieces_eaten;
 
 	onMount(() => {
@@ -48,7 +48,7 @@
 							// Reset the chess state
 							chess = chessSchema.parse(data.chess);
 						} else {
-							messages = [...messages, data];
+							websocketMessages = [...websocketMessages, data];
 						}
 					} catch (error) {
 						console.error('Failed to parse WebSocket message:', error);
@@ -116,6 +116,6 @@
 	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
 	<ResetButton {handleReset} />
 	{#if isDevMode}
-		<WebsocketInfo {messages} {isConnected} />
+		<WebsocketInfo messages={websocketMessages} {isConnected} />
 	{/if}
 </div>
