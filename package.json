@@ -1,23 +1,24 @@
 {
-	"name": "rust-chess-server",
-	"module": "index.ts",
-	"type": "module",
-	"scripts": {
-		"deploy": "cargo-shuttle project restart && cargo shuttle deploy",
-		"shuttle": "cargo shuttle run",
-		"restart": "cargo-shuttle project restart",
-		"status": "cargo-shuttle project status",
-		"dev": "cd frontend && bun dev",
-		"check": "cd frontend && bun check",
-		"check:watch": "cd frontend && bun check:watch",
-		"lint": "cd frontend && bun lint",
-		"build": "cd frontend && bun run build",
-		"biome": "cd frontend && bun run biome"
-	},
-	"devDependencies": {
-		"@types/bun": "latest"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0"
-	}
+    "name": "rust-chess-server",
+    "module": "index.ts",
+    "type": "module",
+    "scripts": {
+        "deploy": "cargo-shuttle project restart && cargo shuttle deploy",
+        "backend": "cargo shuttle run",
+        "shuttle": "cargo shuttle run",
+        "restart": "cargo-shuttle project restart",
+        "status": "cargo-shuttle project status",
+        "dev": "cd frontend && bun dev",
+        "check": "cd frontend && bun check",
+        "check:watch": "cd frontend && bun check:watch",
+        "lint": "cd frontend && bun lint",
+        "build": "cd frontend && bun run build",
+        "biome": "cd frontend && bun run biome"
+    },
+    "devDependencies": {
+        "@types/bun": "latest"
+    },
+    "peerDependencies": {
+        "typescript": "^5.0.0"
+    }
 }

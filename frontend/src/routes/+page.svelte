@@ -78,14 +78,12 @@
 
 	const whiteModal: ModalSettings = {
 		type: 'alert',
-		// Data
 		title: 'White won!',
 		body: 'White won!',
 	};
 
 	const blackModal: ModalSettings = {
 		type: 'alert',
-		// Data
 		title: 'Black won!',
 		body: 'Black won!',
 	};
