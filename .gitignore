@@ -9,3 +9,5 @@ target/
 Secrets*.toml
 test_sub.sh
 public/
+
+frontend/.vercel/
