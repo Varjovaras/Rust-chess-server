@@ -3,13 +3,18 @@
 	import { startingPosition } from '$lib/components/chess/startingPosition';
 	import ErrorMessage from '$lib/components/errorMessage.svelte';
 	import ResetButton from '$lib/components/resetButton.svelte';
-	import { chessSchema } from '$lib/types';
+	import { chessSchema, type Chess } from '$lib/types';
 	import { type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
 	import { createWebSocketStore } from '$lib/websocketStore';
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
 	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
 	import type { PageData } from './$types';
+	import type {
+		InitialStateMessage,
+		ResetMessage,
+		UpdateMessage,
+	} from '$lib/websocketTypes';
 
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
@@ -25,44 +30,77 @@
 	let chess = data.startingPosition;
 	$: eatenPieces = chess.pieces_eaten;
 
+	const setupWebSocket = (socket: WebSocket) => {
+		isConnected = true;
+		socket.addEventListener('message', (event) =>
+			handleWebSocketMessage(event),
+		);
+		console.log('Connected via websocket');
+		socket.addEventListener('error', (event) => {
+			console.error('WebSocket error:', event);
+		});
+	};
+
+	const handleInitialState = (_data: InitialStateMessage) => {
+		if (data.startingPosition) {
+			chess = chessSchema.parse(data.startingPosition);
+		}
+	};
+
+	const handleUpdate = (data: UpdateMessage) => {
+		if (data.chess) {
+			const parsedChess = chessSchema.parse(data.chess);
+			chess = parsedChess;
+			checkVictoryConditions(parsedChess);
+		}
+	};
+
+	const handleResetMessage = (data: ResetMessage) => {
+		if (data.chess) {
+			chess = chessSchema.parse(data.chess);
+		}
+	};
+
+	const checkVictoryConditions = (chess: Chess) => {
+		if (chess.players[0].victory) {
+			modalStore.trigger(whiteModal);
+		} else if (chess.players[1].victory) {
+			modalStore.trigger(blackModal);
+		}
+	};
+
+	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+	const handleWebSocketMessage = (event: MessageEvent<any>) => {
+		try {
+			const data = JSON.parse(event.data);
+			switch (data.type) {
+				case 'initial_state':
+					handleInitialState(data);
+					break;
+				case 'update':
+					handleUpdate(data);
+					break;
+				case 'reset':
+					handleResetMessage(data);
+					break;
+				default:
+					websocketMessages = [...websocketMessages, data];
+			}
+		} catch (error) {
+			console.error('Failed to parse WebSocket message:', error);
+			isConnected = false;
+		}
+	};
+
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
 			if (socket) {
-				isConnected = true;
-				socket.addEventListener('message', (event) => {
-					try {
-						const data = JSON.parse(event.data);
-						if (data.type === 'initial_state' && data.chess) {
-							// Initialize the chess state
-							chess = chessSchema.parse(data.chess);
-						} else if (data.type === 'update' && data.chess) {
-							// Update the chess state
-							chess = chessSchema.parse(data.chess);
-							// Check for victory conditions
-							if (chess.players[0].victory) {
-								modalStore.trigger(whiteModal);
-							} else if (chess.players[1].victory) {
-								modalStore.trigger(blackModal);
-							}
-						} else if (data.type === 'reset' && data.chess) {
-							// Reset the chess state
-							chess = chessSchema.parse(data.chess);
-						} else {
-							websocketMessages = [...websocketMessages, data];
-						}
-					} catch (error) {
-						console.error('Failed to parse WebSocket message:', error);
-						isConnected = false;
-					}
-				});
-				console.log('Connected via websocket');
-				socket.addEventListener('error', (event) => {
-					console.error('WebSocket error:', event);
-				});
+				setupWebSocket(socket);
 			} else {
 				isConnected = false;
 			}
 		});
+
 		return () => unsubscribe();
 	});
 
