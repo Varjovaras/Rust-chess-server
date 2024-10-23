@@ -32,6 +32,28 @@
 	let chess = data.startingPosition;
 	$: eatenPieces = chess.pieces_eaten;
 
+	onMount(() => {
+		const unsubscribe = ws.subscribe((socket) => {
+			if (socket) {
+				setupWebSocket(socket);
+			} else {
+				isConnected = false;
+			}
+		});
+
+		return () => unsubscribe();
+	});
+
+	onDestroy(() => {
+		console.log(
+			'Component is being destroyed, resetting chess to starting position',
+		);
+		if (isConnected) {
+			ws.send(JSON.stringify({ action: 'reset' }));
+		}
+		chess = startingPosition;
+	});
+
 	const setupWebSocket = (socket: WebSocket) => {
 		isConnected = true;
 		socket.addEventListener('message', (event) =>
@@ -102,42 +124,6 @@
 		}
 	};
 
-	onMount(() => {
-		const unsubscribe = ws.subscribe((socket) => {
-			if (socket) {
-				setupWebSocket(socket);
-			} else {
-				isConnected = false;
-			}
-		});
-
-		return () => unsubscribe();
-	});
-
-	onDestroy(() => {
-		console.log(
-			'Component is being destroyed, resetting chess to starting position',
-		);
-		if (isConnected) {
-			ws.send(JSON.stringify({ action: 'reset' }));
-		}
-		chess = startingPosition;
-	});
-
-	const whiteModal: ModalSettings = {
-		type: 'alert',
-		title: 'White won!',
-		body: 'White won!',
-	};
-
-	const blackModal: ModalSettings = {
-		type: 'alert',
-		title: 'Black won!',
-		body: 'Black won!',
-	};
-
-	const errorMessage = '';
-
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);
 		lastSentTime = performance.now();
@@ -156,6 +142,20 @@
 		};
 		ws.send(JSON.stringify(resetRequest));
 	};
+
+	const whiteModal: ModalSettings = {
+		type: 'alert',
+		title: 'White won!',
+		body: 'White won!',
+	};
+
+	const blackModal: ModalSettings = {
+		type: 'alert',
+		title: 'Black won!',
+		body: 'Black won!',
+	};
+
+	const errorMessage = '';
 </script>
 
 <div class="flex flex-col justify-center content-center py-4">
