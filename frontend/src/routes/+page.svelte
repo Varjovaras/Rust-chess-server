@@ -16,6 +16,8 @@
 		UpdateMessage,
 	} from '$lib/websocketTypes';
 
+	let lastSentTime = 0;
+
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
 	export let data: PageData;
@@ -71,8 +73,16 @@
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 	const handleWebSocketMessage = (event: MessageEvent<any>) => {
+		const receiveTime = performance.now();
+		const duration = receiveTime - lastSentTime;
+
+		// console.log('Last sent time:', lastSentTime);
+		// console.log('Receive time:', receiveTime);
+		console.log('Round trip duration in ms:', duration);
+
 		try {
 			const data = JSON.parse(event.data);
+
 			switch (data.type) {
 				case 'initial_state':
 					handleInitialState(data);
@@ -130,6 +140,7 @@
 
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);
+		lastSentTime = performance.now();
 		const moveRequest = {
 			list_of_moves: chess.list_of_moves,
 			new_move: [startSq, endSq],
