@@ -1,23 +1,88 @@
 <script lang="ts">
-	export let color: 'white' | 'black';
-	export let pieces: {
-		pawns: number;
-		knights: number;
-		bishops: number;
-		rooks: number;
-		queens: number;
-		kings: number;
-	};
+    import EatenPiece from "./eatenPiece.svelte";
+    export let color: "white" | "black";
+    export let pieces: {
+        pawns: number;
+        knights: number;
+        bishops: number;
+        rooks: number;
+        queens: number;
+        kings: number;
+    };
 </script>
 
 <div class="hidden md:flex flex-col items-start">
-	<h3 class="h3">{color.charAt(0).toUpperCase() + color.slice(1)}</h3>
-	<ul>
-		<li>Pawns: {pieces.pawns}</li>
-		<li>Knights: {pieces.knights}</li>
-		<li>Bishops: {pieces.bishops}</li>
-		<li>Rooks: {pieces.rooks}</li>
-		<li>Queens: {pieces.queens}</li>
-		<!-- <li>Kings: {pieces.kings}</li> -->
-	</ul>
+    <ul>
+        {#if pieces.pawns && color === "white"}
+            <EatenPiece
+                imgSrc="/pieces/white_pawn.svg"
+                alt="white pawn"
+                amount={pieces.pawns}
+            />
+        {/if}
+        {#if pieces.knights && color === "white"}
+            <EatenPiece
+                imgSrc="/pieces/white_knight.svg"
+                alt="white knight"
+                amount={pieces.knights}
+            />
+        {/if}
+        {#if pieces.bishops && color === "white"}
+            <EatenPiece
+                imgSrc="/pieces/white_bishop.svg"
+                alt="white bishop"
+                amount={pieces.bishops}
+            />
+        {/if}
+        {#if pieces.rooks && color === "white"}
+            <EatenPiece
+                imgSrc="/pieces/white_rook.svg"
+                alt="white rook"
+                amount={pieces.rooks}
+            />
+        {/if}
+        {#if pieces.queens && color === "white"}
+            <EatenPiece
+                imgSrc="/pieces/white_queen.svg"
+                alt="white queen"
+                amount={pieces.queens}
+            />
+        {/if}
+
+        {#if pieces.pawns && color === "black"}
+            <EatenPiece
+                imgSrc="/pieces/black_pawn.svg"
+                alt="black pawn"
+                amount={pieces.pawns}
+            />
+        {/if}
+        {#if pieces.knights && color === "black"}
+            <EatenPiece
+                imgSrc="/pieces/black_knight.svg"
+                alt="black knight"
+                amount={pieces.knights}
+            />
+        {/if}
+        {#if pieces.bishops && color === "black"}
+            <EatenPiece
+                imgSrc="/pieces/black_bishop.svg"
+                alt="black bishop"
+                amount={pieces.bishops}
+            />
+        {/if}
+        {#if pieces.rooks && color === "black"}
+            <EatenPiece
+                imgSrc="/pieces/black_rook.svg"
+                alt="black rook"
+                amount={pieces.rooks}
+            />
+        {/if}
+        {#if pieces.queens && color === "black"}
+            <EatenPiece
+                imgSrc="/pieces/black_queen.svg"
+                alt="black queen"
+                amount={pieces.queens}
+            />
+        {/if}
+    </ul>
 </div>
