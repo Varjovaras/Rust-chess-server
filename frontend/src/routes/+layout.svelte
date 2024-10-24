@@ -3,6 +3,11 @@
     import Header from "$lib/components/header.svelte";
     import "../app.css";
     import { Modal, initializeStores } from "@skeletonlabs/skeleton";
+    interface Props {
+        children?: import('svelte').Snippet;
+    }
+
+    let { children }: Props = $props();
 
     initializeStores();
 </script>
@@ -17,7 +22,7 @@
 <div class="flex flex-col h-screen w-screen">
     <Header />
     <main class="flex-1 overflow-auto content-center">
-        <slot />
+        {@render children?.()}
     </main>
     <Footer />
 </div>

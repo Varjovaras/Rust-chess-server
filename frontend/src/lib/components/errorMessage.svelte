@@ -1,5 +1,9 @@
 <script lang="ts">
-	export let errorMessage: string;
+	interface Props {
+		errorMessage: string;
+	}
+
+	let { errorMessage }: Props = $props();
 </script>
 
 <div>

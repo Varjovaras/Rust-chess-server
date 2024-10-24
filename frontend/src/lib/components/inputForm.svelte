@@ -1,6 +1,10 @@
 <script lang="ts">
-	export let fromSquare: string;
-	export let toSquare: string;
+	interface Props {
+		fromSquare: string;
+		toSquare: string;
+	}
+
+	let { fromSquare = $bindable(), toSquare = $bindable() }: Props = $props();
 </script>
 
 <form class="grid grid-cols-2 gap-4 mt-8">

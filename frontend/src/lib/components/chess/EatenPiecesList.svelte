@@ -1,14 +1,20 @@
 <script lang="ts">
     import EatenPiece from "./eatenPiece.svelte";
-    export let color: "white" | "black";
-    export let pieces: {
-        pawns: number;
-        knights: number;
-        bishops: number;
-        rooks: number;
-        queens: number;
-        kings: number;
-    };
+    interface Props {
+        color: "white" | "black";
+        pieces: {
+            pawns: number;
+            knights: number;
+            bishops: number;
+            rooks: number;
+            queens: number;
+            kings: number;
+        };
+    }
+
+    // svelte-ignore missing-declaration
+    // biome-ignore lint/style/useConst: <explanation>
+    let { color, pieces }: Props = $props();
 </script>
 
 <div class="hidden md:flex flex-col items-start">

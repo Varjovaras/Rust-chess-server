@@ -3,7 +3,7 @@
 	import RustLogo from '$lib/components/rustLogo.svelte';
 	import { onMount } from 'svelte';
 
-	let visible = false;
+	let visible = $state(false);
 
 	onMount(() => {
 		visible = true;

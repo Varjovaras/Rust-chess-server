@@ -1,35 +1,53 @@
 <script lang="ts">
+	import { createBubbler, preventDefault, passive } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import type { Chess, PossibleMoves, Square as SquareType } from '../../types';
 	import Piece from './piece.svelte';
 
-	export let chess: Chess;
-	export let sq: SquareType;
-	export let selectedButton: string | null;
-	export let possibleMoves: PossibleMoves;
-	export let handleClick: (sq: SquareType) => void;
-	export let handleDragStart: (sq: SquareType) => void;
-	export let handleDrop: (event: DragEvent) => void;
-	export let handleTouchStart: (event: TouchEvent, sq: SquareType) => void;
-	export let handleTouchMove: (event: TouchEvent) => void;
-	export let handleTouchEnd: (event: TouchEvent) => void;
+	interface Props {
+		chess: Chess;
+		sq: SquareType;
+		selectedButton: string | null;
+		possibleMoves: PossibleMoves;
+		handleClick: (sq: SquareType) => void;
+		handleDragStart: (sq: SquareType) => void;
+		handleDrop: (event: DragEvent) => void;
+		handleTouchStart: (event: TouchEvent, sq: SquareType) => void;
+		handleTouchMove: (event: TouchEvent) => void;
+		handleTouchEnd: (event: TouchEvent) => void;
+	}
 
-	$: squareId = `${sq.file.toLowerCase()}${sq.rank + 1}`;
-	$: isSelected = selectedButton === squareId;
-	$: isPossibleMove = possibleMoves.some(
+	let {
+		chess,
+		sq,
+		selectedButton,
+		possibleMoves,
+		handleClick,
+		handleDragStart,
+		handleDrop,
+		handleTouchStart,
+		handleTouchMove,
+		handleTouchEnd
+	}: Props = $props();
+
+	let squareId = $derived(`${sq.file.toLowerCase()}${sq.rank + 1}`);
+	let isSelected = $derived(selectedButton === squareId);
+	let isPossibleMove = $derived(possibleMoves.some(
 		(move) =>
 			move[1][0] === sq.file.charCodeAt(0) - 65 && move[1][1] === sq.rank,
-	);
-	$: isKingInCheck =
-		typeof sq.piece === 'object' &&
+	));
+	let isKingInCheck =
+		$derived(typeof sq.piece === 'object' &&
 		sq.piece.King !== undefined &&
 		((sq.piece.King === 'White' && chess.players[0].in_check) ||
-			(sq.piece.King === 'Black' && chess.players[1].in_check));
+			(sq.piece.King === 'Black' && chess.players[1].in_check)));
 
-	$: squareColor = sq.color === 'White' ? 'bg-gray-200' : 'bg-gray-400';
-	$: hoverColor = 'hover:bg-gray-600';
-	$: checkColor = isKingInCheck ? 'bg-red-800 hover:bg-red-900' : '';
+	let squareColor = $derived(sq.color === 'White' ? 'bg-gray-200' : 'bg-gray-400');
+	let hoverColor = $derived('hover:bg-gray-600');
+	let checkColor = $derived(isKingInCheck ? 'bg-red-800 hover:bg-red-900' : '');
 
-	$: squareClass = `
+	let squareClass = $derived(`
     w-[11vw] h-[11vw]
     sm:w-[7vw] sm:h-[7vw]
     md:w-[5vw] md:h-[5vw]
@@ -41,21 +59,21 @@
     text-center flex items-center justify-center
     ${isSelected ? 'selected' : ''}
     ${isPossibleMove ? 'possible_move' : ''}
-  `;
-	$: draggable = sq.piece !== 'None';
+  `);
+	let draggable = $derived(sq.piece !== 'None');
 </script>
 
 <button
 	class={squareClass}
 	{draggable}
-	on:dragstart={() => handleDragStart(sq)}
-	on:dragover|preventDefault
-	on:drop|preventDefault={handleDrop}
+	ondragstart={() => handleDragStart(sq)}
+	ondragover={preventDefault(bubble('dragover'))}
+	ondrop={preventDefault(handleDrop)}
 	id={`${squareId} ${sq.piece}`}
-	on:click|preventDefault={() => handleClick(sq)}
-	on:touchstart|passive={(event) => handleTouchStart(event, sq)}
-	on:touchmove|preventDefault={handleTouchMove}
-	on:touchend|passive={handleTouchEnd}
+	onclick={preventDefault(() => handleClick(sq))}
+	use:passive={['touchstart', () => (event) => handleTouchStart(event, sq)]}
+	ontouchmove={preventDefault(handleTouchMove)}
+	use:passive={['touchend', () => handleTouchEnd]}
 >
 	<Piece {sq} />
 </button>

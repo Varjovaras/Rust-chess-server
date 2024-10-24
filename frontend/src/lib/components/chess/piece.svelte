@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { returnCorrectPieceColor } from '$lib/components/chess/utils';
 	import type { Square } from '$lib/types';
-	// import { slide } from 'svelte/transition';
+	
 
-	export let sq: Square;
+	interface Props {
+		// import { slide } from 'svelte/transition';
+		sq: Square;
+	}
 
-	$: pieceSize = `
+	let { sq }: Props = $props();
+
+	let pieceSize = $derived(`
     w-[7.5vw] h-[7.5vw]
     sm:w-[9.5vw] sm:h-[9.5vw]
     md:w-[7.5vw] md:h-[7.5vw]
@@ -14,7 +19,7 @@
     min-w-9 min-h-9
     max-w-23 max-h-23
     aspect-square
-  `;
+  `);
 </script>
 
 <div class="w-full h-full flex items-center justify-center">
@@ -22,7 +27,7 @@
 		<div
 			id={`${sq.file.toLowerCase()}${sq.rank + 1} no piece`}
 			class={pieceSize}
-		/>
+		></div>
 	{:else}
 		<img
 			class={`object-contain ${pieceSize}`}

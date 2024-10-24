@@ -14,19 +14,23 @@
 	import { countEatenPieces } from './eatenPieces';
 	import EatenPiecesList from './EatenPiecesList.svelte';
 
-	export let chess: Chess;
-	export let handleMove: (startSq: string, endSq: string) => Promise<void>;
-	export let piecesEaten: PiecesEaten;
+	interface Props {
+		chess: Chess;
+		handleMove: (startSq: string, endSq: string) => Promise<void>;
+		piecesEaten: PiecesEaten;
+	}
+
+	let { chess, handleMove, piecesEaten }: Props = $props();
 
 	let startSq = '';
-	let selectedButton: string | null = null;
+	let selectedButton: string | null = $state(null);
 	let fromSquare = '';
 	let toSquare = '';
-	let possibleMoves: PossibleMoves = [];
+	let possibleMoves: PossibleMoves = $state([]);
 
-	$: boardToFront = handleBoardToFront(chess.board);
-	$: whiteTurn = isWhiteTurn(chess.turn_number);
-	$: piecesEatenCount = countEatenPieces(piecesEaten);
+	let boardToFront = $derived(handleBoardToFront(chess.board));
+	let whiteTurn = $derived(isWhiteTurn(chess.turn_number));
+	let piecesEatenCount = $derived(countEatenPieces(piecesEaten));
 
 	const handleClick = async (sq: SquareType) => {
 		const file = sq.file.toLowerCase();

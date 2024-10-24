@@ -1,7 +1,12 @@
 <script lang="ts">
-	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	export let messages: any[];
-	export let isConnected: boolean;
+	
+	interface Props {
+		// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+		messages: any[];
+		isConnected: boolean;
+	}
+
+	let { messages, isConnected }: Props = $props();
 </script>
 
 <div class="p-8">

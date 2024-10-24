@@ -20,17 +20,21 @@
 
 	const isDevMode = import.meta.env.DEV;
 	const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
-	export let data: PageData;
+	interface Props {
+		data: PageData;
+	}
+
+	let { data }: Props = $props();
 	console.log(`Status of backend: ${data.status}`);
 
 	const modalStore = getModalStore();
 	const ws = createWebSocketStore(apiUrl);
 
 	// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-	let websocketMessages: any[] = [];
-	let isConnected = false;
-	let chess = data.startingPosition;
-	$: eatenPieces = chess.pieces_eaten;
+	let websocketMessages: any[] = $state([]);
+	let isConnected = $state(false);
+	let chess = $state(data.startingPosition);
+	let eatenPieces = $derived(chess.pieces_eaten);
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {

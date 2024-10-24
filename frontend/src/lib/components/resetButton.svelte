@@ -1,9 +1,13 @@
 <script lang="ts">
-	export let handleReset: () => void;
+	interface Props {
+		handleReset: () => void;
+	}
+
+	let { handleReset }: Props = $props();
 </script>
 
 <button
-	on:click={handleReset}
+	onclick={handleReset}
 	class="btn variant-ringed-primary font-mono m-8 w-1/2 mx-auto"
 >
 	Reset game
