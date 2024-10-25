@@ -7,7 +7,7 @@
         children?: import('svelte').Snippet;
     }
 
-    let { children }: Props = $props();
+    const { children }: Props = $props();
 
     initializeStores();
 </script>
@@ -19,17 +19,19 @@
 
 <Modal />
 
-<div class="flex flex-col h-screen w-screen">
-    <Header />
-    <main class="flex-1 overflow-auto content-center">
+    <div class="min-h-screen flex flex-col">
+        <Header />
+
+    <main class="w-full flex-1">
         {@render children?.()}
     </main>
     <Footer />
-</div>
+
+    </div>
 
 <style>
-    :global(html, body) {
+    /* :global(html, body) {
         height: 100%;
         width: 100%;
-    }
+    } */
 </style>

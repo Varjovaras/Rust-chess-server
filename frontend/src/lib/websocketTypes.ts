@@ -15,14 +15,14 @@ export interface ResetMessage {
     chess: Chess;
 }
 
-export interface OtherMessage {
-    type: string;
-    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-    [key: string]: any;
-}
+// type OtherMessageType = Exclude<string, "initial_state" | "update" | "reset">;
 
+// export interface OtherMessage {
+//     type: OtherMessageType;
+//     [key: string]: unknown;
+// }
 export type WebSocketMessage =
     | InitialStateMessage
     | UpdateMessage
-    | ResetMessage
-    | OtherMessage;
+    | ResetMessage;
+// | OtherMessage;

@@ -4,7 +4,6 @@
         alt: string;
         amount: number;
     }
-    // svelte-ignore missing-declaration
     // biome-ignore lint/style/useConst: <explanation>
     let { imgSrc, alt, amount }: Props = $props();
 </script>
