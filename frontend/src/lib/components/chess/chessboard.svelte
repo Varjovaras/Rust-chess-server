@@ -65,6 +65,7 @@
     };
 
     const handleDragStart = (sq: SquareType) => {
+        toSquare = "";
         if (sq.piece === "None") {
             console.log(`No piece on ${sq.file}${sq.rank}`);
             return;
