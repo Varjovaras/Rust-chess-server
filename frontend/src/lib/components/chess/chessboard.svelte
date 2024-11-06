@@ -121,8 +121,7 @@
 </script>
 
 <div class="flex justify-center items-center p-4 space-x-8">
-    <div class="flex flex-row justify-center items-center">
-        <EatenPiecesList color="white" pieces={piecesEatenCount.white} />
+    <div class="flex flex-col justify-center items-center">
         <div class="grid grid-cols-8 gap-0">
             {#each boardToFront as row, i}
                 {#each row as sq, j}
@@ -141,6 +140,7 @@
                 {/each}
             {/each}
         </div>
+        <EatenPiecesList color="white" pieces={piecesEatenCount.white} />
         <EatenPiecesList color="black" pieces={piecesEatenCount.black} />
     </div>
 </div>

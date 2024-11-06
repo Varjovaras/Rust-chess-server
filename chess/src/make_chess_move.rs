@@ -114,7 +114,37 @@ fn handle_en_passant(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
 
 fn handle_castling(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     if move_is_castling(start_sq, end_sq, chess) {
-        // Implement castling logic here
+        match (start_sq.rank, end_sq.file) {
+            (Rank::First, File::G) => {
+                chess.board[File::H as usize][Rank::First as usize].piece = Piece::None;
+                chess.board[File::F as usize][Rank::First as usize].piece =
+                    Piece::Rook(PieceColor::White);
+                chess.players.0.castling.kingside = false;
+                chess.players.0.castling.kingside = false;
+            }
+            (Rank::First, File::C) => {
+                chess.board[File::A as usize][Rank::First as usize].piece = Piece::None;
+                chess.board[File::D as usize][Rank::First as usize].piece =
+                    Piece::Rook(PieceColor::White);
+                chess.players.0.castling.kingside = false;
+                chess.players.0.castling.queenside = false;
+            }
+            (Rank::Eighth, File::G) => {
+                chess.board[File::H as usize][Rank::Eighth as usize].piece = Piece::None;
+                chess.board[File::F as usize][Rank::Eighth as usize].piece =
+                    Piece::Rook(PieceColor::Black);
+                chess.players.1.castling.kingside = false;
+                chess.players.1.castling.queenside = false;
+            }
+            (Rank::Eighth, File::C) => {
+                chess.board[File::A as usize][Rank::Eighth as usize].piece = Piece::None;
+                chess.board[File::D as usize][Rank::Eighth as usize].piece =
+                    Piece::Rook(PieceColor::Black);
+                chess.players.1.castling.kingside = false;
+                chess.players.1.castling.queenside = false;
+            }
+            _ => panic!("Trying to castle with wrong start and end square"),
+        }
     } else if start_sq.piece.is_king() || start_sq.piece.is_rook() {
         remove_castling(chess, start_sq);
     }

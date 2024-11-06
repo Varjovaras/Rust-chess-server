@@ -7,7 +7,9 @@
     const { imgSrc, alt, amount }: Props = $props();
 </script>
 
-<li class="flex flex-row justify-evenly">
-    <img src={imgSrc} {alt} />
-    {amount}
-</li>
+<div class="flex items-center gap-2 w-8">
+    {#if amount > 0}
+        <img src={imgSrc} {alt} class="w-10" />
+        <span class="text-sm">{amount > 1 ? `×${amount}` : ""}</span>
+    {/if}
+</div>

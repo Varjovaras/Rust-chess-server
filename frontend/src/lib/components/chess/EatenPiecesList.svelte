@@ -12,86 +12,47 @@
         };
     }
 
-    // svelte-ignore missing-declaration
     // biome-ignore lint/style/useConst: <explanation>
     let { color, pieces }: Props = $props();
 </script>
 
-<div class="hidden md:flex flex-col items-start">
-    <ul>
-        <!-- //white pieces -->
-        {#if pieces.queens && color === "white"}
+<div class="flex flex-row items-start w-24">
+    <ul class="w-full space-x-1">
+        <!-- White pieces -->
+        <li class="">
             <EatenPiece
-                imgSrc="/pieces/white_queen.svg"
-                alt="white queen"
-                amount={pieces.queens}
+                imgSrc="/pieces/{color}_queen.svg"
+                alt="{color} queen"
+                amount={pieces.queens || 0}
             />
-        {/if}
-        {#if pieces.rooks && color === "white"}
+        </li>
+        <li class="">
             <EatenPiece
-                imgSrc="/pieces/white_rook.svg"
-                alt="white rook"
-                amount={pieces.rooks}
+                imgSrc="/pieces/{color}_rook.svg"
+                alt="{color} rook"
+                amount={pieces.rooks || 0}
             />
-        {/if}
-
-        {#if pieces.knights && color === "white"}
+        </li>
+        <li class="">
             <EatenPiece
-                imgSrc="/pieces/white_knight.svg"
-                alt="white knight"
-                amount={pieces.knights}
+                imgSrc="/pieces/{color}_knight.svg"
+                alt="{color} knight"
+                amount={pieces.knights || 0}
             />
-        {/if}
-        {#if pieces.bishops && color === "white"}
+        </li>
+        <li class="">
             <EatenPiece
-                imgSrc="/pieces/white_bishop.svg"
-                alt="white bishop"
-                amount={pieces.bishops}
+                imgSrc="/pieces/{color}_bishop.svg"
+                alt="{color} bishop"
+                amount={pieces.bishops || 0}
             />
-        {/if}
-        {#if pieces.pawns && color === "white"}
+        </li>
+        <li class="">
             <EatenPiece
-                imgSrc="/pieces/white_pawn.svg"
-                alt="white pawn"
-                amount={pieces.pawns}
+                imgSrc="/pieces/{color}_pawn.svg"
+                alt="{color} pawn"
+                amount={pieces.pawns || 0}
             />
-        {/if}
-
-        <!-- //black pieces -->
-        {#if pieces.queens && color === "black"}
-            <EatenPiece
-                imgSrc="/pieces/black_queen.svg"
-                alt="black queen"
-                amount={pieces.queens}
-            />
-        {/if}
-        {#if pieces.rooks && color === "black"}
-            <EatenPiece
-                imgSrc="/pieces/black_rook.svg"
-                alt="black rook"
-                amount={pieces.rooks}
-            />
-        {/if}
-        {#if pieces.bishops && color === "black"}
-            <EatenPiece
-                imgSrc="/pieces/black_bishop.svg"
-                alt="black bishop"
-                amount={pieces.bishops}
-            />
-        {/if}
-        {#if pieces.knights && color === "black"}
-            <EatenPiece
-                imgSrc="/pieces/black_knight.svg"
-                alt="black knight"
-                amount={pieces.knights}
-            />
-        {/if}
-        {#if pieces.pawns && color === "black"}
-            <EatenPiece
-                imgSrc="/pieces/black_pawn.svg"
-                alt="black pawn"
-                amount={pieces.pawns}
-            />
-        {/if}
+        </li>
     </ul>
 </div>
