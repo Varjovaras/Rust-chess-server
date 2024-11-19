@@ -26,7 +26,7 @@ pub fn make_chess_move(
     }
 
     handle_special_moves(chess, start_sq, end_sq, promoted_piece);
-    update_board(chess, start_sq, end_sq);
+    update_board(chess, start_sq, end_sq, promoted_piece);
     add_possible_moves_to_squares(chess);
     handle_game_state(chess, opposite_color);
 }
@@ -108,6 +108,7 @@ fn handle_special_moves(
         end_sq,
         promoted_piece,
     ) {
+        dbg!("ali");
         handle_promotion(chess, start_sq, end_sq, piece);
         return;
     }
@@ -134,6 +135,7 @@ fn handle_promotion(chess: &mut Chess, start_sq: &Square, end_sq: &Square, promo
         Some(Piece::King(_) | Piece::Pawn(_)) | None => None,
         Some(promoted_piece) => Some(promoted_piece),
     } {
+        dbg!("ali ali");
         chess.board[end_sq.file as usize][end_sq.rank as usize].piece = piece;
         chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
     }
@@ -185,7 +187,12 @@ fn handle_castling(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
     }
 }
 
-fn update_board(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
+fn update_board(
+    chess: &mut Chess,
+    start_sq: &Square,
+    end_sq: &Square,
+    promoted_piece: Option<Piece>,
+) {
     // If the end square has a piece, it's being captured
     if end_sq.has_piece() {
         chess.pieces_eaten.add_piece(end_sq.piece);
@@ -207,7 +214,9 @@ fn update_board(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
         chess.board[end_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
     }
 
-    chess.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
+    if promoted_piece.is_none() {
+        chess.board[end_sq.file as usize][end_sq.rank as usize].piece = start_sq.piece;
+    }
     chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
 
     chess.latest_move = Some((start_sq.clone(), end_sq.clone(), start_sq.piece.color()));

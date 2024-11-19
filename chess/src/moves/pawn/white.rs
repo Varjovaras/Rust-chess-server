@@ -177,4 +177,53 @@ mod tests {
             &chess
         ));
     }
+
+    #[test]
+    fn white_promotion_works_with_queen() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("e2", "e4", None);
+        chess.make_move_from_str("d7", "d5", None);
+        chess.make_move_from_str("e4", "d5", None);
+        chess.make_move_from_str("e7", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("a7", "a5", None);
+        chess.make_move_from_str("e6", "f7", None);
+        chess.make_move_from_str("e8", "d7", None);
+        chess.make_move_from_str("f7", "g8", Some("QUEEN"));
+        assert!(chess.get_square(File::G, Rank::Eighth).piece == Piece::Queen(PieceColor::White));
+    }
+    #[test]
+    fn white_promotion_works_with_knight() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("e2", "e4", None);
+        chess.make_move_from_str("d7", "d5", None);
+        chess.make_move_from_str("e4", "d5", None);
+        chess.make_move_from_str("e7", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("a7", "a5", None);
+        chess.make_move_from_str("e6", "f7", None);
+        chess.make_move_from_str("e8", "d7", None);
+        chess.make_move_from_str("f7", "g8", Some("KNIGHT"));
+        assert!(chess.get_square(File::G, Rank::Eighth).piece == Piece::Knight(PieceColor::White));
+    }
+    #[test]
+    fn white_promotion_works_with_bishop() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("e2", "e4", None);
+        chess.make_move_from_str("d7", "d5", None);
+        chess.make_move_from_str("e4", "d5", None);
+        chess.make_move_from_str("e7", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("a7", "a5", None);
+        chess.make_move_from_str("e6", "f7", None);
+        chess.make_move_from_str("e8", "d7", None);
+        chess.make_move_from_str("f7", "g8", Some("BISHOP"));
+        assert!(chess.get_square(File::G, Rank::Eighth).piece == Piece::Bishop(PieceColor::White));
+    }
 }

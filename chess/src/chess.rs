@@ -163,7 +163,6 @@ impl Chess {
     ) {
         if start_sq.is_empty() || end_sq.is_empty() {
             println!("Startsq or endsq was empty");
-
             return;
         }
 

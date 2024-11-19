@@ -79,10 +79,10 @@ impl Piece {
 impl From<Option<&str>> for Piece {
     fn from(value: Option<&str>) -> Self {
         match value {
-            Some("QUEEN") => Self::Queen(PieceColor::None),
-            Some("ROOK") => Self::Rook(PieceColor::None),
-            Some("BISHOP") => Self::Bishop(PieceColor::None),
-            Some("KNIGHT") => Self::Knight(PieceColor::None),
+            Some(s) if s.to_uppercase() == "queen" => Self::Queen(PieceColor::None),
+            Some(s) if s.to_uppercase() == "rook" => Self::Rook(PieceColor::None),
+            Some(s) if s.to_uppercase() == "bishop" => Self::Bishop(PieceColor::None),
+            Some(s) if s.to_uppercase() == "knight" => Self::Knight(PieceColor::None),
             _ => Self::None,
         }
     }
