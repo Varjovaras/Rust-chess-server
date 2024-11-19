@@ -214,35 +214,37 @@ mod tests {
     #[test]
     fn checkmate_works() {
         let mut chess = Chess::default();
+
+        let promoted_piece = None;
         chess.starting_position();
-        chess.make_move_from_str("f2", "f3");
-        chess.make_move_from_str("e7", "e5");
-        chess.make_move_from_str("g2", "g4");
+        chess.make_move_from_str("f2", "f3", promoted_piece);
+        chess.make_move_from_str("e7", "e5", promoted_piece);
+        chess.make_move_from_str("g2", "g4", promoted_piece);
         assert!(!chess.players.0.in_check);
         assert!(!chess.players.1.in_check);
-        chess.make_move_from_str("d8", "h4");
+        chess.make_move_from_str("d8", "h4", promoted_piece);
         assert!(!chess.players.1.in_check);
         assert!(chess.players.0.in_check);
         assert!(chess.players.1.victory);
         chess.print_white_board_to_terminal();
 
         chess.starting_position();
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("e7", "e5");
-        chess.make_move_from_str("d1", "h5");
-        chess.make_move_from_str("b8", "c6");
-        chess.make_move_from_str("h5", "e5");
+        chess.make_move_from_str("e2", "e4", promoted_piece);
+        chess.make_move_from_str("e2", "e4", promoted_piece);
+        chess.make_move_from_str("e7", "e5", promoted_piece);
+        chess.make_move_from_str("d1", "h5", promoted_piece);
+        chess.make_move_from_str("b8", "c6", promoted_piece);
+        chess.make_move_from_str("h5", "e5", promoted_piece);
         chess.print_white_board_to_terminal();
         assert!(chess.players.1.in_check);
-        chess.make_move_from_str("c6", "e7");
+        chess.make_move_from_str("c6", "e7", promoted_piece);
         assert!(!chess.players.1.in_check);
 
-        chess.make_move_from_str("f1", "c4");
-        chess.make_move_from_str("a7", "a6");
-        chess.make_move_from_str("e5", "f4");
-        chess.make_move_from_str("a6", "a5");
-        chess.make_move_from_str("c4", "f7");
+        chess.make_move_from_str("f1", "c4", promoted_piece);
+        chess.make_move_from_str("a7", "a6", promoted_piece);
+        chess.make_move_from_str("e5", "f4", promoted_piece);
+        chess.make_move_from_str("a6", "a5", promoted_piece);
+        chess.make_move_from_str("c4", "f7", promoted_piece);
         assert!(chess.players.1.in_check);
         assert!(chess.players.0.victory);
     }

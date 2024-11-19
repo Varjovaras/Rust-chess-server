@@ -153,7 +153,8 @@ impl Square {
             }
             Piece::King(_) => moves = king_possible_moves(self),
         }
-
+        dbg!(&moves);
+        //moves go to index 8 when promoting
         moves
             .iter()
             .filter(|possible_move| {

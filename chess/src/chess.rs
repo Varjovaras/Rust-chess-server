@@ -7,7 +7,7 @@ use crate::{
     },
     game_state::GameState,
     make_chess_move::make_chess_move,
-    piece::PieceColor,
+    piece::{Piece, PieceColor},
     pieces_eaten::PiecesEaten,
     player::Player,
 };
@@ -151,17 +151,31 @@ impl Chess {
         }
     }
 
-    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square) {
-        make_chess_move(self, start_sq, end_sq);
+    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square, promoted_piece: Option<Piece>) {
+        make_chess_move(self, start_sq, end_sq, promoted_piece);
     }
 
-    pub fn make_move_from_str(&mut self, start_sq: &str, end_sq: &str) {
+    pub fn make_move_from_str(
+        &mut self,
+        start_sq: &str,
+        end_sq: &str,
+        possible_promoted_piece: Option<&str>,
+    ) {
         if start_sq.is_empty() || end_sq.is_empty() {
             println!("Startsq or endsq was empty");
             dbg!(start_sq);
             dbg!(end_sq);
             return;
         }
+
+        let promoted_piece = possible_promoted_piece.and_then(|piece_str| {
+            let piece = Piece::from(Some(piece_str));
+            if piece == Piece::None {
+                None
+            } else {
+                Some(piece)
+            }
+        });
 
         let start_sq_chars: Vec<char> = start_sq.chars().collect();
         let end_sq_chars: Vec<char> = end_sq.chars().collect();
@@ -180,7 +194,7 @@ impl Chess {
             )
             .clone();
 
-        make_chess_move(self, &start_sq, &end_sq);
+        make_chess_move(self, &start_sq, &end_sq, promoted_piece);
     }
 
     pub fn print_moves(self) {
@@ -212,7 +226,7 @@ mod tests {
         chess.starting_position();
         let start_sq = chess.get_square_from_str("e", "2").clone();
         let end_sq = chess.get_square_from_str("e", "4").clone();
-        make_chess_move(&mut chess, &start_sq, &end_sq);
+        make_chess_move(&mut chess, &start_sq, &end_sq, None);
 
         assert_eq!(chess.get_square_from_str("e", "2").piece, Piece::None);
         assert_eq!(
@@ -227,7 +241,7 @@ mod tests {
 
         let start_sq = chess.get_square_from_str("e", "4").clone();
         let end_sq = chess.get_square_from_str("e", "5").clone();
-        make_chess_move(&mut chess, &start_sq, &end_sq);
+        make_chess_move(&mut chess, &start_sq, &end_sq, None);
         assert_eq!(
             chess.get_square_from_str("e", "4").piece,
             Piece::Pawn(PieceColor::White)
@@ -237,7 +251,7 @@ mod tests {
 
         let start_sq = chess.get_square_from_str("e", "7").clone();
         let end_sq = chess.get_square_from_str("e", "5").clone();
-        make_chess_move(&mut chess, &start_sq, &end_sq);
+        make_chess_move(&mut chess, &start_sq, &end_sq, None);
 
         assert_eq!(
             chess.get_square_from_str("e", "5").piece,
@@ -248,7 +262,7 @@ mod tests {
 
         let start_sq = chess.get_square_from_str("e", "4").clone();
         let end_sq = chess.get_square_from_str("d", "5").clone();
-        make_chess_move(&mut chess, &start_sq, &end_sq);
+        make_chess_move(&mut chess, &start_sq, &end_sq, None);
         assert_eq!(chess.get_square_from_str("d", "5").piece, Piece::None);
         assert_eq!(chess.turn_number, 2);
     }

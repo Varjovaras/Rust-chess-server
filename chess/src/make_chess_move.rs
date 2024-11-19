@@ -12,7 +12,12 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
+pub fn make_chess_move(
+    chess: &mut Chess,
+    start_sq: &Square,
+    end_sq: &Square,
+    promoted_piece: Option<Piece>,
+) {
     let moving_piece_color = start_sq.piece.color();
     let opposite_color = moving_piece_color.opposite();
 
@@ -20,7 +25,7 @@ pub fn make_chess_move(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
         return;
     }
 
-    handle_special_moves(chess, start_sq, end_sq);
+    handle_special_moves(chess, start_sq, end_sq, promoted_piece);
     update_board(chess, start_sq, end_sq);
     add_possible_moves_to_squares(chess);
     handle_game_state(chess, opposite_color);
@@ -80,27 +85,46 @@ const fn is_king_in_check(chess: &Chess, color: PieceColor) -> bool {
     }
 }
 
-fn handle_special_moves(chess: &mut Chess, start_sq: &Square, end_sq: &Square) {
-    if let Some(promoted_piece) = handle_promotion(chess, start_sq, end_sq) {
-        chess.board[end_sq.file as usize][end_sq.rank as usize].piece = promoted_piece;
-        chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
+fn handle_special_moves(
+    chess: &mut Chess,
+    start_sq: &Square,
+    end_sq: &Square,
+    promoted_piece: Option<Piece>,
+) {
+    if let Some(piece) = is_promotion(
+        // chess,
+        start_sq,
+        end_sq,
+        promoted_piece,
+    ) {
+        handle_promotion(chess, start_sq, end_sq, piece);
         return;
     }
-
     handle_en_passant(chess, start_sq, end_sq);
     handle_castling(chess, start_sq, end_sq);
 }
 
-fn handle_promotion(chess: &Chess, start_sq: &Square, end_sq: &Square) -> Option<Piece> {
+fn is_promotion(
+    // chess: &Chess,
+    start_sq: &Square,
+    end_sq: &Square,
+    promoted_piece: Option<Piece>,
+) -> Option<Piece> {
     if (start_sq.piece == Piece::Pawn(PieceColor::White) && end_sq.rank == Rank::Eighth)
         || (start_sq.piece == Piece::Pawn(PieceColor::Black) && end_sq.rank == Rank::First)
     {
-        match promote(start_sq, end_sq, chess) {
-            Some(Piece::King(_) | Piece::Pawn(_)) | None => None,
-            Some(promoted_piece) => Some(promoted_piece),
-        }
-    } else {
-        None
+        return promoted_piece;
+    }
+    None
+}
+
+fn handle_promotion(chess: &mut Chess, start_sq: &Square, end_sq: &Square, promoted_piece: Piece) {
+    if let Some(piece) = match promote(start_sq, end_sq, chess, promoted_piece) {
+        Some(Piece::King(_) | Piece::Pawn(_)) | None => None,
+        Some(promoted_piece) => Some(promoted_piece),
+    } {
+        chess.board[end_sq.file as usize][end_sq.rank as usize].piece = piece;
+        chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
     }
 }
 

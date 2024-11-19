@@ -9,7 +9,7 @@ pub mod white;
 
 //make this into a
 #[must_use]
-pub fn promote(start_sq: &Square, end_sq: &Square, chess: &Chess) -> Option<Piece> {
+pub fn promote(start_sq: &Square, end_sq: &Square, chess: &Chess, piece: Piece) -> Option<Piece> {
     let promoted_piece_color = match start_sq.piece {
         Piece::Pawn(PieceColor::White) => PieceColor::White,
         Piece::Pawn(PieceColor::Black) => PieceColor::Black,
@@ -22,5 +22,11 @@ pub fn promote(start_sq: &Square, end_sq: &Square, chess: &Chess) -> Option<Piec
         return None;
     }
 
-    Some(Piece::Queen(promoted_piece_color))
+    match piece {
+        Piece::King(_) | Piece::Pawn(_) | Piece::None => None,
+        Piece::Knight(_) => Some(Piece::Knight(promoted_piece_color)),
+        Piece::Bishop(_) => Some(Piece::Bishop(promoted_piece_color)),
+        Piece::Rook(_) => Some(Piece::Rook(promoted_piece_color)),
+        Piece::Queen(_) => Some(Piece::Queen(promoted_piece_color)),
+    }
 }

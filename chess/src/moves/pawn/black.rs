@@ -158,11 +158,11 @@ mod tests {
     fn black_en_passant_works() {
         let mut chess: Chess = Chess::default();
         chess.starting_position();
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("d7", "d5");
-        chess.make_move_from_str("a2", "a3");
-        chess.make_move_from_str("d5", "e4");
-        chess.make_move_from_str("f2", "f4");
+        chess.make_move_from_str("e2", "e4", None);
+        chess.make_move_from_str("d7", "d5", None);
+        chess.make_move_from_str("a2", "a3", None);
+        chess.make_move_from_str("d5", "e4", None);
+        chess.make_move_from_str("f2", "f4", None);
 
         assert!(move_black_pawn(
             &chess.get_square(File::E, Rank::Fourth),

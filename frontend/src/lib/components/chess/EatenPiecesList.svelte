@@ -15,8 +15,9 @@
     let { color, pieces }: Props = $props();
 </script>
 
-<ul class="flex flex-row m-4 p-4 variant-outline-primary bg-surface-700">
-    <!-- White pieces -->
+<ul
+    class="flex flex-row m-4 p-2 variant-outline-primary content-center justify-center bg-surface-700"
+>
     <li class="">
         <EatenPiece
             imgSrc="/pieces/{color}_queen.svg"

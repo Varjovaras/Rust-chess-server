@@ -90,18 +90,18 @@ mod tests {
         let black_knight = Piece::Knight(PieceColor::Black);
 
         let mut chess = Chess::new_starting_position();
-        chess.make_move_from_str("e2", "e4");
-        chess.make_move_from_str("d7", "d5");
-        chess.make_move_from_str("e4", "d5");
+        chess.make_move_from_str("e2", "e4", None);
+        chess.make_move_from_str("d7", "d5", None);
+        chess.make_move_from_str("e4", "d5", None);
         assert_eq!(chess.pieces_eaten.white.len(), 0);
         assert_eq!(chess.pieces_eaten.black.len(), 1);
         assert_eq!(chess.pieces_eaten.black[0], black_pawn);
-        chess.make_move_from_str("b8", "c6");
-        chess.make_move_from_str("d5", "c6");
+        chess.make_move_from_str("b8", "c6", None);
+        chess.make_move_from_str("d5", "c6", None);
         assert_eq!(chess.pieces_eaten.white.len(), 0);
         assert_eq!(chess.pieces_eaten.black.len(), 2);
         assert_eq!(chess.pieces_eaten.black[1], black_knight);
-        chess.make_move_from_str("b7", "c6");
+        chess.make_move_from_str("b7", "c6", None);
         assert_eq!(chess.pieces_eaten.white.len(), 1);
         assert_eq!(chess.pieces_eaten.black.len(), 2);
         assert_eq!(chess.pieces_eaten.white[0], white_pawn);

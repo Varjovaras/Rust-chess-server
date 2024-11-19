@@ -75,3 +75,15 @@ impl Piece {
         matches!(self, Self::Pawn(_))
     }
 }
+
+impl From<Option<&str>> for Piece {
+    fn from(value: Option<&str>) -> Self {
+        match value {
+            Some("QUEEN") => Self::Queen(PieceColor::None),
+            Some("ROOK") => Self::Rook(PieceColor::None),
+            Some("BISHOP") => Self::Bishop(PieceColor::None),
+            Some("KNIGHT") => Self::Knight(PieceColor::None),
+            _ => Self::None,
+        }
+    }
+}

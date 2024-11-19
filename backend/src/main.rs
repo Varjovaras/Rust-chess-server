@@ -175,11 +175,15 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                         File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"),
                         Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
                     );
-                    chess_game.make_move(&start_sq, &end_sq);
+                    chess_game.make_move(&start_sq, &end_sq, None);
                 }
 
                 // Make the new move
-                chess_game.make_move_from_str(&move_request.new_move[0], &move_request.new_move[1]);
+                chess_game.make_move_from_str(
+                    &move_request.new_move[0],
+                    &move_request.new_move[1],
+                    None,
+                );
 
                 // Send updated chess state to all clients
                 let response = serde_json::json!({

@@ -9,9 +9,9 @@
 </script>
 
 <div class="flex flex-row justify-center items-center">
-    <div class="flex flex-col items-center gap-1">
+    <div class="flex flex-col items-center gap-1 w-full">
         {#if amount > 0}
-            <img src={imgSrc} {alt} class="h-12" />
+            <img src={imgSrc} {alt} class="" />
             <span class="text-sm font-serif"
                 >{amount > 1 ? `×${amount}` : ""}</span
             >
