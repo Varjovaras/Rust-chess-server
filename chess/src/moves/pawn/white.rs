@@ -5,7 +5,6 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
-//only en passant affects board, that's why insert is mutable reference
 #[must_use]
 pub fn move_white_pawn(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
     if start_sq.rank == Rank::Eighth || start_sq.rank > end_sq.rank || start_sq.is_empty() {

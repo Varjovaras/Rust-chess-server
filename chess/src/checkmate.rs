@@ -76,6 +76,10 @@ pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     let rank = sq.rank as usize;
     let mut possible_moves = Vec::new();
 
+    if rank == 0 || rank == 8 {
+        return possible_moves;
+    }
+
     match sq.piece.color() {
         PieceColor::White => {
             if rank == 1 {

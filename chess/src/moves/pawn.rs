@@ -7,7 +7,6 @@ use crate::{
 pub mod black;
 pub mod white;
 
-//make this into a
 #[must_use]
 pub fn promote(start_sq: &Square, end_sq: &Square, chess: &Chess, piece: Piece) -> Option<Piece> {
     let promoted_piece_color = match start_sq.piece {

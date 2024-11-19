@@ -21,7 +21,7 @@ pub fn make_chess_move(
     let moving_piece_color = start_sq.piece.color();
     let opposite_color = moving_piece_color.opposite();
 
-    if !is_move_valid(chess, start_sq, end_sq, moving_piece_color) {
+    if !is_move_valid(chess, start_sq, end_sq, moving_piece_color, promoted_piece) {
         return;
     }
 
@@ -36,6 +36,7 @@ fn is_move_valid(
     start_sq: &Square,
     end_sq: &Square,
     moving_piece_color: PieceColor,
+    promoted_piece: Option<Piece>,
 ) -> bool {
     if !is_game_active(chess) || !is_correct_turn(chess, moving_piece_color) {
         return false;
@@ -61,6 +62,16 @@ fn is_move_valid(
         return false;
     }
 
+    if ((start_sq.piece == Piece::Pawn(PieceColor::White) && end_sq.rank == Rank::Eighth)
+        || (start_sq.piece == Piece::Pawn(PieceColor::Black) && end_sq.rank == Rank::First))
+        && (promoted_piece.is_none()
+            || promoted_piece == Some(Piece::King(PieceColor::White))
+            || promoted_piece == Some(Piece::King(PieceColor::Black))
+            || promoted_piece == Some(Piece::Pawn(PieceColor::White))
+            || promoted_piece == Some(Piece::Pawn(PieceColor::Black)))
+    {
+        return false;
+    }
     king_is_not_in_check_after_move(chess, start_sq, end_sq)
 }
 
