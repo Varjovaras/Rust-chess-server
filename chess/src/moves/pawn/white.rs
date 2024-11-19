@@ -192,6 +192,7 @@ mod tests {
         chess.make_move_from_str("e6", "f7", None);
         chess.make_move_from_str("e8", "d7", None);
         chess.make_move_from_str("f7", "g8", Some("QUEEN"));
+        chess.print_white_board_to_terminal();
         assert!(chess.get_square(File::G, Rank::Eighth).piece == Piece::Queen(PieceColor::White));
     }
     #[test]
@@ -225,5 +226,22 @@ mod tests {
         chess.make_move_from_str("e8", "d7", None);
         chess.make_move_from_str("f7", "g8", Some("BISHOP"));
         assert!(chess.get_square(File::G, Rank::Eighth).piece == Piece::Bishop(PieceColor::White));
+    }
+
+    #[test]
+    fn white_promotion_works_with_rook() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("e2", "e4", None);
+        chess.make_move_from_str("d7", "d5", None);
+        chess.make_move_from_str("e4", "d5", None);
+        chess.make_move_from_str("e7", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("d5", "e6", None);
+        chess.make_move_from_str("a7", "a5", None);
+        chess.make_move_from_str("e6", "f7", None);
+        chess.make_move_from_str("e8", "d7", None);
+        chess.make_move_from_str("f7", "g8", Some("ROOK"));
+        assert!(chess.get_square(File::G, Rank::Eighth).piece == Piece::Rook(PieceColor::White));
     }
 }

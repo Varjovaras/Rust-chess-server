@@ -108,7 +108,6 @@ fn handle_special_moves(
         end_sq,
         promoted_piece,
     ) {
-        dbg!("ali");
         handle_promotion(chess, start_sq, end_sq, piece);
         return;
     }
@@ -135,7 +134,6 @@ fn handle_promotion(chess: &mut Chess, start_sq: &Square, end_sq: &Square, promo
         Some(Piece::King(_) | Piece::Pawn(_)) | None => None,
         Some(promoted_piece) => Some(promoted_piece),
     } {
-        dbg!("ali ali");
         chess.board[end_sq.file as usize][end_sq.rank as usize].piece = piece;
         chess.board[start_sq.file as usize][start_sq.rank as usize].piece = Piece::None;
     }

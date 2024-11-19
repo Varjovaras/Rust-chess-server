@@ -170,4 +170,74 @@ mod tests {
             &chess
         ));
     }
+
+    #[test]
+    fn black_promotion_works_with_queen() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("h2", "h4", None);
+
+        chess.make_move_from_str("e7", "e5", None);
+        chess.make_move_from_str("d2", "d4", None);
+        chess.make_move_from_str("e5", "d4", None);
+        chess.make_move_from_str("e2", "e3", None);
+        chess.make_move_from_str("d4", "e3", None);
+        chess.make_move_from_str("a2", "a4", None);
+        chess.make_move_from_str("e3", "f2", None);
+        chess.make_move_from_str("e1", "d2", None);
+        chess.make_move_from_str("f2", "g1", Some("QUEEN"));
+        chess.print_black_board_to_terminal();
+        assert!(chess.get_square(File::G, Rank::First).piece == Piece::Queen(PieceColor::Black));
+    }
+
+    #[test]
+    fn black_promotion_works_with_knight() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("h2", "h4", None);
+        chess.make_move_from_str("e7", "e5", None);
+        chess.make_move_from_str("d2", "d4", None);
+        chess.make_move_from_str("e5", "d4", None);
+        chess.make_move_from_str("e2", "e3", None);
+        chess.make_move_from_str("d4", "e3", None);
+        chess.make_move_from_str("a2", "a4", None);
+        chess.make_move_from_str("e3", "f2", None);
+        chess.make_move_from_str("e1", "d2", None);
+        chess.make_move_from_str("f2", "g1", Some("KNIGHT"));
+        assert!(chess.get_square(File::G, Rank::First).piece == Piece::Knight(PieceColor::Black));
+    }
+
+    #[test]
+    fn black_promotion_works_with_bishop() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("h2", "h4", None);
+        chess.make_move_from_str("e7", "e5", None);
+        chess.make_move_from_str("d2", "d4", None);
+        chess.make_move_from_str("e5", "d4", None);
+        chess.make_move_from_str("e2", "e3", None);
+        chess.make_move_from_str("d4", "e3", None);
+        chess.make_move_from_str("a2", "a4", None);
+        chess.make_move_from_str("e3", "f2", None);
+        chess.make_move_from_str("e1", "d2", None);
+        chess.make_move_from_str("f2", "g1", Some("BISHOP"));
+        assert!(chess.get_square(File::G, Rank::First).piece == Piece::Bishop(PieceColor::Black));
+    }
+
+    #[test]
+    fn black_promotion_works_with_rook() {
+        let mut chess: Chess = Chess::default();
+        chess.starting_position();
+        chess.make_move_from_str("h2", "h4", None);
+        chess.make_move_from_str("e7", "e5", None);
+        chess.make_move_from_str("d2", "d4", None);
+        chess.make_move_from_str("e5", "d4", None);
+        chess.make_move_from_str("e2", "e3", None);
+        chess.make_move_from_str("d4", "e3", None);
+        chess.make_move_from_str("a2", "a4", None);
+        chess.make_move_from_str("e3", "f2", None);
+        chess.make_move_from_str("e1", "d2", None);
+        chess.make_move_from_str("f2", "g1", Some("ROOK"));
+        assert!(chess.get_square(File::G, Rank::First).piece == Piece::Rook(PieceColor::Black));
+    }
 }
