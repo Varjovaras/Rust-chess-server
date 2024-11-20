@@ -129,6 +129,7 @@
 
 <div class="flex justify-center items-center p-4 overflow-hidden">
 	<div class="flex flex-col justify-center items-center">
+		<EatenPiecesList color="white" pieces={piecesEatenCount.white} />
 		<div class="grid grid-cols-8 gap-0">
 			{#each boardToFront as row, i}
 				{#each row as sq, j}
@@ -147,9 +148,6 @@
 				{/each}
 			{/each}
 		</div>
-		<div class="flex flex-col w-80">
-			<EatenPiecesList color="white" pieces={piecesEatenCount.white} />
-			<EatenPiecesList color="black" pieces={piecesEatenCount.black} />
-		</div>
+		<EatenPiecesList color="black" pieces={piecesEatenCount.black} />
 	</div>
 </div>

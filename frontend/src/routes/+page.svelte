@@ -96,6 +96,7 @@
 
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);
+		//if startsq piece is white and endsq is promotion, make it promote
 		const moveRequest = {
 			list_of_moves: chess.list_of_moves,
 			new_move: [startSq, endSq, [0, 0]],
