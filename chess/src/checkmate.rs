@@ -73,10 +73,11 @@ pub fn possible_legal_moves(chess: &Chess, color: PieceColor) -> Vec<MoveFromCoo
 }
 
 #[must_use]
+#[allow(clippy::type_complexity)]
 pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     let file = sq.file as usize;
     let rank = sq.rank as usize;
-    let mut possible_moves = Vec::new();
+    let mut possible_moves: Vec<((usize, usize), (usize, usize), (usize, usize))> = Vec::new();
 
     if rank == 0 || rank == 8 {
         return possible_moves;
@@ -84,65 +85,9 @@ pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
 
     match sq.piece.color() {
         PieceColor::White => {
-            if rank == 1 {
-                possible_moves.push((
-                    (file, rank),
-                    (file, Rank::Third.as_usize()),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-                possible_moves.push((
-                    (file, rank),
-                    (file, Rank::Fourth.as_usize()),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-            } else {
-                possible_moves.push(((file, rank), (file, rank + 1), DEFAULT_NO_PROMOTION_TUPLE));
-            }
-            if file < 7 {
-                possible_moves.push((
-                    (file, rank),
-                    (file + 1, rank + 1),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-            }
-            if file > 0 {
-                possible_moves.push((
-                    (file, rank),
-                    (file - 1, rank + 1),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-            }
+            possible_moves = white_pawn_possible_moves_helper(file, rank);
         }
-        PieceColor::Black => {
-            if rank == 6 {
-                possible_moves.push((
-                    (file, rank),
-                    (file, Rank::Fifth.as_usize()),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-                possible_moves.push((
-                    (file, rank),
-                    (file, Rank::Sixth.as_usize()),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-            } else {
-                possible_moves.push(((file, rank), (file, rank - 1), DEFAULT_NO_PROMOTION_TUPLE));
-            }
-            if file < 7 {
-                possible_moves.push((
-                    (file, rank),
-                    (file + 1, rank - 1),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-            }
-            if file > 0 {
-                possible_moves.push((
-                    (file, rank),
-                    (file - 1, rank - 1),
-                    DEFAULT_NO_PROMOTION_TUPLE,
-                ));
-            }
-        }
+        PieceColor::Black => possible_moves = black_pawn_possible_moves_helper(file, rank),
         PieceColor::None => {}
     }
     possible_moves
@@ -247,6 +192,115 @@ pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
             }
         })
         .collect()
+}
+
+const WHITE_PROMOTIONS: [(usize, usize); 4] = [(1, 0), (2, 0), (3, 0), (4, 0)];
+const BLACK_PROMOTIONS: [(usize, usize); 4] = [(1, 1), (2, 1), (3, 1), (4, 1)];
+
+#[allow(clippy::type_complexity)]
+fn white_pawn_possible_moves_helper(
+    file: usize,
+    rank: usize,
+) -> Vec<((usize, usize), (usize, usize), (usize, usize))> {
+    let mut possible_moves = Vec::new();
+    //promotion
+    if rank == 6 {
+        for white_promotion_piece in WHITE_PROMOTIONS {
+            possible_moves.push(((file, rank), (file, rank + 1), white_promotion_piece));
+            if file < 7 {
+                possible_moves.push(((file, rank), (file + 1, rank + 1), white_promotion_piece));
+            }
+            if file > 0 {
+                possible_moves.push(((file, rank), (file - 1, rank + 1), white_promotion_piece));
+            }
+        }
+        return possible_moves;
+    }
+    //starting square
+    if rank == 1 {
+        possible_moves.push((
+            (file, rank),
+            (file, Rank::Third.as_usize()),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+        possible_moves.push((
+            (file, rank),
+            (file, Rank::Fourth.as_usize()),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+    } else {
+        possible_moves.push(((file, rank), (file, rank + 1), DEFAULT_NO_PROMOTION_TUPLE));
+    }
+
+    //captures to left
+    if file < 7 {
+        possible_moves.push((
+            (file, rank),
+            (file + 1, rank + 1),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+    }
+    //captures to right
+    if file > 0 {
+        possible_moves.push((
+            (file, rank),
+            (file - 1, rank + 1),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+    }
+    possible_moves
+}
+
+#[allow(clippy::type_complexity)]
+fn black_pawn_possible_moves_helper(
+    file: usize,
+    rank: usize,
+) -> Vec<((usize, usize), (usize, usize), (usize, usize))> {
+    let mut possible_moves = Vec::new();
+    //promotion
+    if rank == 1 {
+        for black_promotion_piece in BLACK_PROMOTIONS {
+            if file < 7 {
+                possible_moves.push(((file, rank), (file + 1, rank - 1), black_promotion_piece));
+            }
+            if file > 0 {
+                possible_moves.push(((file, rank), (file - 1, rank - 1), black_promotion_piece));
+            }
+            possible_moves.push(((file, rank), (file, rank - 1), black_promotion_piece));
+        }
+        return possible_moves;
+    }
+    if rank == 6 {
+        possible_moves.push((
+            (file, rank),
+            (file, Rank::Fifth.as_usize()),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+        possible_moves.push((
+            (file, rank),
+            (file, Rank::Sixth.as_usize()),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+    } else {
+        possible_moves.push(((file, rank), (file, rank - 1), DEFAULT_NO_PROMOTION_TUPLE));
+    }
+
+    if file < 7 {
+        possible_moves.push((
+            (file, rank),
+            (file + 1, rank - 1),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+    }
+    if file > 0 {
+        possible_moves.push((
+            (file, rank),
+            (file - 1, rank - 1),
+            DEFAULT_NO_PROMOTION_TUPLE,
+        ));
+    }
+
+    possible_moves
 }
 
 #[cfg(test)]
