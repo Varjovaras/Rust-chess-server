@@ -9,11 +9,13 @@ use crate::{
     piece::{Piece, PieceColor},
 };
 
+const DEFAULT_NO_PROMOTION_TUPLE: (usize, usize) = (0, 0);
+
 const WHITE: PieceColor = PieceColor::White;
 const BLACK: PieceColor = PieceColor::Black;
 
 type SquareCoordinates = (usize, usize);
-pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates);
+pub type MoveFromCoordinates = (SquareCoordinates, SquareCoordinates, (usize, usize));
 
 pub fn is_checkmate_position(chess: &mut Chess) -> bool {
     let moves: Vec<MoveFromCoordinates> = if chess.clone().get_white_player().in_check() {
@@ -83,30 +85,62 @@ pub fn pawn_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
     match sq.piece.color() {
         PieceColor::White => {
             if rank == 1 {
-                possible_moves.push(((file, rank), (file, Rank::Third.as_usize())));
-                possible_moves.push(((file, rank), (file, Rank::Fourth.as_usize())));
+                possible_moves.push((
+                    (file, rank),
+                    (file, Rank::Third.as_usize()),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
+                possible_moves.push((
+                    (file, rank),
+                    (file, Rank::Fourth.as_usize()),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
             } else {
-                possible_moves.push(((file, rank), (file, rank + 1)));
+                possible_moves.push(((file, rank), (file, rank + 1), DEFAULT_NO_PROMOTION_TUPLE));
             }
             if file < 7 {
-                possible_moves.push(((file, rank), (file + 1, rank + 1)));
+                possible_moves.push((
+                    (file, rank),
+                    (file + 1, rank + 1),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
             }
             if file > 0 {
-                possible_moves.push(((file, rank), (file - 1, rank + 1)));
+                possible_moves.push((
+                    (file, rank),
+                    (file - 1, rank + 1),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
             }
         }
         PieceColor::Black => {
             if rank == 6 {
-                possible_moves.push(((file, rank), (file, Rank::Fifth.as_usize())));
-                possible_moves.push(((file, rank), (file, Rank::Sixth.as_usize())));
+                possible_moves.push((
+                    (file, rank),
+                    (file, Rank::Fifth.as_usize()),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
+                possible_moves.push((
+                    (file, rank),
+                    (file, Rank::Sixth.as_usize()),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
             } else {
-                possible_moves.push(((file, rank), (file, rank - 1)));
+                possible_moves.push(((file, rank), (file, rank - 1), DEFAULT_NO_PROMOTION_TUPLE));
             }
             if file < 7 {
-                possible_moves.push(((file, rank), (file + 1, rank - 1)));
+                possible_moves.push((
+                    (file, rank),
+                    (file + 1, rank - 1),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
             }
             if file > 0 {
-                possible_moves.push(((file, rank), (file - 1, rank - 1)));
+                possible_moves.push((
+                    (file, rank),
+                    (file - 1, rank - 1),
+                    DEFAULT_NO_PROMOTION_TUPLE,
+                ));
             }
         }
         PieceColor::None => {}
@@ -126,6 +160,7 @@ pub fn knight_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
                     (sq.file as usize, sq.rank as usize),
                     #[allow(clippy::cast_sign_loss)]
                     (file as usize, rank as usize),
+                    DEFAULT_NO_PROMOTION_TUPLE,
                 ))
             } else {
                 None
@@ -147,6 +182,7 @@ pub fn bishop_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
                     (sq.file as usize, sq.rank as usize),
                     #[allow(clippy::cast_sign_loss)]
                     (file as usize, rank as usize),
+                    DEFAULT_NO_PROMOTION_TUPLE,
                 ));
                 file += bishop_move.0;
                 rank += bishop_move.1;
@@ -169,6 +205,7 @@ pub fn rook_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
                     (sq.file as usize, sq.rank as usize),
                     #[allow(clippy::cast_sign_loss)]
                     (file as usize, rank as usize),
+                    DEFAULT_NO_PROMOTION_TUPLE,
                 ));
                 file += rook_move.0;
                 rank += rook_move.1;
@@ -203,6 +240,7 @@ pub fn king_possible_moves(sq: &Square) -> Vec<MoveFromCoordinates> {
                 Some((
                     (sq.file as usize, sq.rank as usize),
                     (file as usize, rank as usize),
+                    DEFAULT_NO_PROMOTION_TUPLE,
                 ))
             } else {
                 None
