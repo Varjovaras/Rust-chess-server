@@ -32,6 +32,8 @@
 	const whiteTurn = $derived(isWhiteTurn(chess.turn_number));
 	const piecesEatenCount = $derived(countEatenPieces(piecesEaten));
 
+	// $effect(() => console.log(chess.board[4][6]));
+
 	const handleClick = async (sq: SquareType) => {
 		const file = sq.file.toLowerCase();
 		const rank = sq.rank + 1;

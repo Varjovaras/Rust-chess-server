@@ -161,8 +161,6 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
 
     let mut recv_task = tokio::spawn(async move {
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
-            dbg!(&text);
-
             if let Ok(move_request) = serde_json::from_str::<MoveRequest>(&text) {
                 let mut chess_game = chess.lock().await;
                 // Apply previous moves

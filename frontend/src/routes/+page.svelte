@@ -100,7 +100,6 @@
 			list_of_moves: chess.list_of_moves,
 			new_move: [startSq, endSq, [0, 0]],
 		};
-		console.log('??');
 		ws.send(JSON.stringify(moveRequest));
 	};
 
