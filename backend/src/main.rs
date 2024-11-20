@@ -45,8 +45,7 @@ struct Response {
 struct MoveRequest {
     #[allow(clippy::type_complexity)]
     list_of_moves: Vec<((String, usize), (String, usize), (usize, usize))>,
-    new_move: [String; 2],
-    promoted_piece: (i32, i32),
+    new_move: (String, String, (usize, usize)),
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -162,9 +161,10 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
 
     let mut recv_task = tokio::spawn(async move {
         while let Some(Ok(Message::Text(text))) = receiver.next().await {
+            dbg!(&text);
+
             if let Ok(move_request) = serde_json::from_str::<MoveRequest>(&text) {
                 let mut chess_game = chess.lock().await;
-
                 // Apply previous moves
                 for move_tuple in &move_request.list_of_moves {
                     let start_sq = chess_game.get_square(
@@ -181,7 +181,7 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                     chess_game.make_move(&start_sq, &end_sq, promoted_piece);
                 }
 
-                let promoted_piece = match move_request.promoted_piece {
+                let promoted_piece = match move_request.new_move.2 {
                     (1, 0 | 1) => Some("QUEEN"),
                     (2, 0 | 1) => Some("ROOK"),
                     (3, 0 | 1) => Some("KNIGHT"),
@@ -191,8 +191,8 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
 
                 // Make the new move
                 chess_game.make_move_from_str(
-                    &move_request.new_move[0],
-                    &move_request.new_move[1],
+                    &move_request.new_move.0,
+                    &move_request.new_move.1,
                     promoted_piece,
                 );
 
@@ -240,5 +240,5 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
 }
 
 async fn get_status() -> impl IntoResponse {
-    "OK"
+    Chess::new_starting_position().to_json()
 }

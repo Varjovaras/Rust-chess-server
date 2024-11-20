@@ -98,8 +98,9 @@
 		console.log(`Move from ${startSq} to ${endSq}`);
 		const moveRequest = {
 			list_of_moves: chess.list_of_moves,
-			new_move: [startSq, endSq],
+			new_move: [startSq, endSq, [0, 0]],
 		};
+		console.log('??');
 		ws.send(JSON.stringify(moveRequest));
 	};
 

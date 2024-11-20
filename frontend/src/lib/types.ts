@@ -29,12 +29,14 @@ export const squareSchema = z.object({
 		z.tuple([
 			z.tuple([z.number(), z.number()]),
 			z.tuple([z.number(), z.number()]),
+			z.tuple([z.number(), z.number()]),
 		]),
 	),
 });
 
 export const possibleMoveSchema = z.array(
 	z.tuple([
+		z.tuple([z.number(), z.number()]),
 		z.tuple([z.number(), z.number()]),
 		z.tuple([z.number(), z.number()]),
 	]),
@@ -63,6 +65,7 @@ const rankSchema = z.number();
 const moveSchema = z.tuple([
 	z.tuple([fileSchema, rankSchema]),
 	z.tuple([fileSchema, rankSchema]),
+	z.tuple([z.number(), z.number()]),
 ]);
 export const listOfMovesSchema = z.array(moveSchema);
 

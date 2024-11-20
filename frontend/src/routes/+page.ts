@@ -9,6 +9,7 @@ export const load: PageLoad = async ({ fetch }) => {
 
 	try {
 		const response = await fetch(apiUrl);
+
 		if (!response.ok) {
 			throw new Error(`Failed to connect to backend: ${response.statusText}`);
 		}
