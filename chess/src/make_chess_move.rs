@@ -9,7 +9,7 @@ use crate::{
         move_helpers::helpers::{move_is_black_en_passant, move_is_white_en_passant},
         pawn::promote,
     },
-    piece::{Piece, PieceColor},
+    piece::{promoted_piece_to_i32tuple, Piece, PieceColor},
 };
 
 pub fn make_chess_move(
@@ -219,9 +219,14 @@ fn update_board(
 
     chess.latest_move = Some((start_sq.clone(), end_sq.clone(), start_sq.piece.color()));
     chess.turn_number += 1;
-    chess
-        .list_of_moves
-        .push(((start_sq.file, start_sq.rank), (end_sq.file, end_sq.rank)));
+
+    let promoted_piece_type = promoted_piece_to_i32tuple(promoted_piece);
+
+    chess.list_of_moves.push((
+        (start_sq.file, start_sq.rank),
+        (end_sq.file, end_sq.rank),
+        promoted_piece_type,
+    ));
 }
 
 fn handle_game_state(chess: &mut Chess, opposite_color: PieceColor) {
