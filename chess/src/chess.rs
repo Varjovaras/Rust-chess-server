@@ -7,7 +7,7 @@ use crate::{
     },
     game_state::GameState,
     make_chess_move::make_chess_move,
-    piece::{Piece, PieceColor},
+    piece::{tuple_to_promoted_piece, Piece, PieceColor},
     pieces_eaten::PiecesEaten,
     player::Player,
 };
@@ -16,7 +16,19 @@ use serde::{Deserialize, Serialize};
 
 pub type LatestMove = (Square, Square, PieceColor);
 type SquareCoordinates = (File, Rank);
-pub type Move = (SquareCoordinates, SquareCoordinates);
+
+/**
+* (0, x) is always None,
+* (1, x) is always Queen
+* (2, x) is always Rook
+* (3, x) is always Knight
+* (4, x) is always Bishop
+* (x, 0) is White
+* (x, 1) is Black
+*/
+pub type PromotedPiece = (i32, i32);
+
+pub type Move = (SquareCoordinates, SquareCoordinates, PromotedPiece);
 pub type ListOfMoves = Vec<Move>;
 
 /**
@@ -151,7 +163,8 @@ impl Chess {
         }
     }
 
-    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square, promoted_piece: Option<Piece>) {
+    pub fn make_move(&mut self, start_sq: &Square, end_sq: &Square, promoted_piece: PromotedPiece) {
+        let promoted_piece = tuple_to_promoted_piece(promoted_piece);
         make_chess_move(self, start_sq, end_sq, promoted_piece);
     }
 
