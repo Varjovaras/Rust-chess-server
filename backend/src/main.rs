@@ -1,5 +1,4 @@
 #![allow(clippy::redundant_pub_crate)]
-
 use axum::{
     extract::{
         ws::{Message, WebSocket},
@@ -44,8 +43,10 @@ struct Response {
 
 #[derive(Debug, Deserialize, Clone)]
 struct MoveRequest {
-    list_of_moves: Vec<((String, usize), (String, usize))>,
+    #[allow(clippy::type_complexity)]
+    list_of_moves: Vec<((String, usize), (String, usize), (usize, usize))>,
     new_move: [String; 2],
+    promoted_piece: (i32, i32),
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -110,6 +111,7 @@ async fn websocket_handler(
     ws.on_upgrade(|socket| websocket(socket, state))
 }
 
+#[allow(clippy::too_many_lines)]
 async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
     let (mut sender, mut receiver) = stream.split();
     let mut rx = {
@@ -119,7 +121,6 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
     };
 
     let chess = state.lock().await.chess.clone();
-
     // Create a channel for communication between tasks
     let (tx, mut rx_channel) = mpsc::channel(100);
 
@@ -133,7 +134,7 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
 
     if (sender
         .send(Message::Text(
-            serde_json::to_string(&initial_chess_state).expect(":D"),
+            serde_json::to_string(&initial_chess_state).expect("Failed initializing chess state"),
         ))
         .await)
         .is_err()
@@ -142,7 +143,6 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
     }
 
     let mut send_task = tokio::spawn(async move {
-        #[allow(clippy::redundant_pub_crate)]
         loop {
             tokio::select! {
                 _ = rx.changed() => {
@@ -175,14 +175,25 @@ async fn websocket(stream: WebSocket, state: Arc<Mutex<State>>) {
                         File::try_from(move_tuple.1 .0.as_str()).expect("invalid file"),
                         Rank::try_from(move_tuple.1 .1).expect("invalid rank"),
                     );
-                    chess_game.make_move(&start_sq, &end_sq, None);
+                    #[allow(clippy::cast_possible_truncation)]
+                    #[allow(clippy::cast_possible_wrap)]
+                    let promoted_piece = (move_tuple.2 .0 as i32, move_tuple.2 .1 as i32);
+                    chess_game.make_move(&start_sq, &end_sq, promoted_piece);
                 }
+
+                let promoted_piece = match move_request.promoted_piece {
+                    (1, 0 | 1) => Some("QUEEN"),
+                    (2, 0 | 1) => Some("ROOK"),
+                    (3, 0 | 1) => Some("KNIGHT"),
+                    (4, 0 | 1) => Some("BISHOP"),
+                    _ => None,
+                };
 
                 // Make the new move
                 chess_game.make_move_from_str(
                     &move_request.new_move[0],
                     &move_request.new_move[1],
-                    None,
+                    promoted_piece,
                 );
 
                 // Send updated chess state to all clients
