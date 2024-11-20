@@ -87,3 +87,34 @@ impl From<Option<&str>> for Piece {
         }
     }
 }
+
+#[must_use]
+pub const fn promoted_piece_to_i32tuple(promoted_piece: Option<Piece>) -> (i32, i32) {
+    match promoted_piece {
+        Some(Piece::Queen(PieceColor::White)) => (1, 0),
+        Some(Piece::Queen(PieceColor::Black)) => (1, 1),
+        Some(Piece::Rook(PieceColor::White)) => (2, 0),
+        Some(Piece::Rook(PieceColor::Black)) => (2, 1),
+        Some(Piece::Bishop(PieceColor::White)) => (3, 0),
+        Some(Piece::Bishop(PieceColor::Black)) => (3, 1),
+        Some(Piece::Knight(PieceColor::White)) => (4, 0),
+        Some(Piece::Knight(PieceColor::Black)) => (4, 1),
+        _ => (0, 0),
+    }
+}
+
+#[must_use]
+#[allow(clippy::module_name_repetitions)]
+pub const fn tuple_to_promoted_piece(promoted_piece: (i32, i32)) -> Option<Piece> {
+    match promoted_piece {
+        (1, 0) => Some(Piece::Queen(PieceColor::White)),
+        (1, 1) => Some(Piece::Queen(PieceColor::Black)),
+        (2, 0) => Some(Piece::Rook(PieceColor::White)),
+        (2, 1) => Some(Piece::Rook(PieceColor::Black)),
+        (3, 0) => Some(Piece::Bishop(PieceColor::White)),
+        (3, 1) => Some(Piece::Bishop(PieceColor::Black)),
+        (4, 0) => Some(Piece::Knight(PieceColor::White)),
+        (4, 1) => Some(Piece::Knight(PieceColor::Black)),
+        _ => None,
+    }
+}
