@@ -10,6 +10,8 @@
 	import { env } from '$env/dynamic/public';
 	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
 	import type { PageData } from './$types';
+	import EatenPiecesList from '$lib/components/chess/EatenPiecesList.svelte';
+	import { countEatenPieces } from '$lib/components/chess/eatenPieces';
 
 	interface Props {
 		data: PageData;
@@ -28,6 +30,7 @@
 	let isConnected = $state(false);
 	let chess = $state(data.startingPosition);
 	const eatenPieces = $derived(chess.pieces_eaten);
+	const piecesEatenCount = $derived(countEatenPieces(eatenPieces));
 
 	onMount(() => {
 		const unsubscribe = ws.subscribe((socket) => {
@@ -114,10 +117,12 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center content-center py-4">
+<div class="flex flex-col justify-center py-4">
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
 	<ResetButton {handleReset} />
+	<EatenPiecesList color="white" pieces={piecesEatenCount.white} />
+	<EatenPiecesList color="black" pieces={piecesEatenCount.black} />
 	<!-- {#if isDevMode}
 		<WebsocketInfo messages={websocketMessages} {isConnected} />
 	{/if} -->

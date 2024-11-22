@@ -1,14 +1,14 @@
 <script lang="ts">
-    interface Props {
-        handleReset: () => void;
-    }
+	interface Props {
+		handleReset: () => void;
+	}
 
-    const { handleReset }: Props = $props();
+	const { handleReset }: Props = $props();
 </script>
 
 <button
-    onclick={handleReset}
-    class="btn variant-ringed-primary font-mono m-8 w-1/2 mx-auto"
+	onclick={handleReset}
+	class="btn variant-ringed-primary font-mono w-1/2 mx-auto"
 >
-    Reset game
+	Reset game
 </button>

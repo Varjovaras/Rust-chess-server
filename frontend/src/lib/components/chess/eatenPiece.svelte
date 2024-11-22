@@ -11,7 +11,7 @@
 <div class="flex flex-row">
 	<div class="flex flex-col items-center gap-1 w-full">
 		{#if amount > 0}
-			<img src={imgSrc} {alt} class="w-10" />
+			<!-- <img src={imgSrc} {alt} class="w-10" /> -->
 			<span class="text-sm font-serif">{amount > 1 ? `×${amount}` : ' '}</span>
 		{:else}
 			<div class="w-10"></div>

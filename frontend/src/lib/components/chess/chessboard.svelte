@@ -12,7 +12,6 @@
 	} from '../../types';
 	import ChessSquare from './chessSquare.svelte';
 	import { countEatenPieces } from './eatenPieces';
-	import EatenPiecesList from './EatenPiecesList.svelte';
 
 	interface Props {
 		chess: Chess;
@@ -30,7 +29,6 @@
 
 	const boardToFront = $derived(handleBoardToFront(chess.board));
 	const whiteTurn = $derived(isWhiteTurn(chess.turn_number));
-	const piecesEatenCount = $derived(countEatenPieces(piecesEaten));
 
 	// $effect(() => console.log(chess.board[4][6]));
 
@@ -129,7 +127,6 @@
 
 <div class="flex justify-center items-center p-4 overflow-hidden">
 	<div class="flex flex-col justify-center items-center">
-		<EatenPiecesList color="white" pieces={piecesEatenCount.white} />
 		<div class="grid grid-cols-8 gap-0">
 			{#each boardToFront as row, i}
 				{#each row as sq, j}
@@ -148,6 +145,5 @@
 				{/each}
 			{/each}
 		</div>
-		<EatenPiecesList color="black" pieces={piecesEatenCount.black} />
 	</div>
 </div>

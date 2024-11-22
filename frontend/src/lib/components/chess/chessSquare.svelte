@@ -55,13 +55,10 @@
 	);
 
 	const squareClass = $derived(`
-    w-[11vw] h-[11vw]
-    sm:w-[7vw] sm:h-[7vw]
-    md:w-[5vw] md:h-[5vw]
-    lg:w-[6vw] lg:h-[6vw]
-    xl:w-[3.5vw] xl:h-[3.5vw]
+    sm:w-[8vw] sm:h-[8vw]
+
     max-w-20 max-h-20
-    min-w-8 min-h-8
+    min-w-6 min-h-6
     ${squareColor} ${hoverColor} ${checkColor}
     text-center flex items-center justify-center
     ${isSelected ? 'selected' : ''}
