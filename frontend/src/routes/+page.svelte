@@ -118,7 +118,7 @@
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
 	<ResetButton {handleReset} />
-	{#if isDevMode}
+	<!-- {#if isDevMode}
 		<WebsocketInfo messages={websocketMessages} {isConnected} />
-	{/if}
+	{/if} -->
 </div>
