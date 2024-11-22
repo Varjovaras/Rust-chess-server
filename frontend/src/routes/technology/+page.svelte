@@ -10,7 +10,7 @@
 	});
 </script>
 
-<section class="flex flex-col items-center justify-center min-h-screen p-4">
+<section class="flex flex-col items-center justify-start pt-16">
 	{#if visible}
 		<div
 			in:fade={{ duration: 500 }}
