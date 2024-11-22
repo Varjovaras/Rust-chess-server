@@ -121,8 +121,8 @@
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} piecesEaten={eatenPieces} />
 	<ResetButton {handleReset} />
-	<EatenPiecesList color="white" pieces={piecesEatenCount.white} />
-	<EatenPiecesList color="black" pieces={piecesEatenCount.black} />
+	<!-- <EatenPiecesList color="white" pieces={piecesEatenCount.white} />
+	<EatenPiecesList color="black" pieces={piecesEatenCount.black} /> -->
 	<!-- {#if isDevMode}
 		<WebsocketInfo messages={websocketMessages} {isConnected} />
 	{/if} -->
