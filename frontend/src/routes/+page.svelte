@@ -8,9 +8,7 @@
 	import { createWebSocketStore } from '$lib/websocketStore';
 	import { onMount, onDestroy } from 'svelte';
 	import { env } from '$env/dynamic/public';
-	import WebsocketInfo from '$lib/components/websocketInfo.svelte';
 	import type { PageData } from './$types';
-	import EatenPiecesList from '$lib/components/chess/EatenPiecesList.svelte';
 	import { countEatenPieces } from '$lib/components/chess/eatenPieces';
 	import {
 		getPromotionPiece,
@@ -106,13 +104,8 @@
 		console.log(`Move from ${startSq} to ${endSq}`);
 		let promotionPiece = [0, 0];
 		const sq = getSquareFromString(startSq, chess);
-		if (sq) {
-			console.log(sq.rank);
-			console.log(endSq[1]);
-			console.log(typeof sq.piece === 'object' && sq.piece.Pawn !== undefined);
-		}
 
-		if (isPawnPromotion(sq, endSq)) {
+		if (sq && isPawnPromotion(sq, endSq)) {
 			promotionPiece = getPromotionPiece(sq.rank, endSq[1]);
 		}
 		console.log(promotionPiece);

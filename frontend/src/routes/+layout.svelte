@@ -19,10 +19,10 @@
 
 <Modal />
 
-<div class="min-h-screen flex flex-col">
+<div class="min-h-screen flex flex-col pb-16">
 	<Header />
 
-	<main class="w-full flex-1">
+	<main class="w-full flex-1 overflow-auto">
 		{@render children?.()}
 	</main>
 	<Footer />
@@ -32,5 +32,11 @@
 	:global(html, body) {
 		height: 100%;
 		width: 100%;
+		margin: 0;
+		padding: 0;
+	}
+
+	main {
+		padding-bottom: 60px; /* Adjust this value based on the height of your footer */
 	}
 </style>

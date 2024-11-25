@@ -10,10 +10,10 @@
 	const { sq }: Props = $props();
 
 	const pieceSize = $derived(`
-    w-[6vw] h-[6vw]
-    sm:w-[8vw] sm:h-[8vw]
+    w-[5vw] h-[5vw]
+    sm:w-[10vw] sm:h-[10vw]
     min-w-6 min-h-6
-    max-w-20 max-h-20
+    max-w-16 max-h-16
     aspect-square
   `);
 </script>

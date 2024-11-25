@@ -11,7 +11,6 @@
 		Square as SquareType,
 	} from '../../types';
 	import ChessSquare from './chessSquare.svelte';
-	import { countEatenPieces } from './eatenPieces';
 
 	interface Props {
 		chess: Chess;
@@ -79,17 +78,21 @@
 		selectedButton = squareId;
 		possibleMoves = sq.possible_moves;
 		startSq = squareId;
+		disableScrolling();
 	};
 
 	const handleDrop = (event: DragEvent) => {
+		event.preventDefault();
 		const targetElement = event.target as HTMLElement;
 		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
 		resetSelection();
+		enableScrolling();
 	};
 
 	const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
 		event.preventDefault();
 		console.log('start handle touch');
+		disableScrolling();
 		handleDragStart(sq);
 	};
 
@@ -122,10 +125,19 @@
 			}
 		}
 		lastKnownTouchPosition = null;
+		enableScrolling();
+	};
+
+	const disableScrolling = () => {
+		document.body.style.overflow = 'hidden';
+	};
+
+	const enableScrolling = () => {
+		document.body.style.overflow = '';
 	};
 </script>
 
-<div class="flex justify-center items-center p-4 overflow-hidden">
+<div class="flex justify-center items-center py-16">
 	<div class="flex flex-col justify-center items-center">
 		<div class="grid grid-cols-8 gap-0">
 			{#each boardToFront as row, i}
