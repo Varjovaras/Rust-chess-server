@@ -3,7 +3,7 @@
 	import { startingPosition } from '$lib/components/chess/startingPosition';
 	import ErrorMessage from '$lib/components/errorMessage.svelte';
 	import ResetButton from '$lib/components/resetButton.svelte';
-	import { chessSchema } from '$lib/types';
+	import { chessSchema, type Square } from '$lib/types';
 	import { type ModalSettings, getModalStore } from '@skeletonlabs/skeleton';
 	import { createWebSocketStore } from '$lib/websocketStore';
 	import { onMount, onDestroy } from 'svelte';
@@ -12,6 +12,11 @@
 	import type { PageData } from './$types';
 	import EatenPiecesList from '$lib/components/chess/EatenPiecesList.svelte';
 	import { countEatenPieces } from '$lib/components/chess/eatenPieces';
+	import {
+		getPromotionPiece,
+		getSquareFromString,
+		isPawnPromotion,
+	} from '$lib/components/chess/utils';
 
 	interface Props {
 		data: PageData;
@@ -99,10 +104,21 @@
 
 	const handleMove = async (startSq: string, endSq: string) => {
 		console.log(`Move from ${startSq} to ${endSq}`);
-		//if startsq piece is white and endsq is promotion, make it promote
+		let promotionPiece = [0, 0];
+		const sq = getSquareFromString(startSq, chess);
+		if (sq) {
+			console.log(sq.rank);
+			console.log(endSq[1]);
+			console.log(typeof sq.piece === 'object' && sq.piece.Pawn !== undefined);
+		}
+
+		if (isPawnPromotion(sq, endSq)) {
+			promotionPiece = getPromotionPiece(sq.rank, endSq[1]);
+		}
+		console.log(promotionPiece);
 		const moveRequest = {
 			list_of_moves: chess.list_of_moves,
-			new_move: [startSq, endSq, [0, 0]],
+			new_move: [startSq, endSq, promotionPiece],
 		};
 		ws.send(JSON.stringify(moveRequest));
 	};

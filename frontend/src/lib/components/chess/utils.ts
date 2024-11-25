@@ -1,4 +1,4 @@
-import type { ChessBoard, Piece, Square } from "../../types";
+import type { Chess, ChessBoard, Piece, Square } from "../../types";
 
 export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 	const boardToFront: ChessBoard = [[]];
@@ -66,4 +66,40 @@ export const nameOfPiece = (piece: Piece): string => {
 	if (piece.King) return "King";
 	if (piece.None) return "None";
 	return "Unknown";
+};
+
+export const getSquareFromString = (
+	square: string,
+	chess: Chess,
+): Square | null => {
+	const sq = chess.board
+		.flat()
+		.find(
+			(sq) =>
+				sq.file === square[0].toUpperCase() &&
+				sq.rank === Number(square[1]) - 1,
+		);
+	return sq || null;
+};
+
+export const isPawnPromotion = (sq: Square | null, endSq: string): boolean => {
+	return (
+		sq?.rank !== undefined &&
+		(endSq[1] === "8" || endSq[1] === "1") &&
+		typeof sq.piece === "object" &&
+		sq.piece.Pawn !== undefined
+	);
+};
+
+export const getPromotionPiece = (
+	rank: number,
+	endRank: string,
+): [number, number] => {
+	if (rank === 6 && endRank === "8") {
+		return [1, 0];
+	}
+	if (rank === 1 && endRank === "1") {
+		return [1, 1];
+	}
+	return [0, 0];
 };
