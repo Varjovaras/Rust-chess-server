@@ -3,27 +3,26 @@
 		handleBoardToFront,
 		isWhiteTurn,
 		legalMove,
-	} from '$lib/components/chess/utils';
+	} from "$lib/components/chess/utils";
 	import type {
 		Chess,
 		PiecesEaten,
 		PossibleMoves,
 		Square as SquareType,
-	} from '../../types';
-	import ChessSquare from './chessSquare.svelte';
+	} from "../../types";
+	import ChessSquare from "./chessSquare.svelte";
 
 	interface Props {
 		chess: Chess;
 		handleMove: (startSq: string, endSq: string) => Promise<void>;
-		piecesEaten: PiecesEaten;
 	}
 
-	const { chess, handleMove, piecesEaten }: Props = $props();
+	const { chess, handleMove }: Props = $props();
 
-	let startSq = '';
+	let startSq = "";
 	let selectedButton: string | null = $state(null);
-	let fromSquare = '';
-	let toSquare = '';
+	let fromSquare = "";
+	let toSquare = "";
 	let possibleMoves: PossibleMoves = $state([]);
 
 	const boardToFront = $derived(handleBoardToFront(chess.board));
@@ -37,11 +36,11 @@
 		const squareId = file + rank;
 
 		if (!fromSquare) {
-			if (sq.piece === 'None' || !legalMove(sq, whiteTurn)) {
+			if (sq.piece === "None" || !legalMove(sq, whiteTurn)) {
 				console.log(
-					sq.piece === 'None'
+					sq.piece === "None"
 						? `No piece on ${squareId}`
-						: 'Wrong players turn',
+						: "Wrong players turn",
 				);
 				resetSelection();
 				return;
@@ -57,15 +56,15 @@
 	};
 
 	const resetSelection = () => {
-		fromSquare = '';
-		toSquare = '';
+		fromSquare = "";
+		toSquare = "";
 		selectedButton = null;
 		possibleMoves = [];
 	};
 
 	const handleDragStart = (sq: SquareType) => {
-		toSquare = '';
-		if (sq.piece === 'None') {
+		toSquare = "";
+		if (sq.piece === "None") {
 			console.log(`No piece on ${sq.file}${sq.rank}`);
 			return;
 		}
@@ -91,7 +90,7 @@
 
 	const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
 		event.preventDefault();
-		console.log('start handle touch');
+		console.log("start handle touch");
 		disableScrolling();
 		handleDragStart(sq);
 	};
@@ -129,15 +128,15 @@
 	};
 
 	const disableScrolling = () => {
-		document.body.style.overflow = 'hidden';
+		document.body.style.overflow = "hidden";
 	};
 
 	const enableScrolling = () => {
-		document.body.style.overflow = '';
+		document.body.style.overflow = "";
 	};
 </script>
 
-<div class="flex justify-center items-center py-16">
+<div class="flex justify-center items-center py-8">
 	<div class="flex flex-col justify-center items-center">
 		<div class="grid grid-cols-8 gap-0">
 			{#each boardToFront as row, i}

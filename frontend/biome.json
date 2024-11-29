@@ -4,7 +4,11 @@
 		"enabled": true
 	},
 	"files": {
-		"ignore": ["node_modules", ".svelte-kit", "/static"]
+		"ignore": [
+			"node_modules",
+			".svelte-kit",
+			"/static"
+		]
 	},
 	"linter": {
 		"enabled": true,
@@ -14,7 +18,9 @@
 	},
 	"overrides": [
 		{
-			"include": ["*.svelte"],
+			"include": [
+				"*.svelte"
+			],
 			"linter": {
 				"rules": {
 					"style": {

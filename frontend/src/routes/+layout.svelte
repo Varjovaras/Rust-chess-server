@@ -1,10 +1,10 @@
 <script lang="ts">
-	import Footer from '$lib/components/footer.svelte';
-	import Header from '$lib/components/header.svelte';
-	import '../app.css';
-	import { Modal, initializeStores } from '@skeletonlabs/skeleton';
+	import Footer from "$lib/components/footer.svelte";
+	import Header from "$lib/components/header.svelte";
+	import "../app.css";
+	import { Modal, initializeStores } from "@skeletonlabs/skeleton";
 	interface Props {
-		children?: import('svelte').Snippet;
+		children?: import("svelte").Snippet;
 	}
 
 	const { children }: Props = $props();
@@ -19,7 +19,7 @@
 
 <Modal />
 
-<div class="min-h-screen flex flex-col pb-16">
+<div class="min-h-screen flex flex-col pb-16 overflow-hidden">
 	<Header />
 
 	<main class="w-full flex-1 overflow-auto">
