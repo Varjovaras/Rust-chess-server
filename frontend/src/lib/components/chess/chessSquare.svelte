@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { createBubbler, preventDefault, passive } from 'svelte/legacy';
+	import { createBubbler } from "svelte/legacy";
 
 	const bubble = createBubbler();
-	import type { Chess, PossibleMoves, Square as SquareType } from '../../types';
-	import Piece from './piece.svelte';
+	import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
+	import Piece from "./piece.svelte";
 
 	interface Props {
 		chess: Chess;
@@ -11,7 +11,7 @@
 		selectedButton: string | null;
 		possibleMoves: PossibleMoves;
 		handleClick: (sq: SquareType) => void;
-		handleDragStart: (sq: SquareType) => void;
+		handleDragStart: (sq: SquareType, event: DragEvent) => void;
 		handleDrop: (event: DragEvent) => void;
 		handleTouchStart: (event: TouchEvent, sq: SquareType) => void;
 		handleTouchMove: (event: TouchEvent) => void;
@@ -40,18 +40,18 @@
 		),
 	);
 	const isKingInCheck = $derived(
-		typeof sq.piece === 'object' &&
+		typeof sq.piece === "object" &&
 			sq.piece.King !== undefined &&
-			((sq.piece.King === 'White' && chess.players[0].in_check) ||
-				(sq.piece.King === 'Black' && chess.players[1].in_check)),
+			((sq.piece.King === "White" && chess.players[0].in_check) ||
+				(sq.piece.King === "Black" && chess.players[1].in_check)),
 	);
 
 	const squareColor = $derived(
-		sq.color === 'White' ? 'bg-gray-200' : 'bg-gray-400',
+		sq.color === "White" ? "bg-gray-200" : "bg-gray-400",
 	);
-	const hoverColor = $derived('hover:bg-gray-600');
+	const hoverColor = $derived("hover:bg-gray-600");
 	const checkColor = $derived(
-		isKingInCheck ? 'bg-red-800 hover:bg-red-900' : '',
+		isKingInCheck ? "bg-red-800 hover:bg-red-900" : "",
 	);
 
 	const squareClass = $derived(`
@@ -60,23 +60,25 @@
     min-w-10 min-h-10
     ${squareColor} ${hoverColor} ${checkColor}
     text-center flex items-center justify-center
-    ${isSelected ? 'selected' : ''}
-    ${isPossibleMove ? 'possible_move' : ''}
+    ${isSelected ? "selected" : ""}
+    ${isPossibleMove ? "possible_move" : ""}
   `);
-	const draggable = $derived(sq.piece !== 'None');
+	const draggable = $derived(sq.piece !== "None");
 </script>
 
 <button
 	class={squareClass}
 	{draggable}
-	ondragstart={() => handleDragStart(sq)}
-	ondragover={preventDefault(bubble('dragover'))}
-	ondrop={preventDefault(handleDrop)}
+	ondragstart={(event) => handleDragStart(sq, event)}
+	ondragover={(event) => {
+		event.preventDefault(); // Add this line
+	}}
+	ondrop={handleDrop}
 	id={`${squareId} ${sq.piece}`}
-	onclick={preventDefault(() => handleClick(sq))}
-	use:passive={['touchstart', () => (event) => handleTouchStart(event, sq)]}
-	ontouchmove={preventDefault(handleTouchMove)}
-	use:passive={['touchend', () => handleTouchEnd]}
+	onclick={() => handleClick(sq)}
+	ontouchstart={(event) => handleTouchStart(event, sq)}
+	ontouchmove={handleTouchMove}
+	ontouchend={handleTouchEnd}
 >
 	<Piece {sq} />
 </button>

@@ -19,13 +19,13 @@
 
 <Modal />
 
-<div class="min-h-screen flex flex-col pb-16 overflow-hidden">
+<div class="min-h-screen flex flex-col">
 	<Header />
 
-	<main class="w-full flex-1 overflow-auto">
+	<main class="w-full flex-1">
 		{@render children?.()}
 	</main>
-	<Footer />
+	<!-- <Footer /> -->
 </div>
 
 <style>
@@ -34,9 +34,5 @@
 		width: 100%;
 		margin: 0;
 		padding: 0;
-	}
-
-	main {
-		padding-bottom: 60px; /* Adjust this value based on the height of your footer */
 	}
 </style>

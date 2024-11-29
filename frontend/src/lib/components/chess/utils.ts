@@ -7,7 +7,7 @@ export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 		for (let j = 7; j >= 0; j--) {
 			arr.push(chessboard[j][i]);
 		}
-		boardToFront.push(arr.reverse());
+		boardToFront.push(arr.toReversed());
 	}
 	return boardToFront;
 };

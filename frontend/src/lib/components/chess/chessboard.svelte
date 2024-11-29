@@ -4,12 +4,7 @@
 		isWhiteTurn,
 		legalMove,
 	} from "$lib/components/chess/utils";
-	import type {
-		Chess,
-		PiecesEaten,
-		PossibleMoves,
-		Square as SquareType,
-	} from "../../types";
+	import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
 	import ChessSquare from "./chessSquare.svelte";
 
 	interface Props {
@@ -62,77 +57,138 @@
 		possibleMoves = [];
 	};
 
-	const handleDragStart = (sq: SquareType) => {
-		toSquare = "";
+	const handleDragStart = (sq: SquareType, event: DragEvent) => {
+		// event.preventDefault();
 		if (sq.piece === "None") {
 			console.log(`No piece on ${sq.file}${sq.rank}`);
+			event.dataTransfer?.clearData(); // Prevent dragging
 			return;
 		}
 		if (!legalMove(sq, whiteTurn)) {
+			event.dataTransfer?.clearData(); // Prevent dragging
 			return;
 		}
 		const file = sq.file.toLowerCase();
 		const rank = sq.rank + 1;
 		const squareId = file + rank;
+
+		if (event.dataTransfer) {
+			event.dataTransfer.setData("text/plain", squareId);
+			event.dataTransfer.effectAllowed = "move";
+		}
+
 		selectedButton = squareId;
 		possibleMoves = sq.possible_moves;
 		startSq = squareId;
-		disableScrolling();
 	};
 
 	const handleDrop = (event: DragEvent) => {
 		event.preventDefault();
+
 		const targetElement = event.target as HTMLElement;
-		handleMove(startSq, targetElement.id[0] + targetElement.id[1]);
+		const endSq = targetElement.id.slice(0, 2);
+
+		if (startSq && endSq && startSq !== endSq) {
+			handleMove(startSq, endSq);
+		}
+
 		resetSelection();
-		enableScrolling();
 	};
 
 	const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
+		// Prevent default to stop scrolling and other native behaviors
 		event.preventDefault();
-		console.log("start handle touch");
-		disableScrolling();
-		handleDragStart(sq);
-	};
 
-	type TouchPosition = {
-		x: number;
-		y: number;
-	};
+		// Ensure we're working with the button element
+		const targetButton = event.currentTarget as HTMLButtonElement;
 
-	let lastKnownTouchPosition: null | TouchPosition = null;
+		if (sq.piece === "None" || !legalMove(sq, whiteTurn)) {
+			console.log(
+				sq.piece === "None"
+					? `No piece on ${sq.file}${sq.rank}`
+					: "Wrong player's turn",
+			);
+			resetSelection();
+			return;
+		}
+
+		const file = sq.file.toLowerCase();
+		const rank = sq.rank + 1;
+		const squareId = file + rank;
+
+		// Store initial touch position
+		const touch = event.touches[0];
+		const startX = touch.clientX;
+		const startY = touch.clientY;
+
+		let moveStarted = false;
+		let touchMoveListener: ((event: TouchEvent) => void) | null = null;
+		let touchEndListener: ((event: TouchEvent) => void) | null = null;
+
+		touchMoveListener = (moveEvent: TouchEvent) => {
+			const currentTouch = moveEvent.touches[0];
+			const deltaX = Math.abs(currentTouch.clientX - startX);
+			const deltaY = Math.abs(currentTouch.clientY - startY);
+
+			// If movement is significant, start drag
+			if (deltaX > 10 || deltaY > 10) {
+				moveStarted = true;
+				fromSquare = squareId;
+				selectedButton = squareId;
+				possibleMoves = sq.possible_moves;
+				startSq = squareId;
+
+				// Remove listeners
+				if (touchMoveListener && touchEndListener) {
+					targetButton.removeEventListener("touchmove", touchMoveListener);
+					targetButton.removeEventListener("touchend", touchEndListener);
+				}
+			}
+		};
+
+		touchEndListener = (endEvent: TouchEvent) => {
+			// Remove listeners
+			if (touchMoveListener && touchEndListener) {
+				targetButton.removeEventListener("touchmove", touchMoveListener);
+				targetButton.removeEventListener("touchend", touchEndListener);
+			}
+
+			// If no move was started, perform click
+			if (!moveStarted) {
+				handleClick(sq);
+			}
+		};
+
+		// Add event listeners
+		targetButton.addEventListener("touchmove", touchMoveListener);
+		targetButton.addEventListener("touchend", touchEndListener);
+	};
 
 	const handleTouchMove = (event: TouchEvent) => {
+		// Prevent default scrolling
 		event.preventDefault();
-		lastKnownTouchPosition = {
-			x: event.touches[0].clientX,
-			y: event.touches[0].clientY,
-		};
 	};
 
 	const handleTouchEnd = async (event: TouchEvent) => {
-		event.preventDefault();
-		if (lastKnownTouchPosition) {
+		if (startSq) {
+			const touch = event.changedTouches[0];
 			const targetElement = document.elementFromPoint(
-				lastKnownTouchPosition.x,
-				lastKnownTouchPosition.y,
+				touch.clientX,
+				touch.clientY,
 			) as HTMLElement;
-			const endSq = targetElement.id[0] + targetElement.id[1];
-			if (endSq !== startSq) {
-				await handleMove(startSq, endSq);
-				resetSelection();
+
+			if (targetElement?.id) {
+				const endSq = targetElement.id.slice(0, 2);
+
+				// Only move if start and end squares are different
+				if (endSq && endSq !== startSq) {
+					await handleMove(startSq, endSq);
+				}
 			}
+
+			// Reset selection
+			resetSelection();
 		}
-		lastKnownTouchPosition = null;
-		enableScrolling();
-	};
-
-	const disableScrolling = () => {
-		document.body.style.overflow = "hidden";
-	};
-
-	const enableScrolling = () => {
-		document.body.style.overflow = "";
 	};
 </script>
 

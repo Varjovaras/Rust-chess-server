@@ -20,9 +20,3 @@
 		© 2024 Kristjan Rajaniemi
 	</div>
 </footer>
-
-<style>
-	footer {
-		height: 60px; /* Adjust this value based on the actual height of your footer */
-	}
-</style>
