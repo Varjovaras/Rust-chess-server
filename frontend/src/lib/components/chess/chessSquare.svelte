@@ -1,7 +1,4 @@
 <script lang="ts">
-	import { createBubbler } from "svelte/legacy";
-
-	const bubble = createBubbler();
 	import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
 	import Piece from "./piece.svelte";
 

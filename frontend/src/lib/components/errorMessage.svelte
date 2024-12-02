@@ -1,11 +1,11 @@
 <script lang="ts">
-    interface Props {
-        errorMessage: string;
-    }
+	interface Props {
+		errorMessage: string;
+	}
 
-    const { errorMessage }: Props = $props();
+	const { errorMessage }: Props = $props();
 </script>
 
-<div>
-    {errorMessage}
+<div class="hidden">
+	{errorMessage}
 </div>

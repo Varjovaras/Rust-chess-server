@@ -125,7 +125,7 @@
 	};
 </script>
 
-<div class="flex flex-col justify-center">
+<div class="flex flex-col items-center justify-center">
 	<ErrorMessage {errorMessage} />
 	<Chessboard {chess} {handleMove} />
 	<ResetButton {handleReset} />

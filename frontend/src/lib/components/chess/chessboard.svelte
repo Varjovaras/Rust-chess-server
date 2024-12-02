@@ -103,67 +103,34 @@
 	};
 
 	const handleTouchStart = (event: TouchEvent, sq: Square) => {
-		// Prevent default to stop scrolling and other native behaviors
 		event.preventDefault();
-
-		// Ensure we're working with the button element
-		const targetButton = event.currentTarget as HTMLButtonElement;
-
-		if (!isPossibleToMovePiece(sq, whiteTurn)) {
-			resetSelection();
-			return;
-		}
+		event.stopPropagation();
 
 		const file = sq.file.toLowerCase();
 		const rank = sq.rank + 1;
 		const squareId = file + rank;
 
-		// Store initial touch position
-		const touch = event.touches[0];
-		const startX = touch.clientX;
-		const startY = touch.clientY;
+		console.log("Touch start:", {
+			piece: sq.piece,
+			whiteTurn,
+			isPossibleToMove: isPossibleToMovePiece(sq, whiteTurn),
+		});
 
-		let moveStarted = false;
-		let touchMoveListener: ((event: TouchEvent) => void) | null = null;
-		let touchEndListener: ((event: TouchEvent) => void) | null = null;
-
-		touchMoveListener = (moveEvent: TouchEvent) => {
-			const currentTouch = moveEvent.touches[0];
-			const deltaX = Math.abs(currentTouch.clientX - startX);
-			const deltaY = Math.abs(currentTouch.clientY - startY);
-
-			// If movement is significant, start drag
-			if (deltaX > 10 || deltaY > 10) {
-				moveStarted = true;
+		// If no piece selected yet
+		if (!fromSquare) {
+			// Only select if it's a valid piece to move
+			if (sq.piece !== "None" && isPossibleToMovePiece(sq, whiteTurn)) {
 				fromSquare = squareId;
 				selectedButton = squareId;
 				possibleMoves = sq.possible_moves;
-				startSq = squareId;
-
-				// Remove listeners
-				if (touchMoveListener && touchEndListener) {
-					targetButton.removeEventListener("touchmove", touchMoveListener);
-					targetButton.removeEventListener("touchend", touchEndListener);
-				}
 			}
-		};
-
-		touchEndListener = (endEvent: TouchEvent) => {
-			// Remove listeners
-			if (touchMoveListener && touchEndListener) {
-				targetButton.removeEventListener("touchmove", touchMoveListener);
-				targetButton.removeEventListener("touchend", touchEndListener);
-			}
-
-			// If no move was started, perform click
-			if (!moveStarted) {
-				handleClick(sq);
-			}
-		};
-
-		// Add event listeners
-		targetButton.addEventListener("touchmove", touchMoveListener);
-		targetButton.addEventListener("touchend", touchEndListener);
+		}
+		// If a piece is already selected
+		else {
+			toSquare = squareId;
+			handleMove(fromSquare, toSquare);
+			resetSelection();
+		}
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
@@ -172,37 +139,9 @@
 	};
 
 	const handleTouchEnd = async (event: TouchEvent) => {
-		if (startSq) {
-			const touch = event.changedTouches[0];
-			const targetElement = document.elementFromPoint(
-				touch.clientX,
-				touch.clientY,
-			) as HTMLElement;
-
-			if (targetElement?.id) {
-				const endSq = targetElement.id.slice(0, 2);
-				if (!endSq || endSq === startSq) {
-					resetSelection();
-					return;
-				}
-
-				const squares = [
-					getSquareFromString(startSq, chess),
-					getSquareFromString(endSq, chess),
-				];
-				if (!squares[0] || !squares[1]) {
-					console.log(
-						`No square found for startSq ${startSq} or endSq ${endSq}`,
-					);
-					resetSelection();
-					return;
-				}
-
-				if (isMoveLegal(squares[0], squares[1])) {
-					await handleMove(startSq, endSq);
-				}
-			}
-
+		// This can be left mostly empty or used for cleanup
+		if (fromSquare && toSquare) {
+			await handleMove(fromSquare, toSquare);
 			resetSelection();
 		}
 	};
