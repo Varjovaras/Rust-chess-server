@@ -108,7 +108,6 @@
 		if (sq && isPawnPromotion(sq, endSq)) {
 			promotionPiece = getPromotionPiece(sq.rank, endSq[1]);
 		}
-		console.log(promotionPiece);
 		const moveRequest = {
 			list_of_moves: chess.list_of_moves,
 			new_move: [startSq, endSq, promotionPiece],

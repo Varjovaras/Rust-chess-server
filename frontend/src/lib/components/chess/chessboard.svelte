@@ -2,9 +2,16 @@
 	import {
 		handleBoardToFront,
 		isWhiteTurn,
-		legalMove,
+		isPossibleToMovePiece,
+		isMoveLegal,
+		getSquareFromString,
 	} from "$lib/components/chess/utils";
-	import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
+	import type {
+		Chess,
+		PossibleMoves,
+		Square,
+		Square as SquareType,
+	} from "../../types";
 	import ChessSquare from "./chessSquare.svelte";
 
 	interface Props {
@@ -31,7 +38,7 @@
 		const squareId = file + rank;
 
 		if (!fromSquare) {
-			if (sq.piece === "None" || !legalMove(sq, whiteTurn)) {
+			if (sq.piece === "None" || !isPossibleToMovePiece(sq, whiteTurn)) {
 				console.log(
 					sq.piece === "None"
 						? `No piece on ${squareId}`
@@ -64,7 +71,7 @@
 			event.dataTransfer?.clearData(); // Prevent dragging
 			return;
 		}
-		if (!legalMove(sq, whiteTurn)) {
+		if (!isPossibleToMovePiece(sq, whiteTurn)) {
 			event.dataTransfer?.clearData(); // Prevent dragging
 			return;
 		}
@@ -95,19 +102,14 @@
 		resetSelection();
 	};
 
-	const handleTouchStart = (event: TouchEvent, sq: SquareType) => {
+	const handleTouchStart = (event: TouchEvent, sq: Square) => {
 		// Prevent default to stop scrolling and other native behaviors
 		event.preventDefault();
 
 		// Ensure we're working with the button element
 		const targetButton = event.currentTarget as HTMLButtonElement;
 
-		if (sq.piece === "None" || !legalMove(sq, whiteTurn)) {
-			console.log(
-				sq.piece === "None"
-					? `No piece on ${sq.file}${sq.rank}`
-					: "Wrong player's turn",
-			);
+		if (!isPossibleToMovePiece(sq, whiteTurn)) {
 			resetSelection();
 			return;
 		}
@@ -179,14 +181,28 @@
 
 			if (targetElement?.id) {
 				const endSq = targetElement.id.slice(0, 2);
+				if (!endSq || endSq === startSq) {
+					resetSelection();
+					return;
+				}
 
-				// Only move if start and end squares are different
-				if (endSq && endSq !== startSq) {
+				const squares = [
+					getSquareFromString(startSq, chess),
+					getSquareFromString(endSq, chess),
+				];
+				if (!squares[0] || !squares[1]) {
+					console.log(
+						`No square found for startSq ${startSq} or endSq ${endSq}`,
+					);
+					resetSelection();
+					return;
+				}
+
+				if (isMoveLegal(squares[0], squares[1])) {
 					await handleMove(startSq, endSq);
 				}
 			}
 
-			// Reset selection
 			resetSelection();
 		}
 	};

@@ -15,9 +15,62 @@ export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 export const isWhiteTurn = (turnNumber: number): boolean => {
 	return turnNumber % 2 === 0;
 };
-export const legalMove = (sq: Square, whiteTurn: boolean): boolean => {
+
+export const isMoveLegal = (startSq: Square, endSq: Square) => {
+	const endSqFileCoordinate = endFileAsCoordinate(endSq.file);
+	if (!endSqFileCoordinate) return false;
+	const endSqCoordinates: [number, number] = [
+		endSqFileCoordinate,
+		endSq.rank - 1,
+	];
+
+	const moveExists = startSq.possible_moves.some(
+		(move) => move[1] === endSqCoordinates,
+	);
+
+	return moveExists;
+};
+
+export const isPossibleToMovePiece = (
+	startSq: Square,
+	whiteTurn: boolean,
+): boolean => {
 	const color = whiteTurn ? "White" : "Black";
-	return sq.piece && Object.values(sq.piece).includes(color);
+	if (!startSq.piece || startSq.piece === "None") {
+		console.log("No piece on square");
+		return false;
+	}
+	if (!Object.values(startSq.piece).includes(color)) {
+		console.log(
+			`Piece on square ${startSq.file}${startSq.rank} is not color ${color}`,
+		);
+		return false;
+	}
+
+	return true;
+};
+
+const endFileAsCoordinate = (endSqFile: string): number | null => {
+	switch (endSqFile.toLowerCase()) {
+		case "a":
+			return 0;
+		case "b":
+			return 1;
+		case "c":
+			return 2;
+		case "d":
+			return 3;
+		case "e":
+			return 4;
+		case "f":
+			return 5;
+		case "g":
+			return 6;
+		case "h":
+			return 7;
+		default:
+			return null;
+	}
 };
 
 export const returnCorrectPieceColor = (piece: Piece | "None") => {
