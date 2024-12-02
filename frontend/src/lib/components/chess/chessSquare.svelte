@@ -73,7 +73,12 @@
 	ondrop={handleDrop}
 	id={`${squareId} ${sq.piece}`}
 	onclick={() => handleClick(sq)}
-	ontouchstart={(event) => handleTouchStart(event, sq)}
+	ontouchstart={(event) => {
+		event.preventDefault();
+		event.stopPropagation();
+
+		handleTouchStart(event, sq);
+	}}
 	ontouchmove={handleTouchMove}
 	ontouchend={handleTouchEnd}
 >

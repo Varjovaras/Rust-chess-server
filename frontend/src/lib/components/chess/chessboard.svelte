@@ -103,9 +103,6 @@
 	};
 
 	const handleTouchStart = (event: TouchEvent, sq: Square) => {
-		event.preventDefault();
-		event.stopPropagation();
-
 		const file = sq.file.toLowerCase();
 		const rank = sq.rank + 1;
 		const squareId = file + rank;
@@ -114,9 +111,10 @@
 			piece: sq.piece,
 			whiteTurn,
 			isPossibleToMove: isPossibleToMovePiece(sq, whiteTurn),
+			fromSquare,
 		});
 
-		// If no piece selected yet
+		// If no piece is currently selected
 		if (!fromSquare) {
 			// Only select if it's a valid piece to move
 			if (sq.piece !== "None" && isPossibleToMovePiece(sq, whiteTurn)) {
@@ -127,9 +125,16 @@
 		}
 		// If a piece is already selected
 		else {
-			toSquare = squareId;
-			handleMove(fromSquare, toSquare);
-			resetSelection();
+			// If clicking on the same square, deselect
+			if (fromSquare === squareId) {
+				resetSelection();
+			}
+			// If clicking on a different square, attempt to move
+			else {
+				toSquare = squareId;
+				handleMove(fromSquare, toSquare);
+				resetSelection();
+			}
 		}
 	};
 
@@ -139,15 +144,15 @@
 	};
 
 	const handleTouchEnd = async (event: TouchEvent) => {
-		// This can be left mostly empty or used for cleanup
-		if (fromSquare && toSquare) {
-			await handleMove(fromSquare, toSquare);
-			resetSelection();
-		}
+		// // This can be left mostly empty or used for cleanup
+		// if (fromSquare && toSquare) {
+		// 	await handleMove(fromSquare, toSquare);
+		// 	resetSelection();
+		// }
 	};
 </script>
 
-<div class="flex justify-center items-center py-8">
+<div class="flex justify-center items-center py-8 chess-board">
 	<div class="flex flex-col justify-center items-center">
 		<div class="grid grid-cols-8 gap-0">
 			{#each boardToFront as row, i}
@@ -169,3 +174,9 @@
 		</div>
 	</div>
 </div>
+
+<style>
+	.chess-board {
+		touch-action: none;
+	}
+</style>
