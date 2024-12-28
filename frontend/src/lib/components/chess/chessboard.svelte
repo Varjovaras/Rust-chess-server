@@ -52,6 +52,14 @@ const handleClick = async (sq: SquareType) => {
 			console.log(
 				sq.piece === "None" ? `No piece on ${squareId}` : "Wrong players turn",
 			);
+			// Add invalid move animation
+			const element = document.getElementById(squareId);
+			if (element) {
+				element.classList.add("invalid-move");
+				setTimeout(() => {
+					element.classList.remove("invalid-move");
+				}, 300);
+			}
 			resetSelection();
 			return;
 		}

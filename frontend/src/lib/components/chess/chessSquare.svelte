@@ -110,7 +110,7 @@ const isDestination = $derived($animationStore.toSquare === squareId);
      }
 
      .piece-destination {
-         z-index: 20;
+         z-index: 500;
      }
 
      /* Add these new classes */

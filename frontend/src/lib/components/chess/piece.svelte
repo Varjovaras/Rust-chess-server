@@ -62,27 +62,29 @@ const handleDragEnd = () => {
 </div>
 
 <style>
-  .piece-moving {
-    will-change: transform;
-    transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  }
+    .piece-moving {
+       will-change: transform;
+       transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
+                   opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+     }
 
-  .piece-image {
-    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: auto;
-    user-select: none;
-    transform-origin: center;
-  }
 
-  .dragging {
-    opacity: 0.5;
-    transform: scale(1.1);
-    transition: all 150ms ease-out;
-  }
+     .piece-image {
+       transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+       pointer-events: auto;
+       user-select: none;
+       transform-origin: center;
+     }
 
-  .can-drag:hover {
-    transform: scale(1.05);
-    transition: transform 150ms ease-out;
-  }
+
+     .dragging {
+       opacity: 0.8; /* Increase from 0.5 to 0.8 */
+       transform: scale(1.1);
+       transition: all 150ms ease-out;
+     }
+
+     .can-drag:hover {
+       transform: scale(1.05);
+       transition: transform 150ms ease-out;
+     }
 </style>
