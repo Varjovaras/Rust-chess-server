@@ -1,4 +1,5 @@
 <script lang="ts">
+import { animationStore } from "$lib/stores/animationStore";
 import type { Chess, PossibleMoves, Square as SquareType } from "../../types";
 import Piece from "./piece.svelte";
 
@@ -60,10 +61,20 @@ const squareClass = $derived(`
     ${isPossibleMove ? "possible_move" : ""}
   `);
 const draggable = $derived(sq.piece !== "None");
+
+const isAnimating = $derived(
+	$animationStore.isAnimating &&
+		($animationStore.fromSquare === squareId ||
+			$animationStore.toSquare === squareId),
+);
+const isSource = $derived($animationStore.fromSquare === squareId);
+const isDestination = $derived($animationStore.toSquare === squareId);
 </script>
 
 <button
-	class={squareClass}
+	class={`${squareClass}     ${isAnimating ? 'piece-animating' : ''}
+    ${isSource ? 'piece-source' : ''}
+    ${isDestination ? 'piece-destination' : ''}`}
 	{draggable}
 	ondragstart={(event) => handleDragStart(sq, event)}
 	ondragover={(event) => {
@@ -81,13 +92,35 @@ const draggable = $derived(sq.piece !== "None");
 	ontouchmove={handleTouchMove}
 	ontouchend={handleTouchEnd}
 >
-	<Piece {sq} />
+	<Piece {sq}
+	isAnimating={isAnimating}
+    isSource={isSource}
+    isDestination={isDestination}
+	/>
 </button>
 
 <style>
-    .piece {
-        will-change: transform;
-    }
+    .piece-animating {
+         position: relative;
+         z-index: 50;
+     }
+
+     .piece-source :global(.piece-image) {
+         opacity: 0.3;
+     }
+
+     .piece-destination {
+         z-index: 20;
+     }
+
+     /* Add these new classes */
+     .dragging {
+         cursor: grabbing;
+     }
+
+     .can-drag {
+         cursor: grab;
+     }
 	.selected {
 		@apply bg-cyan-800;
 	}

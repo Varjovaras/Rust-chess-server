@@ -12,6 +12,7 @@ import {
 import ErrorMessage from "$lib/components/errorMessage.svelte";
 import ResetButton from "$lib/components/resetButton.svelte";
 import WebsocketInfo from "$lib/components/websocketInfo.svelte";
+import { animationStore } from "$lib/stores/animationStore";
 import { type Square, chessSchema } from "$lib/types";
 import { createWebSocketStore } from "$lib/websocketStore";
 import { type ModalSettings, getModalStore } from "@skeletonlabs/skeleton";
@@ -104,17 +105,28 @@ const errorMessage = "";
 
 const handleMove = async (startSq: string, endSq: string) => {
 	console.log(`Move from ${startSq} to ${endSq}`);
-	let promotionPiece = [0, 0];
 	const sq = getSquareFromString(startSq, chess);
+	if (!sq) return;
 
-	if (sq && isPawnPromotion(sq, endSq)) {
+	// Start animation
+	animationStore.startAnimation(startSq, endSq, sq.piece.toString());
+
+	let promotionPiece = [0, 0];
+	if (isPawnPromotion(sq, endSq)) {
 		promotionPiece = getPromotionPiece(sq.rank, endSq[1]);
 	}
+
 	const moveRequest = {
 		list_of_moves: chess.list_of_moves,
 		new_move: [startSq, endSq, promotionPiece],
 	};
+
+	// Send the move immediately but wait for animation
 	ws.send(JSON.stringify(moveRequest));
+	await new Promise((resolve) => setTimeout(resolve, 200));
+
+	// End animation
+	animationStore.endAnimation();
 };
 
 const handleReset = () => {
