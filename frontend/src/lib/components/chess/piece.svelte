@@ -1,15 +1,15 @@
 <script lang="ts">
-	import { returnCorrectPieceColor } from '$lib/components/chess/utils';
-	import type { Square } from '$lib/types';
+import { returnCorrectPieceColor } from "$lib/components/chess/utils";
+import type { Square } from "$lib/types";
 
-	interface Props {
-		// import { slide } from 'svelte/transition';
-		sq: Square;
-	}
+interface Props {
+	// import { slide } from 'svelte/transition';
+	sq: Square;
+}
 
-	const { sq }: Props = $props();
+const { sq }: Props = $props();
 
-	const pieceSize = $derived(`
+const pieceSize = $derived(`
     w-[5vw] h-[5vw]
     sm:w-[10vw] sm:h-[10vw]
     min-w-6 min-h-6
@@ -18,7 +18,7 @@
   `);
 </script>
 
-<div class="w-full h-full flex items-center justify-center">
+<div class="w-full h-full flex items-center justify-center content-end">
 	{#if sq.piece === 'None'}
 		<div
 			id={`${sq.file.toLowerCase()}${sq.rank + 1} no piece`}
