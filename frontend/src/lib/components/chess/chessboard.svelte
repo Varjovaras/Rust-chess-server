@@ -1,10 +1,10 @@
 <script lang="ts">
 	import {
-		handleBoardToFront,
-		isWhiteTurn,
-		isPossibleToMovePiece,
-		isMoveLegal,
 		getSquareFromString,
+		handleBoardToFront,
+		isMoveLegal,
+		isPossibleToMovePiece,
+		isWhiteTurn,
 	} from "$lib/components/chess/utils";
 	import type {
 		Chess,
@@ -68,11 +68,11 @@
 		// event.preventDefault();
 		if (sq.piece === "None") {
 			console.log(`No piece on ${sq.file}${sq.rank}`);
-			event.dataTransfer?.clearData(); // Prevent dragging
+			event.dataTransfer?.clearData();
 			return;
 		}
 		if (!isPossibleToMovePiece(sq, whiteTurn)) {
-			event.dataTransfer?.clearData(); // Prevent dragging
+			event.dataTransfer?.clearData();
 			return;
 		}
 		const file = sq.file.toLowerCase();
