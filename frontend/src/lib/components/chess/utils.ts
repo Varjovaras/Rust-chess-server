@@ -1,4 +1,10 @@
-import type { Chess, ChessBoard, Piece, Square } from "../../types";
+import type {
+	Chess,
+	ChessBoard,
+	Piece,
+	PossibleMoves,
+	Square,
+} from "../../types";
 
 export const handleBoardToFront = (chessboard: ChessBoard): ChessBoard => {
 	const boardToFront: ChessBoard = [[]];
@@ -155,4 +161,19 @@ export const getPromotionPiece = (
 		return [1, 1];
 	}
 	return [0, 0];
+};
+
+export const isInPossibleMoves = (
+	fromSq: Square,
+	toSq: Square,
+	possibleMoves: PossibleMoves,
+): boolean => {
+	const toCoord: [number, number] = [
+		toSq.file.charCodeAt(0) - 65, // Convert 'A'-'H' to 0-7
+		toSq.rank,
+	];
+
+	return possibleMoves.some(
+		(move) => move[1][0] === toCoord[0] && move[1][1] === toCoord[1],
+	);
 };

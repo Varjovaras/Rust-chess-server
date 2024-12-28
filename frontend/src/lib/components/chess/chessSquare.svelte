@@ -127,11 +127,11 @@ const isDestination = $derived($animationStore.toSquare === squareId);
      }
      .selected {
          @apply bg-cyan-800;
-         transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+         transition: background-color 100ms cubic-bezier(0.4, 0, 0.2, 1);
      }
 
      .possible_move {
          @apply bg-cyan-900;
-         transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+         transition: background-color 100ms cubic-bezier(0.4, 0, 0.2, 1);
      }
 </style>

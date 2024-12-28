@@ -7,6 +7,7 @@ import { startingPosition } from "$lib/components/chess/startingPosition";
 import {
 	getPromotionPiece,
 	getSquareFromString,
+	isInPossibleMoves,
 	isPawnPromotion,
 } from "$lib/components/chess/utils";
 import ErrorMessage from "$lib/components/errorMessage.svelte";
@@ -104,32 +105,45 @@ const blackModal: ModalSettings = {
 const errorMessage = "";
 
 const handleMove = async (startSq: string, endSq: string) => {
-	console.log(`Move from ${startSq} to ${endSq}`);
-	const sq = getSquareFromString(startSq, chess);
-	if (!sq) return;
+	const fromSquare = getSquareFromString(startSq, chess);
+	const toSquare = getSquareFromString(endSq, chess);
 
-	// Start animation
-	animationStore.startAnimation(startSq, endSq, sq.piece.toString());
+	if (!fromSquare || !toSquare) return;
 
-	let promotionPiece = [0, 0];
-	if (isPawnPromotion(sq, endSq)) {
-		promotionPiece = getPromotionPiece(sq.rank, endSq[1]);
+	// Start animation immediately if the move is in possible moves
+	if (isInPossibleMoves(fromSquare, toSquare, fromSquare.possible_moves)) {
+		animationStore.startAnimation(startSq, endSq, fromSquare.piece.toString());
+
+		let promotionPiece = [0, 0];
+		if (isPawnPromotion(fromSquare, endSq)) {
+			promotionPiece = getPromotionPiece(fromSquare.rank, endSq[1]);
+		}
+
+		const moveRequest = {
+			list_of_moves: chess.list_of_moves,
+			new_move: [startSq, endSq, promotionPiece],
+		};
+
+		// Send the move request to backend
+		ws.send(JSON.stringify(moveRequest));
+
+		// Wait for animation to complete
+		await new Promise((resolve) => setTimeout(resolve, 100));
+
+		// End animation
+		animationStore.endAnimation();
+	} else {
+		// Add invalid move animation
+		const element = document.getElementById(startSq);
+		if (element) {
+			element.classList.add("invalid-move");
+			setTimeout(() => {
+				element.classList.remove("invalid-move");
+			}, 100);
+		}
 	}
-
-	const moveRequest = {
-		list_of_moves: chess.list_of_moves,
-		new_move: [startSq, endSq, promotionPiece],
-	};
-
-	// Send the move request
-	ws.send(JSON.stringify(moveRequest));
-
-	// Wait for animation to complete
-	await new Promise((resolve) => setTimeout(resolve, 300));
-
-	// End animation
-	animationStore.endAnimation();
 };
+
 const handleReset = () => {
 	console.log("Resetting game");
 	chess = startingPosition;
