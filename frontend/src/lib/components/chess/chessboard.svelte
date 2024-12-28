@@ -152,7 +152,7 @@
 	};
 </script>
 
-<div class="flex justify-center items-center py-8 chess-board">
+<div class="flex justify-center items-center py-8 touch-none">
 	<div class="flex flex-col justify-center items-center">
 		<div class="grid grid-cols-8 gap-0">
 			{#each boardToFront as row, i}
@@ -174,9 +174,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-	.chess-board {
-		touch-action: none;
-	}
-</style>
