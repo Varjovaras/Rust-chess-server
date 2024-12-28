@@ -25,7 +25,7 @@ html {
 
 .piece-dragging {
 	opacity: 0.8;
-	transition: opacity 150ms ease-in-out;
+	transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes appear {
@@ -42,7 +42,7 @@ html {
 /* Add a hover effect for pieces */
 [draggable="true"]:hover {
 	transform: scale(1.05);
-	transition: transform 150ms ease-in-out;
+	transition: transform 200ms ease-in-out;
 }
 
 @keyframes invalidMove {
@@ -60,4 +60,8 @@ html {
 
 .invalid-move {
 	animation: invalidMove 0.3s ease-in-out;
+}
+
+.square {
+	transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }

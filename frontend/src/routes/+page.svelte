@@ -121,14 +121,15 @@ const handleMove = async (startSq: string, endSq: string) => {
 		new_move: [startSq, endSq, promotionPiece],
 	};
 
-	// Send the move immediately but wait for animation
+	// Send the move request
 	ws.send(JSON.stringify(moveRequest));
-	await new Promise((resolve) => setTimeout(resolve, 200));
+
+	// Wait for animation to complete
+	await new Promise((resolve) => setTimeout(resolve, 300));
 
 	// End animation
 	animationStore.endAnimation();
 };
-
 const handleReset = () => {
 	console.log("Resetting game");
 	chess = startingPosition;

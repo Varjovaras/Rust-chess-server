@@ -72,9 +72,13 @@ const isDestination = $derived($animationStore.toSquare === squareId);
 </script>
 
 <button
-	class={`${squareClass}     ${isAnimating ? 'piece-animating' : ''}
-    ${isSource ? 'piece-source' : ''}
-    ${isDestination ? 'piece-destination' : ''}`}
+    class={`
+         square
+         ${squareClass}
+         ${isAnimating ? 'piece-animating' : ''}
+         ${isSource ? 'piece-source' : ''}
+         ${isDestination ? 'piece-destination' : ''}
+     `}
 	{draggable}
 	ondragstart={(event) => handleDragStart(sq, event)}
 	ondragover={(event) => {
@@ -121,10 +125,13 @@ const isDestination = $derived($animationStore.toSquare === squareId);
      .can-drag {
          cursor: grab;
      }
-	.selected {
-		@apply bg-cyan-800;
-	}
-	.possible_move {
-		@apply bg-cyan-900;
-	}
+     .selected {
+         @apply bg-cyan-800;
+         transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+     }
+
+     .possible_move {
+         @apply bg-cyan-900;
+         transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
+     }
 </style>

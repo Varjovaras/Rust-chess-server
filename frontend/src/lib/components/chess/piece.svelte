@@ -38,53 +38,78 @@ const handleDragStart = (event: DragEvent) => {
 const handleDragEnd = () => {
 	isDragging = false;
 };
+
+let animationClass = $state("");
+
+$effect(() => {
+	if (isAnimating) {
+		animationClass = isSource ? "source-animating" : "destination-animating";
+	} else {
+		animationClass = "";
+	}
+});
 </script>
 
 <div class="w-full h-full flex items-center justify-center content-end">
-  {#if sq.piece !== 'None'}
+{#if sq.piece !== 'None'}
     <img
-      class={`
-        piece-image
-        object-contain ${pieceSize}
-        transition-all duration-300
-        ${isAnimating ? 'piece-moving' : ''}
-        ${isDragging ? 'piece-dragging' : 'can-drag'}
-        hover:scale-105
-      `}
-      src={returnCorrectPieceColor(sq.piece)}
-      alt={`${sq.piece} piece`}
-      draggable="true"
-      ondragstart={handleDragStart}
-      ondragend={handleDragEnd}
-      style="object-fit: contain; width: 100%; height: 100%;"
+        class={`
+            piece-image
+            object-contain ${pieceSize}
+            transition-all
+            ${animationClass}
+            ${isDragging ? 'piece-dragging' : 'can-drag'}
+            hover:scale-105
+        `}
+        src={returnCorrectPieceColor(sq.piece)}
+        alt={`${sq.piece} piece`}
+        draggable="true"
+        ondragstart={handleDragStart}
+        ondragend={handleDragEnd}
+        style="object-fit: contain; width: 100%; height: 100%;"
     />
-  {/if}
+{/if}
 </div>
 
 <style>
-    .piece-moving {
-       will-change: transform;
-       transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1),
-                   opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
-     }
+.piece-image {
+    will-change: transform, opacity;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+}
 
+.source-animating {
+    transform: scale(0.9);
+    opacity: 0.7;
+}
 
-     .piece-image {
-       transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
-       pointer-events: auto;
-       user-select: none;
-       transform-origin: center;
-     }
+.destination-animating {
+    animation: slideIn 300ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
 
+.piece-dragging {
+    opacity: 0.8;
+    transform: scale(1.1);
+    cursor: grabbing;
+}
 
-     .dragging {
-       opacity: 0.8; /* Increase from 0.5 to 0.8 */
-       transform: scale(1.1);
-       transition: all 150ms ease-out;
-     }
+.can-drag {
+    cursor: grab;
+}
 
-     .can-drag:hover {
-       transform: scale(1.05);
-       transition: transform 150ms ease-out;
-     }
+.can-drag:hover {
+    transform: scale(1.05);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
 </style>
