@@ -6,9 +6,7 @@ import { startingPosition } from "$lib/components/chess/startingPosition";
 export const load: PageLoad = async ({ fetch }) => {
     const isDevMode = import.meta.env.DEV;
     // Provide default values to ensure apiUrl is never undefined
-    const apiUrl = isDevMode
-        ? env.PUBLIC_DEV_URL || "http://localhost:8000"
-        : env.PUBLIC_PROD_URL || "";
+    const apiUrl = isDevMode ? env.PUBLIC_DEV_URL : env.PUBLIC_PROD_URL;
 
     try {
         const response = await fetch(apiUrl);
