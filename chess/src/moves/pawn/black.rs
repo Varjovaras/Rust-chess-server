@@ -76,13 +76,16 @@ pub fn latest_move_enables_black_en_passant(
     start_sq: &Square,
     end_sq: &Square,
 ) -> bool {
-    chess.clone().latest_move.map_or(false, |latest_move| {
-        latest_move.0.rank == Rank::Second
-            && latest_move.1.rank == Rank::Fourth
-            && latest_move.0.piece == Piece::Pawn(PieceColor::White)
-            && latest_move.1.file == end_sq.file
-            && latest_move.1.rank as usize == start_sq.rank as usize
-    })
+    chess.clone().latest_move.map_or_else(
+        || false,
+        |latest_move| {
+            latest_move.0.rank == Rank::Second
+                && latest_move.1.rank == Rank::Fourth
+                && latest_move.0.piece == Piece::Pawn(PieceColor::White)
+                && latest_move.1.file == end_sq.file
+                && latest_move.1.rank as usize == start_sq.rank as usize
+        },
+    )
 }
 
 #[cfg(test)]

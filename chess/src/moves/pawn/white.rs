@@ -81,7 +81,7 @@ pub fn latest_move_enables_white_en_passant(
     start_sq: &Square,
     end_sq: &Square,
 ) -> bool {
-    chess.clone().latest_move.map_or(false, |latest_move| {
+    chess.clone().latest_move.is_some_and(|latest_move| {
         latest_move.0.rank == Rank::Seventh
             && latest_move.1.rank == Rank::Fifth
             && latest_move.0.piece == Piece::Pawn(latest_move.2)
