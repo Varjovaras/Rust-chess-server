@@ -7,61 +7,194 @@
 } */
 
 html {
-	-webkit-tap-highlight-color: rgba(128, 128, 128, 0.5);
+    -webkit-tap-highlight-color: rgba(128, 128, 128, 0.5);
 }
 
 .piece-source .piece-image {
-	opacity: 0.7;
-	transition: opacity 100ms ease-in-out;
+    opacity: 0.7;
+    transition: opacity 100ms ease-in-out;
 }
 
 .piece-destination .piece-image {
-	animation: appear 100ms ease-in-out forwards;
+    animation: appear 100ms ease-in-out forwards;
 }
 
 .piece-moving {
-	transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .piece-dragging {
-	opacity: 0.8;
-	transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.8;
+    transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @keyframes appear {
-	from {
-		opacity: 0;
-		transform: scale(0.8);
-	}
-	to {
-		opacity: 1;
-		transform: scale(1);
-	}
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Add a hover effect for pieces */
 [draggable="true"]:hover {
-	transform: scale(1.05);
-	transition: transform 100ms ease-in-out;
+    transform: scale(1.05);
+    transition: transform 100ms ease-in-out;
 }
 
 @keyframes invalidMove {
-	0%,
-	100% {
-		transform: translateX(0);
-	}
-	25% {
-		transform: translateX(-2px);
-	}
-	75% {
-		transform: translateX(2px);
-	}
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    75% {
+        transform: translateX(2px);
+    }
 }
 
 .invalid-move {
-	animation: invalidMove 0.3s ease-in-out;
+    animation: invalidMove 0.3s ease-in-out;
 }
 
+.possible-move::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background-color: rgba(0, 128, 255, 0.3);
+    pointer-events: none;
+}
+
+.piece-source .piece-image {
+    opacity: 0.5;
+    transition: opacity 250ms ease-out;
+}
+
+.piece-destination .piece-image {
+    animation: appear 250ms cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.piece-moving {
+    transition: transform 250ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: 50;
+    pointer-events: none;
+}
+
+.piece-dragging {
+    opacity: 0.8;
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    transition: all 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Better hover effects */
+[draggable="true"]:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+    transition: all 150ms ease-in-out;
+}
+
+/* Enhanced invalid move animation */
+@keyframes invalidMove {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    20%,
+    60% {
+        transform: translateX(-3px);
+    }
+    40%,
+    80% {
+        transform: translateX(3px);
+    }
+}
+
+.invalid-move {
+    animation: invalidMove 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* Enhanced square hover and selection */
 .square {
-	transition: background-color 100ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 150ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    will-change: background-color, transform;
+}
+
+.square:hover:not(.selected) {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+
+.selected {
+    background-color: rgba(0, 128, 255, 0.6) !important;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.possible-move {
+    position: relative;
+    cursor: pointer;
+}
+
+.possible-move::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35%;
+    height: 35%;
+    border-radius: 50%;
+    background-color: rgba(0, 128, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 128, 255, 0.4);
+    pointer-events: none;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.9;
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+}
+
+/* Touch-specific enhancements */
+@media (pointer: coarse) {
+    .square {
+        transition: background-color 250ms ease;
+    }
+
+    .square:active {
+        background-color: rgba(0, 128, 255, 0.3);
+    }
+
+    .possible-move::after {
+        width: 40%;
+        height: 40%;
+    }
 }
