@@ -264,9 +264,6 @@
     const handleTouchMove = (event: TouchEvent) => {
         // Prevent scrolling during drag
         event.preventDefault();
-
-        // Optional: You could implement a visual piece follow the finger
-        // by tracking touch position changes and updating a floating element
     };
 
     const handleTouchEnd = async (event: TouchEvent) => {
@@ -336,6 +333,7 @@
         selectedButton = null;
         possibleMoves = [];
     };
+
     const handleDragStart = (sq: Square, event: DragEvent) => {
         // Don't prevent default here - we want the default drag behavior
 
@@ -398,9 +396,11 @@
     };
 </script>
 
-<div class="flex justify-center items-center py-8 touch-none">
+<div class="flex justify-center items-center py-4 sm:py-6 md:py-8 touch-none">
     <div class="flex flex-col justify-center items-center">
-        <div class="grid grid-cols-8 gap-0">
+        <div
+            class="grid grid-cols-8 gap-0 max-w-[90vw] sm:max-w-[80vw] md:max-w-[65vw] lg:max-w-[50vw]"
+        >
             {#each boardToFront as row, i}
                 {#each row as sq, j}
                     <ChessSquare

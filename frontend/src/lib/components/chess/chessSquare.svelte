@@ -57,15 +57,17 @@
         isKingInCheck ? "bg-red-800 hover:bg-red-900" : "",
     );
 
+    // Updated square sizing for better mobile display
     const squareClass = $derived(`
-		w-[6vw] h-[6vw]
-    max-w-16 max-h-16
-    min-w-10 min-h-10
-    transition-all duration-100 ease-in-out
-    ${squareColor} ${hoverColor} ${checkColor}
-    text-center flex items-center justify-center piece
-    ${isSelected ? "selected" : ""}
-    ${isPossibleMove ? "possible_move" : ""}
+		w-[10vw] h-[10vw]
+        sm:w-[8vw] sm:h-[8vw]
+        md:w-[6vw] md:h-[6vw]
+        min-w-10 min-h-10
+        transition-all duration-100 ease-in-out
+        ${squareColor} ${hoverColor} ${checkColor}
+        text-center flex items-center justify-center piece
+        ${isSelected ? "selected" : ""}
+        ${isPossibleMove ? "possible_move" : ""}
   `);
     const draggable = $derived(sq.piece !== "None");
 

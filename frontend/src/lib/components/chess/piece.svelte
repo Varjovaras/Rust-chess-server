@@ -12,11 +12,11 @@
 
     const { sq, isAnimating = false, isSource = false }: Props = $props();
 
+    // Updated sizing to be more responsive, especially for mobile
     const pieceSize = $derived(`
-        w-[5vw] h-[5vw]
-        sm:w-[10vw] sm:h-[10vw]
-        min-w-6 min-h-6
-        max-w-16 max-h-16
+        w-[80%] h-[80%]
+        sm:w-[80%] sm:h-[80%]
+        md:w-[75%] md:h-[75%]
         aspect-square
     `);
 
