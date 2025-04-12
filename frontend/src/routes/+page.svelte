@@ -19,6 +19,7 @@
     import { type ModalSettings, getModalStore } from "@skeletonlabs/skeleton";
     import { onDestroy, onMount } from "svelte";
     import type { PageData } from "./$types";
+    import WelcomeNotification from "$lib/components/WelcomeNotification.svelte";
 
     interface Props {
         data: PageData;
@@ -178,6 +179,8 @@
     <ErrorMessage {errorMessage} />
     <Chessboard {chess} {handleMove} />
     <ResetButton {handleReset} />
+    <WelcomeNotification />
+
     <!-- <EatenPiecesList color="white" pieces={piecesEatenCount.white} />
 	<EatenPiecesList color="black" pieces={piecesEatenCount.black} /> -->
     {#if isDevMode}
