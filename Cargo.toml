@@ -1,6 +1,6 @@
 [workspace]
 resolver = "2"
-members = ["chess", "backend"]
+members = ["chess", "backend", "frontend_rewrite"]
 
 
 [profile.dev]
