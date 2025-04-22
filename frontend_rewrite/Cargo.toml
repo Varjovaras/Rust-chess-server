@@ -6,3 +6,4 @@ edition = "2024"
 [dependencies]
 leptos = { version = "0.7.8", features = ["csr"] }
 chess = { path = "../chess" }
+console_error_panic_hook = "0.1.7"

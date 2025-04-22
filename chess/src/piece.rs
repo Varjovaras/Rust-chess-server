@@ -74,6 +74,25 @@ impl Piece {
     pub const fn is_pawn(self) -> bool {
         matches!(self, Self::Pawn(_))
     }
+
+    #[must_use]
+    pub const fn symbol(&self) -> &'static str {
+        match self {
+            Self::Pawn(PieceColor::White) => "♙",
+            Self::Knight(PieceColor::White) => "♘",
+            Self::Bishop(PieceColor::White) => "♗",
+            Self::Rook(PieceColor::White) => "♖",
+            Self::Queen(PieceColor::White) => "♕",
+            Self::King(PieceColor::White) => "♔",
+            Self::Pawn(PieceColor::Black) => "♟",
+            Self::Knight(PieceColor::Black) => "♞",
+            Self::Bishop(PieceColor::Black) => "♝",
+            Self::Rook(PieceColor::Black) => "♜",
+            Self::Queen(PieceColor::Black) => "♛",
+            Self::King(PieceColor::Black) => "♚",
+            _ => "",
+        }
+    }
 }
 
 impl From<Option<&str>> for Piece {
