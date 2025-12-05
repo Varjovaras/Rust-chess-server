@@ -65,7 +65,7 @@ fn move_down_right(start_sq: &Square, end_sq: &Square, chess: &Chess) -> bool {
 #[cfg(test)]
 mod tests {
     //
-    //  THESE TESTS NEED FIXING
+    // TODO THESE TESTS NEED FIXING
     //
     // use crate::piece::{Piece, PieceColor};
 
