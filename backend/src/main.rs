@@ -12,33 +12,17 @@ use chess::{
     chessboard::{file::File, rank::Rank},
     Chess,
 };
-use chrono::{DateTime, Utc};
 use futures::{SinkExt, StreamExt};
-use serde::{Deserialize, Serialize};
-use shuttle_axum::ShuttleAxum;
-use std::{sync::Arc, time::Duration};
+use serde::Deserialize;
+use std::sync::Arc;
 use tokio::sync::mpsc;
-use tokio::{
-    sync::{watch, Mutex},
-    time::sleep,
-};
+use tokio::sync::{watch, Mutex};
 use tower_http::cors::{Any, CorsLayer};
 
 struct State {
     clients_count: usize,
     rx: watch::Receiver<Message>,
     chess: Arc<Mutex<Chess>>,
-}
-
-const PAUSE_SECS: u64 = 15;
-const STATUS_URI: &str = "https://api.shuttle.rs";
-
-#[derive(Serialize)]
-struct Response {
-    clients_count: usize,
-    #[serde(rename = "dateTime")]
-    date_time: DateTime<Utc>,
-    is_up: bool,
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -53,41 +37,15 @@ struct ResetRequest {
     action: String,
 }
 
-#[allow(clippy::unused_async)]
-#[shuttle_runtime::main]
-async fn axum() -> ShuttleAxum {
-    let (tx, rx) = watch::channel(Message::Text("{}".to_string()));
+#[tokio::main]
+async fn main() {
+    let (_tx, rx) = watch::channel(Message::Text("{}".to_string()));
     let chess = Arc::new(Mutex::new(Chess::new_starting_position()));
     let state = Arc::new(Mutex::new(State {
         clients_count: 0,
         rx,
         chess,
     }));
-
-    // Spawn a thread to continually check the status of the api
-    let state_send = state.clone();
-    tokio::spawn(async move {
-        let duration = Duration::from_secs(PAUSE_SECS);
-
-        loop {
-            let is_up = reqwest::get(STATUS_URI).await;
-            let is_up = is_up.is_ok();
-
-            let response = Response {
-                clients_count: state_send.lock().await.clients_count,
-                date_time: Utc::now(),
-                is_up,
-            };
-            #[allow(clippy::unwrap_used)]
-            let msg = serde_json::to_string(&response).unwrap();
-
-            if tx.send(Message::Text(msg)).is_err() {
-                break;
-            }
-
-            sleep(duration).await;
-        }
-    });
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
@@ -100,7 +58,22 @@ async fn axum() -> ShuttleAxum {
         .layer(cors)
         .layer(Extension(state));
 
-    Ok(router.into())
+    // Get port from environment variable or use default 8000
+    let port = std::env::var("PORT")
+        .unwrap_or_else(|_| "8000".to_string())
+        .parse::<u16>()
+        .unwrap_or(8000);
+
+    let addr = format!("0.0.0.0:{port}");
+    println!("Server listening on {addr}");
+
+    let listener = tokio::net::TcpListener::bind(&addr)
+        .await
+        .expect("Failed to bind to address");
+
+    axum::serve(listener, router)
+        .await
+        .expect("Failed to start server");
 }
 
 async fn websocket_handler(
