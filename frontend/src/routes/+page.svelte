@@ -13,7 +13,6 @@
     import ErrorMessage from "$lib/components/errorMessage.svelte";
     import ResetButton from "$lib/components/resetButton.svelte";
     import WebsocketInfo from "$lib/components/websocketInfo.svelte";
-    import { animationStore } from "$lib/stores/animationStore";
     import { type Square, chessSchema } from "$lib/types";
     import { createWebSocketStore } from "$lib/websocketStore";
     import { type ModalSettings, getModalStore } from "@skeletonlabs/skeleton";
@@ -116,17 +115,11 @@
 
         if (!fromSquare || !toSquare) return;
 
-        // Start animation immediately if the move is in possible moves
+        // Check if move is valid
         if (
             fromSquare.possible_moves &&
             isInPossibleMoves(fromSquare, toSquare, fromSquare.possible_moves)
         ) {
-            animationStore.startAnimation(
-                startSq,
-                endSq,
-                fromSquare.piece.toString(),
-            );
-
             let promotionPiece = [0, 0];
             if (isPawnPromotion(fromSquare, endSq)) {
                 promotionPiece = getPromotionPiece(fromSquare.rank, endSq[1]);
@@ -139,12 +132,6 @@
 
             // Send the move request to backend
             ws.send(JSON.stringify(moveRequest));
-
-            // Wait for animation to complete
-            await new Promise((resolve) => setTimeout(resolve, 100));
-
-            // End animation
-            animationStore.endAnimation();
         } else {
             // Add invalid move animation
             const element = document.getElementById(startSq);
