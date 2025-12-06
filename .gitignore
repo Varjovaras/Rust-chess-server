@@ -11,4 +11,7 @@ test_sub.sh
 public/
 
 frontend/.vercel/
-.shuttle*
+
+# SSL certificates
+nginx/ssl/*.pem
+nginx/ssl/*.key

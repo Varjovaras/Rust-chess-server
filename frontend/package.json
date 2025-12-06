@@ -18,6 +18,7 @@
         "@skeletonlabs/skeleton": "^2.10.2",
         "@skeletonlabs/tw-plugin": "^0.4.0",
         "@sveltejs/adapter-auto": "^3.2.5",
+        "@sveltejs/adapter-node": "^5.0.0",
         "@sveltejs/adapter-vercel": "^4.0.5",
         "@sveltejs/kit": "^2.7.2",
         "@sveltejs/vite-plugin-svelte": "^4.0.0",

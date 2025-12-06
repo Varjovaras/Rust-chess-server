@@ -5,6 +5,6 @@
 
 <h1 class="text-indigo-50">{$page.status}: {$page.error?.message}</h1>
 <div>
-    backend not online, shuttle.rs might need a few seconds to activate from
-    hiatus
+    Backend server is not online. Please check that the server is running or try
+    again in a few moments.
 </div>

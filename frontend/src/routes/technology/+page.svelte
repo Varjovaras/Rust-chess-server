@@ -56,7 +56,7 @@
             "WebSocket server for real-time game updates",
             "Chess engine with move validation and state management",
             "RESTful API endpoints for game operations",
-            "Shuttle.rs for serverless deployment",
+            "Axum web framework with Tokio async runtime",
         ],
         frontend: [
             "Drag and drop chess piece movement",

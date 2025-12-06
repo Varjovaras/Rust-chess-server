@@ -1,0 +1,33 @@
+# Node modules
+**/node_modules
+**/.svelte-kit
+**/build
+**/.vercel
+
+# Rust
+**/target
+**/.cargo
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Environment files
+**/.env
+**/.env.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+**/*.log
+
+# Testing
+**/coverage
