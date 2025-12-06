@@ -1,12 +1,13 @@
-import type { PageLoad } from "./$types";
-import { env } from "$env/dynamic/public";
+import type { PageServerLoad } from "./$types";
+import { env } from "$env/dynamic/private";
 import { error } from "@sveltejs/kit";
 import { startingPosition } from "$lib/components/chess/startingPosition";
 
-export const load: PageLoad = async ({ fetch }) => {
-    const isDevMode = import.meta.env.DEV;
-    // Provide default values to ensure apiUrl is never undefined
-    const apiUrl = isDevMode ? env.PUBLIC_DEV_URL : env.PUBLIC_PROD_URL;
+export const load: PageServerLoad = async ({ fetch }) => {
+    // Use server-side environment variables for backend connection in Docker
+    const backendHost = env.BACKEND_HOST || "localhost";
+    const backendPort = env.BACKEND_PORT || "8000";
+    const apiUrl = `http://${backendHost}:${backendPort}/status`;
 
     try {
         const response = await fetch(apiUrl);

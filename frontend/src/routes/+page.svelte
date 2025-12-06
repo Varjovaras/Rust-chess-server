@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { env } from "$env/dynamic/public";
     import Chessboard from "$lib/components/chess/chessboard.svelte";
     import { countEatenPieces } from "$lib/components/chess/eatenPieces";
     import { startingPosition } from "$lib/components/chess/startingPosition";
@@ -12,19 +11,22 @@
     } from "$lib/components/chess/utils";
     import ErrorMessage from "$lib/components/errorMessage.svelte";
     import WebsocketInfo from "$lib/components/websocketInfo.svelte";
-    import { type Square, chessSchema } from "$lib/types";
+    import { chessSchema } from "$lib/types";
     import { createWebSocketStore } from "$lib/websocketStore";
     import { type ModalSettings, getModalStore } from "@skeletonlabs/skeleton";
     import { onDestroy, onMount } from "svelte";
     import type { PageData } from "./$types";
     import WelcomeNotification from "$lib/components/WelcomeNotification.svelte";
+    import { env } from "$env/dynamic/public";
 
     interface Props {
         data: PageData;
     }
 
     const isDevMode = import.meta.env.DEV;
-    const apiUrl = isDevMode ? env.PUBLIC_DEV_WS_URL : env.PUBLIC_PROD_WS_URL;
+    const backendHost = env.PUBLIC_BACKEND_HOST || "localhost";
+    const backendPort = env.PUBLIC_BACKEND_PORT || "8000";
+    const apiUrl = `ws://${backendHost}:${backendPort}/websocket`;
     const { data }: Props = $props();
     console.log(`Status of backend: ${data.status}`);
 
