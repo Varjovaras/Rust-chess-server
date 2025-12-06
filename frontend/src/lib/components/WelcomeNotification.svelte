@@ -8,7 +8,7 @@
     onMount(() => {
         // Show notification shortly after component mounts
         setTimeout(() => {
-            show = true;
+            show = false;
         }, 500);
 
         // Auto-hide after duration

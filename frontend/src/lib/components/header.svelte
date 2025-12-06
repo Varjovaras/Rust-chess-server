@@ -4,16 +4,11 @@
     class="bg-surface-500/15 shadow-lg p-8 left-0 top-0 flex flex-col gap-4 sm:flex-row justify-between items-center w-full"
 >
     <nav class="flex space-x-4 justify-center items-center">
-        <a
-            href="/"
-            class="hover:text-gray-200 hover:border-b-2 hover:border-gray-200"
-            >Home</a
-        >
-        <a
+        <!-- <a
             href="/technology"
             class="hover:text-gray-200 hover:border-b-2 hover:border-gray-200"
             >Technology</a
-        >
+        > -->
         <!-- <a
 			href="/about"
 			class="hover:text-gray-200 hover:border-b-2 hover:border-gray-200"
