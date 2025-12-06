@@ -63,7 +63,6 @@
             "Touch-friendly mobile interface",
             "Animated piece transitions",
             "Responsive design for all screen sizes",
-            "Deployed on Vercel",
         ],
     };
 </script>

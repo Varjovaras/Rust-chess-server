@@ -2,8 +2,6 @@
 
 A real-time multiplayer chess game built with Rust, SvelteKit, and TailwindCSS. Features a custom chess engine, WebSocket-based multiplayer, and a modern responsive UI.
 
-🎮 **Live Demo**: [https://chess-in-rust.vercel.app](https://chess-in-rust.vercel.app)
-
 ## 🎯 Features
 
 - **Real-time Multiplayer**: Play chess with others through WebSocket connections
@@ -214,48 +212,3 @@ let cors = CorsLayer::new()
   "chess": { /* game state */ }
 }
 ```
-
-## 🚢 Deployment
-
-### Backend
-The backend is a standard Rust application that can be deployed to any platform supporting Rust:
-- Docker containers
-- Cloud providers (AWS, GCP, Azure)
-- Platform-as-a-Service (Render, Railway, Fly.io)
-
-### Frontend
-The frontend is deployed on **[Vercel](https://vercel.com/)** with automatic deployments from the main branch.
-
-To deploy your own:
-```bash
-cd frontend
-vercel deploy
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is open source and available under the MIT License.
-
-## 🙏 Acknowledgments
-
-- Chess rules reference: [Chess Programming Wiki](https://www.chessprogramming.org/)
-- Inspiration from various open-source chess implementations
-- Community feedback and contributions
-
-## 📧 Contact
-
-For questions or feedback, please open an issue on GitHub.
-
----
-
-Built with ❤️ using Rust, SvelteKit, and TailwindCSS

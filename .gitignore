@@ -10,8 +10,6 @@ Secrets*.toml
 test_sub.sh
 public/
 
-frontend/.vercel/
-
 # SSL certificates
 nginx/ssl/*.pem
 nginx/ssl/*.key
