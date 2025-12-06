@@ -331,7 +331,7 @@
 <div class="flex justify-center items-center py-4 sm:py-6 md:py-8 touch-none">
     <div class="flex flex-col justify-center items-center">
         <div
-            class="grid grid-cols-8 gap-0 max-w-[90vw] sm:max-w-[80vw] md:max-w-[65vw] lg:max-w-[50vw]"
+            class="grid grid-cols-8 gap-0 w-[80vw] max-w-[90vw] sm:w-[56vw] sm:max-w-[80vw] md:w-[36vw] md:max-w-[65vw] lg:w-[32vw] lg:max-w-[50vw]"
         >
             {#each boardToFront as row, i}
                 {#each row as sq, j}

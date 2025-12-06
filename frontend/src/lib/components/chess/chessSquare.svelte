@@ -68,10 +68,8 @@
     );
 
     const squareClass = $derived(`
-        w-[8vw] h-[8vw]
-        sm:w-[6vw] sm:h-[6vw]
-        md:w-[4.5vw] md:h-[4.5vw]
-        min-w-8 min-h-8
+        w-full
+        aspect-square
         ${squareColor} ${hoverColor} ${checkColor}
         text-center flex items-center justify-center piece
         ${isSelected ? "selected" : ""}
