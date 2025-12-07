@@ -17,6 +17,7 @@
     import { onDestroy, onMount } from "svelte";
     import type { PageData } from "./$types";
     import WelcomeNotification from "$lib/components/WelcomeNotification.svelte";
+    import GameInfo from "$lib/components/GameInfo.svelte";
     import { env } from "$env/dynamic/public";
 
     interface Props {
@@ -192,93 +193,6 @@
     <div
         class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center h-full"
     >
-        <!-- Left side - Text content -->
-        <div class="space-y-6 lg:pr-8">
-            <div class="card variant-ghost-surface p-6 md:p-8 space-y-4">
-                <div class="space-y-2">
-                    <h1
-                        class="h1 font-bold bg-gradient-to-br from-primary-500 to-secondary-500 bg-clip-text text-transparent leading-tight"
-                    >
-                        Chess Engine
-                    </h1>
-                    <div class="flex gap-2 flex-wrap">
-                        <span class="chip variant-filled-primary">Rust</span>
-                        <span class="chip variant-filled-secondary">Svelte</span
-                        >
-                    </div>
-                </div>
-
-                <hr class="!border-t-2 opacity-50" />
-
-                <div class="space-y-3">
-                    <p class="text-base md:text-lg">
-                        A full-stack chess application built with modern web
-                        technologies.
-                    </p>
-
-                    <div class="space-y-2">
-                        <div class="flex items-start gap-3">
-                            <span class="text-primary-500 text-2xl">⚡</span>
-                            <div>
-                                <h3 class="h4 font-semibold">
-                                    Blazing Fast Backend
-                                </h3>
-                                <p class="text-surface-600-300-token">
-                                    Built with Rust for maximum performance and
-                                    safety
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <span class="text-secondary-500 text-2xl">🎨</span>
-                            <div>
-                                <h3 class="h4 font-semibold">
-                                    Modern Frontend
-                                </h3>
-                                <p class="text-surface-600-300-token">
-                                    Svelte & Skeleton UI for a smooth, reactive
-                                    experience
-                                </p>
-                            </div>
-                        </div>
-
-                        <div class="flex items-start gap-3">
-                            <span class="text-tertiary-500 text-2xl">🔌</span>
-                            <div>
-                                <h3 class="h4 font-semibold">
-                                    Real-time Gameplay
-                                </h3>
-                                <p class="text-surface-600-300-token">
-                                    WebSocket connection for instant move
-                                    updates
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <hr class="!border-t-2 opacity-50" />
-
-                <div class="flex items-center gap-3 flex-wrap">
-                    <div
-                        class="badge {isConnected
-                            ? 'variant-filled-success'
-                            : 'variant-filled-error'}"
-                    >
-                        {isConnected ? "● Connected" : "● Disconnected"}
-                    </div>
-                    <button
-                        onclick={handleReset}
-                        class="btn variant-ringed-primary btn-sm"
-                    >
-                        Reset Game
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Right side - Chess board -->
         <div class="flex flex-col items-center justify-center space-y-4">
             <ErrorMessage {errorMessage} />
             <Chessboard {chess} {handleMove} />
@@ -290,5 +204,6 @@
                 <WebsocketInfo messages={websocketMessages} {isConnected} />
             {/if} -->
         </div>
+        <GameInfo {isConnected} onReset={handleReset} />
     </div>
 </div>
