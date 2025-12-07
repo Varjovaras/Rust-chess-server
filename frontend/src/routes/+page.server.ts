@@ -23,6 +23,6 @@ export const load: PageServerLoad = async ({ fetch }) => {
         };
     } catch (e) {
         console.error("Error connecting to backend:", e);
-        error(500, "no backend found");
+        error(500, "Backend connection failed");
     }
 };

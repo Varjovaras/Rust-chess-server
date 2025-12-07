@@ -10,7 +10,7 @@
         isPawnPromotion,
     } from "$lib/components/chess/utils";
     import ErrorMessage from "$lib/components/errorMessage.svelte";
-    import WebsocketInfo from "$lib/components/websocketInfo.svelte";
+    // import WebsocketInfo from "$lib/components/websocketInfo.svelte";
     import { chessSchema } from "$lib/types";
     import { createWebSocketStore } from "$lib/websocketStore";
     import { type ModalSettings, getModalStore } from "@skeletonlabs/skeleton";
@@ -23,15 +23,10 @@
         data: PageData;
     }
 
-    const isDevMode = import.meta.env.DEV;
-    const backendHost = env.PUBLIC_BACKEND_HOST || "localhost";
-    const backendPort = env.PUBLIC_BACKEND_PORT || "8000";
-    const apiUrl = `ws://${backendHost}:${backendPort}/websocket`;
     const { data }: Props = $props();
     console.log(`Status of backend: ${data.status}`);
 
     const modalStore = getModalStore();
-    const ws = createWebSocketStore(apiUrl);
 
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     let websocketMessages: any[] = $state([]);
@@ -40,7 +35,30 @@
     const eatenPieces = $derived(chess.pieces_eaten);
     const piecesEatenCount = $derived(countEatenPieces(eatenPieces));
 
+    // WebSocket store - initialized in onMount
+    let ws: ReturnType<typeof createWebSocketStore>;
+
     onMount(() => {
+        // Construct WebSocket URL based on environment
+        const isDevMode = import.meta.env.DEV;
+        let apiUrl: string;
+
+        if (isDevMode) {
+            // Development: connect directly to backend on localhost:8000
+            apiUrl = "ws://localhost:8000/websocket";
+        } else {
+            // Production: use reverse proxy with relative path
+            const protocol =
+                window.location.protocol === "https:" ? "wss:" : "ws:";
+            apiUrl = `${protocol}//${window.location.host}/websocket`;
+        }
+
+        console.log(
+            `Connecting to WebSocket: ${apiUrl} (dev mode: ${isDevMode})`,
+        );
+
+        ws = createWebSocketStore(apiUrl);
+
         const unsubscribe = ws.subscribe((socket) => {
             if (socket) {
                 isConnected = true;
@@ -88,7 +106,7 @@
         console.log(
             "Component is being destroyed, resetting chess to starting position",
         );
-        if (isConnected) {
+        if (isConnected && ws) {
             ws.send(JSON.stringify({ action: "reset" }));
         }
         chess = startingPosition;
@@ -132,7 +150,9 @@
             };
 
             // Send the move request to backend
-            ws.send(JSON.stringify(moveRequest));
+            if (ws) {
+                ws.send(JSON.stringify(moveRequest));
+            }
         } else {
             // Add invalid move animation
             const element = document.getElementById(startSq);
@@ -151,7 +171,9 @@
         const resetRequest = {
             action: "reset",
         };
-        ws.send(JSON.stringify(resetRequest));
+        if (ws) {
+            ws.send(JSON.stringify(resetRequest));
+        }
     };
 
     //not implemented undo in backend
@@ -261,9 +283,9 @@
 
             <!-- <EatenPiecesList color="white" pieces={piecesEatenCount.white} />
             <EatenPiecesList color="black" pieces={piecesEatenCount.black} /> -->
-            {#if isDevMode && 2 < 1}
+            <!-- {#if isDevMode && 2 < 1}
                 <WebsocketInfo messages={websocketMessages} {isConnected} />
-            {/if}
+            {/if} -->
         </div>
     </div>
 </div>
