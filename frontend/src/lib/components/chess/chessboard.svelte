@@ -301,10 +301,21 @@
             const pieceImg = event.target as HTMLElement;
             if (pieceImg) {
                 const dragImage = pieceImg.cloneNode(true) as HTMLElement;
+                const rect = pieceImg.getBoundingClientRect();
+
+                // Set explicit dimensions for Chrome compatibility
+                dragImage.style.width = `${rect.width}px`;
+                dragImage.style.height = `${rect.height}px`;
+                dragImage.style.position = "fixed";
+                dragImage.style.top = "-9999px";
+                dragImage.style.left = "-9999px";
+                dragImage.style.pointerEvents = "none";
+                dragImage.style.transform = "none";
+                dragImage.style.opacity = "1";
+
                 dragImage.classList.add("drag-image");
                 document.body.appendChild(dragImage);
 
-                const rect = pieceImg.getBoundingClientRect();
                 event.dataTransfer.setDragImage(
                     dragImage,
                     rect.width / 2,
