@@ -50,7 +50,10 @@
             // Production: use reverse proxy with relative path
             const protocol =
                 window.location.protocol === "https:" ? "wss:" : "ws:";
-            apiUrl = `${protocol}//${window.location.host}/websocket`;
+            // Get the base path from the current URL pathname (e.g., /chess)
+            const basePath = window.location.pathname.split("/")[1];
+            const basePathPrefix = basePath ? `/${basePath}` : "";
+            apiUrl = `${protocol}//${window.location.host}${basePathPrefix}/websocket`;
         }
 
         console.log(

@@ -1,4 +1,6 @@
-<script lang="ts"></script>
+<script lang="ts">
+    import { base } from "$app/paths";
+</script>
 
 <header
     class="bg-surface-500/15 shadow-lg p-8 left-0 top-0 flex flex-col gap-4 sm:flex-row justify-between items-center w-full relative"
@@ -26,7 +28,7 @@
             class=""
         >
             <img
-                src="/github-mark.png"
+                src="{base}/github-mark.png"
                 alt="GitHub link"
                 class="w-4 h-4 mr-2"
             />

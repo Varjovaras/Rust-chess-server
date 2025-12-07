@@ -2,6 +2,7 @@
     /**
      * UNUSED AT THE MOMENT
      */
+    import { base } from "$app/paths";
 </script>
 
 <footer
@@ -18,7 +19,7 @@
             class=""
         >
             <img
-                src="/github-mark.png"
+                src="{base}/github-mark.png"
                 alt="GitHub link"
                 class="w-4 h-4 mr-2"
             />
