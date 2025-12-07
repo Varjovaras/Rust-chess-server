@@ -34,7 +34,7 @@
     let isConnected = $state(false);
     let chess = $state(data.startingPosition);
     const eatenPieces = $derived(chess.pieces_eaten);
-    const piecesEatenCount = $derived(countEatenPieces(eatenPieces));
+    // const piecesEatenCount = $derived(countEatenPieces(eatenPieces));
 
     // WebSocket store - initialized in onMount
     let ws: ReturnType<typeof createWebSocketStore>;

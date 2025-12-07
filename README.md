@@ -2,14 +2,13 @@
 
 ## https://chess-in-rust.vercel.app
 
-## Rust backend written using Axum and Shuttle
+## Rust backend written using Axum
 
-https://docs.shuttle.rs/examples/axum
+### Backend deployed on Hetzner VPS
 
-### Backend deployed with shuttle
+https://www.hetzner.com
 
-https://www.shuttle.rs
-`
+Deployed using Docker Compose with GitHub Actions for CI/CD.
 
 ## Frontend done with Sveltekit, Typescript and Tailwindcss
 
@@ -19,8 +18,10 @@ https://tailwindcss.com
 
 https://www.typescriptlang.org
 
-### Frontend deployed with vercel
+### Frontend deployed on Hetzner VPS
 
-https://vercel.com
+https://www.hetzner.com
 
-https://chess-in-rust.vercel.app
+Deployed alongside the backend using Docker Compose with nginx as a reverse proxy.
+
+Live at: https://hcbull.com/chess

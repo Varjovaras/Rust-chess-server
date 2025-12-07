@@ -30,7 +30,7 @@
                     <div>
                         <h3 class="h4 font-semibold">Built with Rust</h3>
                         <p class="text-surface-600-300-token">
-                            The actual app is a very fast rust library. It's
+                            The actual app is a very fast rust library. Backend
                             performance could be improved a ton by making chess
                             lookup based on bitboards.
                             <a
@@ -51,18 +51,19 @@
                             Frontend demo in Svelte
                         </h3>
                         <p class="text-surface-600-300-token">
-                            Svelte & Skeleton UI for a reactive experience
+                            Frontend calls backend API through WebSocket for
+                            instant move updates.
                         </p>
                     </div>
                 </div>
 
                 <div class="flex items-start gap-3">
-                    <span class="text-tertiary-500 text-2xl">🔌</span>
+                    <span class="text-tertiary-500 text-2xl">🚀</span>
                     <div>
-                        <h3 class="h4 font-semibold">Real-time Gameplay</h3>
+                        <h3 class="h4 font-semibold">Todo List</h3>
                         <p class="text-surface-600-300-token">
-                            Backend for the frontend demo written in Axum using
-                            WebSockets for instant move updates
+                            Multiplayer gameplay, PGN support (both export and
+                            import), analysis, going back moves, and more
                         </p>
                     </div>
                 </div>
