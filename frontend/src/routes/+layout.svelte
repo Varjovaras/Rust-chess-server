@@ -13,6 +13,7 @@
 <svelte:head>
     <title>Chess App</title>
     <meta name="description" content="Chess portfolio simulator" />
+    <script defer src="https://analytics.hcbull.com/script.js" data-website-id="e5189d22-e2c3-421d-96c2-df2097c8be3e"></script>
 </svelte:head>
 
 <Modal />
