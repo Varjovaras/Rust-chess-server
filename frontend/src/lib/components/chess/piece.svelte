@@ -1,11 +1,8 @@
 <script lang="ts">
-    import { returnCorrectPieceColor } from "$lib/components/chess/utils";
-    import type { Square } from "$lib/types";
-    import {
-        PIECE_MOVE_DURATION,
-        PIECE_ANIMATION_EASING,
-    } from "$lib/constants/animation";
-    import { base } from "$app/paths";
+    import { returnCorrectPieceColor } from "#lib/components/chess/utils.js";
+    import type { Square } from "#lib/types.js";
+    import { PIECE_MOVE_DURATION, PIECE_ANIMATION_EASING } from "#lib/constants/animation.js";
+    import { resolve } from "$app/paths";
 
     const animationStyle = `--piece-move-duration: ${PIECE_MOVE_DURATION}ms; --piece-animation-easing: ${PIECE_ANIMATION_EASING};`;
 
@@ -66,7 +63,7 @@
                 pointer-events-auto
             `}
             style={animationStyle}
-            src={returnCorrectPieceColor(sq.piece, base)}
+            src={returnCorrectPieceColor(sq.piece, resolve(''))}
             alt={`${sq.piece} piece`}
             draggable={onDragStart ? "true" : "false"}
             ondragstart={handleDragStart}

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Header from "$lib/components/header.svelte";
+    import Header from "#lib/components/header.svelte";
     import "../app.css";
     import { Modal, initializeStores } from "@skeletonlabs/skeleton";
     interface Props {

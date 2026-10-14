@@ -5,7 +5,7 @@
         isPossibleToMovePiece,
         isWhiteTurn,
         isInPossibleMoves,
-    } from "$lib/components/chess/utils";
+    } from "#lib/components/chess/utils.js";
     import { onMount } from "svelte";
 
     import type {
@@ -15,7 +15,7 @@
         Square as SquareType,
     } from "../../types";
     import ChessSquare from "./chessSquare.svelte";
-    import { PIECE_MOVE_DURATION } from "$lib/constants/animation";
+    import { PIECE_MOVE_DURATION } from "#lib/constants/animation.js";
 
     interface Props {
         chess: Chess;

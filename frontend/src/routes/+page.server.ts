@@ -1,12 +1,12 @@
 import type { PageServerLoad } from "./$types";
-import { env } from "$env/dynamic/private";
+import { BACKEND_HOST, BACKEND_PORT } from "$app/env/private";
 import { error } from "@sveltejs/kit";
-import { startingPosition } from "$lib/components/chess/startingPosition";
+import { startingPosition } from "#lib/components/chess/startingPosition.js";
 
 export const load: PageServerLoad = async ({ fetch }) => {
     // Use server-side environment variables for backend connection in Docker
-    const backendHost = env.BACKEND_HOST || "localhost";
-    const backendPort = env.BACKEND_PORT || "8000";
+    const backendHost = BACKEND_HOST || "localhost";
+    const backendPort = BACKEND_PORT || "8000";
     const apiUrl = `http://${backendHost}:${backendPort}/status`;
 
     try {
@@ -17,11 +17,9 @@ export const load: PageServerLoad = async ({ fetch }) => {
                 `Failed to connect to backend: ${response.statusText}`,
             );
         }
-        return {
-            status: "ok",
-            startingPosition: startingPosition,
-        };
-    } catch (e) {
+
+        return { status: "ok", startingPosition };
+    } catch(e) {
         console.error("Error connecting to backend:", e);
         error(500, "Backend connection failed");
     }

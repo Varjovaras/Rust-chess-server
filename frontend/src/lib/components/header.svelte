@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { base } from "$app/paths";
+    import { resolve } from "$app/paths";
 </script>
 
 <header
@@ -28,7 +28,7 @@
             class=""
         >
             <img
-                src="{base}/github-mark.png"
+                src="{resolve('')}/github-mark.png"
                 alt="GitHub link"
                 class="w-4 h-4 mr-2"
             />

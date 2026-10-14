@@ -8,7 +8,7 @@
     import {
         SQUARE_TRANSITION_DURATION,
         INVALID_MOVE_DURATION,
-    } from "$lib/constants/animation";
+    } from "#lib/constants/animation.js";
 
     interface Props {
         chess: Chess;

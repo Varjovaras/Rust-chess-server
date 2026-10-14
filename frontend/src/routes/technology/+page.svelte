@@ -1,6 +1,6 @@
 <script lang="ts">
     import { fade, fly } from "svelte/transition";
-    import RustLogo from "$lib/components/rustLogo.svelte";
+    import RustLogo from "#lib/components/rustLogo.svelte";
     import { onMount } from "svelte";
 
     let visible = $state(false);

@@ -1,24 +1,23 @@
 <script lang="ts">
-    import Chessboard from "$lib/components/chess/chessboard.svelte";
-    import { countEatenPieces } from "$lib/components/chess/eatenPieces";
-    import { startingPosition } from "$lib/components/chess/startingPosition";
+    import Chessboard from "#lib/components/chess/chessboard.svelte";
+    import { countEatenPieces } from "#lib/components/chess/eatenPieces.js";
+    import { startingPosition } from "#lib/components/chess/startingPosition.js";
 
     import {
         getPromotionPiece,
         getSquareFromString,
         isInPossibleMoves,
         isPawnPromotion,
-    } from "$lib/components/chess/utils";
-    import ErrorMessage from "$lib/components/errorMessage.svelte";
-    // import WebsocketInfo from "$lib/components/websocketInfo.svelte";
-    import { chessSchema } from "$lib/types";
-    import { createWebSocketStore } from "$lib/websocketStore";
+    } from "#lib/components/chess/utils.js";
+    import ErrorMessage from "#lib/components/errorMessage.svelte";
+    // import WebsocketInfo from "#lib/components/websocketInfo.svelte";
+    import { chessSchema } from "#lib/types.js";
+    import { createWebSocketStore } from "#lib/websocketStore.js";
     import { type ModalSettings, getModalStore } from "@skeletonlabs/skeleton";
     import { onDestroy, onMount } from "svelte";
     import type { PageData } from "./$types";
-    import WelcomeNotification from "$lib/components/WelcomeNotification.svelte";
-    import GameInfo from "$lib/components/GameInfo.svelte";
-    import { env } from "$env/dynamic/public";
+    import WelcomeNotification from "#lib/components/WelcomeNotification.svelte";
+    import GameInfo from "#lib/components/GameInfo.svelte";
 
     interface Props {
         data: PageData;
